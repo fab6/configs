@@ -16,7 +16,7 @@ Plug 'zchee/deoplete-jedi'
 Plug 'chrisbra/csv.vim'
 Plug 'Yggdroot/indentLine'
 Plug 'scrooloose/nerdcommenter'
-Plug 'chemzqm/vim-easygit'
+"Plug 'chemzqm/vim-easygit'
 Plug 'itchyny/vim-parenmatch'
 Plug 'itchyny/vim-cursorword'
 Plug 'pboettch/vim-cmake-syntax'
@@ -56,6 +56,8 @@ Plug 'tsukkee/unite-tag'
 Plug 'Shougo/unite-outline'
 Plug 'osyo-manga/vim-anzu'
 Plug 'jvirtanen/vim-octave'
+Plug 'jreybert/vimagit'
+Plug 'lambdalisue/gina.vim'
 " Plug 'skywind3000/asyncrun.vim>'
 
 " Initialize plugin system
@@ -1187,21 +1189,21 @@ nmap <buffer> B <Plug>(vimfiler_cd_input_directory)<C-u>bookmark:
 "0x2 vertical split window
 "0x4 new window
 "0x8 run command in background
-function! RunCommand(cmd, flag) abort
-    let l:action = 'split-window -p 38 '
-    "split
-    if and(a:flag, 0x1)
-        let l:action = 'split-window -p 38 '
-    elseif and(a:flag, 0x2)
-        let l:action = 'split-window -h -p 50 '
-    elseif and(a:flag, 0x4)
-        let l:action = 'new-window '
-    endif
-    if and(a:flag, 0x8)
-        let l:action .= ' -d '
-    endif
-    call system('tmux '.l:action.string(a:cmd))
-endfunction
+" function! RunCommand(cmd, flag) abort
+"     let l:action = 'split-window -p 38 '
+"     "split
+"     if and(a:flag, 0x1)
+"         let l:action = 'split-window -p 38 '
+"     elseif and(a:flag, 0x2)
+"         let l:action = 'split-window -h -p 50 '
+"     elseif and(a:flag, 0x4)
+"         let l:action = 'new-window '
+"     endif
+"     if and(a:flag, 0x8)
+"         let l:action .= ' -d '
+"     endif
+"     call system('tmux '.l:action.string(a:cmd))
+" endfunction
 
 "run ctags in background( 0x8 | 0x4 = 0xc)
 "call RunCommand('ctags -R .', 0xc)
@@ -1211,14 +1213,29 @@ endfunction
 " Quickly create a new terminal in a new tab
 tnoremap <Leader>c <C-\><C-n>:tab new<CR>:term<CR>
 noremap <Leader>c :tab new<CR>:term<CR>
-inoremap <Leader>c <Esc>:tab new<CR>:term<CR>
+"inoremap <Leader>c <Esc>:tab new<CR>:term<CR>
 
 " Quickly create a new terminal in a vertical split
 tnoremap <Leader>% <C-\><C-n>:vsp<CR><C-w><C-w>:term<CR>
 noremap <Leader>% :vsp<CR><C-w><C-w>:term<CR>
-inoremap <Leader>% <Esc>:vsp<CR><C-w><C-w>:term<CR>
+"inoremap <Leader>% <Esc>:vsp<CR><C-w><C-w>:term<CR>
 
 " Quickly create a new terminal in a horizontal split
-tnoremap <Leader>" <C-\><C-n>:sp<CR><C-w><C-w>:term<CR>
-noremap <Leader>" :sp<CR><C-w><C-w>:term<CR>
-inoremap <Leader>" <Esc>:sp<CR><C-w><C-w>:term<CR>
+" tnoremap <Leader>" <C-\><C-n>:sp<CR><C-w><C-w>:term<CR>
+" noremap <Leader>" :sp<CR><C-w><C-w>:term<CR>
+" inoremap <Leader>" <Esc>:sp<CR><C-w><C-w>:term<CR>
+"
+"let g:easygit_enable_command = 1
+"
+" TODO
+" Vimfiler:
+"  - link files
+"  - open xterm with current buffer
+"  - open terminal in current direcotyr
+"  - bookmarks
+"  - ssh / scp
+"  - colors depending on extension
+"  Terminal:
+"  - terminal run python on current buffer
+"  - 
+"
