@@ -1218,6 +1218,7 @@ noremap <Leader>c :tab new<CR>:term<CR>
 " Quickly create a new terminal in a vertical split
 tnoremap <Leader>% <C-\><C-n>:vsp<CR><C-w><C-w>:term<CR>
 noremap <Leader>% :vsp<CR><C-w><C-w>:term<CR>
+noremap <Leader>C :vsp<CR><C-w><C-w>:term python %<CR>
 "inoremap <Leader>% <Esc>:vsp<CR><C-w><C-w>:term<CR>
 
 " Quickly create a new terminal in a horizontal split
