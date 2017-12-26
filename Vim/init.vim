@@ -57,7 +57,7 @@ Plug 'Shougo/unite-outline'
 Plug 'osyo-manga/vim-anzu'
 Plug 'jvirtanen/vim-octave'
 Plug 'jreybert/vimagit'
-Plug 'lambdalisue/gina.vim'
+"Plug 'lambdalisue/gina.vim'
 " Plug 'skywind3000/asyncrun.vim>'
 
 " Initialize plugin system
