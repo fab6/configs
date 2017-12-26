@@ -90,11 +90,6 @@ alias apt="sudo aptitude"
 alias e="emacsclient -t"
 alias ec="emacsclient -c"
 alias ecg="emacsclient "
-alias mountAsus="sshfs 192.168.178.27: /home/fbraenns/99_MOUNT/asusLaptop/"
-alias umountAsus="fusermount -u /home/fbraenns/99_MOUNT/asusLaptop/"
-
-alias rsyncLapSYSTEM_down="rsync -ravz --progress 192.168.178.27:/home/fbraenns/HOME/QuantDevs/SYSTEMATIC_Value/ /home/fbraenns/01_FINANCE/SYSTEMATIC_Value"
-alias rsyncLapSYSTEM_up="rsync -aevz --progress /home/fbraenns/01_FINANCE/SYSTEMATIC_Value 192.168.178.27:/home/fbraenns/HOME/QuantDevs/SYSTEMATIC_Value/"
 
 alias anaSearch="anaconda search -t conda"
 
@@ -135,7 +130,6 @@ export MPIDIST_IB=
 source ~/.bashrc_fds 
 #FDS -----------------------------------
 
-alias syn="ssh fbraenns@192.168.178.25"
 
 #MODELICA -----------------------------------
 export MODELICAPATH=/share/GA/TOOLs/
