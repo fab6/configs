@@ -54,6 +54,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'mattboehm/vim-accordion'
 Plug 'tsukkee/unite-tag'
 Plug 'Shougo/unite-outline'
+Plug 'Shougo/vinarise'
 Plug 'osyo-manga/vim-anzu'
 Plug 'jvirtanen/vim-octave'
 Plug 'jreybert/vimagit'
@@ -941,6 +942,7 @@ endfunction
 "" VimFiler
 ""======================== ======================== ======================== ========================
 ""
+
 augroup filetype
     autocmd Filetype vimfiler setlocal cursorline
     autocmd FileType vimfiler nunmap <buffer> x
@@ -951,7 +953,17 @@ augroup filetype
     autocmd FileType vimfiler nmap <buffer> h <Plug>(vimfiler_switch_to_parent_directory)
     autocmd FileType vimfiler nmap <buffer> <C-R> <Plug>(vimfiler_redraw_screen)
     autocmd FileType vimfiler nmap <silent><buffer><expr> <CR> vimfiler#smart_cursor_map( "\<Plug>(vimfiler_expand_tree)", "\<Plug>(vimfiler_edit_file)")
+    au FileType vimfiler call s:vimfiler_settings()
 augroup END
+" augroup ps_vimfiler
+"     au!
+" augroup END
+
+function! s:vimfiler_settings()
+    " nnoremap <silent><buffer>b <C-u>:VimFiler bookmark:<CR>
+    nnoremap <silent><buffer>b <C-u>:VimFiler bookmark:/<CR>
+endfunction
+
 " use this function to toggle vimfiler
 function! s:vimfiler_toggle()
   if &filetype == 'vimfiler'
@@ -988,17 +1000,57 @@ let g:vimfiler_time_format = '%m-%d-%y %H:%M:%S'
 let g:vimfiler_expand_jump_to_first_child = 0
 let g:vimfiler_ignore_pattern = '\.git\|\.DS_Store\|\.pyc'
 
+"---------------------------------------------------------------------------
+" vimfiler:"{{{
+"
+" nnoremap    [vimfiler]   <Nop>
+" nmap    <Space>v [vimfiler]
+"
+" nnoremap <silent> [vimfiler]b  :<C-u>VimFilerBufferDir<CR>
+" nnoremap <silent> [vimfiler]c  :<C-u>VimFilerCurrentDir<CR>
+" nnoremap <silent> [vimfiler]d  :<C-u>VimFilerDouble<CR>
+" nnoremap <silent> [vimfiler]f  :<C-u>VimFilerSimple -no-quit -winwidth=32<CR>
+" nnoremap <silent> [vimfiler]s  :<C-u>VimShell<CR>
+
+" Edit file by tabedit.
+" let g:vimfiler_edit_action = 'open'
+" let g:vimfiler_split_action = 'tabopen'
+"
+" let g:vimfiler_as_default_explorer = 1
+
+" if s:MSWindows
+"     let g:unite_kind_file_use_trashbox = 1
+" endif
+
+" Enable file operation commands.
+" let g:vimfiler_safe_mode_by_default = 0
+
+"let g:vimfiler_data_directory = $DOTVIM.'/.vimfiler'
+let g:vimfiler_data_directory = '~/.vimfiler'
+
+let g:vimfiler_execute_file_list={
+            \ 'txt': 'vim',
+            \ 'vim': 'vim',
+            \ 'png': 'display'
+            \ }
+"}}}
+
 noremap <Leader>d :<C-u>VimFilerExplorer -split -simple -parent -winwidth=35 -toggle -no-quit<CR>
 nnoremap <Leader>jf :<C-u>VimFilerExplorer -split -simple -parent -winwidth=35 -no-quit -find<CR>
 
-map <F3> :VimFiler<CR>
-map <space>d :VimFiler<CR>
-map <space>D :VimFilerDouble<CR>
-map <F4> :VimFilerDouble<CR>
+"map <space>d :VimFiler<CR>
+map <space>d :VimFilerBufferDir<CR>
+map <space>D :VimFilerBufferDir -explorer<CR>
+nnoremap <Leader>ff :VimFilerExplorer -find -winwidth=80<CR>
+nnoremap <F2> :VimFilerCreate -split -simple -winwidth=30 -toggle -no-quit<CR>
+nnoremap <F3> :VimFiler -tab<CR>
+nnoremap <F4> :VimFilerDouble -tab<CR>
 "map <C-d> :VimFiler<CR>
 "nnoremap <silent> <Leader>bm :Unite -silent -auto-resize -buffer-name=my-directories -default-action=vimfiler bookmark<CR>
 "nnoremap <silent><buffer>b <C-u>:VimFiler bookmark:/<CR><Paste>
-nmap <buffer> B <Plug>(vimfiler_cd_input_directory)<C-u>bookmark:
+" nmap <buffer> B <Plug>(vimfiler_cd_input_directory)<C-u>bookmark:
+nmap <buffer> b <Plug>(vimfiler_cd_input_directory)<C-u>bookmark:
+nnoremap <silent> <Leader>bm :Unite -silent -auto-resize -buffer-name=my-directories -default-action=vimfiler bookmark<CR>
 
 "  if a:context.split || !a:context.quit || a:context.explorer
 "     " Change default mapping.
@@ -1226,8 +1278,6 @@ noremap <Leader>C :vsp<CR><C-w><C-w>:term python %<CR>
 " noremap <Leader>" :sp<CR><C-w><C-w>:term<CR>
 " inoremap <Leader>" <Esc>:sp<CR><C-w><C-w>:term<CR>
 "
-"let g:easygit_enable_command = 1
-"
 " TODO
 " Vimfiler:
 "  - link files
@@ -1237,6 +1287,7 @@ noremap <Leader>C :vsp<CR><C-w><C-w>:term python %<CR>
 "  - ssh / scp
 "  - colors depending on extension
 "  Terminal:
-"  - terminal run python on current buffer
-"  - 
+"  -
+"  Python:
+"  -
 "
