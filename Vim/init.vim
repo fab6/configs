@@ -1,3 +1,13 @@
+" TODO
+" Vimfiler:
+"  - ssh / scp
+"  - colors depending on extension
+"  Terminal:
+"  -
+"  Python:
+"  -
+"  Complete:
+"  - colors in deoplete
 ""======================== ======================== ======================== ========================
 set runtimepath+=/home/fbraenns/.nvim/
 ""======================== ======================== ======================== ========================
@@ -60,6 +70,8 @@ Plug 'jvirtanen/vim-octave'
 Plug 'jreybert/vimagit'
 "Plug 'lambdalisue/gina.vim'
 " Plug 'skywind3000/asyncrun.vim>'
+Plug 'rafi/awesome-vim-colorschemes'
+" Plug 'vim-scripts/mailbrowser.vim'
 
 " Initialize plugin system
 call plug#end()
@@ -83,7 +95,7 @@ cnoremap <C-l> <Right>
 " cnoremap <M-b> <S-Left>
 " cnoremap <M-f> <S-Right>
 "
-:nnoremap <leader>P :e ~/.config/nvim/init.vim<CR>
+:nnoremap <leader>ed :e ~/.config/nvim/init.vim<CR>
 ":nnoremap <leader>p :source ~/.config/nvim/init.vim<CR>
 
 "" Paste Mode On/Off
@@ -103,11 +115,7 @@ func! Paste_on_off()
     endif
     return
 endfunc
-"" pull full path name into paste buffer for attachment to email etc
-"nnoremap <F4> :let @*=expand("%:p")<cr>
-":map "" "*p
-":map ,, "*y
-""
+
 "" tab navigation like firefox
 ":nmap <C-S-tab> :tabprevious<cr>
 ":nmap <C-tab> :tabnext<cr>
@@ -133,16 +141,8 @@ endfunc
 ":map <F8> "+p
 "
 "" this makes the mouse paste a block of text without formatting it
-"" (good for code)
-":map <MouseMiddle> <esc>"*p
+:map <MouseMiddle> <esc>"*p
 "
-""=========================================================
-"" NERD_tree config
-"let NERDTreeChDirMode=2
-"let NERDTreeIgnore=['\.vim$', '\~$', '\.pyc$', '\.swp$']
-"let NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$',  '\~$']
-"let NERDTreeShowBookmarks=1
-""map <F2> :NERDTreeToggle<CR>
 "
 set number
 "" .vimrc
@@ -255,14 +255,14 @@ set textwidth=72
 "autocmd!
 "filetype on
 
-if has("autocmd")
-    "autocmd BufNewFile,Bufread *.html,*.htm,*.shtml,*.epl,*.php3,*.sgml,*.de,*.en source ~/.vim/.vimrchtml.vim
-    "if has("autocmd")
-    "    autocmd BufNewFile,Bufread *.tex source ~/.vim/ftplugin/vimispell.vim
-    "endif
-    autocmd BufRead,BufNewFile *.cmake,CMakeLists.TXT,*.CMake.in runtime! indent/cmake-indent.vim
-    autocmd BufRead,BufNewFile *.cmake,CMakeLists.txt,*.cmake.in setf syntax/cmake-syntax.vim
-endif
+" if has("autocmd")
+"     "autocmd BufNewFile,Bufread *.html,*.htm,*.shtml,*.epl,*.php3,*.sgml,*.de,*.en source ~/.vim/.vimrchtml.vim
+"     "if has("autocmd")
+"     "    autocmd BufNewFile,Bufread *.tex source ~/.vim/ftplugin/vimispell.vim
+"     "endif
+"     autocmd BufRead,BufNewFile *.cmake,CMakeLists.TXT,*.CMake.in runtime! indent/cmake-indent.vim
+"     autocmd BufRead,BufNewFile *.cmake,CMakeLists.txt,*.cmake.in setf syntax/cmake-syntax.vim
+" endif
 
 autocmd BufReadPost *
             \ if line("'\"") > 0 && line("'\"") <= line("$") |
@@ -282,7 +282,6 @@ augroup filetype
     autocmd BufNewFile,BufRead *.dat set filetype=csv
     autocmd! BufRead,BufNewFile *.m       setf octave
     autocmd! BufRead,BufNewFile *.m       set filetype=octave
-    autocmd FileType octave :map <F2> :! octave %<CR>
     autocmd! BufRead,BufNewFile *.pvs       set filetype=tcl
     autocmd! BufRead,BufNewFile *.pvb       set filetype=tcl
     autocmd! BufRead,BufNewFile *.pvsm       set filetype=xml
@@ -297,7 +296,7 @@ augroup END
 "deoplete? autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
 " in human-language files, automatically format everything at 72 chars:
-autocmd FileType mail,human set formatoptions+=t textwidth=72
+" autocmd FileType mail,human set formatoptions+=t textwidth=72
 
 " for C-like programming, have automatic indentation:
 autocmd FileType c,cpp,slang set cindent
@@ -402,9 +401,32 @@ map [ F<
 "" Statusline / Faces
 ""
 set laststatus=2 "black status line at bottom of window
+"let g:lightline = {
+"            \ 'colorscheme': 'wombat',
+"      \ 'component_function': {
+"      \   'filename': 'FilenameForLightline'
+"      \ }
+"            \ }
+"" Replace filename component of Lightline statusline
+"" let g:lightline = {
+""       \ 'component_function': {
+""       \   'filename': 'FilenameForLightline'
+""       \ }
+""       \ }
+" 
+"" Show full path of filename
+"function! FilenameForLightline()
+"    return expand('%')
+"endfunction
 let g:lightline = {
-            \ 'colorscheme': 'wombat',
-            \ }
+      \ 'component_function': {
+      \   'filename': 'LightLineFilename'
+      \ }
+      \ }
+function! LightLineFilename()
+"  return expand('%:p:h')
+  return expand('%:p')
+endfunction
 ""set statusline=%<%f%h%m%r%=%{strftime(\"%I:%M:%S\ \%p,\ %a\ %b\ %d,\ %Y\")}\ %{&ff}\ %l,%c%V\ %P
 ""set statusline=%<%f%h%m%r%=%{strftime(\"%l:%M:%S\ \%p,\ %a\ %b\ %d,\ %Y\")}\ %{&ff}\ %l,%c%V\ %P
 "
@@ -460,6 +482,15 @@ set wildignore=.aux,.bak,.dvi,.gz,.idx,.log,.ps,.swp,.tar,.pdf,.rpm,.deb,.o,.e,*
 let g:deoplete#enable_at_startup = 1 
 let g:deoplete#enable_smart_case = 1 
 
+" inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+" function! s:my_cr_function() abort
+"   return deoplete#close_popup() . "\<CR>"
+" endfunction
+
+"highlight Pmenu ctermbg=8 guibg=#606060
+highlight PmenuSel ctermbg=1 guifg=#dddd00 guibg=#1f82cd
+"highlight PmenuSbar ctermbg=0 guibg=#d6d6d6
+
 "imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 "smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 "xmap <C-k>     <Plug>(neosnippet_expand_target)
@@ -471,6 +502,7 @@ imap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 
 let g:neosnippet#snippets_directory='~/.nvim/snippets'
 
+left
 ""======================== ======================== ======================== ========================
 " Unite
 "
@@ -483,8 +515,8 @@ nnoremap <leader>t :<C-u>Unite -no-split -buffer-name=files   -start-insert file
 nnoremap <leader>r :<C-u>Unite -no-split -buffer-name=mru     -start-insert file_mru<cr>
 nnoremap <leader>y :<C-u>Unite -no-split -buffer-name=yank    history/yank<cr>
 nnoremap <leader>b :<C-u>Unite -no-split -buffer-name=buffer  buffer<cr>
-nnoremap <silent><buffer>b <C-u>:Unite -silent -default-action=cd -no-start-insert bookmark<CR>
 nnoremap <leader>B :Unite -quick-match buffer<cr>
+" nnoremap <silent><buffer>b <C-u>:Unite -silent -default-action=cd -no-start-insert bookmark<CR>
 nnoremap <C-p> :Unite file_rec/async<cr>
 nnoremap <leader>/ :Unite grep:.<cr>
 
@@ -685,8 +717,8 @@ let g:NERDCommentEmptyLines = 1
 " Enable trimming of trailing whitespace when uncommenting
 let g:NERDTrimTrailingWhitespace = 1
 
-nnoremap ,c :call NERDComment(0,"toggle")<CR>
-vnoremap ,c :call NERDComment(0,"toggle")<CR>
+" nnoremap ,c :call NERDComment(0,"toggle")<CR>
+" vnoremap ,c :call NERDComment(0,"toggle")<CR>
 nnoremap <leader>; :call NERDComment(0,"toggle")<CR>
 vnoremap <leader>; :call NERDComment(0,"toggle")<CR>
 
@@ -739,70 +771,6 @@ let g:indentLine_color_term = 239
 set encoding=utf-8
 
 
-""======================== ======================== ======================== ========================
-" Arduino
-nnoremap <buffer> <leader>am :ArduinoVerify<CR>
-nnoremap <buffer> <leader>au :ArduinoUpload<CR>
-nnoremap <buffer> <leader>ad :ArduinoUploadAndSerial<CR>
-nnoremap <buffer> <leader>ab :ArduinoChooseBoard<CR>
-nnoremap <buffer> <leader>ap :ArduinoChooseProgrammer<CR>
-"
-" my_file.ino [arduino:avr:uno] [arduino:usbtinyisp] (/dev/ttyACM0:9600)
-function! MyStatusLine()
-    let port = arduino#GetPort()
-    let line = '%f [' . g:arduino_board . '] [' . g:arduino_programmer . ']'
-    if !empty(port)
-        let line = line . ' (' . port . ':' . g:arduino_serial_baud . ')'
-    endif
-    return line
-endfunction
-setl statusline=%!MyStatusLine()
-
-let g:arduino_cmd = '/home/fbraenns/03_GA/TOOLs/Arduino/arduino-1.8.5/arduino'
-let g:arduino_dir = '/home/fbraenns/03_GA/TOOLs/Arduino/arduino-1.8.5'
-" Run the arduino command inside a Xvfb. Requires Xvfb to be installed and in the
-" PATH. >
-  let g:arduino_run_headless = 1
-"                                                              *'g:arduino_args'*
-" Additional arguments that will be passed to the 'arduino' command during build
-" and upload. See
-" https://github.com/arduino/Arduino/blob/master/build/shared/manpage.adoc for
-" more detail. >
-"   let g:arduino_args = '--verbose-upload'
-
-" The board type to use when compiling and uploading. See also
-" |:ArduinoChooseBoard|. >
-let g:arduino_board = 'arduino:avr:uno'
-
-" The programmer type to use when compiling and uploading. See also
-" |:ArduinoChooseProgrammer|. >
-let g:arduino_programmer = 'arduino:usbtinyisp'
-<
-" Command used to connect to the serial port for debugging. The strings '{port}'
-" and '{baud}' will be replace with the port and baud values. >
-"   let g:arduino_serial_cmd = 'screen {port} {baud}'
-"   let g:arduino_serial_cmd = 'picocom {port} -b {baud} -l'
-
-" The baud rate to use for the debugging serial connection. >
-"   let g:arduino_serial_baud = 9600
-" Automatically set the baud rate by searching for 'Serial.begin()' >
-"   let g:arduino_auto_baud = 1
-
-" If inside a tmux session, run the serial connection command inside of this
-" tmux command.  Set to '' to disable. The default will create a horizontal
-" split. >
-"   let g:arduino_serial_tmux = 'split-window -d'
-
-" Connect to this serial port when uploading & debugging. This is not set by
-" default. If not set, vim-arduino will attempt to guess which port to use. See
-" also |:ArduinoChoosePort| >
-  let g:arduino_serial_port = '/dev/ttyACM0'
-" Search these patterns to find a likely serial port to upload to. >
-"   let g:arduino_serial_port_globs = ['/dev/ttyACM*',
-"                                     \'/dev/ttyUSB*',
-"                                     \'/dev/tty.usbmodem*',
-"                                     \'/dev/tty.usbserial*']
-" <
 
 " ===============================================================================
 " COMMANDS                                                     *arduino-commands*
@@ -863,6 +831,7 @@ let g:arduino_programmer = 'arduino:usbtinyisp'
 "nmap <Esc><Esc> <Plug>(anzu-clear-search-status)
 "" statusline
 set statusline+=%{anzu#search_status()}
+set statusline+=%F
 "" Update the search status results while moving through the file
 augroup anzu-update-search-status
   autocmd!
@@ -903,66 +872,41 @@ augroup END
 "autocmd BufEnter * if (winnr("$") == 1 && unite#get_unite_winnr("searchList") != -1)|q|endif
 "
 "
-" PATHs
-" :echo expand("%:p")    " absolute path
-" :echo expand("%:p:h")  " absolute path dirname
-" :echo expand("%:p:h:h")" absolute path dirname dirname
-" :echo expand("%:.")    " relative path
-" :echo expand("%:.:h")  " relative path dirname
-" :echo expand("%:.:h:h")" relative path dirname dirname
-"
-" :echo expand("<sfile>:p")  " absolute path to [this] vimscrip
-"
-""======================== ======================== ======================== ========================
-" Quick run via <F5>
-nnoremap <F5> :call <SID>compile_and_run()<CR>
-
-augroup SPACEVIM_ASYNCRUN
-    autocmd!
-    " Automatically open the quickfix window
-    autocmd User AsyncRunStart call asyncrun#quickfix_toggle(15, 1)
-augroup END
-
-function! s:compile_and_run()
-    exec 'w'
-    if &filetype == 'c'
-        exec "AsyncRun! gcc % -o %<; time ./%<"
-    elseif &filetype == 'cpp'
-       exec "AsyncRun! g++ -std=c++11 % -o %<; time ./%<"
-    elseif &filetype == 'java'
-       exec "AsyncRun! javac %; time java %<"
-    elseif &filetype == 'sh'
-       exec "AsyncRun! time bash %"
-    elseif &filetype == 'python'
-       exec "AsyncRun! time python %"
-    endif
-endfunction
 
 ""======================== ======================== ======================== ========================
 "" VimFiler
 ""======================== ======================== ======================== ========================
 ""
 
+noremap <Leader>d :<C-u>VimFilerExplorer -split -simple -parent -winwidth=35 -toggle -no-quit<CR>
+nnoremap <Leader>jf :<C-u>VimFilerExplorer -split -simple -parent -winwidth=35 -no-quit -find<CR>
+nnoremap <Leader>ff :VimFilerExplorer -find -winwidth=80<CR>
+"map <space>d :VimFiler<CR>
+map <space>d :VimFilerBufferDir<CR>
+map <space>D :VimFilerBufferDir -explorer<CR>
+nnoremap <F2> :VimFilerCreate -split -simple -winwidth=30 -toggle -no-quit<CR>
+nnoremap <F3> :VimFiler -tab<CR>
+nnoremap <F4> :VimFilerDouble -tab<CR>
+"map <C-d> :VimFiler<CR>
+"nnoremap <silent> <Leader>bm :Unite -silent -auto-resize -buffer-name=my-directories -default-action=vimfiler bookmark<CR>
+"nnoremap <silent><buffer>b <C-u>:VimFiler bookmark:/<CR><Paste>
+" nmap <buffer> B <Plug>(vimfiler_cd_input_directory)<C-u>bookmark:
+" nmap <buffer> b <Plug>(vimfiler_cd_input_directory)<C-u>bookmark:
+nnoremap <silent> <Leader>bm :Unite -silent -auto-resize -buffer-name=my-directories -default-action=vimfiler bookmark<CR>
+
 augroup filetype
+    autocmd VimEnter * if !argc() | VimFiler | endif
     autocmd Filetype vimfiler setlocal cursorline
     autocmd FileType vimfiler nunmap <buffer> x
-    autocmd FileType vimfiler nmap <buffer> x <Plug>(vimfiler_toggle_mark_current_line)
-    autocmd FileType vimfiler vmap <buffer> x <Plug>(vimfiler_toggle_mark_selected_lines)
-    autocmd FileType vimfiler nunmap <buffer> l
-    autocmd FileType vimfiler nmap <buffer> l <Plug>(vimfiler_cd_or_edit)
-    autocmd FileType vimfiler nmap <buffer> h <Plug>(vimfiler_switch_to_parent_directory)
-    autocmd FileType vimfiler nmap <buffer> <C-R> <Plug>(vimfiler_redraw_screen)
-    autocmd FileType vimfiler nmap <silent><buffer><expr> <CR> vimfiler#smart_cursor_map( "\<Plug>(vimfiler_expand_tree)", "\<Plug>(vimfiler_edit_file)")
-    au FileType vimfiler call s:vimfiler_settings()
 augroup END
 " augroup ps_vimfiler
 "     au!
 " augroup END
 
-function! s:vimfiler_settings()
-    " nnoremap <silent><buffer>b <C-u>:VimFiler bookmark:<CR>
-    nnoremap <silent><buffer>b <C-u>:VimFiler bookmark:/<CR>
-endfunction
+" function! s:vimfiler_settings()
+"     " nnoremap <silent><buffer>b <C-u>:VimFiler bookmark:<CR>
+"     nnoremap <silent><buffer>b <C-u>:VimFiler bookmark:/<CR>
+" endfunction
 
 " use this function to toggle vimfiler
 function! s:vimfiler_toggle()
@@ -994,6 +938,7 @@ let g:vimfiler_tree_leaf_icon = ' '
 let g:vimfiler_tree_opened_icon = '▾'
 let g:vimfiler_tree_closed_icon = '▸'
 let g:vimfiler_enable_auto_cd = 1
+let g:vimfiler_force_overwrite_statusline = 0
 
 let g:vimfiler_readonly_file_icon = '✗'
 let g:vimfiler_time_format = '%m-%d-%y %H:%M:%S'
@@ -1029,239 +974,42 @@ let g:vimfiler_ignore_pattern = '\.git\|\.DS_Store\|\.pyc'
 let g:vimfiler_data_directory = '~/.vimfiler'
 
 let g:vimfiler_execute_file_list={
-            \ 'txt': 'vim',
-            \ 'vim': 'vim',
-            \ 'png': 'display'
+            \ 'txt': 'neovim',
+            \ 'vim': 'neovim',
+            \ 'png': 'display',
+            \ 'jpg': 'display',
+            \ 'jpeg': 'display',
+            \ 'tiff': 'display',
+            \ 'gif': 'display',
+            \ 'pdf': 'evince',
+            \ 'doc': 'libreoffice',
+            \ 'docx': 'libreoffice',
+            \ 'xls': 'libreoffice',
+            \ 'xlsx': 'libreoffice',
+            \ 'xlsm': 'libreoffice',
+            \ 'ppt': 'libreoffice',
+            \ 'pptx': 'libreoffice',
+            \ 'ods': 'libreoffice',
+            \ 'odt': 'libreoffice',
+            \ 'out': 'xterm -e',
+            \ 'py': 'xterm -e python',
+            \ 'smv': 'smokeview',
+            \ 'mp4': 'vlc',
+            \ 'mp3': 'vlc',
+            \ 'html': 'chromium-browser'
             \ }
 "}}}
+            " \ 'py': 'xterm -e python'
 
-noremap <Leader>d :<C-u>VimFilerExplorer -split -simple -parent -winwidth=35 -toggle -no-quit<CR>
-nnoremap <Leader>jf :<C-u>VimFilerExplorer -split -simple -parent -winwidth=35 -no-quit -find<CR>
+"FILTER
+" - find
 
-"map <space>d :VimFiler<CR>
-map <space>d :VimFilerBufferDir<CR>
-map <space>D :VimFilerBufferDir -explorer<CR>
-nnoremap <Leader>ff :VimFilerExplorer -find -winwidth=80<CR>
-nnoremap <F2> :VimFilerCreate -split -simple -winwidth=30 -toggle -no-quit<CR>
-nnoremap <F3> :VimFiler -tab<CR>
-nnoremap <F4> :VimFilerDouble -tab<CR>
-"map <C-d> :VimFiler<CR>
-"nnoremap <silent> <Leader>bm :Unite -silent -auto-resize -buffer-name=my-directories -default-action=vimfiler bookmark<CR>
-"nnoremap <silent><buffer>b <C-u>:VimFiler bookmark:/<CR><Paste>
-" nmap <buffer> B <Plug>(vimfiler_cd_input_directory)<C-u>bookmark:
-nmap <buffer> b <Plug>(vimfiler_cd_input_directory)<C-u>bookmark:
-nnoremap <silent> <Leader>bm :Unite -silent -auto-resize -buffer-name=my-directories -default-action=vimfiler bookmark<CR>
 
-"  if a:context.split || !a:context.quit || a:context.explorer
-"     " Change default mapping.
-"     execute s:nowait_nmap() '<Tab>'
-"           \ '<Plug>(vimfiler_switch_to_other_window)'
-"   else
-"     execute s:nowait_nmap() '<Tab>'
-"           \ '<Plug>(vimfiler_switch_to_another_vimfiler)'
-"   endif
-"   execute s:nowait_nmap() 'j'
-"         \ '<Plug>(vimfiler_loop_cursor_down)'
-"   execute s:nowait_nmap() 'k'
-"         \ '<Plug>(vimfiler_loop_cursor_up)'
-"
-"   " Toggle mark.
-"   execute s:nowait_nmap() '<C-l>'
-"         \ '<Plug>(vimfiler_redraw_screen)'
-"   execute s:nowait_nmap() '<Space>'
-"         \ '<Plug>(vimfiler_toggle_mark_current_line)'
-"   execute s:nowait_nmap() '<S-LeftMouse>'
-"         \ '<Plug>(vimfiler_toggle_mark_current_line)'
-"   execute s:nowait_nmap() '<S-Space>'
-"         \ '<Plug>(vimfiler_toggle_mark_current_line_up)'
-"   vmap <buffer> <Space>
-"         \ <Plug>(vimfiler_toggle_mark_selected_lines)
-"
-"   " Toggle marks in all lines.
-"   execute s:nowait_nmap() '*'
-"         \ '<Plug>(vimfiler_toggle_mark_all_lines)'
-"   execute s:nowait_nmap() '#'
-"         \ '<Plug>(vimfiler_mark_similar_lines)'
-"   " Clear marks in all lines.
-"   execute s:nowait_nmap() 'U'
-"         \ '<Plug>(vimfiler_clear_mark_all_lines)'
-"
-"   " Copy files.
-"   execute s:nowait_nmap() 'c'
-"         \ '<Plug>(vimfiler_copy_file)'
-"   execute s:nowait_nmap() 'Cc'
-"         \ '<Plug>(vimfiler_clipboard_copy_file)'
-"
-"   " Move files.
-"   execute s:nowait_nmap() 'm'
-"         \ '<Plug>(vimfiler_move_file)'
-"   execute s:nowait_nmap() 'Cm'
-"         \ '<Plug>(vimfiler_clipboard_move_file)'
-"
-"   " Delete files.
-"   execute s:nowait_nmap() 'd'
-"         \ '<Plug>(vimfiler_delete_file)'
-"
-"   " Rename.
-"   execute s:nowait_nmap() 'r'
-"         \ '<Plug>(vimfiler_rename_file)'
-"
-"   " Make directory.
-"   execute s:nowait_nmap() 'K'
-"         \ '<Plug>(vimfiler_make_directory)'
-"
-"   " New file.
-"   execute s:nowait_nmap() 'N'
-"         \ '<Plug>(vimfiler_new_file)'
-"
-"   " Paste.
-"   execute s:nowait_nmap() 'Cp'
-"         \ '<Plug>(vimfiler_clipboard_paste)'
-"
-"   " Execute or change directory.
-"   execute s:nowait_nmap() '<Enter>'
-"         \ '<Plug>(vimfiler_cd_or_edit)'
-"   execute s:nowait_nmap() 'o'
-"         \ '<Plug>(vimfiler_expand_or_edit)'
-"   execute s:nowait_nmap() 'l'
-"         \ '<Plug>(vimfiler_smart_l)'
-"
-"   execute s:nowait_nmap() 'x'
-"         \ '<Plug>(vimfiler_execute_system_associated)'
-"   execute s:nowait_nmap() 'X'
-"         \ '<Plug>(vimfiler_execute_vimfiler_associated)'
-"
-"   " Move to directory.
-"   execute s:nowait_nmap() 'h'
-"         \ '<Plug>(vimfiler_smart_h)'
-"   execute s:nowait_nmap() 'L'
-"         \ '<Plug>(vimfiler_switch_to_drive)'
-"   execute s:nowait_nmap() '~'
-"         \ '<Plug>(vimfiler_switch_to_home_directory)'
-"   execute s:nowait_nmap() '\'
-"         \ '<Plug>(vimfiler_switch_to_root_directory)'
-"   execute s:nowait_nmap() '&'
-"         \ '<Plug>(vimfiler_switch_to_project_directory)'
-"   execute s:nowait_nmap() '<C-j>'
-"         \ '<Plug>(vimfiler_switch_to_history_directory)'
-"   execute s:nowait_nmap() '<BS>'
-"         \ '<Plug>(vimfiler_switch_to_parent_directory)'
-"
-"   execute s:nowait_nmap() '.'
-"         \ '<Plug>(vimfiler_toggle_visible_ignore_files)'
-"   execute s:nowait_nmap() 'H'
-"         \ '<Plug>(vimfiler_popup_shell)'
-"
-"   " Edit file.
-"   execute s:nowait_nmap() 'e'
-"         \ '<Plug>(vimfiler_edit_file)'
-"   execute s:nowait_nmap() 'E'
-"         \ '<Plug>(vimfiler_split_edit_file)'
-"   execute s:nowait_nmap() 'B'
-"         \ '<Plug>(vimfiler_edit_binary_file)'
-"
-"   " Choose action.
-"   execute s:nowait_nmap() 'a'
-"         \ '<Plug>(vimfiler_choose_action)'
-"
-"   " Hide vimfiler.
-"   execute s:nowait_nmap() 'q'
-"         \ '<Plug>(vimfiler_hide)'
-"   " Exit vimfiler.
-"   execute s:nowait_nmap() 'Q'
-"         \ '<Plug>(vimfiler_exit)'
-"   " Close vimfiler.
-"   execute s:nowait_nmap() '-'
-"         \ '<Plug>(vimfiler_close)'
-"
-"   execute s:nowait_nmap() 'ge'
-"         \ '<Plug>(vimfiler_execute_external_filer)'
-"   execute s:nowait_nmap() '<RightMouse>'
-"         \ '<Plug>(vimfiler_execute_external_filer)'
-"
-"   execute s:nowait_nmap() '!'
-"         \ '<Plug>(vimfiler_execute_shell_command)'
-"   execute s:nowait_nmap() 'g?'
-"         \ '<Plug>(vimfiler_help)'
-"   execute s:nowait_nmap() 'v'
-"         \ '<Plug>(vimfiler_preview_file)'
-"   execute s:nowait_nmap() 'O'
-"         \ '<Plug>(vimfiler_sync_with_current_vimfiler)'
-"   execute s:nowait_nmap() 'go'
-"         \ '<Plug>(vimfiler_open_file_in_another_vimfiler)'
-"   execute s:nowait_nmap() '<C-g>'
-"         \ '<Plug>(vimfiler_print_filename)'
-"   execute s:nowait_nmap() 'g<C-g>'
-"         \ '<Plug>(vimfiler_toggle_maximize_window)'
-"   execute s:nowait_nmap() 'yy'
-"         \ '<Plug>(vimfiler_yank_full_path)'
-"   execute s:nowait_nmap() 'M'
-"         \ '<Plug>(vimfiler_set_current_mask)'
-"   execute s:nowait_nmap() 'gr'
-"         \ '<Plug>(vimfiler_grep)'
-"   execute s:nowait_nmap() 'gf'
-"         \ '<Plug>(vimfiler_find)'
-"   execute s:nowait_nmap() 'S'
-"         \ '<Plug>(vimfiler_select_sort_type)'
-"   execute s:nowait_nmap() '<C-v>'
-"         \ '<Plug>(vimfiler_switch_vim_buffer_mode)'
-"   execute s:nowait_nmap() 'gc'
-"         \ '<Plug>(vimfiler_cd_vim_current_dir)'
-"   execute s:nowait_nmap() 'gs'
-"         \ '<Plug>(vimfiler_toggle_safe_mode)'
-"   execute s:nowait_nmap() 'gS'
-"         \ '<Plug>(vimfiler_toggle_simple_mode)'
-"   execute s:nowait_nmap() 'gg'
-"         \ '<Plug>(vimfiler_cursor_top)'
-"   execute s:nowait_nmap() 'G'
-"         \ '<Plug>(vimfiler_cursor_bottom)'
-"   execute s:nowait_nmap() 't'
-"         \ '<Plug>(vimfiler_expand_tree)'
-"   execute s:nowait_nmap() 'T'
-"         \ '<Plug>(vimfiler_expand_tree_recursive)'
-"   execute s:nowait_nmap() 'I'
-"         \ '<Plug>(vimfiler_cd_input_directory)'
-"   execute s:nowait_nmap() '<2-LeftMouse>'
-"         \ '<Plug>(vimfiler_double_click)'
-"
-"   " pushd/popd
-"   execute s:nowait_nmap() 'Y'
-"         \ '<Plug>(vimfiler_pushd)'
-"   execute s:nowait_nmap() 'P'
-"         \ '<Plug>(vimfiler_popd)'
-"
-"   execute s:nowait_nmap() 'gj'
-"         \ '<Plug>(vimfiler_jump_last_child)'
-"   execute s:nowait_nmap() 'gk'
-"         \ '<Plug>(vimfiler_jump_first_child)'
-" endfunction"}}}
 
-"flag
-"0x1 hor split window
-"0x2 vertical split window
-"0x4 new window
-"0x8 run command in background
-" function! RunCommand(cmd, flag) abort
-"     let l:action = 'split-window -p 38 '
-"     "split
-"     if and(a:flag, 0x1)
-"         let l:action = 'split-window -p 38 '
-"     elseif and(a:flag, 0x2)
-"         let l:action = 'split-window -h -p 50 '
-"     elseif and(a:flag, 0x4)
-"         let l:action = 'new-window '
-"     endif
-"     if and(a:flag, 0x8)
-"         let l:action .= ' -d '
-"     endif
-"     call system('tmux '.l:action.string(a:cmd))
-" endfunction
-
-"run ctags in background( 0x8 | 0x4 = 0xc)
-"call RunCommand('ctags -R .', 0xc)
-" open shell in split window
-"call RunCommand(&shell 0x4)
-
+""======================== ======================== ======================== ========================
+"" Terminal
+""======================== ======================== ======================== ========================
+""
 " Quickly create a new terminal in a new tab
 tnoremap <Leader>c <C-\><C-n>:tab new<CR>:term<CR>
 noremap <Leader>c :tab new<CR>:term<CR>
@@ -1270,24 +1018,93 @@ noremap <Leader>c :tab new<CR>:term<CR>
 " Quickly create a new terminal in a vertical split
 tnoremap <Leader>% <C-\><C-n>:vsp<CR><C-w><C-w>:term<CR>
 noremap <Leader>% :vsp<CR><C-w><C-w>:term<CR>
-noremap <Leader>C :vsp<CR><C-w><C-w>:term python %<CR>
-"inoremap <Leader>% <Esc>:vsp<CR><C-w><C-w>:term<CR>
+nmap <leader>T :vs<CR>:terminal<CR>
 
 " Quickly create a new terminal in a horizontal split
 " tnoremap <Leader>" <C-\><C-n>:sp<CR><C-w><C-w>:term<CR>
 " noremap <Leader>" :sp<CR><C-w><C-w>:term<CR>
 " inoremap <Leader>" <Esc>:sp<CR><C-w><C-w>:term<CR>
 "
-" TODO
-" Vimfiler:
-"  - link files
-"  - open xterm with current buffer
-"  - open terminal in current direcotyr
-"  - bookmarks
-"  - ssh / scp
-"  - colors depending on extension
-"  Terminal:
-"  -
-"  Python:
-"  -
 "
+"
+"
+
+""======================== ======================== ======================== ========================
+" Arduino
+"
+" my_file.ino [arduino:avr:uno] [arduino:usbtinyisp] (/dev/ttyACM0:9600)
+" function! MyStatusLine()
+"     let port = arduino#GetPort()
+"     let line = '%f [' . g:arduino_board . '] [' . g:arduino_programmer . ']'
+"     if !empty(port)
+"         let line = line . ' (' . port . ':' . g:arduino_serial_baud . ')'
+"     endif
+"     return line
+" endfunction
+" setl statusline=%!MyStatusLine()
+
+let g:arduino_cmd = '/home/fbraenns/03_GA/TOOLs/Arduino/arduino-1.8.5/arduino'
+let g:arduino_dir = '/home/fbraenns/03_GA/TOOLs/Arduino/arduino-1.8.5'
+" Run the arduino command inside a Xvfb. Requires Xvfb to be installed and in the
+" PATH. >
+let g:arduino_run_headless = 1
+"                                                              *'g:arduino_args'*
+" Additional arguments that will be passed to the 'arduino' command during build
+" and upload. See
+" https://github.com/arduino/Arduino/blob/master/build/shared/manpage.adoc for
+" more detail. >
+let g:arduino_args = '--verbose-upload'
+
+" The board type to use when compiling and uploading. See also
+" |:ArduinoChooseBoard|. >
+let g:arduino_board = 'arduino:avr:uno'
+
+" The programmer type to use when compiling and uploading. See also
+" |:ArduinoChooseProgrammer|. >
+let g:arduino_programmer = 'arduino:usbtinyisp'
+<
+" Command used to connect to the serial port for debugging. The strings '{port}'
+" and '{baud}' will be replace with the port and baud values. >
+"   let g:arduino_serial_cmd = 'screen {port} {baud}'
+"   let g:arduino_serial_cmd = 'picocom {port} -b {baud} -l'
+
+" The baud rate to use for the debugging serial connection. >
+"   let g:arduino_serial_baud = 9600
+" Automatically set the baud rate by searching for 'Serial.begin()' >
+"   let g:arduino_auto_baud = 1
+
+" If inside a tmux session, run the serial connection command inside of this
+" tmux command.  Set to '' to disable. The default will create a horizontal
+" split. >
+"   let g:arduino_serial_tmux = 'split-window -d'
+
+" Connect to this serial port when uploading & debugging. This is not set by
+" default. If not set, vim-arduino will attempt to guess which port to use. See
+" also |:ArduinoChoosePort| >
+  let g:arduino_serial_port = '/dev/ttyACM0'
+" Search these patterns to find a likely serial port to upload to. >
+"   let g:arduino_serial_port_globs = ['/dev/ttyACM*',
+"                                     \'/dev/ttyUSB*',
+"                                     \'/dev/tty.usbmodem*',
+"                                     \'/dev/tty.usbserial*']
+" PATHs
+" :echo expand("%:p")    " absolute path
+" :echo expand("%:p:h")  " absolute path dirname
+" :echo expand("%:p:h:h")" absolute path dirname dirname
+" :echo expand("%:.")    " relative path
+" :echo expand("%:.:h")  " relative path dirname
+" :echo expand("%:.:h:h")" relative path dirname dirname
+"
+" :echo expand("<sfile>:p")  " absolute path to [this] vimscrip
+"
+" " Copy to clipboard
+vnoremap  <leader>y  "+y
+nnoremap  <leader>Y  "+yg_
+nnoremap  <leader>y  "+y
+" nnoremap  <leader>yy  "+yy
+
+" " Paste from clipboard
+nnoremap <leader>p "+p
+nnoremap <leader>P "+P
+vnoremap <leader>p "+p
+vnoremap <leader>P "+P

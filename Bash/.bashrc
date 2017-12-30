@@ -10,7 +10,7 @@ LS_COLORS='di=1:fi=0:ln=31:pi=5:so=5:bd=5:cd=5:or=31:mi=0:ex=35:*.rpm=90:*.ipynb
 
 alias checkL='ssh  mesh01 "python /share/Tools/Python/check_ganglia_v1.py"'
 
-alias mSyno='sudo mount -t nfs 191.168.178.25:/volume1/share /home/fbraenns/99_SHARE'
+alias mSyno='sudo mount -t nfs 192.168.178.25:/volume1/share /home/fbraenns/99_SHARE'
 alias umSyno='sudo umount /share'
 alias m4SH='sudo mount -t davfs https://webdav.4shared.com/ /home/fbraenns/99_4shared'
 
@@ -136,3 +136,5 @@ export MODELICAPATH=/share/GA/TOOLs/
 export MODELICAPATH=/share/GA/TOOLs/modelica-buildings_LBL:$MODELICAPATH
 
 alias vimfiler="TERM=screen-256color nvim -c \"VimFilerDouble\""
+
+
