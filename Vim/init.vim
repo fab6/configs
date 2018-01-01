@@ -943,7 +943,8 @@ let g:vimfiler_force_overwrite_statusline = 0
 let g:vimfiler_readonly_file_icon = '✗'
 let g:vimfiler_time_format = '%m-%d-%y %H:%M:%S'
 let g:vimfiler_expand_jump_to_first_child = 0
-let g:vimfiler_ignore_pattern = '\.git\|\.DS_Store\|\.pyc'
+let g:vimfiler_ignore_pattern = '\.DS_Store\|\.pyc'
+" let g:vimfiler_ignore_pattern = '\.git\|\.DS_Store\|\.pyc'
 
 "---------------------------------------------------------------------------
 " vimfiler:"{{{
