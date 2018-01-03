@@ -1,11 +1,11 @@
-nmap <buffer>` :VimFiler /home/fbraenns/<CR>
-nmap <buffer>0 :VimFiler /home/fbraenns/00_ALLG/<CR>
-nmap <buffer>1 :VimFiler /home/fbraenns/01_FINANCE/<CR>
-nmap <buffer>2 :VimFiler /home/fbraenns/02_CFD/<CR>
-nmap <buffer>3 :VimFiler /home/fbraenns/03_GA/<CR>
-nmap <buffer>9 :VimFiler /home/fbraenns/99_SHARE/<CR>
+nmap <buffer>` :VimFiler -status /home/fbraenns/<CR>
+nmap <buffer>0 :VimFiler -status /home/fbraenns/00_ALLG/<CR>
+nmap <buffer>1 :VimFiler -status /home/fbraenns/01_FINANCE/<CR>
+nmap <buffer>2 :VimFiler -status /home/fbraenns/02_CFD/<CR>
+nmap <buffer>3 :VimFiler -status /home/fbraenns/03_GA/<CR>
+nmap <buffer>9 :VimFiler -status /home/fbraenns/99_SHARE/<CR>
 nmap <buffer>Z :vs <CR> :terminal<CR>
-nmap <buffer>z :! xterm <CR>
+nmap <buffer>z :call jobstart('xterm') <CR>
 
 
 

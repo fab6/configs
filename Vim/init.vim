@@ -71,6 +71,8 @@ Plug 'jreybert/vimagit'
 "Plug 'lambdalisue/gina.vim'
 " Plug 'skywind3000/asyncrun.vim>'
 Plug 'rafi/awesome-vim-colorschemes'
+Plug 'brettanomyces/nvim-terminus'
+Plug 'kassio/neoterm'
 " Plug 'vim-scripts/mailbrowser.vim'
 
 " Initialize plugin system
@@ -80,8 +82,8 @@ call plug#end()
 "
 ""======================== ======================== ======================== ========================
 "
-"
-""======================== ======================== ======================== ========================
+
+"======================== ======================== ======================== ========================
 "" keybindings
 ""======================== ======================== ======================== ========================
 let mapleader="\<SPACE>"
@@ -96,6 +98,7 @@ cnoremap <C-l> <Right>
 " cnoremap <M-f> <S-Right>
 "
 :nnoremap <leader>ed :e ~/.config/nvim/init.vim<CR>
+:nnoremap <leader>ef :e ~/.nvim/ftplugin/<CR>
 ":nnoremap <leader>p :source ~/.config/nvim/init.vim<CR>
 
 "" Paste Mode On/Off
@@ -425,7 +428,7 @@ let g:lightline = {
       \ }
 function! LightLineFilename()
 "  return expand('%:p:h')
-  return expand('%:p')
+  return expand('%')
 endfunction
 ""set statusline=%<%f%h%m%r%=%{strftime(\"%I:%M:%S\ \%p,\ %a\ %b\ %d,\ %Y\")}\ %{&ff}\ %l,%c%V\ %P
 ""set statusline=%<%f%h%m%r%=%{strftime(\"%l:%M:%S\ \%p,\ %a\ %b\ %d,\ %Y\")}\ %{&ff}\ %l,%c%V\ %P
@@ -878,15 +881,15 @@ augroup END
 ""======================== ======================== ======================== ========================
 ""
 
-noremap <Leader>d :<C-u>VimFilerExplorer -split -simple -parent -winwidth=35 -toggle -no-quit<CR>
-nnoremap <Leader>jf :<C-u>VimFilerExplorer -split -simple -parent -winwidth=35 -no-quit -find<CR>
-nnoremap <Leader>ff :VimFilerExplorer -find -winwidth=80<CR>
+noremap <Leader>d :<C-u>VimFilerExplorer -status -split -simple -parent -winwidth=35 -toggle -no-quit<CR>
+nnoremap <Leader>jf :<C-u>VimFilerExplorer -status -split -simple -parent -winwidth=35 -no-quit -find<CR>
+nnoremap <Leader>ff :VimFilerExplorer -status -find -winwidth=80<CR>
 "map <space>d :VimFiler<CR>
-map <space>d :VimFilerBufferDir<CR>
-map <space>D :VimFilerBufferDir -explorer<CR>
-nnoremap <F2> :VimFilerCreate -split -simple -winwidth=30 -toggle -no-quit<CR>
-nnoremap <F3> :VimFiler -tab<CR>
-nnoremap <F4> :VimFilerDouble -tab<CR>
+map <space>d :VimFilerBufferDir -status<CR>
+map <space>D :VimFilerBufferDir -status -explorer<CR>
+nnoremap <F2> :VimFilerCreate -status -split -simple -winwidth=30 -toggle -no-quit<CR>
+nnoremap <F3> :VimFiler status -tab<CR>
+" nnoremap <F4> :VimFilerDouble -tab<CR>
 "map <C-d> :VimFiler<CR>
 "nnoremap <silent> <Leader>bm :Unite -silent -auto-resize -buffer-name=my-directories -default-action=vimfiler bookmark<CR>
 "nnoremap <silent><buffer>b <C-u>:VimFiler bookmark:/<CR><Paste>
@@ -895,7 +898,7 @@ nnoremap <F4> :VimFilerDouble -tab<CR>
 nnoremap <silent> <Leader>bm :Unite -silent -auto-resize -buffer-name=my-directories -default-action=vimfiler bookmark<CR>
 
 augroup filetype
-    autocmd VimEnter * if !argc() | VimFiler | endif
+    autocmd VimEnter * if !argc() | VimFiler -status | endif
     autocmd Filetype vimfiler setlocal cursorline
     autocmd FileType vimfiler nunmap <buffer> x
 augroup END
@@ -909,19 +912,19 @@ augroup END
 " endfunction
 
 " use this function to toggle vimfiler
-function! s:vimfiler_toggle()
-  if &filetype == 'vimfiler'
-    execute 'silent! buffer #'
-    if &filetype == 'vimfiler'
-      execute 'enew'
-    endif
-  elseif exists('t:vimfiler_buffer') && bufexists(t:vimfiler_buffer)
-    execute 'buffer ' . t:vimfiler_buffer
-  else
-    execute 'VimFilerCreate'
-    let t:vimfiler_buffer = @%
-  endif
-endfunction
+" function! s:vimfiler_toggle()
+"   if &filetype == 'vimfiler'
+"     execute 'silent! buffer #'
+"     if &filetype == 'vimfiler'
+"       execute 'enew'
+"     endif
+"   elseif exists('t:vimfiler_buffer') && bufexists(t:vimfiler_buffer)
+"     execute 'buffer ' . t:vimfiler_buffer
+"   else
+"     execute 'VimFilerCreate'
+"     let t:vimfiler_buffer = @%
+"   endif
+" endfunction
 
 " make vimfiler buffer behave
 function! s:vimfiler_buffer_au()
@@ -938,13 +941,19 @@ let g:vimfiler_tree_leaf_icon = ' '
 let g:vimfiler_tree_opened_icon = '▾'
 let g:vimfiler_tree_closed_icon = '▸'
 let g:vimfiler_enable_auto_cd = 1
-let g:vimfiler_force_overwrite_statusline = 0
+" let g:vimfiler_status = 1
+
+" let g:vimfiler_force_overwrite_statusline = 0
 
 let g:vimfiler_readonly_file_icon = '✗'
 let g:vimfiler_time_format = '%m-%d-%y %H:%M:%S'
 let g:vimfiler_expand_jump_to_first_child = 0
-let g:vimfiler_ignore_pattern = '\.DS_Store\|\.pyc'
+" let g:vimfiler_ignore_pattern = '\.DS_Store\|\.pyc|\^\.*'
+" let g:vimfiler_ignore_pattern = '\%(.ini\|.sys\|.bat\|.BAK\|.DAT\)$\|^\%(.git\)$'
+" let g:vimfiler_ignore_pattern = '^\%(.vimrc\|\.a\*\)$'
 " let g:vimfiler_ignore_pattern = '\.git\|\.DS_Store\|\.pyc'
+" Default value is '^\.' (dot files pattern).
+
 
 "---------------------------------------------------------------------------
 " vimfiler:"{{{
@@ -1109,3 +1118,26 @@ nnoremap <leader>p "+p
 nnoremap <leader>P "+P
 vnoremap <leader>p "+p
 vnoremap <leader>P "+P
+
+let g:neoterm_position = 'horizontal'
+let g:neoterm_automap_keys = ',tt'
+
+nnoremap <silent> <f10> :TREPLSendFile<cr>
+nnoremap <silent> <f9> :TREPLSendLine<cr>
+vnoremap <silent> <f9> :TREPLSendSelection<cr>
+
+" Useful maps
+" hide/close terminal
+nnoremap <silent> ,th :call neoterm#close()<cr>
+" clear terminal
+nnoremap <silent> ,tl :call neoterm#clear()<cr>
+" kills the current job (send a <c-c>)
+nnoremap <silent> ,tc :call neoterm#kill()<cr>
+
+" Rails commands
+command! Troutes :T rake routes
+command! -nargs=+ Troute :T rake routes | grep <args>
+command! Tmigrate :T rake db:migrate
+
+" Git commands
+command! -nargs=+ Tg :T git <args>

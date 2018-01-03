@@ -1,0 +1,3 @@
+osync.sh --initiator="/home/fbraenns/00_ALLG/Configs/Osync/test1" --target="/home/fbraenns/00_ALLG/Configs/Osync/test2"
+# Summary Mode --summary --errors-only --no-prefix 
+# osync.sh --initiator="/path/to/another dir" --target="ssh://user@host.com:22//path/to/dir2" --rsakey=/home/user/.ssh/id_rsa_private_key_example.com
