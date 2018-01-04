@@ -1,14 +1,11 @@
-nmap <buffer>` :VimFiler /home/fbraenns/<CR>
-nmap <buffer>0 :VimFiler /home/fbraenns/<CR>
-nmap <buffer>1 :VimFiler /WORK1/fbraenns/<CR>
-nmap <buffer>2 :VimFiler /WORK2/fbraenns/<CR>
-nmap <buffer>3 :VimFiler /data/work/fbraenns/<CR>
-nmap <buffer>4 :VimFiler /share/Tools/<CR>
-nmap <buffer>9 :VimFiler /home/fbraenns/.modulefiles/<CR>
+nmap <buffer>` :VimFiler -status /home/fbraenns/<CR>
+nmap <buffer>0 :VimFiler -status /home/fbraenns/00_ALLG/<CR>
+nmap <buffer>1 :VimFiler -status /home/fbraenns/01_FINANCE/<CR>
+nmap <buffer>2 :VimFiler -status /home/fbraenns/02_CFD/<CR>
+nmap <buffer>3 :VimFiler -status /home/fbraenns/03_GA/<CR>
+nmap <buffer>9 :VimFiler -status /home/fbraenns/99_SHARE/<CR>
 nmap <buffer>Z :vs <CR> :terminal<CR>
-" nmap <buffer>z :AsyncRun xterm <CR>
-nmap <buffer>,x :call jobstart("xterm")<CR>
-" nmap <buffer>w :call jobstart("xterm -e python ".expand('%'))<CR>
+nmap <buffer>z :call jobstart('xterm') <CR>
 
 
 
