@@ -774,52 +774,6 @@ set encoding=utf-8
 
 " ===============================================================================
 " COMMANDS                                                     *arduino-commands*
-"                                                           *:ArduinoChooseBoard*
-" :ArduinoChooseBoard [board]
-"    Set [board] to be the currently selected board. It should match the format
-"    of 'package:arch:board[:parameters]'.
-"
-"    If |g:arduino_board| is not set, the board passed in will be saved to disk
-"    and used when you start new vim sessions.
-"
-"    If passed no arguments, open a list and let the user select one from the
-"    list. If there are any special options for the board (e.g. cpu) successive
-"    list selections will be opened for those.
-"
-" :ArduinoChooseProgrammer [programmer]
-"    Set [programmer] to be the currently selected board. It should match the format
-"    of 'package:programmer'.
-"
-"    If |g:arduino_programmer| is not set, the programmer passed in will be
-"    saved to disk and used when you start new vim sessions.
-"
-"    If passed no arguments, open a list and let the user select one from the
-"    list.
-
-" :ArduinoChoosePort [port]
-"    Set [port] to be the currently selected serial port. If passed no
-"    arguments, open a list of likely ports and let the user select one.
-
-" :ArduinoVerify
-"    Compile your project. You may wish to bind this to a key combination. >
-  " nnoremap <leader>c :ArduinoVerify<CR>
-  " "
-  "  You can also call :make directly. >
-  " nnoremap <leader>m :make!<CR>
-" :ArduinoUpload
-"    Compile and upload your project. You may wish to bind this to a key
-"    combination. >
-  " nnoremap <leader>u :ArduinoUpload<CR>
-" :ArduinoSerial
-"    Open a connection to the serial port for debugging. You may wish to bind
-"    this to a key combination. >
-  " nnoremap <leader>s :ArduinoSerial<CR>
-
-" :ArduinoUploadAndSerial
-"    Compile and upload your project. If successful, open a connection to the
-"    serial port for debugging. You may with to bind this to a key combination.
-"    >
-  " nnoremap <leader>d :ArduinoUploadAndSerial<CR>
 ""======================== ======================== ======================== ========================
 " ERROR msg
 "  General Anzu configuration - change to taste
@@ -943,7 +897,7 @@ let g:vimfiler_force_overwrite_statusline = 0
 let g:vimfiler_readonly_file_icon = '✗'
 let g:vimfiler_time_format = '%m-%d-%y %H:%M:%S'
 let g:vimfiler_expand_jump_to_first_child = 0
-let g:vimfiler_ignore_pattern = '\.DS_Store\|\.pyc'
+" let g:vimfiler_ignore_pattern = '\.DS_Store\|\.pyc'
 " let g:vimfiler_ignore_pattern = '\.git\|\.DS_Store\|\.pyc'
 
 "---------------------------------------------------------------------------
@@ -978,6 +932,7 @@ let g:vimfiler_execute_file_list={
             \ 'txt': 'neovim',
             \ 'vim': 'neovim',
             \ 'png': 'display',
+            \ 'PNG': 'display',
             \ 'jpg': 'display',
             \ 'jpeg': 'display',
             \ 'tiff': 'display',
@@ -1088,6 +1043,53 @@ let g:arduino_programmer = 'arduino:usbtinyisp'
 "                                     \'/dev/ttyUSB*',
 "                                     \'/dev/tty.usbmodem*',
 "                                     \'/dev/tty.usbserial*']
+"
+"                                                           *:ArduinoChooseBoard*
+" :ArduinoChooseBoard [board]
+"    Set [board] to be the currently selected board. It should match the format
+"    of 'package:arch:board[:parameters]'.
+"
+"    If |g:arduino_board| is not set, the board passed in will be saved to disk
+"    and used when you start new vim sessions.
+"
+"    If passed no arguments, open a list and let the user select one from the
+"    list. If there are any special options for the board (e.g. cpu) successive
+"    list selections will be opened for those.
+"
+" :ArduinoChooseProgrammer [programmer]
+"    Set [programmer] to be the currently selected board. It should match the format
+"    of 'package:programmer'.
+"
+"    If |g:arduino_programmer| is not set, the programmer passed in will be
+"    saved to disk and used when you start new vim sessions.
+"
+"    If passed no arguments, open a list and let the user select one from the
+"    list.
+
+" :ArduinoChoosePort [port]
+"    Set [port] to be the currently selected serial port. If passed no
+"    arguments, open a list of likely ports and let the user select one.
+
+" :ArduinoVerify
+"    Compile your project. You may wish to bind this to a key combination. >
+  " nnoremap <leader>c :ArduinoVerify<CR>
+  " "
+  "  You can also call :make directly. >
+  " nnoremap <leader>m :make!<CR>
+" :ArduinoUpload
+"    Compile and upload your project. You may wish to bind this to a key
+"    combination. >
+  " nnoremap <leader>u :ArduinoUpload<CR>
+" :ArduinoSerial
+"    Open a connection to the serial port for debugging. You may wish to bind
+"    this to a key combination. >
+  " nnoremap <leader>s :ArduinoSerial<CR>
+
+" :ArduinoUploadAndSerial
+"    Compile and upload your project. If successful, open a connection to the
+"    serial port for debugging. You may with to bind this to a key combination.
+"    >
+  " nnoremap <leader>d :ArduinoUploadAndSerial<CR>
 " PATHs
 " :echo expand("%:p")    " absolute path
 " :echo expand("%:p:h")  " absolute path dirname
@@ -1109,3 +1111,7 @@ nnoremap <leader>p "+p
 nnoremap <leader>P "+P
 vnoremap <leader>p "+p
 vnoremap <leader>P "+P
+
+
+:map <C-x>0 <C-w>c    
+:map <C-x>1 <C-w>o
