@@ -1,0 +1,38 @@
+snippet     post
+abbr        post
+alias       postprocessing
+options     head
+        ! &ISOF QUANTITY='TEMPERATURE', VALUE(1)=60., VALUE(2)=200., VALUE(3)=500. ,/
+        ! &ISOF QUANTITY='EXTINCTION COEFFICIENT', VALUE(1)=6.2, VALUE(2)=9.2,/
+        ! &ISOF QUANTITY='FED', VALUE(1)=0.05, VALUE(2)=0.1, VALUE(3)=0.3/
+        ! &ISOF QUANTITY='VELOCITY', VALUE(1)=0.4, VALUE(2)=1.0,/
+        ! &ISOF QUANTITY='VISIBILITY', VALUE(1)=4., VALUE(2)=10., /
+        
+        &BNDF QUANTITY='ADIABATIC SURFACE TEMPERATURE' /
+        &BNDF QUANTITY='BACK WALL TEMPERATURE'/
+        &BNDF QUANTITY='GAS TEMPERATURE'/
+        &BNDF QUANTITY='HEAT_FLUX'/
+        &BNDF QUANTITY='GAUGE HEAT FLUX'/
+        &BNDF QUANTITY='CONVECTIVE HEAT FLUX'/
+        &BNDF QUANTITY='NET HEAT FLUX'/
+        &BNDF QUANTITY='INCIDENT HEAT FLUX'/
+        &BNDF QUANTITY='RADIATIVE HEAT FLUX'/
+        &BNDF QUANTITY='WALL TEMPERATURE'/
+        &BNDF QUANTITY='BURNING RATE' /
+        ${0}
+
+snippet     reac
+abbr        reac
+alias       reaction
+options     head
+        &REAC ID='POLYURETHANE', !DO_SBB_2014
+              C=1.00,
+              H=1.75,
+              O=0.25,
+              N=0.065,
+              IDEAL=.FALSE.,
+              HEAT_OF_COMBUSTION=21994.,
+              SOOT_YIELD=0.05,
+              CO_YIELD=0.075,
+              MASS_EXTINCTION_COEFFICIENT=7600./ Tewarson SRPE Handbook 3rd ed
+        ${0}

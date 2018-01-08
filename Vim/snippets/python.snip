@@ -1,0 +1,34 @@
+snippet     date_normal
+abbr        dn
+options     word
+    `#Today: strftime("%Y-%b-%d")`${0}
+
+
+
+snippet     break_dot
+abbr        @..
+options     word
+
+
+snippet     #..
+abbr        #..
+alias       break_dot
+options     head
+        #..................................................................................................
+        ${0}
+
+snippet     #--
+abbr        #--
+alias       break_single
+options     head
+        #--------------------------------------------------------------------------------------------------
+        ${0}
+
+snippet     #==
+abbr        #==
+alias       break_double
+options     head
+        #==================================================================================================
+        ${0}
+
+

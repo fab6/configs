@@ -27,7 +27,7 @@ Plug 'junegunn/vim-easy-align'
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'Shougo/deol.nvim', { 'rev': 'a1b5108fd' }
-Plug 'Shougo/deoplete.nvim'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/tabpagebuffer.vim'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimfiler.vim' "needs unite -> new development for denite Plug 'Shougo/defx.nvim'
@@ -350,37 +350,52 @@ cnoremap <C-l> <Right>
 ":nnoremap <leader>p :source ~/.config/nvim/init.vim<CR>
 
 "" Paste Mode On/Off
-map <F11> :call Paste_on_off()<CR>
-set pastetoggle=<F11>
+" map <F11> :call Paste_on_off()<CR>
+" set pastetoggle=<F11>
+" "
+" let paste_mode = 0 " 0 = normal, 1 = paste
 "
-let paste_mode = 0 " 0 = normal, 1 = paste
-
-func! Paste_on_off()
-    if g:paste_mode == 0
-        set paste
-        let g:paste_mode = 1
-    else
-        set nopaste
-
-        let g:paste_mode = 0
-    endif
-    return
-endfunc
+" func! Paste_on_off()
+"     if g:paste_mode == 0
+"         set paste
+"         let g:paste_mode = 1
+"     else
+"         set nopaste
+"
+"         let g:paste_mode = 0
+"     endif
+"     return
+" endfunc
 
 :map <C-x>0 <C-w>c
 :map <C-x>1 <C-w>o
 
 :nmap ,x :call jobstart('xterm') <CR>
+
+"..................................................................................................
 " " Copy to clipboard
+set clipboard+=unnamedplus
 " vnoremap  <leader>y  "+y
-"nnoremap  <leader>Y  "+yg_
-nnoremap  <leader>Y  "*yy
-nnoremap  <leader>y  "+yy
-" nnoremap  <leader>yy  "+yy
+" vnoremap  <leader>y  "*y
+" "nnoremap  <leader>Y  "+yg_
+" " nnoremap  <leader>Y  "*yy
+" " nnoremap  <leader>yy  "+yy
+"
+" " " Paste from clipboard
+" nnoremap <leader>p "+p
+" nnoremap <leader>P "*p
+" " Copy to clipboard
+vnoremap  <leader>y  "+y
+nnoremap  <leader>Y  "+yg_
+nnoremap  <leader>y  "+y
+nnoremap  <leader>yy  "+yy
 
 " " Paste from clipboard
-nnoremap <leader>p "+p
-nnoremap <leader>P "*P
+nnoremap <leader>p "*p
+nnoremap <leader>P "+P
+nnoremap <leader>O "*P
+vnoremap <leader>p "+p
+vnoremap <leader>P "+P
 " vnoremap <leader>p "+p
 " vnoremap <leader>P "+P
 "
@@ -416,7 +431,6 @@ nnoremap <leader>P "*P
 "==================================================================================================
 " COMPLETION deoplete.
 "
-"
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_smart_case = 1
 
@@ -433,6 +447,7 @@ highlight PmenuSel ctermbg=1 guifg=#dddd00 guibg=#1f82cd
 "smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 "xmap <C-k>     <Plug>(neosnippet_expand_target)
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+
 
 imap <expr><TAB> pumvisible() ? "\<C-n>" : (neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>")
 imap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
@@ -888,7 +903,7 @@ endfunction
 command! FZFNeigh call s:fzf_neighbouring_files()
 
 "..................................................................................................
-nnoremap <leader>p :History<CR>
+nnoremap <leader>h :History<CR>
 nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>t :Files<CR>
 
