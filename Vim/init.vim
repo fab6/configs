@@ -27,7 +27,7 @@ Plug 'junegunn/vim-easy-align'
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'Shougo/deol.nvim', { 'rev': 'a1b5108fd' }
-Plug 'Shougo/deoplete.nvim'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/tabpagebuffer.vim'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimfiler.vim' "needs unite -> new development for denite Plug 'Shougo/defx.nvim'
@@ -46,28 +46,32 @@ Plug 'pboettch/vim-cmake-syntax'
 Plug 'chemzqm/unite-location'
 Plug 'itchyny/lightline.vim'
 Plug 'skywind3000/asyncrun.vim'
-Plug 'vim-scripts/indentpython.vim'
-Plug 'nvie/vim-flake8'
-Plug 'sudar/vim-arduino-syntax'
-Plug 'stevearc/vim-arduino'
+"Plug 'vim-scripts/indentpython.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'mattboehm/vim-accordion'
 Plug 'tsukkee/unite-tag'
 Plug 'osyo-manga/vim-anzu'
-Plug 'jvirtanen/vim-octave'
 Plug 'jreybert/vimagit'
 Plug 'rafi/awesome-vim-colorschemes'
 Plug 'brettanomyces/nvim-terminus'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'rhysd/vim-gfm-syntax'
+" Programming:
+Plug 'python-mode/python-mode'
+Plug 'jvirtanen/vim-octave'
+Plug 'stevearc/vim-arduino'
+Plug 'nvie/vim-flake8'
+Plug 'sudar/vim-arduino-syntax'
+" Terminal:
+Plug 'mklabs/split-term.vim'
+Plug 'kassio/neoterm'
 "--------------------------------------------------------------------------------------------------
 "ClientServer:
 " Plug 'AndrewRadev/vimrunner'
 " Plug 'reedes/vim-one'
 "--------------------------------------------------------------------------------------------------
 " Misc:
-" Plug 'kassio/neoterm'
 " Plug 'wellle/tmux-complete.vim'
 " Plug 'vim-scripts/mailbrowser.vim'
 " Plug 'lambdalisue/gina.vim'
@@ -83,7 +87,6 @@ Plug 'rhysd/vim-gfm-syntax'
 " Plug 'mzlogin/vim-markdown-toc'
 " Plug 'BurningEther/nvimux'
 " Plug 'vifm/neovim-vifm'
-" Plug 'python-mode/python-mode'
 " Plug 'easymotion/vim-easymotion'
 " Plug 'kien/ctrlp.vim' Ctrl-P - Fuzzy file search
 " Plug 'benekastah/neomake' Neomake build tool (mapped below to <c-b>)
@@ -353,37 +356,52 @@ cnoremap <C-l> <Right>
 ":nnoremap <leader>p :source ~/.config/nvim/init.vim<CR>
 
 "" Paste Mode On/Off
-map <F11> :call Paste_on_off()<CR>
-set pastetoggle=<F11>
+" map <F11> :call Paste_on_off()<CR>
+" set pastetoggle=<F11>
+" "
+" let paste_mode = 0 " 0 = normal, 1 = paste
 "
-let paste_mode = 0 " 0 = normal, 1 = paste
-
-func! Paste_on_off()
-    if g:paste_mode == 0
-        set paste
-        let g:paste_mode = 1
-    else
-        set nopaste
-
-        let g:paste_mode = 0
-    endif
-    return
-endfunc
+" func! Paste_on_off()
+"     if g:paste_mode == 0
+"         set paste
+"         let g:paste_mode = 1
+"     else
+"         set nopaste
+"
+"         let g:paste_mode = 0
+"     endif
+"     return
+" endfunc
 
 :map <C-x>0 <C-w>c
 :map <C-x>1 <C-w>o
 
 :nmap ,x :call jobstart('xterm') <CR>
+" set autochdir "does not work with vimfiler
+"..................................................................................................
 " " Copy to clipboard
+set clipboard+=unnamedplus
 " vnoremap  <leader>y  "+y
-"nnoremap  <leader>Y  "+yg_
-nnoremap  <leader>Y  "*yy
-nnoremap  <leader>y  "+yy
-" nnoremap  <leader>yy  "+yy
+" vnoremap  <leader>y  "*y
+" "nnoremap  <leader>Y  "+yg_
+" " nnoremap  <leader>Y  "*yy
+" " nnoremap  <leader>yy  "+yy
+"
+" " " Paste from clipboard
+" nnoremap <leader>p "+p
+" nnoremap <leader>P "*p
+" " Copy to clipboard
+vnoremap  <leader>y  "+y
+nnoremap  <leader>Y  "+yg_
+nnoremap  <leader>y  "+y
+nnoremap  <leader>yy  "+yy
 
 " " Paste from clipboard
-nnoremap <leader>p "+p
-nnoremap <leader>P "*P
+nnoremap <leader>p "*p
+nnoremap <leader>P "+P
+nnoremap <leader>O "*P
+vnoremap <leader>p "+p
+vnoremap <leader>P "+P
 " vnoremap <leader>p "+p
 " vnoremap <leader>P "+P
 "
@@ -419,7 +437,6 @@ nnoremap <leader>P "*P
 "==================================================================================================
 " COMPLETION deoplete.
 "
-"
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_smart_case = 1
 
@@ -436,6 +453,7 @@ highlight PmenuSel ctermbg=1 guifg=#dddd00 guibg=#1f82cd
 "smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 "xmap <C-k>     <Plug>(neosnippet_expand_target)
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+
 
 imap <expr><TAB> pumvisible() ? "\<C-n>" : (neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>")
 imap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
@@ -454,7 +472,7 @@ nnoremap <leader>o :<C-u>Unite -no-split -buffer-name=outline -start-insert outl
 nnoremap <leader>t :<C-u>Unite -no-split -buffer-name=files   -start-insert file_rec/async:!<cr>
 nnoremap <leader>r :<C-u>Unite -no-split -buffer-name=mru     -start-insert file_mru<cr>
 nnoremap <leader>y :<C-u>Unite -no-split -buffer-name=yank    history/yank<cr>
-nnoremap <leader>b :<C-u>Unite -no-split -buffer-name=buffer  buffer<cr>
+" nnoremap <leader>b :<C-u>Unite -no-split -buffer-name=buffer  buffer<cr>
 nnoremap <leader>B :Unite -quick-match buffer<cr>
 " nnoremap <silent><buffer>b <C-u>:Unite -silent -default-action=cd -no-start-insert bookmark<CR>
 nnoremap <C-p> :Unite file_rec/async<cr>
@@ -501,6 +519,55 @@ nnoremap <space>s :Unite -quick-match buffer<cr>
 " PYTHON
 "
 let python_highlight_all=1
+
+    let g:pymode_trim_whitespaces = 1
+    let g:pymode = 1
+    let g:pymode_options = 1
+    " setlocal complete+=t
+    " setlocal formatoptions-=t
+    " if v:version > 702 && !&relativenumber
+    "     setlocal number
+    " endif
+    " setlocal nowrap
+    " setlocal textwidth=79
+    " setlocal commentstring=#%s
+    " setlocal define=^\s*\\(def\\\\|class\\)
+    let g:pymode_warnings = 1
+    let g:pymode_options_max_line_length = 79
+    let g:pymode_options_colorcolumn = 1
+    let g:pymode_quickfix_minheight = 3
+    let g:pymode_quickfix_maxheight = 6
+    let g:pymode_indent = 1
+    let g:pymode_folding = 0
+    let g:pymode_motion = 1
+    let g:pymode_run_bind = '<leader>r'
+    let g:pymode_breakpoint_bind = '<leader>g'
+    let g:pymode_lint = 0
+    let g:pymode_lint_on_write = 0
+    let g:pymode_lint_unmodified = 0
+    let g:pymode_lint_message = 0
+    let g:pymode_rope_completion = 0
+    " let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'mccabe']
+    " let g:pymode_lint_todo_symbol = 'WW'
+    " let g:pymode_lint_comment_symbol = 'CC'
+    " let g:pymode_lint_visual_symbol = 'RR'
+    " let g:pymode_lint_error_symbol = 'EE'
+    " let g:pymode_lint_info_symbol = 'II'
+    " let g:pymode_lint_pyflakes_symbol = 'FF'
+    " let g:pymode_lint_options_pep8 =
+    "     \ {'max_line_length': g:pymode_options_max_line_length})
+    let g:pymode_rope = 0
+" ================  ============================
+" Key               Command
+" ================  ============================
+" [[                Jump to previous class or function (normal, visual, operator modes)
+" ]]                Jump to next class or function  (normal, visual, operator modes)
+" [M                Jump to previous class or method (normal, visual, operator modes)
+" ]M                Jump to next class or method (normal, visual, operator modes)
+" aC                Select a class. Ex: vaC, daC, yaC, caC (normal, operator modes)
+" iC                Select inner class. Ex: viC, diC, yiC, ciC (normal, operator modes)
+" aM                Select a function or method. Ex: vaM, daM, yaM, caM (normal, operator modes)
+" iM                Select inner function or method. Ex: viM, diM, yiM, ciM (normal, operator modes)
 
 "==================================================================================================
 " Nerdcommenter
@@ -690,6 +757,14 @@ noremap <Leader>c :tab new<CR>:term<CR>
 tnoremap <Leader>% <C-\><C-n>:vsp<CR><C-w><C-w>:term<CR>
 noremap <Leader>% :vsp<CR><C-w><C-w>:term<CR>
 nmap <leader>T :vs<CR>:terminal<CR>
+
+
+nnoremap <F3> :Ttoggle<cr><C-w><C-w>A
+inoremap <F3> <esc>:Ttoggle<cr><C-w><C-w>A
+tnoremap <F3> <C-\><C-n>:Ttoggle<cr>
+tnoremap <esc> <C-\><C-n>
+tnoremap <C-w><C-w> <C-\><C-n><C-w><C-w>
+
 
 " Quickly create a new terminal in a horizontal split
 " tnoremap <Leader>" <C-\><C-n>:sp<CR><C-w><C-w>:term<CR>
@@ -895,7 +970,7 @@ endfunction
 command! FZFNeigh call s:fzf_neighbouring_files()
 
 "..................................................................................................
-nnoremap <leader>p :History<CR>
+nnoremap <leader>h :History<CR>
 nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>t :Files<CR>
 
@@ -965,5 +1040,55 @@ imap <c-x><c-l> <plug>(fzf-complete-line)
 "    >
 " nnoremap <leader>d :ArduinoUploadAndSerial<CR>
 "
+" terminal
+" tnoremap <F12> <C-\><C-n>
+" set switchbuf+=useopen
 "
+" function! TermEnter()
+"   let bufcount = bufnr("$")
+"   let currbufnr = 1
+"   let nummatches = 0
+"   let firstmatchingbufnr = 0
+"   while currbufnr <= bufcount
+"     if(bufexists(currbufnr))
+"       let currbufname = bufname(currbufnr)
+"       if(match(currbufname, "term://") > -1)
+"         echo currbufnr . ": ". bufname(currbufnr)
+"         let nummatches += 1
+"         let firstmatchingbufnr = currbufnr
+"         break
+"       endif
+"     endif
+"     let currbufnr = currbufnr + 1
+"   endwhile
+"   if(nummatches >= 1)
+"     execute ":sbuffer ". firstmatchingbufnr
+"     startinsert
+"   else
+"     execute ":terminal"
+"   endif
+" endfunction
+" map <F12> :call TermEnter()<CR>
+
+" function! PhpUnit()
+"   call TermEnter()
+"   normal i phpunit
+" endfunction
+" map <F11> :call PhpUnit()<CR>
+
+
+" function! FzyCommand(choice_command, vim_command)
+"   try
+"     let output = system(a:choice_command . " | fzy ")
+"   catch /Vim:Interrupt/
+"     " Swallow errors from ^C, allow redraw! below
+"   endtry
+"   redraw!
+"   if v:shell_error == 0 && !empty(output)
+"     exec a:vim_command . ' ' . output
+"   endif
+" endfunction
 "
+" nnoremap <leader>e :call FzyCommand("find -type f", ":e")<cr>
+" nnoremap <leader>v :call FzyCommand("find -type f", ":vs")<cr>
+" nnoremap <leader>s :call FzyCommand("find -type f", ":sp")<cr>

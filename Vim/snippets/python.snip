@@ -1,0 +1,374 @@
+#==================================================================================================
+# General
+#-----------------------------------------------------------------------------------
+snippet     date_normal
+abbr        dn
+options     word
+    `#Today: strftime("%Y-%b-%d")`${0}
+
+
+
+snippet     break_dot
+abbr        @..
+options     word
+
+
+snippet     #..
+abbr        #..
+alias       break_dot
+options     head
+        #..................................................................................................
+        ${0}
+
+snippet     #--
+abbr        #--
+alias       break_single
+options     head
+        #--------------------------------------------------------------------------------------------------
+        ${0}
+
+snippet     #==
+abbr        #==
+alias       break_double
+options     head
+        #==================================================================================================
+        ${0}
+
+#==================================================================================================
+# Pandas
+# csv files, panels, ...
+#-----------------------------------------------------------------------------------
+
+#==================================================================================================
+# Holoviews
+#-----------------------------------------------------------------------------------
+
+#==================================================================================================
+# Matplotlib
+#-----------------------------------------------------------------------------------
+
+
+#==================================================================================================
+# BOKEH
+#-----------------------------------------------------------------------------------
+snippet     bk_ax
+abbr        bk_ax
+alias       bk_ax
+options     head
+        p.xaxis.axis_label = '${1} [s]'
+        p.yaxis.axis_label = '${2} [C]'
+        ${3}
+
+
+#-----------------------------------------------------------------------------------
+snippet     bk_corr
+abbr        bk_corr
+alias       bk_corr
+options     head
+    #..................................................................................................
+    from bokeh.charts import HeatMap
+    #..................................................................................................
+    df = ${1: "DATAFRAME"}
+    corr_matrix = df.corr().as_matrix()
+    #print (corr_matrix)
+    #print (corr_matrix.columns)
+    #rename columns - shorter names
+    cols = df.columns
+    N = len(cols)
+    factors = list(cols)
+    x = []
+    y = []
+    colors = []
+    for i in range(N):
+      for j in range(N):
+        x.append(cols[j])
+        y.append(cols[i])
+        cor = corr_matrix[i, j]
+        rgb = (int(abs(cor) * 255), 0, int((1 - abs(cor)) * 255)) # blue / red
+        colors.append('#%02x%02x%02x' % rgb)
+
+        pcorr = figure(x_range=factors, y_range=factors, width=1400, height=1000)
+        pcorr.rect(x, y, color=colors, width=1, height=1)
+        pcorr.xaxis.major_label_orientation = pi/4
+        pcorr.yaxis.major_label_orientation = pi/4
+
+#-----------------------------------------------------------------------------------
+snippet     bk_grid
+abbr        bk_grid
+alias       bk_grid
+options     head
+    #..................................................................................................
+    from bokeh.layouts import gridplot, row, column
+    #..................................................................................................
+    #hst1 = column(row(hist1, hist2, hist3, hist4), row(hist5, hist6, hist7, hist8))
+    grid = gridplot([[p1, p2], [None, p3]])
+    show(grid)
+
+
+#-----------------------------------------------------------------------------------
+snippet     bk_head
+abbr        bk_head
+alias       bk_head
+options     head
+    #--------------------------------------------------------------------------------------------------
+    import os
+    import glob
+    import shutil
+    import sys
+    from datetime import date
+    from random import randint
+    #--------------------------------------------------------------------------------------------------
+    import pandas as pd
+    import numpy as np
+    import scipy as sci
+    import seaborn as sns
+    #--------------------------------------------------------------------------------------------------
+    import matplotlib.pyplot as plt
+    #--------------------------------------------------------------------------------------------------
+    import sqlite3
+
+    #--------------------------------------------------------------------------------------------------
+    from bokeh.io import output_file, show, curdoc
+    from bokeh.plotting import figure, output_notebook, show, output_file, curdoc
+    from bokeh.charts import Bar, show
+
+    #..................................................................................................
+    from bokeh.layouts import widgetbox, row, column, layout, gridplot
+
+    #..................................................................................................
+    from bokeh.models import LinearAxis, Range1d, LabelSet, Label, Span, ColumnDataSource
+    from bokeh.models import HoverTool, BoxSelectTool, PanTool, BoxZoomTool, WheelZoomTool, ResetTool #, CrossHairTool
+
+    #..................................................................................................
+    from ipywidgets import interact, interactive, fixed, interact_manual, Button, Layout
+    from bokeh.models.widgets import Panel, Tabs, RangeSlider, Slider, MultiSelect, Div
+    from bokeh.models.widgets import DataTable, DateFormatter, TableColumn
+
+    #..................................................................................................
+    from bokeh.palettes import Category20
+    from bokeh.palettes import Category10
+    from bokeh.palettes import Paired
+    from bokeh.palettes import Greys
+
+    colorsL20 = Category20[20]
+    colorsL10 = Category20[20]
+    colorsL12 = Paired
+    colorsLBW = Greys
+
+    #..................................................................................................
+    from bokeh.themes import Theme
+
+
+#-----------------------------------------------------------------------------------
+snippet     bk_hover
+abbr        bk_hover
+alias       bk_hover
+options     head
+    #..................................................................................................
+    from bokeh.models import HoverTool, BoxSelectTool, PanTool, BoxZoomTool, WheelZoomTool, ResetTool
+    TOOLS = [BoxSelectTool(), HoverTool(tooltips=[("index", "$index"), ("(x,y)", "($x, $y)"), ("desc", "@desc"),]), PanTool(), BoxZoomTool(), WheelZoomTool(), ResetTool()]
+
+    name = ${1:"NAME"}
+    colorsL = ${2}
+    p.add_tools(HoverTool(renderers=[l], tooltips=[('Name', name), ('Color', '<span class="bk-tooltip-color-block" style="background-color:{}"> </span>'.format(colorsL[i])), ('(x,y)', "(@x, @y{int})")]))
+
+#-----------------------------------------------------------------------------------
+snippet     bk_leg
+abbr        bk_leg
+alias       bk_leg
+options     head
+    #..................................................................................................
+    p.legend.click_policy="hide"
+    p.legend.location = "top_left"
+    p.legend.location = "bottom_right"
+
+
+#-----------------------------------------------------------------------------------
+snippet     bk_phist
+abbr        bk_phist
+alias       bk_phist
+options     head
+    #..................................................................................................
+    from bokeh.charts import Histogram, output_file, show
+    from bokeh.layouts import row
+    from bokeh.sampledata.autompg import autompg as df
+
+    hist = Histogram(df, values='mpg', title="Auto MPG Histogram", plot_width=400)
+    hist2 = Histogram(df, values='mpg', label='cyl', color='cyl', legend='top_right',
+                        title="MPG Histogram by Cylinder Count", plot_width=400)
+
+    output_file('hist.html')
+    show(row(hist, hist2))
+
+#-----------------------------------------------------------------------------------
+snippet     bk_pline
+abbr        bk_pline
+alias       bk_pline
+options     head
+     #from bokeh.plotting import figure, output_file, show
+     #..................................................................................................
+     p = figure(plot_width=1600, plot_height=1000)
+
+     #..................................................................................................
+     #p.line(ds.index, ds, color='red', line_width=2, legend='leg')
+     for i, colName in enumerate(${1:df}.columns):
+         p.line(${2:df}.index ,${3:df}[colName], color=colorsL20[i], line_width=2, legend=colName)
+     #..................................................................................................
+     p.xaxis.axis_label = ${4:'xaxis'}
+     p.yaxis.axis_label = ${5:'yaxis'}
+     # # p.add_tools(HoverTool(renderers=[l], tooltips=[('Name', name), ('Color', '<span class="bk-tooltip-color-block" style="background-color:{}"> </span>'.format(colors[i])), ('(x,y)', "(@x, @y{int})")]))
+     p.legend.click_policy="hide"
+     #..................................................................................................
+     show(p)
+
+
+#-----------------------------------------------------------------------------------
+snippet     bk_ray
+abbr        bk_ray
+alias       bk_ray
+options     head
+    #..................................................................................................
+    # 3 rays mit Laenge, Richtung und Farbe
+    p.ray(x=[1, 2, 3], y=[1, 2, 3], length=45, angle=[30, 45, 60], angle_units="deg", color="#FB8072", line_width=2)
+
+#-----------------------------------------------------------------------------------
+snippet     bk_rect
+abbr        bk_rect
+alias       bk_rect
+options     head
+    #..................................................................................................
+    corr_matrix = ${1:'df'}.corr().as_matrix()
+    corr_matrix
+    cols = ${2:'df'}.columns
+    N = len(cols)
+    factors = list(cols)
+    x = []
+    y = []
+    colors = []
+    for i in range(N):
+      for j in range(N):
+        x.append(cols[j])
+        y.append(cols[i])
+        cor = corr_matrix[i, j]
+        rgb = (int(abs(cor) * 255), 0, int((1 - abs(cor)) * 255))
+        colors.append('#%02x%02x%02x' % rgb)
+
+        p = figure(x_range=factors, y_range=factors, width=1400, height=1000)
+        p.rect(x, y, color=colors, width=1, height=1)
+
+#-----------------------------------------------------------------------------------
+snippet     bk_table
+abbr        bk_table
+alias       bk_table
+options     head
+    #..................................................................................................
+    from bokeh.models import ColumnDataSource
+    from bokeh.models.widgets import DataTable, DateFormatter, TableColumn
+    #..................................................................................................
+    # Datatable
+    dataColL = []
+    df = ${1:"dfNew"}
+    for col in df.columns:
+        template = TableColumn(field=col, title=col)
+        dataColL.append(template)
+    columns = dataColL
+    source = ColumnDataSource(df)
+    data_table = DataTable(source=source, columns=columns, width=1000, height=280)
+
+#-----------------------------------------------------------------------------------
+snippet     bk_tabs
+abbr        bk_tabs
+alias       bk_tabs
+options     head
+    #..................................................................................................
+    from bokeh.models.widgets import Panel, Tabs
+    tab1 = Panel(child=p1, title=${1:""})
+    tab2 = Panel(child=p2, title=${2:""})
+    tab3 = Panel(child=p3, title=${3:""})
+    tabs = Tabs(tabs=[ tab1, tab2, tab3])
+    show(tabs)
+
+#-----------------------------------------------------------------------------------
+snippet     bk_theme
+abbr        bk_theme
+alias       bk_theme
+options     head
+    #..................................................................................................
+    #from bokeh.io import curdoc
+    #from bokeh.themes import Theme
+
+    curdoc().theme = Theme(json={'attrs': {
+
+        # apply defaults to Figure properties
+        # 'Figure': {
+        #     'toolbar_location': None,
+        #     'outline_line_color': None,
+        #     'min_border_right': 10,
+        # },
+
+        # apply defaults to Axis properties
+        'Axis': {
+            # 'major_tick_in': None,
+            # 'minor_tick_out': None,
+            # 'minor_tick_in': None,
+            'axis_line_color': '#CAC6B6',
+            'major_tick_line_color': '#CAC6B6',
+            'major_label_text_font_size': "18pt",
+            'axis_label_text_font_size': "20pt",
+            'major_label_text_font_style': 'normal',
+            'minor_tick_line_color': '#CAC6B6'
+        },
+
+         # apply defaults to Legend properties
+        'Legend': {
+            'background_fill_alpha': 0.8,
+            'label_text_font_size': "16pt",
+        }
+    }})
+
+#-----------------------------------------------------------------------------------
+snippet     bk_tick
+abbr        bk_tick
+alias       bk_tick
+options     head
+    #..................................................................................................
+    from math import pi
+    p.xaxis.major_label_orientation = pi/4
+    p.yaxis.major_label_orientation = "vertical"
+
+#-----------------------------------------------------------------------------------
+snippet     bk_vline
+abbr        bk_vline
+alias       bk_vline
+options     head
+    #..................................................................................................
+    from bokeh.models import Span
+    vline = Span(location=0, dimension='height', line_color='red', line_width=3, line_dash='dashed')
+    hline = Span(location=0, dimension='width', line_color='green', line_width=3, line_dash='dashed')
+    #p.renderers.extend([vline, hline])
+    p.add_layout(vline)
+
+#-----------------------------------------------------------------------------------
+snippet     bk_scatter
+abbr        bk_scatter
+alias       bk_scatter
+options     head
+    #..................................................................................................
+    p.scatter(${1:x}, ${1:y}, marker=typestr, line_color="#6666ee", fill_color="#ee6666", fill_alpha=0.5, size=12)
+#==================================================================================================
+# H2O
+#-----------------------------------------------------------------------------------
+
+#-----------------------------------------------------------------------------------
+snippet     h2_pd_df
+abbr        h2_pd_df
+alias       h2_pd_df
+options     head
+    hf = h2o.H2OFrame(df)
+
+#-----------------------------------------------------------------------------------
+snippet     pd_h2_df
+abbr        pd_h2_df
+alias       pd_h2_df
+options     head
+    df = hf.as_data_frame(use_pandas=True)
