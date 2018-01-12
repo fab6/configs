@@ -60,6 +60,7 @@ Plug 'rafi/awesome-vim-colorschemes'
 Plug 'brettanomyces/nvim-terminus'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'rhysd/vim-gfm-syntax'
 "--------------------------------------------------------------------------------------------------
 "ClientServer:
 " Plug 'AndrewRadev/vimrunner'
@@ -224,6 +225,8 @@ augroup filetype
     autocmd! BufRead,BufNewFile *.gnu     set filetype=gnu
     autocmd! BufRead,BufNewFile *.pde set filetype=arduino
     autocmd! BufRead,BufNewFile *.ino set filetype=arduino
+    autocmd! BufRead,BufNewFile *.snip set syntax=vim
+    autocmd BufRead,BufNew,BufNewFile README.md setlocal ft=markdown.gfm
 augroup END
 "deoplete? autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 "deoplete? autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
@@ -780,19 +783,23 @@ nnoremap <silent> <A-Right> :execute 'silent! tabmove ' . (tabpagenr()+1)<CR>
 let notabs = 0
 nnoremap <silent> <F8> :let notabs=!notabs<Bar>:if notabs<Bar>:tabo<Bar>:else<Bar>:tab ball<Bar>:tabn<Bar>:endif<CR>
 
+"==================================================================================================
+let g:gfm_syntax_enable_always = 0
+let g:gfm_syntax_enable_filetypes = ['markdown.gfm']
+let g:markdown_fenced_languages = ['cpp', 'json','python']
 
 "==================================================================================================
 " FZF
 "
 "..................................................................................................
-nnoremap <silent> <Leader>C :call fzf#run({
-\   'source':
-\     map(split(globpath(&rtp, "colors/*.vim"), "\n"),
-\         "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')"),
-\   'sink':    'colo',
-\   'options': '+m',
-\   'left':    30
-\ })<CR>
+" nnoremap <silent> <Leader>C :call fzf#run({
+" \   'source':
+" \     map(split(globpath(&rtp, "colors/*.vim"), "\n"),
+" \         "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')"),
+" \   'sink':    'colo',
+" \   'options': '+m',
+" \   'left':    30
+" \ })<CR>
 "..................................................................................................
 function! s:buflist()
   redir => ls
@@ -957,3 +964,6 @@ imap <c-x><c-l> <plug>(fzf-complete-line)
 "    serial port for debugging. You may with to bind this to a key combination.
 "    >
 " nnoremap <leader>d :ArduinoUploadAndSerial<CR>
+"
+"
+"
