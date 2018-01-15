@@ -56,6 +56,8 @@ Plug 'rafi/awesome-vim-colorschemes'
 Plug 'brettanomyces/nvim-terminus'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'haya14busa/incsearch.vim'
+Plug 'haya14busa/incsearch-fuzzy.vim'
 " Programming:
 Plug 'python-mode/python-mode'
 Plug 'jvirtanen/vim-octave'
@@ -275,9 +277,23 @@ set ignorecase
 set smartcase
 "
 "" show the `best match so far' as search strings are typed:
-set incsearch
+" set incsearch
 set hlsearch
-
+let g:incsearch#auto_nohlsearch = 1
+" map n  <Plug>(incsearch-nohl-n)
+" map N  <Plug>(incsearch-nohl-N)
+map *  <Plug>(incsearch-nohl-*)
+map #  <Plug>(incsearch-nohl-#)
+map g* <Plug>(incsearch-nohl-g*)
+map g# <Plug>(incsearch-nohl-g#)
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
+map n <Plug>(incsearch-nohl)<Plug>(anzu-n-with-echo)
+map N <Plug>(incsearch-nohl)<Plug>(anzu-N-with-echo)
+map z/ <Plug>(incsearch-fuzzy-/)
+map z? <Plug>(incsearch-fuzzy-?)
+map zg/ <Plug>(incsearch-fuzzy-stay)
 
 "--------------------------------------------------------------------------------------------------
 " Statusline / Faces
@@ -293,10 +309,21 @@ function! LightLineFilename()
     return expand('%')
 endfunction
 
+"--------------------------------------------------------------------------------------------------
+" Highlighting
+"..................................................................................................
 set background=light
 :hi comment ctermfg=darkgreen
 :highlight LineNr ctermfg=darkgrey
 :highlight VertSplit ctermfg=darkgray ctermfg=black
+
+"..................................................................................................
+" Showmarks
+:hi ShowMarksHLl ctermfg=red "For marks a-z
+:hi ShowMarksHLu ctermfg=yellow "For marks A-Z
+:hi ShowMarksHLo ctermfg=magenta "For all other marks
+:hi ShowMarksHLm ctermfg=white "For multiple marks on the same line.
+:hi SignColumn ctermbg=black
 
 "--------------------------------------------------------------------------------------------------
 " BACKUP
@@ -307,13 +334,6 @@ set backupext=~
 set wildmenu "menu has tab completion
 set wildignore=.aux,.bak,.dvi,.gz,.idx,.log,.ps,.swp,.tar,.pdf,.rpm,.deb,.o,.e,*~
 
-"--------------------------------------------------------------------------------------------------
-" Showmarks
-:hi ShowMarksHLl ctermfg=red "For marks a-z
-:hi ShowMarksHLu ctermfg=yellow "For marks A-Z
-:hi ShowMarksHLo ctermfg=magenta "For all other marks
-:hi ShowMarksHLm ctermfg=white "For multiple marks on the same line.
-:hi SignColumn ctermbg=black
 "
 "--------------------------------------------------------------------------------------------------
 " keybindings
@@ -1085,3 +1105,7 @@ imap <c-x><c-l> <plug>(fzf-complete-line)
 " nnoremap <leader>e :call FzyCommand("find -type f", ":e")<cr>
 " nnoremap <leader>v :call FzyCommand("find -type f", ":vs")<cr>
 " nnoremap <leader>s :call FzyCommand("find -type f", ":sp")<cr>
+
+map <F9> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
