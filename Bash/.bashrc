@@ -78,9 +78,12 @@ case $HOST in
         ;;
 esac
 
+aps() {
+    apt-cache search $1 | ag $1
+}
+aps xyz #calls 'aps'
 
-
-alias aps="sudo apt-cache search"
+# alias aps="sudo apt-cache search"
 alias api="sudo apt-get install"
 alias apu="sudo apt-get update"
 alias apuu="sudo apt-get upgrade"
@@ -138,3 +141,5 @@ export MODELICAPATH=/share/GA/TOOLs/modelica-buildings_LBL:$MODELICAPATH
 alias vimfiler="TERM=screen-256color nvim -c \"VimFilerDouble\""
 
 
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

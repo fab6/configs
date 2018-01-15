@@ -11,6 +11,17 @@ xterm*termName: xterm-color
 xterm*eightBitInput: false
 xterm*selectToClipboard: true
 XTerm*metaSendsEscape: true
+XTerm*rightScrollBar: true
+XTerm*ScrollBar: true
+XTerm*scrollTtyOutput: false
+XTerm*VT100.Translations: #override \
+      Shift Ctrl<Key>V: insert-selection(CLIPBOARD) \n\
+      Shift Ctrl<Key>V: insert-selection(PRIMARY) \n\
+      Shift<Btn1Down>: select-start() \n\
+      Shift<Btn1Motion>: select-extend() \n\
+      Shift<Btn1Up>: select-end(CLIPBOARD) \n\
+
+
 
 !!BLK Cursor
 !#define _color0        #000d18
