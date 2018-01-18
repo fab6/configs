@@ -29,12 +29,15 @@ Plug 'Shougo/neosnippet-snippets'
 Plug 'Shougo/deol.nvim', { 'rev': 'a1b5108fd' }
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/tabpagebuffer.vim'
-Plug 'Shougo/unite.vim'
+Plug 'Shougo/vinarise'
 Plug 'Shougo/vimfiler.vim' "needs unite -> new development for denite Plug 'Shougo/defx.nvim'
 Plug 'Shougo/neomru.vim'
 Plug 'Shougo/vimproc.vim', { 'do' : 'make', }
+Plug 'Shougo/unite.vim'
 Plug 'Shougo/unite-outline'
-Plug 'Shougo/vinarise'
+Plug 'rhysd/unite-oldfiles.vim'
+Plug 'chemzqm/unite-location'
+Plug 'tsukkee/unite-tag'
 Plug 'zchee/deoplete-jedi'
 Plug 'thirtythreeforty/lessspace.vim'
 Plug 'chrisbra/csv.vim'
@@ -43,13 +46,12 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'itchyny/vim-parenmatch'
 Plug 'itchyny/vim-cursorword'
 Plug 'pboettch/vim-cmake-syntax'
-Plug 'chemzqm/unite-location'
 Plug 'itchyny/lightline.vim'
-Plug 'skywind3000/asyncrun.vim'
+" Neomake build tool (mapped below to <c-b>) Plug 'benekastah/neomake' xterm does not stay open
+" Plug 'skywind3000/asyncrun.vim' "xterm does not stay open
 "Plug 'vim-scripts/indentpython.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'mattboehm/vim-accordion'
-Plug 'tsukkee/unite-tag'
 Plug 'osyo-manga/vim-anzu'
 Plug 'jreybert/vimagit'
 Plug 'rafi/awesome-vim-colorschemes'
@@ -65,6 +67,9 @@ Plug 'jvirtanen/vim-octave'
 Plug 'stevearc/vim-arduino'
 Plug 'nvie/vim-flake8'
 Plug 'sudar/vim-arduino-syntax'
+Plug 'w0rp/ale'
+Plug 'wesQ3/vim-windowswap'
+Plug 'chrisbra/NrrwRgn'
 " Terminal:
 Plug 'mklabs/split-term.vim'
 Plug 'kassio/neoterm'
@@ -91,7 +96,6 @@ Plug 'kassio/neoterm'
 " Plug 'vifm/neovim-vifm'
 " Plug 'easymotion/vim-easymotion'
 " Plug 'kien/ctrlp.vim' Ctrl-P - Fuzzy file search
-" Plug 'benekastah/neomake' Neomake build tool (mapped below to <c-b>)
 " Plug 'ervandew/supertab' Tab completion
 " Plug 'davidhalter/jedi-vim' Autocomplete for python
 " Plug 'vimscripts/modelica'
@@ -656,14 +660,15 @@ augroup END
 " VimFiler
 "
 
-noremap <Leader>d :<C-u>VimFilerExplorer -status -split -simple -parent -winwidth=35 -toggle -no-quit<CR>
 nnoremap <Leader>jf :<C-u>VimFilerExplorer -status -split -simple -parent -winwidth=35 -no-quit -find<CR>
 nnoremap <Leader>ff :VimFilerExplorer -status -find -winwidth=80<CR>
 
+" noremap <Leader>d :<C-u>VimFilerExplorer -status -split -simple -parent -winwidth=35 -toggle -no-quit<CR>
 map <space>d :VimFilerBufferDir -status<CR>
-map <space>D :VimFilerBufferDir -status -explorer<CR>
-nnoremap <F2> :VimFilerCreate -status -split -simple -winwidth=30 -toggle -no-quit<CR>
-nnoremap <F3> :VimFiler status -tab<CR>
+map <space>D :VimFilerBufferDir -status -split -simple -winwidth=30 -toggle -no-quit -explorer<CR><CR>
+" map <space>E :VimFilerBufferDir -status -split -simple -winwidth=30 -toggle -no-quit<CR><CR>
+nnoremap <F2> :VimFilerBufferDir -status -split -simple -winwidth=30 -toggle -no-quit<CR>
+" nnoremap <F3> :VimFiler status -tab<CR>
 nnoremap <silent> <Leader>bm :Unite -silent -auto-resize -buffer-name=my-directories -default-action=vimfiler bookmark<CR>
 
 augroup filetype
@@ -1116,3 +1121,8 @@ imap <c-x><c-l> <plug>(fzf-complete-line)
 map <F9> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
 \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
+let g:windowswap_map_keys = 0 "prevent default bindings
+nnoremap <silent> <leader>yw :call WindowSwap#MarkWindowSwap()<CR>
+nnoremap <silent> <leader>pw :call WindowSwap#DoWindowSwap()<CR>
+nnoremap <silent> <leader>ww :call WindowSwap#EasyWindowSwap()<CR>
