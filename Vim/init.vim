@@ -23,7 +23,7 @@
 " - hangs with neovim (appimage)
 "
 " Git:
-" - which plugin?
+" - which plugin? --> push!?
 "
 "==================================================================================================
 set runtimepath+=/home/fbraenns/.nvim/
@@ -457,17 +457,6 @@ vnoremap <leader>P "+P
 :nnoremap <A-k> <C-w>k
 
 "==================================================================================================
-" vimshell
-"
-""
-""let g:vimshell_user_prompt = 'fnamemodify(getcwd(), ":~")'
-""let g:vimshell_prompt =  '$ '
-"":map <F2> :VimShell<CR>
-"":map <F1> :! lxterminal & <CR><CR>
-"
-
-
-"==================================================================================================
 " COMPLETION deoplete.
 "
 let g:deoplete#enable_at_startup = 1
@@ -482,9 +471,9 @@ let g:deoplete#enable_smart_case = 1
 highlight PmenuSel ctermbg=1 guifg=#dddd00 guibg=#1f82cd
 "highlight PmenuSbar ctermbg=0 guibg=#d6d6d6
 
-"imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-"smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-"xmap <C-k>     <Plug>(neosnippet_expand_target)
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 
 
@@ -500,16 +489,20 @@ let g:neosnippet#snippets_directory='~/.nvim/snippets'
 let g:unite_source_history_yank_enable = 1
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 nnoremap <leader>f :<C-u>Unite -no-split -buffer-name=files   -start-insert file<cr>
-nnoremap <leader>o :<C-u>Unite -no-split -buffer-name=outline -start-insert outline<cr>
+" nnoremap <leader>o :<C-u>Unite -no-split -buffer-name=outline -start-insert outline<cr>
+nnoremap <leader>o :<C-u>Unite -buffer-name=outline -start-insert -winwidth=35 outline<cr>
+" :Unite -vertical -winwidth=35 outline
 
-nnoremap <leader>t :<C-u>Unite -no-split -buffer-name=files   -start-insert file_rec/async:!<cr>
+" nnoremap <leader>tt :<C-u>Unite -no-split -buffer-name=files   -start-insert file_rec/async:!<cr>
 nnoremap <leader>r :<C-u>Unite -no-split -buffer-name=mru     -start-insert file_mru<cr>
 nnoremap <leader>y :<C-u>Unite -no-split -buffer-name=yank    history/yank<cr>
 " nnoremap <leader>b :<C-u>Unite -no-split -buffer-name=buffer  buffer<cr>
-nnoremap <leader>B :Unite -quick-match buffer<cr>
+" nnoremap <leader>B :Unite -quick-match buffer<cr>
+nnoremap <leader>b :Unite -quick-match buffer<cr>
+nnoremap <silent><Leader>m :Unite -silent -auto-resize -buffer-name=my-directories -default-action=vimfiler bookmark<CR>
 " nnoremap <silent><buffer>b <C-u>:Unite -silent -default-action=cd -no-start-insert bookmark<CR>
-nnoremap <C-p> :Unite file_rec/async<cr>
-nnoremap <leader>/ :Unite grep:.<cr>
+" nnoremap <C-p> :Unite file_rec/async<cr>
+" nnoremap <leader>/ :Unite grep:.<cr>
 
 " set nocompatible
 " set runtimepath+=~/.vim/bundle/vimproc.vim
@@ -522,7 +515,7 @@ let g:unite_source_grep_default_opts =
             \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
 let g:unite_source_grep_recursive_opt = ''
 
-nmap <silent> <S-f> :Unite -no-quit grep<CR>
+" nmap <silent> <S-f> :Unite -no-quit grep<CR>
 
 
 " Custom mappings for the unite buffer
@@ -535,18 +528,165 @@ function! s:unite_settings()
     imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
 endfunction
 
-"File Searchin
-nnoremap <C-p> :Unite file_rec/async<cr>
+" Use fuzzy matcher for filtering elements.
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
 
-"Content searching like ack.vim (or ag.vim)
-nnoremap <space>/ :Unite grep:.<cr>
+" Set the grep command used by unite.
+" let g:unite_source_grep_command = 'ag'
+" let g:unite_source_grep_default_opts =
+"     \ '--line-numbers --nogroup --nocolor --follow --hidden --ignore-case --ignore ".git" --ignore ".bzr" --ignore ".svn"'
+
+" {{{ Hotkeys.
+
+" <Leader>s: Perform file search, like control-p.
+" nnoremap <Leader>uns :<C-u>Unite -buffer-name=files -start-insert file_rec/async:!<CR>
+
+" <Leader>g: Start a grep search from the current directory.
+" nnoremap <Leader>ung :<C-u>Unite -buffer-name=grep grep:.<CR>
+
+" <Leader>y: Open yank history.
+" let g:unite_source_history_yank_enable = 1
+" nnoremap <Leader>uny :<C-u>Unite -buffer-name=yank_history history/yank<CR>
+
+" <Leader>b: Buffer switching.
+" nnoremap <Leader>unb :<C-u>Unite -quick-match -buffer-name=buffers buffer<CR>
+
+"  Custom mappings for the unite buffer.
+"autocmd FileType unite call s:unite_settings()
+"function! s:unite_settings()
+"  " <C->movement: navigate in the unite buffer
+"  imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+"  imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+"endfunction
+
+" }}}
+
+" File Searchin
+" nnoremap <C-p> :Unite file_rec/async<cr>
+"
+" Content searching like ack.vim (or ag.vim)
+" nnoremap <space>/ :Unite grep:.<cr>
 
 " Yank history
-let g:unite_source_history_yank_enable = 1
-nnoremap <space>y :Unite history/yank<cr>
+" let g:unite_source_history_yank_enable = 1
+" nnoremap <space>y :Unite history/yank<cr>
 
-"Buffer Switching
-nnoremap <space>s :Unite -quick-match buffer<cr>
+" "Buffer Switching
+" nnoremap <space>s :Unite -quick-match buffer<cr>
+"
+"==================================================================================================
+" FZF
+"
+"..................................................................................................
+" nnoremap <silent> <Leader>C :call fzf#run({
+" \   'source':
+" \     map(split(globpath(&rtp, "colors/*.vim"), "\n"),
+" \         "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')"),
+" \   'sink':    'colo',
+" \   'options': '+m',
+" \   'left':    30
+" \ })<CR>
+"..................................................................................................
+function! s:buflist()
+  redir => ls
+  silent ls
+  redir END
+  return split(ls, '\n')
+endfunction
+
+function! s:bufopen(e)
+  execute 'buffer' matchstr(a:e, '^[ 0-9]*')
+endfunction
+
+nnoremap <silent> <Leader><Enter> :call fzf#run({
+\   'source':  reverse(<sid>buflist()),
+\   'sink':    function('<sid>bufopen'),
+\   'options': '+m',
+\   'down':    len(<sid>buflist()) + 2
+\ })<CR>
+"
+"..................................................................................................
+function! s:line_handler(l)
+  let keys = split(a:l, ':\t')
+  exec 'buf' keys[0]
+  exec keys[1]
+  normal! ^zz
+endfunction
+
+function! s:buffer_lines()
+  let res = []
+  for b in filter(range(1, bufnr('$')), 'buflisted(v:val)')
+    call extend(res, map(getbufline(b,0,"$"), 'b . ":\t" . (v:key + 1) . ":\t" . v:val '))
+  endfor
+  return res
+endfunction
+
+command! FZFLines call fzf#run({
+\   'source':  <sid>buffer_lines(),
+\   'sink':    function('<sid>line_handler'),
+\   'options': '--extended --nth=3..',
+\   'down':    '60%'
+\})
+
+"..................................................................................................
+function! s:ag_to_qf(line)
+  let parts = split(a:line, ':')
+  return {'filename': parts[0], 'lnum': parts[1], 'col': parts[2],
+        \ 'text': join(parts[3:], ':')}
+endfunction
+
+function! s:ag_handler(lines)
+  if len(a:lines) < 2 | return | endif
+
+  let cmd = get({'ctrl-x': 'split',
+               \ 'ctrl-v': 'vertical split',
+               \ 'ctrl-t': 'tabe'}, a:lines[0], 'e')
+  let list = map(a:lines[1:], 's:ag_to_qf(v:val)')
+
+  let first = list[0]
+  execute cmd escape(first.filename, ' %#\')
+  execute first.lnum
+  execute 'normal!' first.col.'|zz'
+
+  if len(list) > 1
+    call setqflist(list)
+    copen
+    wincmd p
+  endif
+endfunction
+
+command! -nargs=* Ag call fzf#run({
+\ 'source':  printf('ag --nogroup --column --color "%s"',
+\                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
+\ 'sink*':    function('<sid>ag_handler'),
+\ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
+\            '--multi --bind=ctrl-a:select-all,ctrl-d:deselect-all '.
+\            '--color hl:68,hl+:110',
+\ 'down':    '50%'
+\ })
+
+"..................................................................................................
+function! s:fzf_neighbouring_files()
+  let current_file =expand("%")
+  let cwd = fnamemodify(current_file, ':p:h')
+  let command = 'ag -g "" -f ' . cwd . ' --depth 0'
+
+  call fzf#run({
+        \ 'source': command,
+        \ 'sink':   'e',
+        \ 'options': '-m -x +s',
+        \ 'window':  'enew' })
+endfunction
+
+command! FZFNeigh call s:fzf_neighbouring_files()
+
+"..................................................................................................
+nnoremap <leader>h :History<CR>
+nnoremap <leader>B :Buffers<CR>
+nnoremap <leader>F :Files<CR>
+
+"..................................................................................................
+imap <c-x><c-l> <plug>(fzf-complete-line)
 
 "==================================================================================================
 " PYTHON
@@ -678,7 +818,6 @@ map <space>D :VimFilerBufferDir -status -split -simple -winwidth=30 -toggle -no-
 " map <space>E :VimFilerBufferDir -status -split -simple -winwidth=30 -toggle -no-quit<CR><CR>
 nnoremap <F2> :VimFilerBufferDir -status -split -simple -winwidth=30 -toggle -no-quit<CR>
 " nnoremap <F3> :VimFiler status -tab<CR>
-nnoremap <silent> <Leader>bm :Unite -silent -auto-resize -buffer-name=my-directories -default-action=vimfiler bookmark<CR>
 
 augroup filetype
     " open at start up: autocmd VimEnter * if !argc() | VimFiler -status | endif
@@ -783,14 +922,14 @@ let g:vimfiler_execute_file_list={
 ":nnoremap <M-k> <C-w>k
 "
 " Quickly create a new terminal in a new tab
-tnoremap <Leader>c <C-\><C-n>:tab new<CR>:term<CR>
-noremap <Leader>c :tab new<CR>:term<CR>
+" tnoremap <Leader>C <C-\><C-n>:tab new<CR>:term<CR>
+" noremap <Leader>C :tab new<CR>:term<CR>
 "inoremap <Leader>c <Esc>:tab new<CR>:term<CR>
 
 " Quickly create a new terminal in a vertical split
 tnoremap <Leader>% <C-\><C-n>:vsp<CR><C-w><C-w>:term<CR>
 noremap <Leader>% :vsp<CR><C-w><C-w>:term<CR>
-nmap <leader>T :vs<CR>:terminal<CR>
+" nmap <leader>T :vs<CR>:terminal<CR>
 
 
 nnoremap <F3> :Ttoggle<cr><C-w><C-w>A
@@ -926,119 +1065,6 @@ let g:gfm_syntax_enable_always = 0
 let g:gfm_syntax_enable_filetypes = ['markdown.gfm']
 let g:markdown_fenced_languages = ['cpp', 'json','python']
 
-"==================================================================================================
-" FZF
-"
-"..................................................................................................
-" nnoremap <silent> <Leader>C :call fzf#run({
-" \   'source':
-" \     map(split(globpath(&rtp, "colors/*.vim"), "\n"),
-" \         "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')"),
-" \   'sink':    'colo',
-" \   'options': '+m',
-" \   'left':    30
-" \ })<CR>
-"..................................................................................................
-function! s:buflist()
-  redir => ls
-  silent ls
-  redir END
-  return split(ls, '\n')
-endfunction
-
-function! s:bufopen(e)
-  execute 'buffer' matchstr(a:e, '^[ 0-9]*')
-endfunction
-
-nnoremap <silent> <Leader><Enter> :call fzf#run({
-\   'source':  reverse(<sid>buflist()),
-\   'sink':    function('<sid>bufopen'),
-\   'options': '+m',
-\   'down':    len(<sid>buflist()) + 2
-\ })<CR>
-"
-"..................................................................................................
-function! s:line_handler(l)
-  let keys = split(a:l, ':\t')
-  exec 'buf' keys[0]
-  exec keys[1]
-  normal! ^zz
-endfunction
-
-function! s:buffer_lines()
-  let res = []
-  for b in filter(range(1, bufnr('$')), 'buflisted(v:val)')
-    call extend(res, map(getbufline(b,0,"$"), 'b . ":\t" . (v:key + 1) . ":\t" . v:val '))
-  endfor
-  return res
-endfunction
-
-command! FZFLines call fzf#run({
-\   'source':  <sid>buffer_lines(),
-\   'sink':    function('<sid>line_handler'),
-\   'options': '--extended --nth=3..',
-\   'down':    '60%'
-\})
-
-"..................................................................................................
-function! s:ag_to_qf(line)
-  let parts = split(a:line, ':')
-  return {'filename': parts[0], 'lnum': parts[1], 'col': parts[2],
-        \ 'text': join(parts[3:], ':')}
-endfunction
-
-function! s:ag_handler(lines)
-  if len(a:lines) < 2 | return | endif
-
-  let cmd = get({'ctrl-x': 'split',
-               \ 'ctrl-v': 'vertical split',
-               \ 'ctrl-t': 'tabe'}, a:lines[0], 'e')
-  let list = map(a:lines[1:], 's:ag_to_qf(v:val)')
-
-  let first = list[0]
-  execute cmd escape(first.filename, ' %#\')
-  execute first.lnum
-  execute 'normal!' first.col.'|zz'
-
-  if len(list) > 1
-    call setqflist(list)
-    copen
-    wincmd p
-  endif
-endfunction
-
-command! -nargs=* Ag call fzf#run({
-\ 'source':  printf('ag --nogroup --column --color "%s"',
-\                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
-\ 'sink*':    function('<sid>ag_handler'),
-\ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
-\            '--multi --bind=ctrl-a:select-all,ctrl-d:deselect-all '.
-\            '--color hl:68,hl+:110',
-\ 'down':    '50%'
-\ })
-
-"..................................................................................................
-function! s:fzf_neighbouring_files()
-  let current_file =expand("%")
-  let cwd = fnamemodify(current_file, ':p:h')
-  let command = 'ag -g "" -f ' . cwd . ' --depth 0'
-
-  call fzf#run({
-        \ 'source': command,
-        \ 'sink':   'e',
-        \ 'options': '-m -x +s',
-        \ 'window':  'enew' })
-endfunction
-
-command! FZFNeigh call s:fzf_neighbouring_files()
-
-"..................................................................................................
-nnoremap <leader>h :History<CR>
-nnoremap <leader>b :Buffers<CR>
-nnoremap <leader>t :Files<CR>
-
-"..................................................................................................
-imap <c-x><c-l> <plug>(fzf-complete-line)
 
 "
 "
@@ -1054,91 +1080,6 @@ imap <c-x><c-l> <plug>(fzf-complete-line)
 " :echo expand("%:.:h")  " relative path dirname
 " :echo expand("%:.:h:h")" relative path dirname dirname
 "
-"--------------------------------------------------------------------------------------------------
-" arduino INFO-COMMANDS                                                     *arduino-commands*
-"                                                           *:ArduinoChooseBoard*
-" :ArduinoChooseBoard [board]
-"    Set [board] to be the currently selected board. It should match the format
-"    of 'package:arch:board[:parameters]'.
-"
-"    If |g:arduino_board| is not set, the board passed in will be saved to disk
-"    and used when you start new vim sessions.
-"
-"    If passed no arguments, open a list and let the user select one from the
-"    list. If there are any special options for the board (e.g. cpu) successive
-"    list selections will be opened for those.
-"
-" :ArduinoChooseProgrammer [programmer]
-"    Set [programmer] to be the currently selected board. It should match the format
-"    of 'package:programmer'.
-"
-"    If |g:arduino_programmer| is not set, the programmer passed in will be
-"    saved to disk and used when you start new vim sessions.
-"
-"    If passed no arguments, open a list and let the user select one from the
-"    list.
-
-" :ArduinoChoosePort [port]
-"    Set [port] to be the currently selected serial port. If passed no
-"    arguments, open a list of likely ports and let the user select one.
-
-" :ArduinoVerify
-"    Compile your project. You may wish to bind this to a key combination. >
-" nnoremap <leader>c :ArduinoVerify<CR>
-" "
-"  You can also call :make directly. >
-" nnoremap <leader>m :make!<CR>
-" :ArduinoUpload
-"    Compile and upload your project. You may wish to bind this to a key
-"    combination. >
-" nnoremap <leader>u :ArduinoUpload<CR>
-" :ArduinoSerial
-"    Open a connection to the serial port for debugging. You may wish to bind
-"    this to a key combination. >
-" nnoremap <leader>s :ArduinoSerial<CR>
-
-" :ArduinoUploadAndSerial
-"    Compile and upload your project. If successful, open a connection to the
-"    serial port for debugging. You may with to bind this to a key combination.
-"    >
-" nnoremap <leader>d :ArduinoUploadAndSerial<CR>
-"
-" terminal
-" tnoremap <F12> <C-\><C-n>
-" set switchbuf+=useopen
-"
-" function! TermEnter()
-"   let bufcount = bufnr("$")
-"   let currbufnr = 1
-"   let nummatches = 0
-"   let firstmatchingbufnr = 0
-"   while currbufnr <= bufcount
-"     if(bufexists(currbufnr))
-"       let currbufname = bufname(currbufnr)
-"       if(match(currbufname, "term://") > -1)
-"         echo currbufnr . ": ". bufname(currbufnr)
-"         let nummatches += 1
-"         let firstmatchingbufnr = currbufnr
-"         break
-"       endif
-"     endif
-"     let currbufnr = currbufnr + 1
-"   endwhile
-"   if(nummatches >= 1)
-"     execute ":sbuffer ". firstmatchingbufnr
-"     startinsert
-"   else
-"     execute ":terminal"
-"   endif
-" endfunction
-" map <F12> :call TermEnter()<CR>
-
-" function! PhpUnit()
-"   call TermEnter()
-"   normal i phpunit
-" endfunction
-" map <F11> :call PhpUnit()<CR>
-
 
 " function! FzyCommand(choice_command, vim_command)
 "   try
