@@ -93,10 +93,10 @@ Plug 'kassio/neoterm'
 " Plug 'skywind3000/asyncrun.vim>'
 " Plug 'Shougo/vimshell.vim'
 " Plug 'vhdirk/vim-cmake'
-" Plug 'Shougo/denite.nvim'
-" Plug 'chemzqm/denite-git'
-" Plug 'chemzqm/denite-extra'
-" Plug 'chemzqm/vim-easygit'
+Plug 'Shougo/denite.nvim'
+Plug 'chemzqm/vim-easygit'
+Plug 'chemzqm/denite-git'
+Plug 'chemzqm/denite-extra'
 " Plug 'jreybert/vimagit'
 " Plug 'asymotion/vim-easymotion'
 " Plug 'mzlogin/vim-markdown-toc'
@@ -385,6 +385,7 @@ cnoremap <C-l> <Right>
 " cnoremap <M-f> <S-Right>
 "
 :nnoremap <leader>ed :e ~/.config/nvim/init.vim<CR>
+:nnoremap <leader>er :source ~/.config/nvim/init.vim<CR>
 :nnoremap <leader>ef :e ~/.nvim/ftplugin/<CR>
 ":nnoremap <leader>p :source ~/.config/nvim/init.vim<CR>
 
@@ -484,21 +485,109 @@ imap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 let g:neosnippet#snippets_directory='~/.nvim/snippets'
 
 "==================================================================================================
+" Denite
+"
+" nnoremap <C-p> :<C-u>Denite file_rec<CR>
+nnoremap <leader>m :<C-u>Denite buffer<CR>
+nnoremap <leader><Space>b :<C-u>DeniteBufferDir buffer<CR>
+nnoremap <leader>8 :<C-u>DeniteCursorWord grep:. -mode=normal<CR>
+" nnoremap <leader>/ :<C-u>Denite grep:. -mode=normal<CR>
+" nnoremap <leader><Space>/ :<C-u>DeniteBufferDir grep:. -mode=normal<CR>
+" nnoremap <leader>d :<C-u>DeniteBufferDir file_rec<CR>
+nnoremap <leader>o :<C-u>Denite location_list -mode=normal -no-empty<CR>
+nnoremap <leader>hs :<C-u>Denite history:search -mode=normal<CR>
+nnoremap <leader>hc :<C-u>Denite history:cmd -mode=normal<CR>
+
+" nnoremap <leader>o :<C-u>Denite -buffer-name=outline -winwidth=35 unite:outline<cr>
+nnoremap <leader>o :<C-u>Denite -winwidth=35 unite:outline<cr>
+
+call denite#custom#map(
+      \ 'normal',
+      \ 'a',
+      \ '<denite:do_action:add>',
+      \ 'noremap'
+      \)
+
+call denite#custom#map(
+      \ 'normal',
+      \ 'd',
+      \ '<denite:do_action:delete>',
+      \ 'noremap'
+      \)
+
+call denite#custom#map(
+      \ 'normal',
+      \ 'r',
+      \ '<denite:do_action:reset>',
+      \ 'noremap'
+      \)
+
+" imap <buffer> <C-a> (denite:do_action:add)
+nnoremap <leader>gl :Denite gitlog<CR>
+nnoremap <leader>gL :Denite gitlog:all<CR>
+nnoremap <leader>gS :Denite gitstatus<CR>
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gc :Denite gitchanged<CR>
+nnoremap <leader>gb :Denite gitbranch<CR>
+
+" Actions of gitlog:
+"
+" open default action for open seleted commit.
+" preview preview seleted commit.
+" delete run git diff with current commit for current buffer. (just named delete)
+" reset run git reset with current commit.
+
+" Actions of git status:
+"
+" open open seleted file, default action
+" add run git add for seleted file(s).
+" delete run git diff for seleted file. (just named delete)
+" reset run git reset/checkout or remove for seleted file(s).
+" commit run git commit for seleted file(s).
+" push
+
+let g:easygit_enable_command = 1
+" Gcd make vim cd to git root directory.
+" Glcd make vim lcd to git root directory.
+" Gblame Git blame current file, you can use p to preview commit and d to diff with current file.
+" GcommitCurrent Git commit current file with message as command args.
+" GdiffThis Side by side diff of current file with head or any ref.
+" Gcommit Git commit with command line argument.
+nnoremap <leader>gc :Gcommit
+" Gedit Edit git reference from git show.
+" Gdiff Git diff with command line argument.
+" Gremove Git remove with command line argument, remove current file when arguments empty.
+" Grename Rename current by git mv, file in buffer list would react the changes.
+" Gmove Git mv with command line argument.
+" Gcheckout Git checkout with command line argument.
+nnoremap <leader>gp :Gpull
+nnoremap <leader>gP :Gpush
+nnoremap <leader>ga :Gadd
+" Gpush Git push with arguments, dispatch when possible.
+" Gpull Git pull with arguments, dispatch when possible.
+" Gfetch Git fetch with arguments, dispatch when possible.
+" Gadd Git add with arguments.
+" Gstatus Show git status in a temporary buffer.
+" Ggrep Git grep repo of current file, and show result in quickfix
+" Gmerge Git merge with branch complete
+"==================================================================================================
 " Unite
 "
 let g:unite_source_history_yank_enable = 1
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
-nnoremap <leader>f :<C-u>Unite -no-split -buffer-name=files   -start-insert file<cr>
+nnoremap <leader>f :<C-u>Denite -no-split -buffer-name=files   file<cr>
+" nnoremap <leader>f :<C-u>Unite -no-split -buffer-name=files   -start-insert file<cr>
 " nnoremap <leader>o :<C-u>Unite -no-split -buffer-name=outline -start-insert outline<cr>
-nnoremap <leader>o :<C-u>Unite -buffer-name=outline -start-insert -winwidth=35 outline<cr>
+" nnoremap <leader>o :<C-u>Unite -buffer-name=outline -start-insert -winwidth=35 outline<cr>
 " :Unite -vertical -winwidth=35 outline
 
 " nnoremap <leader>tt :<C-u>Unite -no-split -buffer-name=files   -start-insert file_rec/async:!<cr>
-nnoremap <leader>r :<C-u>Unite -no-split -buffer-name=mru     -start-insert file_mru<cr>
+" nnoremap <leader>r :<C-u>Unite -no-split -buffer-name=mru     -start-insert file_mru<cr>
+nnoremap <leader>r :<C-u>Denite -no-split -buffer-name=mru     file_mru<cr>
 nnoremap <leader>y :<C-u>Unite -no-split -buffer-name=yank    history/yank<cr>
 " nnoremap <leader>b :<C-u>Unite -no-split -buffer-name=buffer  buffer<cr>
 " nnoremap <leader>B :Unite -quick-match buffer<cr>
-nnoremap <leader>b :Unite -quick-match buffer<cr>
+" nnoremap <leader>b :Unite -quick-match buffer<cr>
 nnoremap <silent><Leader>m :Unite -silent -auto-resize -buffer-name=my-directories -default-action=vimfiler bookmark<CR>
 " nnoremap <silent><buffer>b <C-u>:Unite -silent -default-action=cd -no-start-insert bookmark<CR>
 " nnoremap <C-p> :Unite file_rec/async<cr>
@@ -517,6 +606,14 @@ let g:unite_source_grep_recursive_opt = ''
 
 " nmap <silent> <S-f> :Unite -no-quit grep<CR>
 
+autocmd FileType denite call s:denite_settings()
+function! s:denite_settings()
+    " Play nice with supertab
+    let b:SuperTabDisabled=1
+    " Enable navigation with control-j and control-k in insert mode
+    imap <buffer> <C-j>   <Plug>(denite_move_next_line)
+    imap <buffer> <C-k>   <Plug>(denite_move_previous_line)
+endfunction
 
 " Custom mappings for the unite buffer
 autocmd FileType unite call s:unite_settings()
@@ -1105,3 +1202,25 @@ let g:windowswap_map_keys = 0 "prevent default bindings
 nnoremap <silent> <leader>yw :call WindowSwap#MarkWindowSwap()<CR>
 nnoremap <silent> <leader>pw :call WindowSwap#DoWindowSwap()<CR>
 nnoremap <silent> <leader>ww :call WindowSwap#EasyWindowSwap()<CR>
+
+"==================================================================================================
+" ale
+"
+let g:ale_sign_error = 'E'
+" let g:ale_sign_warning = '⚠'
+let g:ale_sign_warning = 'W'
+" let g:ale_statusline_format = ['E %d', '⚠ %d', '']
+let g:ale_statusline_format = ['E %d', 'W %d', '']
+let g:ale_lint_on_text_changed = 0
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_enter = 1
+" cycle through location list
+nmap <silent> <leader>n <Plug>(ale_next_wrap)
+
+let g:ale_linters = {
+\   'elixir': [],
+\}
+
+let g:ale_rust_cargo_use_check = 1
+" }
+"
