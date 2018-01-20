@@ -5,17 +5,18 @@
 " nmap <buffer>4 :VimFiler -status /home/fbraenns/03_GA/<CR>
 " nmap <buffer>9 :VimFiler -status /home/fbraenns/99_SHARE/<CR>
 " nmap <buffer>0 :VimFiler -status /share/software/Fire/<CR>
-nmap <buffer>` :VimFiler /home/fbraenns/<CR>
-nmap <buffer>0 :VimFiler /home/fbraenns/<CR>
-nmap <buffer>1 :VimFiler /WORK1/fbraenns/<CR>
-nmap <buffer>2 :VimFiler /WORK2/fbraenns/<CR>
-nmap <buffer>3 :VimFiler /data/work/fbraenns/<CR>
-nmap <buffer>4 :VimFiler /share/Tools/<CR>
-nmap <buffer>9 :VimFiler /home/fbraenns/.modulefiles/<CR>
+nmap <buffer>` :VimFiler -status /home/fbraenns/<CR>
+nmap <buffer>0 :VimFiler -status /home/fbraenns/<CR>
+nmap <buffer>1 :VimFiler -status /WORK1/fbraenns/<CR>
+nmap <buffer>2 :VimFiler -status /WORK2/fbraenns/<CR>
+nmap <buffer>3 :VimFiler -status /data/work/fbraenns/<CR>
+nmap <buffer>4 :VimFiler -status /share/Tools/<CR>
+nmap <buffer>9 :VimFiler -status /home/fbraenns/.modulefiles/<CR>
 
-nmap <buffer>Z :vs <CR> :terminal<CR>
+" nmap <buffer>Z :vs <CR>:terminal<CR>
 nmap <buffer>z :call jobstart('xterm') <CR>
 nmap <buffer>,x :call jobstart('xterm') <CR>
+nmap <buffer>,y :call jobstart('xterm -e mc . .') <CR>
 
 
 
