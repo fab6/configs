@@ -78,6 +78,8 @@ Plug 'sudar/vim-arduino-syntax'
 Plug 'w0rp/ale'
 Plug 'wesQ3/vim-windowswap'
 Plug 'chrisbra/NrrwRgn'
+Plug 'pangloss/vim-javascript'
+Plug 'rudes/vim-java'
 " Terminal:
 Plug 'mklabs/split-term.vim'
 Plug 'kassio/neoterm'
@@ -410,7 +412,7 @@ cnoremap <C-l> <Right>
 :map <C-x>0 <C-w>c
 :map <C-x>1 <C-w>o
 
-:nmap ,x :call jobstart('xterm') <CR>
+:nmap ,x :call jobstart('xterm',{'detach':1}) <CR>
 " set autochdir "does not work with vimfiler
 "..................................................................................................
 " " Copy to clipboard
@@ -905,15 +907,98 @@ augroup END
 "==================================================================================================
 " VimFiler
 "
+" if dein#tap('vimfiler') == 1
+"     function! VimfilerHookOpts() abort
+"         call vimfiler#custom#profile('default', 'context', {
+"                     \ 'direction' : 'topleft',
+"                     \ 'split': 1,
+"                     \ 'winwidth' : 40,
+"                     \ 'force_quit': 1,
+"                     \ 'status' : 1,
+"                     \ 'columns' : 'devicons:size',
+"                     \ 'safe': 0
+"                     \ })
+"
+"         " Open certain filetypes with external programs
+"         let g:vimfiler_execute_file_list = {}
+"         if s:is_win
+"             call vimfiler#set_execute_file('pdf,PDF', 'SumatraPDF')
+"             call vimfiler#set_execute_file('xlsx,xls,xlsm',
+"                 \ 'C:\Program Files\Microsoft Office\root\Office16\EXCEL.exe')
+"             call vimfiler#set_execute_file('docx,doc',
+"                 \ 'C:\Program Files\Microsoft Office\root\Office16\WINWORD.exe')
+"         elseif s:is_mac
+"             call vimfiler#set_execute_file('pdf,PDF,doc,docx,xls,xlsx,xlsm,png',
+"                 \ 'open')
+"         endif
+"     endfunction
+"     call dein#set_hook('vimfiler', 'hook_source', function('VimfilerHookOpts'))
+" endif
+"
+" Filetype settings
+"augroup ps_vimfiler
+"    au!
+"    au FileType vimfiler call s:vimfiler_settings()
+"augroup END
 
-nnoremap <Leader>jf :<C-u>VimFilerExplorer -status -split -simple -parent -winwidth=35 -no-quit -find<CR>
-nnoremap <Leader>ff :VimFilerExplorer -status -find -winwidth=80<CR>
+function! s:vimfiler_settings()
+    " Exit with escape key and q, Q; hide with <C-c>
+    nmap <buffer> <ESC> <Plug>(vimfiler_exit)
+    nmap <buffer> q <Plug>(vimfiler_exit)
+    nmap <buffer> Q <Plug>(vimfiler_exit)
+    nmap <buffer> <C-c> <Plug>(vimfiler_hide)
+    " Expand tree and edit files with e
+    nmap  <buffer><expr> e vimfiler#smart_cursor_map(
+        \ "\<Plug>(vimfiler_expand_tree)", "\<Plug>(vimfiler_edit_file)")
+    " Open files with external programs (such as a PDF viewer)
+    nmap <buffer> o <Plug>(vimfiler_execute_vimfiler_associated)
+    " Open and close tree with fold commands
+    nmap <buffer> zo <Plug>(vimfiler_expand_tree)
+    nmap <buffer> zc <Plug>(vimfiler_expand_tree)
+    nmap <buffer> zm <Plug>(vimfiler_expand_tree_recursive)
+    nmap <buffer> zr <Plug>(vimfiler_expand_tree_recursive)
+    " Open files in splits
+    nnoremap <buffer><expr><silent> s vimfiler#do_switch_action('split')
+    nnoremap <buffer><expr><silent> v vimfiler#do_switch_action('vsplit')
+    " Copy, move, paste and delete mappings (paste executes move or copy
+    " operations i.e first move and then paste to move)
+    nmap <buffer> c
+    \ <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_clipboard_copy_file)
+    nmap <buffer> m
+    \ <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_clipboard_move_file)
+    nmap <buffer> p <Plug>(vimfiler_clipboard_paste)
+    nmap <buffer> d
+    \ <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_delete_file)
+    " New file and directory
+    nmap <buffer> F <Plug>(vimfiler_new_file)
+    nmap <buffer> D <Plug>(vimfiler_make_directory)
+    " Move up a directory
+    nmap <buffer> u <Plug>(vimfiler_switch_to_parent_directory)
+    " Home directory
+    nmap <buffer> h <Plug>(vimfiler_switch_to_home_directory)
+    " Change window and redraw screen
+    nmap <buffer> <C-j> <C-w>j
+    nmap <buffer> <C-h> <C-w>h
+    nmap <buffer> <C-k> <C-w>k
+    nmap <buffer> <C-l> <C-w>l
+    nmap <buffer> <C-r> <Plug>(vimfiler_redraw_screen)
+    " Open external filer at current direction
+    nmap <buffer> ge
+    \ <Plug>(vimfiler_cd_vim_current_dir)<Plug>(vimfiler_execute_external_filer)
+    " Bookmarks (reuses vimfiler buffer)
+    nmap <buffer>b <Plug>(vimfiler_cd_input_directory)<C-u>bookmark:/<CR>
+endfunction
+"
+"
+
+nnoremap <Leader>jf :<C-u>VimFilerExplorer -sort-type=Time -status -split -simple -parent -winwidth=35 -no-quit -find<CR>
+nnoremap <Leader>ff :VimFilerExplorer -status -find -winwidth=80 -sort-type=Time <CR>
 
 " noremap <Leader>d :<C-u>VimFilerExplorer -status -split -simple -parent -winwidth=35 -toggle -no-quit<CR>
-map <space>d :VimFilerBufferDir -status<CR>
-map <space>D :VimFilerBufferDir -status -split -simple -winwidth=30 -toggle -no-quit -explorer<CR><CR>
+map <space>d :VimFilerBufferDir -status -sort-type=Time<CR>
+map <space>D :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=30 -toggle -no-quit -explorer<CR><CR>
 " map <space>E :VimFilerBufferDir -status -split -simple -winwidth=30 -toggle -no-quit<CR><CR>
-nnoremap <F2> :VimFilerBufferDir -status -split -simple -winwidth=30 -toggle -no-quit<CR>
+nnoremap <F2> :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=30 -toggle -no-quit<CR>
 " nnoremap <F3> :VimFiler status -tab<CR>
 
 augroup filetype
