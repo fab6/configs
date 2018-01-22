@@ -4,6 +4,11 @@
 "  - asyncrun of xterm
 "  - switch global directory
 "  - client/server
+" Sessions:
+"  - how can I use sessions --> For each topic a splitted vimfiler!?
+"  - what should be my default session
+" Git:
+"  - easier git handling
 " Vimfiler:
 "  - multiple vimfiler at once for quick comparison; not only two
 "  - bookmarks
@@ -17,7 +22,8 @@
 " - modelica
 " - Arduino
 " - Octave?
-" - Python --> H2O, Keras, DataAnalysis
+" - Python --> scikit-learn, H2O, Keras, DataAnalysis
+" - OpenFOAM
 "
 " Fzf:
 " - hangs with neovim (appimage)
@@ -55,13 +61,16 @@ Plug 'itchyny/vim-parenmatch'
 Plug 'itchyny/vim-cursorword'
 Plug 'pboettch/vim-cmake-syntax'
 Plug 'itchyny/lightline.vim'
+Plug 'rafi/vim-denite-session'
+Plug 'xolox/vim-misc'
+Plug 'xolox/vim-session'
 " Neomake build tool (mapped below to <c-b>) Plug 'benekastah/neomake' xterm does not stay open
 " Plug 'skywind3000/asyncrun.vim' "xterm does not stay open
 "Plug 'vim-scripts/indentpython.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'mattboehm/vim-accordion'
 Plug 'osyo-manga/vim-anzu'
-Plug 'jreybert/vimagit'
+" Plug 'jreybert/vimagit'
 Plug 'rafi/awesome-vim-colorschemes'
 Plug 'brettanomyces/nvim-terminus'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -501,75 +510,6 @@ nnoremap <leader>hc :<C-u>Denite history:cmd -mode=normal<CR>
 " nnoremap <leader>o :<C-u>Denite -buffer-name=outline -winwidth=35 unite:outline<cr>
 nnoremap <leader>o :<C-u>Denite -winwidth=35 unite:outline<cr>
 
-call denite#custom#map(
-      \ 'normal',
-      \ 'a',
-      \ '<denite:do_action:add>',
-      \ 'noremap'
-      \)
-
-call denite#custom#map(
-      \ 'normal',
-      \ 'd',
-      \ '<denite:do_action:delete>',
-      \ 'noremap'
-      \)
-
-call denite#custom#map(
-      \ 'normal',
-      \ 'r',
-      \ '<denite:do_action:reset>',
-      \ 'noremap'
-      \)
-
-" imap <buffer> <C-a> (denite:do_action:add)
-nnoremap <leader>gl :Denite gitlog<CR>
-nnoremap <leader>gL :Denite gitlog:all<CR>
-nnoremap <leader>gS :Denite gitstatus<CR>
-nnoremap <leader>gs :Gstatus<CR>
-nnoremap <leader>gc :Denite gitchanged<CR>
-nnoremap <leader>gb :Denite gitbranch<CR>
-
-" Actions of gitlog:
-"
-" open default action for open seleted commit.
-" preview preview seleted commit.
-" delete run git diff with current commit for current buffer. (just named delete)
-" reset run git reset with current commit.
-
-" Actions of git status:
-"
-" open open seleted file, default action
-" add run git add for seleted file(s).
-" delete run git diff for seleted file. (just named delete)
-" reset run git reset/checkout or remove for seleted file(s).
-" commit run git commit for seleted file(s).
-" push
-
-let g:easygit_enable_command = 1
-" Gcd make vim cd to git root directory.
-" Glcd make vim lcd to git root directory.
-" Gblame Git blame current file, you can use p to preview commit and d to diff with current file.
-" GcommitCurrent Git commit current file with message as command args.
-" GdiffThis Side by side diff of current file with head or any ref.
-" Gcommit Git commit with command line argument.
-nnoremap <leader>gc :Gcommit
-" Gedit Edit git reference from git show.
-" Gdiff Git diff with command line argument.
-" Gremove Git remove with command line argument, remove current file when arguments empty.
-" Grename Rename current by git mv, file in buffer list would react the changes.
-" Gmove Git mv with command line argument.
-" Gcheckout Git checkout with command line argument.
-nnoremap <leader>gp :Gpull
-nnoremap <leader>gP :Gpush
-nnoremap <leader>ga :Gadd
-" Gpush Git push with arguments, dispatch when possible.
-" Gpull Git pull with arguments, dispatch when possible.
-" Gfetch Git fetch with arguments, dispatch when possible.
-" Gadd Git add with arguments.
-" Gstatus Show git status in a temporary buffer.
-" Ggrep Git grep repo of current file, and show result in quickfix
-" Gmerge Git merge with branch complete
 "==================================================================================================
 " Unite
 "
@@ -1224,3 +1164,77 @@ let g:ale_linters = {
 let g:ale_rust_cargo_use_check = 1
 " }
 "
+"
+
+
+"==================================================================================================
+" Denite-Git + Easygit
+call denite#custom#map(
+      \ 'normal',
+      \ 'a',
+      \ '<denite:do_action:add>',
+      \ 'noremap'
+      \)
+
+call denite#custom#map(
+      \ 'normal',
+      \ 'd',
+      \ '<denite:do_action:delete>',
+      \ 'noremap'
+      \)
+
+call denite#custom#map(
+      \ 'normal',
+      \ 'r',
+      \ '<denite:do_action:reset>',
+      \ 'noremap'
+      \)
+
+" imap <buffer> <C-a> (denite:do_action:add)
+nnoremap <leader>gl :Denite gitlog<CR>
+nnoremap <leader>gL :Denite gitlog:all<CR>
+nnoremap <leader>gS :Denite gitstatus<CR>
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gc :Denite gitchanged<CR>
+nnoremap <leader>gb :Denite gitbranch<CR>
+
+" Actions of gitlog:
+"
+" open default action for open seleted commit.
+" preview preview seleted commit.
+" delete run git diff with current commit for current buffer. (just named delete)
+" reset run git reset with current commit.
+
+" Actions of git status:
+"
+" open open seleted file, default action
+" add run git add for seleted file(s).
+" delete run git diff for seleted file. (just named delete)
+" reset run git reset/checkout or remove for seleted file(s).
+" commit run git commit for seleted file(s).
+" push
+
+let g:easygit_enable_command = 1
+" Gcd make vim cd to git root directory.
+" Glcd make vim lcd to git root directory.
+" Gblame Git blame current file, you can use p to preview commit and d to diff with current file.
+" GcommitCurrent Git commit current file with message as command args.
+" GdiffThis Side by side diff of current file with head or any ref.
+" Gcommit Git commit with command line argument.
+nnoremap <leader>gc :Gcommit
+" Gedit Edit git reference from git show.
+" Gdiff Git diff with command line argument.
+" Gremove Git remove with command line argument, remove current file when arguments empty.
+" Grename Rename current by git mv, file in buffer list would react the changes.
+" Gmove Git mv with command line argument.
+" Gcheckout Git checkout with command line argument.
+nnoremap <leader>gp :Gpull
+nnoremap <leader>gP :Gpush
+nnoremap <leader>ga :Gadd
+" Gpush Git push with arguments, dispatch when possible.
+" Gpull Git pull with arguments, dispatch when possible.
+" Gfetch Git fetch with arguments, dispatch when possible.
+" Gadd Git add with arguments.
+" Gstatus Show git status in a temporary buffer.
+" Ggrep Git grep repo of current file, and show result in quickfix
+" Gmerge Git merge with branch complete
