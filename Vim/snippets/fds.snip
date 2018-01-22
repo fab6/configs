@@ -1,3 +1,16 @@
+snippet     f_head
+abbr        f_head
+alias       f_headprocessing
+options     head
+        &HEAD CHID='${1:chid_name}, TITLE='${2:title}' /
+
+
+snippet     f_radi
+abbr        f_radi
+alias       f_radiprocessing
+options     head
+        &RADI NUMBER_RADIATION_ANGLES=${1:"200"}, NMIEANG=${2:"30"}, TIME_STEP_INCREMENT=${3:"1"},/
+
 snippet     post
 abbr        post
 alias       postprocessing

@@ -79,16 +79,17 @@ Plug 'haya14busa/incsearch.vim'
 Plug 'haya14busa/incsearch-fuzzy.vim'
 Plug 'rhysd/vim-gfm-syntax'
 " Programming:
-Plug 'python-mode/python-mode'
-Plug 'jvirtanen/vim-octave'
-Plug 'stevearc/vim-arduino'
-Plug 'nvie/vim-flake8'
-Plug 'sudar/vim-arduino-syntax'
+Plug 'python-mode/python-mode' , { 'for': 'python' }
+Plug 'jvirtanen/vim-octave', { 'for': 'octave' }
+Plug 'stevearc/vim-arduino', { 'for': 'arduino' }
+Plug 'nvie/vim-flake8', { 'for': 'python' }
+Plug 'sudar/vim-arduino-syntax', { 'for': 'arduino' }
 Plug 'w0rp/ale'
 Plug 'wesQ3/vim-windowswap'
 Plug 'chrisbra/NrrwRgn'
-Plug 'pangloss/vim-javascript'
-Plug 'rudes/vim-java'
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+Plug 'rudes/vim-java', { 'for': 'java' }
+" Plug 'tpope/vim-fugitive'
 " Terminal:
 Plug 'mklabs/split-term.vim'
 Plug 'kassio/neoterm'
@@ -234,6 +235,7 @@ autocmd BufReadPost *
             \   exe "normal g`\"" |
             \ endif
 augroup filetype
+    autocmd BufNewFile,BufRead *Dict set filetype=c
     autocmd BufNewFile,BufRead *.mo set filetype=modelica
     autocmd BufNewFile,BufRead *.in set syntax=fortran
     autocmd BufNewFile,BufRead *.data set syntax=gpyro
@@ -505,7 +507,7 @@ nnoremap <leader>8 :<C-u>DeniteCursorWord grep:. -mode=normal<CR>
 " nnoremap <leader>/ :<C-u>Denite grep:. -mode=normal<CR>
 " nnoremap <leader><Space>/ :<C-u>DeniteBufferDir grep:. -mode=normal<CR>
 " nnoremap <leader>d :<C-u>DeniteBufferDir file_rec<CR>
-nnoremap <leader>o :<C-u>Denite location_list -mode=normal -no-empty<CR>
+nnoremap <leader>o :<C-u>Denite location_list -mode=normal -no-empty -auto-preview<CR>
 nnoremap <leader>hs :<C-u>Denite history:search -mode=normal<CR>
 nnoremap <leader>hc :<C-u>Denite history:cmd -mode=normal<CR>
 
@@ -1323,3 +1325,6 @@ nnoremap <leader>ga :Gadd
 " Gstatus Show git status in a temporary buffer.
 " Ggrep Git grep repo of current file, and show result in quickfix
 " Gmerge Git merge with branch complete
+
+:let g:session_autosave = 'no'
+:let g:session_autoload = 'no'

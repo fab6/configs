@@ -16,7 +16,7 @@ nmap <buffer>9 :VimFiler -status /home/fbraenns/.modulefiles/<CR>
 " nmap <buffer>Z :vs <CR>:terminal<CR>
 "nmap <buffer>z :call jobstart('xterm') <CR>
 nmap <buffer>,x :call jobstart('xterm',{'detach':1}) <CR>
-nmap <buffer>,y :call jobstart('xterm -e mc . .') <CR>
+nmap <buffer>,y :call jobstart('xterm -e mc . .',{'detach':1}) <CR>
 
 
 
