@@ -12,6 +12,16 @@ nmap <buffer>2 :VimFiler -status /WORK2/fbraenns/<CR>
 nmap <buffer>3 :VimFiler -status /data/work/fbraenns/<CR>
 nmap <buffer>4 :VimFiler -status /share/Tools/<CR>
 nmap <buffer>9 :VimFiler -status /home/fbraenns/.modulefiles/<CR>
+nmap <buffer>o <Plug>(vimfiler_execute_vimfiler_associated)
+nmap <buffer>C <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_clipboard_copy_file)
+nmap <buffer>M <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_clipboard_move_file)
+nmap <buffer>p <Plug>(vimfiler_clipboard_paste)
+nmap <buffer>d <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_delete_file)
+nmap <buffer>F <Plug>(vimfiler_new_file)
+nmap <buffer>+ <Plug>(vimfiler_make_directory)
+nmap <buffer>b <Plug>(vimfiler_cd_input_directory)<C-u>bookmark:/<CR>
+nnoremap <buffer><expr><silent> s vimfiler#do_switch_action('split')
+nnoremap <buffer><expr><silent> v vimfiler#do_switch_action('vsplit')
 
 " nmap <buffer>Z :vs <CR>:terminal<CR>
 "nmap <buffer>z :call jobstart('xterm') <CR>

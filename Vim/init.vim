@@ -1,23 +1,21 @@
 "==================================================================================================
 " TODO
 " Vim:
-"  - asyncrun of xterm
-"  - switch global directory
 "  - client/server
 " Sessions:
 "  - how can I use sessions --> For each topic a splitted vimfiler!?
 "  - what should be my default session
+" Denite:
+"  - get to know other features
 " Git:
 "  - easier git handling
 " Vimfiler:
-"  - multiple vimfiler at once for quick comparison; not only two
-"  - bookmarks
 " Terminal:
-"  - wie kann ich ohne Cursor Pfeile in History navigieren
+"  - how can I access the history withouth the cursor keys
 " Python:
-"  - ale ansehen
+"  - get to know ale
 " Complete:
-"  - deoplete auch fuers Terminal!?
+"  - deoplete does this work for the terminal as well?
 " Snippets:
 " - modelica
 " - Arduino
@@ -25,17 +23,11 @@
 " - Python --> scikit-learn, H2O, Keras, DataAnalysis
 " - OpenFOAM
 "
-" Fzf:
-" - hangs with neovim (appimage)
-"
-" Git:
-" - which plugin? --> push!?
 "
 "==================================================================================================
 set runtimepath+=/home/fbraenns/.nvim/
 "--------------------------------------------------------------------------------------------------
 " Specify a directory for plugins
-"
 call plug#begin('/home/fbraenns/.nvim/vimplug')
 Plug 'junegunn/vim-easy-align'
 Plug 'Shougo/neosnippet.vim'
@@ -52,6 +44,11 @@ Plug 'Shougo/unite-outline'
 Plug 'rhysd/unite-oldfiles.vim'
 Plug 'chemzqm/unite-location'
 Plug 'tsukkee/unite-tag'
+Plug 'Shougo/denite.nvim'
+Plug 'chemzqm/vim-easygit'
+Plug 'chemzqm/denite-git'
+Plug 'chemzqm/denite-extra'
+Plug 'rafi/vim-denite-session'
 Plug 'zchee/deoplete-jedi'
 Plug 'thirtythreeforty/lessspace.vim'
 Plug 'chrisbra/csv.vim'
@@ -61,20 +58,13 @@ Plug 'itchyny/vim-parenmatch'
 Plug 'itchyny/vim-cursorword'
 Plug 'pboettch/vim-cmake-syntax'
 Plug 'itchyny/lightline.vim'
-Plug 'rafi/vim-denite-session'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-session'
-" Neomake build tool (mapped below to <c-b>) Plug 'benekastah/neomake' xterm does not stay open
-" Plug 'skywind3000/asyncrun.vim' "xterm does not stay open
-"Plug 'vim-scripts/indentpython.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'mattboehm/vim-accordion'
 Plug 'osyo-manga/vim-anzu'
-" Plug 'jreybert/vimagit'
 Plug 'rafi/awesome-vim-colorschemes'
 Plug 'brettanomyces/nvim-terminus'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
 Plug 'haya14busa/incsearch.vim'
 Plug 'haya14busa/incsearch-fuzzy.vim'
 Plug 'rhysd/vim-gfm-syntax'
@@ -87,11 +77,10 @@ Plug 'nvie/vim-flake8', { 'for': 'python' }
 Plug 'sudar/vim-arduino-syntax', { 'for': 'arduino' }
 Plug 'w0rp/ale'
 Plug 'wesQ3/vim-windowswap'
-Plug 'chrisbra/NrrwRgn'
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'rudes/vim-java', { 'for': 'java' }
 Plug 'plasticboy/vim-markdown'
-" Plug 'tpope/vim-fugitive'
+Plug 'chrisbra/NrrwRgn'
 " Terminal:
 Plug 'mklabs/split-term.vim'
 Plug 'kassio/neoterm'
@@ -101,16 +90,19 @@ Plug 'kassio/neoterm'
 " Plug 'reedes/vim-one'
 "--------------------------------------------------------------------------------------------------
 " Misc:
+" Neomake build tool (mapped below to <c-b>) Plug 'benekastah/neomake' xterm does not stay open
+" Plug 'skywind3000/asyncrun.vim' "xterm does not stay open
+"Plug 'vim-scripts/indentpython.vim'
+" Plug 'tpope/vim-fugitive'
+" Plug 'jreybert/vimagit'
+" Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+" Plug 'junegunn/fzf.vim'
 " Plug 'wellle/tmux-complete.vim'
 " Plug 'vim-scripts/mailbrowser.vim'
 " Plug 'lambdalisue/gina.vim'
 " Plug 'skywind3000/asyncrun.vim>'
 " Plug 'Shougo/vimshell.vim'
 " Plug 'vhdirk/vim-cmake'
-Plug 'Shougo/denite.nvim'
-Plug 'chemzqm/vim-easygit'
-Plug 'chemzqm/denite-git'
-Plug 'chemzqm/denite-extra'
 " Plug 'jreybert/vimagit'
 " Plug 'asymotion/vim-easymotion'
 " Plug 'mzlogin/vim-markdown-toc'
@@ -131,19 +123,17 @@ call plug#end()
 "==================================================================================================
 " General Settings
 "
-"--------------------------------------------------------------------------------------------------
-" General
 set encoding=utf-8
+set number
+set ut=100
+set novisualbell
+"" Shut down the visual bell of terminal
+set t_vb=
 
-
-"
+"":set mouse=a " mouse support in all modes
+:set mousehide " hide the mouse when typing text
 "" this makes the mouse paste a block of text without formatting it
 :map <MouseMiddle> <esc>"*p
-"
-"
-set number
-"" .vimrc
-set ut=100
 
 "--------------------------------------------------------------------------------------------------
 " Terminal Settings
@@ -152,11 +142,10 @@ set ut=100
 "" `KVT' claims to be "xterm-color":
 if &term =~ 'xterm'
 endif
-"
-"
+
+
 "--------------------------------------------------------------------------------------------------
 " User Interface
-"
 
 "" have syntax highlighting in terminals which can display colours:
 if has('syntax') && (&t_Co > 2)
@@ -171,7 +160,7 @@ set history=50
 "" 100 lines of registers; including @10 in there should restrict input buffer
 "" but it causes an error for me:
 set viminfo=/10,'10,r/mnt/zip,r/mnt/floppy,f0,h,\"100
-"
+
 "" have command-line completion <Tab> (for filenames, help topics, option names)
 "" first list the available options and complete the longest common part, then
 "" have further <Tab>s cycle through the possibilities:
@@ -187,33 +176,13 @@ set showcmd
 "
 "" when ":edit"-command ignore those files:
 set suffixes=.aux,.bak,.dvi,.gz,.idx,.log,.ps,.swp,.tar,.pdf,.rpm,.deb,.o,.e,*~
-"
-"" Which values are written into viminfo
-"" :help viminfo«
-"set viminfo='20,"\50
-"
-"" Error ...
-set novisualbell
-"
-"" Shut down the visual bell of terminal
-set t_vb=
-"" when using list, keep tabs at their full width and display `arrows': execute 'set listchars+=tab:' . nr2char(187) . nr2char(183)
-"" (Character 187 is a right double-chevron, and 183 a mid-dot.)
-"
-"
-"" mouse settings
-"":set mouse=a " mouse support in all modes
-:set mousehide " hide the mouse when typing text
-"
-"
-"
+
 "" don't have files trying to override this .vimrc:
 set nomodeline
-"
-"
+
 "--------------------------------------------------------------------------------------------------
 " Text Formatting -- General
-"
+
 "" don't make it look like there are line breaks where there aren't:
 set nowrap
 "
@@ -222,11 +191,10 @@ set shiftwidth=4
 set shiftround
 set expandtab
 set autoindent
-"
-"
+
 "" normally don't automatically format `text' as it is typed, IE only do this
 "" with comments, at 79 characters:
-""set formatoptions-=t
+set formatoptions-=t
 set textwidth=72
 
 "--------------------------------------------------------------------------------------------------
@@ -379,11 +347,6 @@ let mapleader="\<SPACE>"
 set whichwrap=h,l,~,[,]
 "
 "
-"" use <Ctrl>+N/<Ctrl>+P to cycle through files:
-""nnoremap <C-N> :next<CR>
-""nnoremap <C-P> :prev<CR>
-"" [<Ctrl>+N by default is like j, and <Ctrl>+P like k.]
-"
 "" have % bounce between angled brackets, as well as t'other kinds:
 set matchpairs+=<:>
 "" have Y behave analogously to D and C rather than to dd and cc (which is
@@ -397,13 +360,10 @@ cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
 cnoremap <C-j> <Left>
 cnoremap <C-l> <Right>
-" cnoremap <M-b> <S-Left>
-" cnoremap <M-f> <S-Right>
 "
 :nnoremap <leader>ed :e ~/.config/nvim/init.vim<CR>
 :nnoremap <leader>er :source ~/.config/nvim/init.vim<CR>
 :nnoremap <leader>ef :e ~/.nvim/ftplugin/<CR>
-":nnoremap <leader>p :source ~/.config/nvim/init.vim<CR>
 
 "" Paste Mode On/Off
 " map <F11> :call Paste_on_off()<CR>
@@ -427,7 +387,7 @@ cnoremap <C-l> <Right>
 :map <C-x>1 <C-w>o
 
 :nmap ,x :call jobstart('xterm',{'detach':1}) <CR>
-" set autochdir "does not work with vimfiler
+
 "..................................................................................................
 " " Copy to clipboard
 set clipboard+=unnamedplus
@@ -510,63 +470,70 @@ nnoremap <leader>8 :<C-u>DeniteCursorWord grep:. -mode=normal<CR>
 " nnoremap <leader>/ :<C-u>Denite grep:. -mode=normal<CR>
 " nnoremap <leader><Space>/ :<C-u>DeniteBufferDir grep:. -mode=normal<CR>
 " nnoremap <leader>d :<C-u>DeniteBufferDir file_rec<CR>
-nnoremap <leader>l :<C-u>Denite location_list -mode=normal -no-empty -auto-preview<CR>
 nnoremap <leader>hs :<C-u>Denite history:search -mode=normal<CR>
 nnoremap <leader>hc :<C-u>Denite history:cmd -mode=normal<CR>
+nnoremap <leader>c :<C-u>Denite colorscheme -mode=normal -auto-preview<CR>
 
 nnoremap <leader>o :<C-u>Denite -buffer-name=outline -winwidth=35 unite:outline -mode=normal<cr>
 nnoremap <leader>O :<C-u>Denite -mode=normal -winwidth=35 outline<cr>
 " nnoremap <leader>k :<C-u>Denite -mode=normal -winwidth=35 unite:outline<cr>
 nnoremap <leader>gr :<C-u>Denite -mode=normal -winwidth=35 grep<cr>
+nnoremap <leader>y :<C-u>Denite -mode=normal -winwidth=35 register<cr>
+nnoremap <leader>s :<C-u>Denite -mode=normal -winwidth=35 session<cr>
 
-nnoremap <leader>f :<C-u>Denite -mode=normal -no-split -buffer-name=files   file<cr>
+nnoremap <leader>f :<C-u>DeniteBufferDir -mode=normal -no-split -buffer-name=files   file<cr>
 nnoremap <leader>r :<C-u>Denite -mode=normal -no-split -buffer-name=mru     file_mru<cr>
 nnoremap <leader>b :<C-u>Denite -mode=normal -no-split -buffer-name=buffers   buffer<cr>
+nnoremap <leader>L :<C-u>Denite location_list -mode=normal -no-empty -auto-preview<CR>
+nnoremap <leader>n :<C-u>Denite line -mode=insert -no-split -buffer-name=line<cr>
+nnoremap <leader>N :<C-u>DeniteCursorWord line -mode=insert -no-split -buffer-name=line<cr>
 
-" # ==================== Denite ==================== {{{1
-" [[plugins]]
-" repo = 'Shougo/denite.nvim'
-" on_cmd = 'Denite'
-" if = "has('python3')"
-" hook_add = '''
-"   " Use plefix s
-"   nnoremap suc :<C-u>Denite colorscheme -auto-preview<CR>
-"   nnoremap sub :<C-u>Denite buffer<CR>
-"   nnoremap suf :<C-u>Denite file<CR>
-"   nnoremap suF :<C-u>Denite file_rec<CR>
-"   nnoremap suu :<C-u>Denite buffer file_old<CR>
-"   nnoremap suo :<C-u>Denite outline -no-quit -mode=normal<CR>
-"   nnoremap suh :<C-u>Denite help<CR>
-"   nnoremap sur :<C-u>Denite register<CR>
-"   nnoremap sug :<C-u>Denite grep -no-empty<CR>
-"   nnoremap su/ :<C-u>Denite line<CR>
-"   nnoremap suR :<C-u>Denite -resume<CR>
-"   noremap sul :<C-u>Denite command_history<CR>
-" '''
-" hook_post_source = '''
-"   " Default options.
-"   call denite#custom#option('default', {
-"         \ 'prompt': '»',
-"         \ 'cursor_wrap': v:true,
-"         \ 'auto_resize': v:true,
-"         \ 'highlight_mode_insert': 'WildMenu'
-"         \ })
-"   " Pt command on grep source
-"   if executable('pt')
-"     call denite#custom#var('grep', 'command', ['pt'])
-"     call denite#custom#var('grep', 'default_opts',
-"           \ ['--nogroup', '--nocolor', '--smart-case'])
-"     call denite#custom#var('grep', 'recursive_opts', [])
-"     call denite#custom#var('grep', 'pattern_opt', [])
-"     call denite#custom#var('grep', 'separator', ['--'])
-"     call denite#custom#var('grep', 'final_opts', [])
-"   endif
-"   " custom mappings.
-"   call denite#custom#map('insert', '<C-n>', '<denite:move_to_next_line>', 'noremap')
-"   call denite#custom#map('insert', '<C-p>', '<denite:move_to_previous_line>', 'noremap')
-"   call denite#custom#map('insert', '<C-[>', '<denite:enter_mode:normal>', 'noremap')
-"   call denite#custom#map('normal', '<C-[>', '<denite:quit>', 'noremap')
+nnoremap <silent> <space>p  :<C-u>Denite -resume<CR>
+nnoremap <silent> <space>j  :call execute('Denite -resume -select=+'.v:count1.' -immediately')<CR>
+nnoremap <silent> <space>k  :call execute('Denite -resume -select=-'.v:count1.' -immediately')<CR>
+nnoremap <silent> <space>q  :<C-u>Denite -mode=normal -auto-resize quickfix<CR>
+" nnoremap <silent> <space>l  :<C-u>Denite -mode=normal -auto-resize location_list<CR>
+
+" Ag command on grep source
+call denite#custom#var('grep', 'command', ['ag'])
+call denite#custom#var('grep', 'default_opts',
+		\ ['-i', '--vimgrep'])
+call denite#custom#var('grep', 'recursive_opts', [])
+call denite#custom#var('grep', 'pattern_opt', [])
+call denite#custom#var('grep', 'separator', ['--'])
+call denite#custom#var('grep', 'final_opts', [])
+
+" Change ignore_globs
+call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
+      \ [ '.git/', '.ropeproject/', '__pycache__/',
+      \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/'])
 "
+call denite#custom#map(
+      \ 'normal',
+      \ 'h',
+      \ '<denite:move_up_path>',
+      \ 'noremap'
+      \)
+
+call denite#custom#map(
+      \ 'normal',
+      \ 'f',
+      \ '<denite:scroll_page_forwards>',
+      \ 'noremap'
+      \)
+
+call denite#custom#map(
+      \ 'normal',
+      \ 'b',
+      \ '<denite:scroll_page_backwards>',
+      \ 'noremap'
+      \)
+" call denite#custom#map(
+"       \ 'normal',
+"       \ 'l',
+"       \ '<denite:enter_mode:normal>',
+"       \ 'noremap'
+"       \)
 
 call denite#custom#map(
       \ 'insert',
@@ -587,25 +554,7 @@ call denite#custom#map(
 "
 let g:unite_source_history_yank_enable = 1
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
-" nnoremap <leader>f :<C-u>Unite -no-split -buffer-name=files   -start-insert file<cr>
-" nnoremap <leader>o :<C-u>Unite -no-split -buffer-name=outline -start-insert outline<cr>
-" nnoremap <leader>o :<C-u>Unite -buffer-name=outline -start-insert -winwidth=35 outline<cr>
-" :Unite -vertical -winwidth=35 outline
-
-" nnoremap <leader>tt :<C-u>Unite -no-split -buffer-name=files   -start-insert file_rec/async:!<cr>
-" nnoremap <leader>r :<C-u>Unite -no-split -buffer-name=mru     -start-insert file_mru<cr>
-" nnoremap <leader>b :<C-u>Unite -no-split -buffer-name=buffer  buffer<cr>
-" nnoremap <leader>B :Unite -quick-match buffer<cr>
-" nnoremap <leader>b :Unite -quick-match buffer<cr>
-nnoremap <leader>y :<C-u>Unite -no-split -buffer-name=yank    history/yank<cr>
 nnoremap <silent><Leader>m :Unite -silent -auto-resize -buffer-name=my-directories -default-action=vimfiler bookmark<CR>
-" nnoremap <silent><buffer>b <C-u>:Unite -silent -default-action=cd -no-start-insert bookmark<CR>
-" nnoremap <C-p> :Unite file_rec/async<cr>
-" nnoremap <leader>/ :Unite grep:.<cr>
-
-" set nocompatible
-" set runtimepath+=~/.vim/bundle/vimproc.vim
-" set runtimepath+=~/.vim/bundle/unite.vim
 
 " Use ag in unite grep source.
 let g:unite_source_grep_command = 'ag'
@@ -637,163 +586,6 @@ endfunction
 
 " Use fuzzy matcher for filtering elements.
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
-
-" Set the grep command used by unite.
-" let g:unite_source_grep_command = 'ag'
-" let g:unite_source_grep_default_opts =
-"     \ '--line-numbers --nogroup --nocolor --follow --hidden --ignore-case --ignore ".git" --ignore ".bzr" --ignore ".svn"'
-
-" {{{ Hotkeys.
-
-" <Leader>s: Perform file search, like control-p.
-" nnoremap <Leader>uns :<C-u>Unite -buffer-name=files -start-insert file_rec/async:!<CR>
-
-" <Leader>g: Start a grep search from the current directory.
-" nnoremap <Leader>ung :<C-u>Unite -buffer-name=grep grep:.<CR>
-
-" <Leader>y: Open yank history.
-" let g:unite_source_history_yank_enable = 1
-" nnoremap <Leader>uny :<C-u>Unite -buffer-name=yank_history history/yank<CR>
-
-" <Leader>b: Buffer switching.
-" nnoremap <Leader>unb :<C-u>Unite -quick-match -buffer-name=buffers buffer<CR>
-
-"  Custom mappings for the unite buffer.
-"autocmd FileType unite call s:unite_settings()
-"function! s:unite_settings()
-"  " <C->movement: navigate in the unite buffer
-"  imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-"  imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-"endfunction
-
-" }}}
-
-" File Searchin
-" nnoremap <C-p> :Unite file_rec/async<cr>
-"
-" Content searching like ack.vim (or ag.vim)
-" nnoremap <space>/ :Unite grep:.<cr>
-
-" Yank history
-" let g:unite_source_history_yank_enable = 1
-" nnoremap <space>y :Unite history/yank<cr>
-
-" "Buffer Switching
-" nnoremap <space>s :Unite -quick-match buffer<cr>
-"
-"==================================================================================================
-" FZF
-"
-"..................................................................................................
-" nnoremap <silent> <Leader>C :call fzf#run({
-" \   'source':
-" \     map(split(globpath(&rtp, "colors/*.vim"), "\n"),
-" \         "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')"),
-" \   'sink':    'colo',
-" \   'options': '+m',
-" \   'left':    30
-" \ })<CR>
-"..................................................................................................
-function! s:buflist()
-  redir => ls
-  silent ls
-  redir END
-  return split(ls, '\n')
-endfunction
-
-function! s:bufopen(e)
-  execute 'buffer' matchstr(a:e, '^[ 0-9]*')
-endfunction
-
-nnoremap <silent> <Leader><Enter> :call fzf#run({
-\   'source':  reverse(<sid>buflist()),
-\   'sink':    function('<sid>bufopen'),
-\   'options': '+m',
-\   'down':    len(<sid>buflist()) + 2
-\ })<CR>
-"
-"..................................................................................................
-function! s:line_handler(l)
-  let keys = split(a:l, ':\t')
-  exec 'buf' keys[0]
-  exec keys[1]
-  normal! ^zz
-endfunction
-
-function! s:buffer_lines()
-  let res = []
-  for b in filter(range(1, bufnr('$')), 'buflisted(v:val)')
-    call extend(res, map(getbufline(b,0,"$"), 'b . ":\t" . (v:key + 1) . ":\t" . v:val '))
-  endfor
-  return res
-endfunction
-
-command! FZFLines call fzf#run({
-\   'source':  <sid>buffer_lines(),
-\   'sink':    function('<sid>line_handler'),
-\   'options': '--extended --nth=3..',
-\   'down':    '60%'
-\})
-
-"..................................................................................................
-function! s:ag_to_qf(line)
-  let parts = split(a:line, ':')
-  return {'filename': parts[0], 'lnum': parts[1], 'col': parts[2],
-        \ 'text': join(parts[3:], ':')}
-endfunction
-
-function! s:ag_handler(lines)
-  if len(a:lines) < 2 | return | endif
-
-  let cmd = get({'ctrl-x': 'split',
-               \ 'ctrl-v': 'vertical split',
-               \ 'ctrl-t': 'tabe'}, a:lines[0], 'e')
-  let list = map(a:lines[1:], 's:ag_to_qf(v:val)')
-
-  let first = list[0]
-  execute cmd escape(first.filename, ' %#\')
-  execute first.lnum
-  execute 'normal!' first.col.'|zz'
-
-  if len(list) > 1
-    call setqflist(list)
-    copen
-    wincmd p
-  endif
-endfunction
-
-command! -nargs=* Ag call fzf#run({
-\ 'source':  printf('ag --nogroup --column --color "%s"',
-\                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
-\ 'sink*':    function('<sid>ag_handler'),
-\ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
-\            '--multi --bind=ctrl-a:select-all,ctrl-d:deselect-all '.
-\            '--color hl:68,hl+:110',
-\ 'down':    '50%'
-\ })
-
-"..................................................................................................
-function! s:fzf_neighbouring_files()
-  let current_file =expand("%")
-  let cwd = fnamemodify(current_file, ':p:h')
-  let command = 'ag -g "" -f ' . cwd . ' --depth 0'
-
-  call fzf#run({
-        \ 'source': command,
-        \ 'sink':   'e',
-        \ 'options': '-m -x +s',
-        \ 'window':  'enew' })
-endfunction
-
-command! FZFNeigh call s:fzf_neighbouring_files()
-
-"..................................................................................................
-nnoremap <leader>h :History<CR>
-nnoremap <leader>B :Buffers<CR>
-nnoremap <leader>F :Files<CR>
-
-"..................................................................................................
-imap <c-x><c-l> <plug>(fzf-complete-line)
 
 "==================================================================================================
 " PYTHON
@@ -881,24 +673,6 @@ vnoremap <leader>; :call NERDComment(0,"toggle")<CR>
 let g:indentLine_color_term = 239
 
 "==================================================================================================
-" Easymotion
-"
-"" <Leader>f{char} to move to {char}
-"map  <Leader>f <Plug>(easymotion-bd-f)
-"nmap <Leader>f <Plug>(easymotion-overwin-f)
-"
-"" s{char}{char} to move to {char}{char}
-"nmap s <Plug>(easymotion-overwin-f2)
-"
-"" Move to line
-"map <Leader>L <Plug>(easymotion-bd-jk)
-"nmap <Leader>L <Plug>(easymotion-overwin-line)
-"
-"" Move to word
-"map  <Leader>w <Plug>(easymotion-bd-w)
-"nmap <Leader>w <Plug>(easymotion-overwin-w)
-
-"==================================================================================================
 " Anzu-Statusline
 "
 set statusline+=%{anzu#search_status()}
@@ -914,100 +688,14 @@ augroup END
 
 "==================================================================================================
 " VimFiler
-"
-" if dein#tap('vimfiler') == 1
-"     function! VimfilerHookOpts() abort
-"         call vimfiler#custom#profile('default', 'context', {
-"                     \ 'direction' : 'topleft',
-"                     \ 'split': 1,
-"                     \ 'winwidth' : 40,
-"                     \ 'force_quit': 1,
-"                     \ 'status' : 1,
-"                     \ 'columns' : 'devicons:size',
-"                     \ 'safe': 0
-"                     \ })
-"
-"         " Open certain filetypes with external programs
-"         let g:vimfiler_execute_file_list = {}
-"         if s:is_win
-"             call vimfiler#set_execute_file('pdf,PDF', 'SumatraPDF')
-"             call vimfiler#set_execute_file('xlsx,xls,xlsm',
-"                 \ 'C:\Program Files\Microsoft Office\root\Office16\EXCEL.exe')
-"             call vimfiler#set_execute_file('docx,doc',
-"                 \ 'C:\Program Files\Microsoft Office\root\Office16\WINWORD.exe')
-"         elseif s:is_mac
-"             call vimfiler#set_execute_file('pdf,PDF,doc,docx,xls,xlsx,xlsm,png',
-"                 \ 'open')
-"         endif
-"     endfunction
-"     call dein#set_hook('vimfiler', 'hook_source', function('VimfilerHookOpts'))
-" endif
-"
-" Filetype settings
-"augroup ps_vimfiler
-"    au!
-"    au FileType vimfiler call s:vimfiler_settings()
-"augroup END
-
-function! s:vimfiler_settings()
-    " Exit with escape key and q, Q; hide with <C-c>
-    nmap <buffer> <ESC> <Plug>(vimfiler_exit)
-    nmap <buffer> q <Plug>(vimfiler_exit)
-    nmap <buffer> Q <Plug>(vimfiler_exit)
-    nmap <buffer> <C-c> <Plug>(vimfiler_hide)
-    " Expand tree and edit files with e
-    nmap  <buffer><expr> e vimfiler#smart_cursor_map(
-        \ "\<Plug>(vimfiler_expand_tree)", "\<Plug>(vimfiler_edit_file)")
-    " Open files with external programs (such as a PDF viewer)
-    nmap <buffer> o <Plug>(vimfiler_execute_vimfiler_associated)
-    " Open and close tree with fold commands
-    nmap <buffer> zo <Plug>(vimfiler_expand_tree)
-    nmap <buffer> zc <Plug>(vimfiler_expand_tree)
-    nmap <buffer> zm <Plug>(vimfiler_expand_tree_recursive)
-    nmap <buffer> zr <Plug>(vimfiler_expand_tree_recursive)
-    " Open files in splits
-    nnoremap <buffer><expr><silent> s vimfiler#do_switch_action('split')
-    nnoremap <buffer><expr><silent> v vimfiler#do_switch_action('vsplit')
-    " Copy, move, paste and delete mappings (paste executes move or copy
-    " operations i.e first move and then paste to move)
-    nmap <buffer> c
-    \ <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_clipboard_copy_file)
-    nmap <buffer> m
-    \ <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_clipboard_move_file)
-    nmap <buffer> p <Plug>(vimfiler_clipboard_paste)
-    nmap <buffer> d
-    \ <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_delete_file)
-    " New file and directory
-    nmap <buffer> F <Plug>(vimfiler_new_file)
-    nmap <buffer> D <Plug>(vimfiler_make_directory)
-    " Move up a directory
-    nmap <buffer> u <Plug>(vimfiler_switch_to_parent_directory)
-    " Home directory
-    nmap <buffer> h <Plug>(vimfiler_switch_to_home_directory)
-    " Change window and redraw screen
-    nmap <buffer> <C-j> <C-w>j
-    nmap <buffer> <C-h> <C-w>h
-    nmap <buffer> <C-k> <C-w>k
-    nmap <buffer> <C-l> <C-w>l
-    nmap <buffer> <C-r> <Plug>(vimfiler_redraw_screen)
-    " Open external filer at current direction
-    nmap <buffer> ge
-    \ <Plug>(vimfiler_cd_vim_current_dir)<Plug>(vimfiler_execute_external_filer)
-    " Bookmarks (reuses vimfiler buffer)
-    nmap <buffer>b <Plug>(vimfiler_cd_input_directory)<C-u>bookmark:/<CR>
-endfunction
-"
-"
 
 nnoremap <Leader>jf :<C-u>VimFilerExplorer -sort-type=Time -status -split -simple -parent -winwidth=35 -no-quit -find<CR>
 nnoremap <Leader>ff :VimFilerExplorer -status -find -winwidth=80 -sort-type=Time <CR>
 
-" noremap <Leader>d :<C-u>VimFilerExplorer -status -split -simple -parent -winwidth=35 -toggle -no-quit<CR>
 map <space>d :VimFilerBufferDir -status -sort-type=Time<CR>
 map <space>D :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=30 -toggle -no-quit -explorer<CR><CR>
 " map <space>E :VimFilerBufferDir -status -split -simple -winwidth=30 -toggle -no-quit<CR><CR>
 nnoremap <F2> :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=30 -toggle -no-quit<CR>
-" nnoremap <F3> :VimFiler status -tab<CR>
 
 augroup filetype
     " open at start up: autocmd VimEnter * if !argc() | VimFiler -status | endif
@@ -1019,8 +707,10 @@ augroup END
 function! s:vimfiler_buffer_au()
     setlocal nobuflisted
     setlocal colorcolumn=
+    :highlight CursorLine ctermbg=65
 endfunction
 autocmd FileType vimfiler call s:vimfiler_buffer_au()
+
 
 let g:vimfiler_file_icon = '-'
 let g:vimfiler_marked_file_icon = '*'
@@ -1042,32 +732,6 @@ let g:vimfiler_expand_jump_to_first_child = 0
 " let g:vimfiler_ignore_pattern = '^\%(.vimrc\|\.a\*\)$'
 " let g:vimfiler_ignore_pattern = '\.git\|\.DS_Store\|\.pyc'
 " Default value is '^\.' (dot files pattern).
-
-
-"---------------------------------------------------------------------------
-" vimfiler:"{{{
-"
-" nnoremap    [vimfiler]   <Nop>
-" nmap    <Space>v [vimfiler]
-"
-" nnoremap <silent> [vimfiler]b  :<C-u>VimFilerBufferDir<CR>
-" nnoremap <silent> [vimfiler]c  :<C-u>VimFilerCurrentDir<CR>
-" nnoremap <silent> [vimfiler]d  :<C-u>VimFilerDouble<CR>
-" nnoremap <silent> [vimfiler]f  :<C-u>VimFilerSimple -no-quit -winwidth=32<CR>
-" nnoremap <silent> [vimfiler]s  :<C-u>VimShell<CR>
-
-" Edit file by tabedit.
-" let g:vimfiler_edit_action = 'open'
-" let g:vimfiler_split_action = 'tabopen'
-"
-" let g:vimfiler_as_default_explorer = 1
-
-" if s:MSWindows
-"     let g:unite_kind_file_use_trashbox = 1
-" endif
-
-" Enable file operation commands.
-" let g:vimfiler_safe_mode_by_default = 0
 
 "let g:vimfiler_data_directory = $DOTVIM.'/.vimfiler'
 let g:vimfiler_data_directory = '~/.vimfiler'
@@ -1109,13 +773,6 @@ let g:vimfiler_execute_file_list={
 "To simulate |i_CTRL-R| in terminal-mode:
 :tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
 
-":nnoremap <M-k> <C-w>k
-"
-" Quickly create a new terminal in a new tab
-" tnoremap <Leader>C <C-\><C-n>:tab new<CR>:term<CR>
-" noremap <Leader>C :tab new<CR>:term<CR>
-"inoremap <Leader>c <Esc>:tab new<CR>:term<CR>
-
 " Quickly create a new terminal in a vertical split
 tnoremap <Leader>% <C-\><C-n>:vsp<CR><C-w><C-w>:term<CR>
 noremap <Leader>% :vsp<CR><C-w><C-w>:term<CR>
@@ -1130,39 +787,6 @@ tnoremap <C-w><C-w> <C-\><C-n><C-w><C-w>
 
 highlight TermCursor ctermfg=red guifg=red
 
-" Quickly create a new terminal in a horizontal split
-" tnoremap <Leader>" <C-\><C-n>:sp<CR><C-w><C-w>:term<CR>
-" noremap <Leader>" :sp<CR><C-w><C-w>:term<CR>
-" inoremap <Leader>" <Esc>:sp<CR><C-w><C-w>:term<CR>
-"
-" Window split settings
-" set splitbelow
-" set splitright
-
-" Terminal settings
-" tnoremap <Leader><ESC> <C-\><C-n>
-
-" Window navigation function
-" Make ctrl-h/j/k/l move between windows and auto-insert in terminals
-" func! s:mapMoveToWindowInDirection(direction)
-"     func! s:maybeInsertMode(direction)
-"         stopinsert
-"         execute "wincmd" a:direction
-"
-"         if &buftype == 'terminal'
-"             startinsert!
-"         endif
-"     endfunc
-"
-"     execute "tnoremap" "<silent>" "<C-" . a:direction . ">"
-"                 \ "<C-\\><C-n>"
-"                 \ ":call <SID>maybeInsertMode(\"" . a:direction . "\")<CR>"
-"     execute "nnoremap" "<silent>" "<C-" . a:direction . ">"
-"                 \ ":call <SID>maybeInsertMode(\"" . a:direction . "\")<CR>"
-" endfunc
-" for dir in ["h", "j", "l", "k"]
-"     call s:mapMoveToWindowInDirection(dir)
-" endfor
 
 "==================================================================================================
 " Arduino
@@ -1213,32 +837,6 @@ let g:arduino_serial_port = '/dev/ttyACM0'
 "                                     \'/dev/tty.usbserial*']
 
 
-"==================================================================================================
-" neoterm
-" - did not use it
-"
-" let g:neoterm_position = 'horizontal'
-" let g:neoterm_automap_keys = ',tt'
-"
-" nnoremap <silent> <f10> :TREPLSendFile<cr>
-" nnoremap <silent> <f9> :TREPLSendLine<cr>
-" vnoremap <silent> <f9> :TREPLSendSelection<cr>
-"
-" " Useful maps
-" " hide/close terminal
-" nnoremap <silent>,th :call neoterm#close()<cr>
-" " clear terminal
-" nnoremap <silent>,tl :call neoterm#clear()<cr>
-" " kills the current job (send a <c-c>)
-" nnoremap <silent>,tc :call neoterm#kill()<cr>
-"
-" " Rails commands
-" command! Troutes :T rake routes
-" command! -nargs=+ Troute :T rake routes | grep <args>
-" command! Tmigrate :T rake db:migrate
-"
-" " Git commands
-" command! -nargs=+ Tg :T git <args>
 
 
 "==================================================================================================
@@ -1272,37 +870,6 @@ let g:gfm_syntax_enable_filetypes = ['markdown.gfm']
 let g:markdown_fenced_languages = ['cpp', 'json','python']
 
 
-"
-"
-"
-"==================================================================================================
-" Infos
-"
-" PATHs
-" :echo expand("%:p")    " absolute path
-" :echo expand("%:p:h")  " absolute path dirname
-" :echo expand("%:p:h:h")" absolute path dirname dirname
-" :echo expand("%:.")    " relative path
-" :echo expand("%:.:h")  " relative path dirname
-" :echo expand("%:.:h:h")" relative path dirname dirname
-"
-
-" function! FzyCommand(choice_command, vim_command)
-"   try
-"     let output = system(a:choice_command . " | fzy ")
-"   catch /Vim:Interrupt/
-"     " Swallow errors from ^C, allow redraw! below
-"   endtry
-"   redraw!
-"   if v:shell_error == 0 && !empty(output)
-"     exec a:vim_command . ' ' . output
-"   endif
-" endfunction
-"
-" nnoremap <leader>e :call FzyCommand("find -type f", ":e")<cr>
-" nnoremap <leader>v :call FzyCommand("find -type f", ":vs")<cr>
-" nnoremap <leader>s :call FzyCommand("find -type f", ":sp")<cr>
-
 map <F9> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
 \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
@@ -1324,8 +891,8 @@ let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_save = 1
 let g:ale_lint_on_enter = 1
 " cycle through location list
-nmap <silent> <leader>n <Plug>(ale_next_wrap)
-nmap <leader>at :ALEToggle<CR>
+nmap <silent> <leader>an <Plug>(ale_next_wrap)
+nmap <silent> <leader>at :ALEToggle<CR>
 
 let g:ale_linters = {
 \   'elixir': [],
@@ -1438,24 +1005,19 @@ nnoremap <leader>ga :Gadd
 
 :let g:session_autosave = 'no'
 :let g:session_autoload = 'no'
-" :highlight Cursor ctermfg=magenta guifg=magenta
-" if &term =~ "xterm\\|rxvt"
-"   " use an orange cursor in insert mode
-"   let &t_SI = "\<Esc>]12;orange\x7"
-"   " use a red cursor otherwise
-"   let &t_EI = "\<Esc>]12;red\x7"
-"   silent !echo -ne "\033]12;red\007"
-"   " reset cursor when vim exits
-"   autocmd VimLeave * silent !echo -ne "\033]112\007"
-"   " use \003]12;gray\007 for gnome-terminal and rxvt up to version 9.21
-" endif
+
 highlight Cursor ctermfg=red guifg=red
-" highlight Cursor guifg=white guibg=black
-" highlight iCursor guifg=white guibg=steelblue
-" set guicursor=n-v-c:block-Cursor
-" set guicursor+=i:ver100-iCursor
-" set guicursor+=n-v-c:blinkon0
-" set guicursor+=i:blinkwait10
+
+"==================================================================================================
+" Infos
+"
+" PATHs
+" :echo expand("%:p")    " absolute path
+" :echo expand("%:p:h")  " absolute path dirname
+" :echo expand("%:p:h:h")" absolute path dirname dirname
+" :echo expand("%:.")    " relative path
+" :echo expand("%:.:h")  " relative path dirname
+" :echo expand("%:.:h:h")" relative path dirname dirname
 "
 hi x016_Grey0 ctermfg=16 guifg=#000000 "rgb=0,0,0
 hi x017_NavyBlue ctermfg=17 guifg=#00005f "rgb=0,0,95
