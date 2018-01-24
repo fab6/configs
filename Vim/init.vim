@@ -78,6 +78,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'haya14busa/incsearch.vim'
 Plug 'haya14busa/incsearch-fuzzy.vim'
 Plug 'rhysd/vim-gfm-syntax'
+Plug 'dhruvasagar/vim-table-mode'
 " Programming:
 Plug 'python-mode/python-mode' , { 'for': 'python' }
 Plug 'jvirtanen/vim-octave', { 'for': 'octave' }
@@ -89,6 +90,7 @@ Plug 'wesQ3/vim-windowswap'
 Plug 'chrisbra/NrrwRgn'
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'rudes/vim-java', { 'for': 'java' }
+Plug 'plasticboy/vim-markdown'
 " Plug 'tpope/vim-fugitive'
 " Terminal:
 Plug 'mklabs/split-term.vim'
@@ -503,24 +505,88 @@ let g:neosnippet#snippets_directory='~/.nvim/snippets'
 "
 " nnoremap <C-p> :<C-u>Denite file_rec<CR>
 nnoremap <leader>m :<C-u>Denite buffer<CR>
-nnoremap <leader><Space>b :<C-u>DeniteBufferDir buffer<CR>
+" nnoremap <leader><Space>b :<C-u>DeniteBufferDir buffer<CR>
 nnoremap <leader>8 :<C-u>DeniteCursorWord grep:. -mode=normal<CR>
 " nnoremap <leader>/ :<C-u>Denite grep:. -mode=normal<CR>
 " nnoremap <leader><Space>/ :<C-u>DeniteBufferDir grep:. -mode=normal<CR>
 " nnoremap <leader>d :<C-u>DeniteBufferDir file_rec<CR>
-nnoremap <leader>o :<C-u>Denite location_list -mode=normal -no-empty -auto-preview<CR>
+nnoremap <leader>l :<C-u>Denite location_list -mode=normal -no-empty -auto-preview<CR>
 nnoremap <leader>hs :<C-u>Denite history:search -mode=normal<CR>
 nnoremap <leader>hc :<C-u>Denite history:cmd -mode=normal<CR>
 
-" nnoremap <leader>o :<C-u>Denite -buffer-name=outline -winwidth=35 unite:outline<cr>
-nnoremap <leader>o :<C-u>Denite -winwidth=35 unite:outline<cr>
+nnoremap <leader>o :<C-u>Denite -buffer-name=outline -winwidth=35 unite:outline -mode=normal<cr>
+nnoremap <leader>O :<C-u>Denite -mode=normal -winwidth=35 outline<cr>
+" nnoremap <leader>k :<C-u>Denite -mode=normal -winwidth=35 unite:outline<cr>
+nnoremap <leader>gr :<C-u>Denite -mode=normal -winwidth=35 grep<cr>
+
+nnoremap <leader>f :<C-u>Denite -mode=normal -no-split -buffer-name=files   file<cr>
+nnoremap <leader>r :<C-u>Denite -mode=normal -no-split -buffer-name=mru     file_mru<cr>
+nnoremap <leader>b :<C-u>Denite -mode=normal -no-split -buffer-name=buffers   buffer<cr>
+
+" # ==================== Denite ==================== {{{1
+" [[plugins]]
+" repo = 'Shougo/denite.nvim'
+" on_cmd = 'Denite'
+" if = "has('python3')"
+" hook_add = '''
+"   " Use plefix s
+"   nnoremap suc :<C-u>Denite colorscheme -auto-preview<CR>
+"   nnoremap sub :<C-u>Denite buffer<CR>
+"   nnoremap suf :<C-u>Denite file<CR>
+"   nnoremap suF :<C-u>Denite file_rec<CR>
+"   nnoremap suu :<C-u>Denite buffer file_old<CR>
+"   nnoremap suo :<C-u>Denite outline -no-quit -mode=normal<CR>
+"   nnoremap suh :<C-u>Denite help<CR>
+"   nnoremap sur :<C-u>Denite register<CR>
+"   nnoremap sug :<C-u>Denite grep -no-empty<CR>
+"   nnoremap su/ :<C-u>Denite line<CR>
+"   nnoremap suR :<C-u>Denite -resume<CR>
+"   noremap sul :<C-u>Denite command_history<CR>
+" '''
+" hook_post_source = '''
+"   " Default options.
+"   call denite#custom#option('default', {
+"         \ 'prompt': '»',
+"         \ 'cursor_wrap': v:true,
+"         \ 'auto_resize': v:true,
+"         \ 'highlight_mode_insert': 'WildMenu'
+"         \ })
+"   " Pt command on grep source
+"   if executable('pt')
+"     call denite#custom#var('grep', 'command', ['pt'])
+"     call denite#custom#var('grep', 'default_opts',
+"           \ ['--nogroup', '--nocolor', '--smart-case'])
+"     call denite#custom#var('grep', 'recursive_opts', [])
+"     call denite#custom#var('grep', 'pattern_opt', [])
+"     call denite#custom#var('grep', 'separator', ['--'])
+"     call denite#custom#var('grep', 'final_opts', [])
+"   endif
+"   " custom mappings.
+"   call denite#custom#map('insert', '<C-n>', '<denite:move_to_next_line>', 'noremap')
+"   call denite#custom#map('insert', '<C-p>', '<denite:move_to_previous_line>', 'noremap')
+"   call denite#custom#map('insert', '<C-[>', '<denite:enter_mode:normal>', 'noremap')
+"   call denite#custom#map('normal', '<C-[>', '<denite:quit>', 'noremap')
+"
+
+call denite#custom#map(
+      \ 'insert',
+      \ '<C-j>',
+      \ '<denite:move_to_next_line>',
+      \ 'noremap'
+      \)
+
+call denite#custom#map(
+      \ 'insert',
+      \ '<C-k>',
+      \ '<denite:move_to_previous_line>',
+      \ 'noremap'
+      \)
 
 "==================================================================================================
 " Unite
 "
 let g:unite_source_history_yank_enable = 1
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
-nnoremap <leader>f :<C-u>Denite -no-split -buffer-name=files   file<cr>
 " nnoremap <leader>f :<C-u>Unite -no-split -buffer-name=files   -start-insert file<cr>
 " nnoremap <leader>o :<C-u>Unite -no-split -buffer-name=outline -start-insert outline<cr>
 " nnoremap <leader>o :<C-u>Unite -buffer-name=outline -start-insert -winwidth=35 outline<cr>
@@ -528,11 +594,10 @@ nnoremap <leader>f :<C-u>Denite -no-split -buffer-name=files   file<cr>
 
 " nnoremap <leader>tt :<C-u>Unite -no-split -buffer-name=files   -start-insert file_rec/async:!<cr>
 " nnoremap <leader>r :<C-u>Unite -no-split -buffer-name=mru     -start-insert file_mru<cr>
-nnoremap <leader>r :<C-u>Denite -no-split -buffer-name=mru     file_mru<cr>
-nnoremap <leader>y :<C-u>Unite -no-split -buffer-name=yank    history/yank<cr>
 " nnoremap <leader>b :<C-u>Unite -no-split -buffer-name=buffer  buffer<cr>
 " nnoremap <leader>B :Unite -quick-match buffer<cr>
 " nnoremap <leader>b :Unite -quick-match buffer<cr>
+nnoremap <leader>y :<C-u>Unite -no-split -buffer-name=yank    history/yank<cr>
 nnoremap <silent><Leader>m :Unite -silent -auto-resize -buffer-name=my-directories -default-action=vimfiler bookmark<CR>
 " nnoremap <silent><buffer>b <C-u>:Unite -silent -default-action=cd -no-start-insert bookmark<CR>
 " nnoremap <C-p> :Unite file_rec/async<cr>
@@ -1060,7 +1125,7 @@ noremap <Leader>% :vsp<CR><C-w><C-w>:term<CR>
 nnoremap <F3> :Ttoggle<cr><C-w><C-w>A
 inoremap <F3> <esc>:Ttoggle<cr><C-w><C-w>A
 tnoremap <F3> <C-\><C-n>:Ttoggle<cr>
-tnoremap <esc> <C-\><C-n>
+" tnoremap <esc> <C-\><C-n>
 tnoremap <C-w><C-w> <C-\><C-n><C-w><C-w>
 
 highlight TermCursor ctermfg=red guifg=red
@@ -1283,7 +1348,21 @@ let g:ale_rust_cargo_use_check = 1
 "     autocmd User ALELintPost let s:ale_running = 0 | redrawstatus
 " augroup end
 
+"==================================================================================================
+" TABLE
+function! s:isAtStartOfLine(mapping)
+  let text_before_cursor = getline('.')[0 : col('.')-1]
+  let mapping_pattern = '\V' . escape(a:mapping, '\')
+  let comment_pattern = '\V' . escape(substitute(&l:commentstring, '%s.*$', '', ''), '\')
+  return (text_before_cursor =~? '^' . ('\v(' . comment_pattern . '\v)?') . '\s*\v' . mapping_pattern . '\v$')
+endfunction
 
+inoreabbrev <expr> <bar><bar>
+          \ <SID>isAtStartOfLine('\|\|') ?
+          \ '<c-o>:TableModeEnable<cr><bar><space><bar><left><left>' : '<bar><bar>'
+inoreabbrev <expr> __
+          \ <SID>isAtStartOfLine('__') ?
+          \ '<c-o>:silent! TableModeDisable<cr>' : '__'
 "==================================================================================================
 " Denite-Git + Easygit
 call denite#custom#map(
@@ -1306,6 +1385,7 @@ call denite#custom#map(
       \ '<denite:do_action:reset>',
       \ 'noremap'
       \)
+
 
 " imap <buffer> <C-a> (denite:do_action:add)
 nnoremap <leader>gl :Denite gitlog<CR>

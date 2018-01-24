@@ -6,7 +6,7 @@
 " nmap <buffer>9 :VimFiler -status /home/fbraenns/99_SHARE/<CR>
 " nmap <buffer>0 :VimFiler -status /share/software/Fire/<CR>
 nmap <buffer>` :VimFiler -status /home/fbraenns/<CR>
-nmap <buffer>0 :VimFiler -status /home/fbraenns/<CR>
+" nmap <buffer>0 :VimFiler -status /home/fbraenns/<CR>
 nmap <buffer>1 :VimFiler -status /WORK1/fbraenns/<CR>
 nmap <buffer>2 :VimFiler -status /WORK2/fbraenns/<CR>
 nmap <buffer>3 :VimFiler -status /data/work/fbraenns/<CR>
@@ -17,6 +17,8 @@ nmap <buffer>9 :VimFiler -status /home/fbraenns/.modulefiles/<CR>
 "nmap <buffer>z :call jobstart('xterm') <CR>
 nmap <buffer>,x :call jobstart('xterm',{'detach':1}) <CR>
 nmap <buffer>,y :call jobstart('xterm -e mc . .',{'detach':1}) <CR>
+
+nmap <buffer>gR :Denite grep -mode=normal<CR>
 
 
 
