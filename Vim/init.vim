@@ -143,6 +143,8 @@ set t_vb=
 if &term =~ 'xterm'
 endif
 
+let g:loaded_matchparen = 1
+:highlight ParenMatch ctermbg=blue
 
 "--------------------------------------------------------------------------------------------------
 " User Interface
