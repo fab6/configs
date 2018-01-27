@@ -464,34 +464,34 @@ let g:neosnippet#snippets_directory='~/.nvim/snippets'
 " Denite
 "
 " nnoremap <C-p> :<C-u>Denite file_rec<CR>
-nnoremap <leader>m :<C-u>Denite buffer<CR>
-" nnoremap <leader><Space>b :<C-u>DeniteBufferDir buffer<CR>
-nnoremap <leader>8 :<C-u>DeniteCursorWord grep:. -mode=normal<CR>
+nnoremap <silent><leader>m :<C-u>Denite buffer<CR>
+" nnorema<silent>p <leader><Space>b :<C-u>DeniteBufferDir buffer<CR>
+nnoremap <silent><leader>8 :<C-u>DeniteCursorWord grep:. -mode=normal<CR>
 " nnoremap <leader>/ :<C-u>Denite grep:. -mode=normal<CR>
 " nnoremap <leader><Space>/ :<C-u>DeniteBufferDir grep:. -mode=normal<CR>
 " nnoremap <leader>d :<C-u>DeniteBufferDir file_rec<CR>
-nnoremap <leader>hs :<C-u>Denite history:search -mode=normal<CR>
-nnoremap <leader>hc :<C-u>Denite history:cmd -mode=normal<CR>
-nnoremap <leader>c :<C-u>Denite colorscheme -mode=normal -auto-preview<CR>
+nnoremap <silent> <leader>hs :<C-u>Denite history:search -mode=normal<CR>
+nnoremap <silent> <leader>hc :<C-u>Denite history:cmd -mode=normal<CR>
+nnoremap <silent> <leader>c :<C-u>Denite colorscheme -mode=normal -auto-preview<CR>
 
-nnoremap <leader>o :<C-u>Denite -buffer-name=outline -winwidth=35 unite:outline -mode=normal<cr>
-nnoremap <leader>O :<C-u>Denite -mode=normal -winwidth=35 outline<cr>
-" nnoremap <leader>k :<C-u>Denite -mode=normal -winwidth=35 unite:outline<cr>
-nnoremap <leader>gr :<C-u>Denite -mode=normal -winwidth=35 grep<cr>
-nnoremap <leader>y :<C-u>Denite -mode=normal -winwidth=35 register<cr>
-nnoremap <leader>s :<C-u>Denite -mode=normal -winwidth=35 session<cr>
+nnoremap <silent> <leader>o :<C-u>Denite -buffer-name=outline -winwidth=35 unite:outline -mode=normal<cr>
+nnoremap <silent> <leader>O :<C-u>Denite -mode=normal -winwidth=35 outline<cr>
+" nnorema<silent> p <leader>k :<C-u>Denite -mode=normal -winwidth=35 unite:outline<cr>
+nnoremap <silent> <leader>gr :<C-u>Denite -mode=normal -winwidth=35 grep<cr>
+nnoremap <silent> <leader>y :<C-u>Denite -mode=normal -winwidth=35 register<cr>
+nnoremap <silent> <leader>s :<C-u>Denite -mode=normal -winwidth=35 session<cr>
 
-nnoremap <leader>f :<C-u>DeniteBufferDir -mode=normal -no-split -buffer-name=files   file<cr>
-nnoremap <leader>r :<C-u>Denite -mode=normal -no-split -buffer-name=mru     file_mru<cr>
-nnoremap <leader>b :<C-u>Denite -mode=normal -no-split -buffer-name=buffers   buffer<cr>
-nnoremap <leader>L :<C-u>Denite location_list -mode=normal -no-empty -auto-preview<CR>
-nnoremap <leader>n :<C-u>Denite line -mode=insert -no-split -buffer-name=line<cr>
-nnoremap <leader>N :<C-u>DeniteCursorWord line -mode=insert -no-split -buffer-name=line<cr>
+nnoremap <silent> <leader>f :<C-u>DeniteBufferDir -mode=normal -no-split -buffer-name=files   file<cr>
+nnoremap <silent> <leader>r :<C-u>Denite -mode=normal -no-split -buffer-name=mru     file_mru<cr>
+nnoremap <silent> <leader>b :<C-u>Denite -mode=normal -no-split -buffer-name=buffers   buffer<cr>
+nnoremap <silent> <leader>L :<C-u>Denite location_list -mode=normal -no-empty -auto-preview<CR>
+nnoremap <silent> <leader>n :<C-u>Denite line -mode=insert -no-split -buffer-name=line<cr>
+nnoremap <silent> <leader>N :<C-u>DeniteCursorWord line -mode=insert -no-split -buffer-name=line<cr>
 
-nnoremap <silent> <space>p  :<C-u>Denite -resume<CR>
-nnoremap <silent> <space>j  :call execute('Denite -resume -select=+'.v:count1.' -immediately')<CR>
-nnoremap <silent> <space>k  :call execute('Denite -resume -select=-'.v:count1.' -immediately')<CR>
-nnoremap <silent> <space>q  :<C-u>Denite -mode=normal -auto-resize quickfix<CR>
+nnoremap <silent> <leader>p  :<C-u>Denite -resume<CR>
+nnoremap <silent> <leader>j  :call execute('Denite -resume -select=+'.v:count1.' -immediately')<CR>
+nnoremap <silent> <leader>k  :call execute('Denite -resume -select=-'.v:count1.' -immediately')<CR>
+nnoremap <silent> <leader>q  :<C-u>Denite -mode=normal -auto-resize quickfix<CR>
 " nnoremap <silent> <space>l  :<C-u>Denite -mode=normal -auto-resize location_list<CR>
 
 " Ag command on grep source
