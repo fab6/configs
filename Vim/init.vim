@@ -477,35 +477,36 @@ nnoremap <silent><leader>8 :<C-u>DeniteCursorWord grep:. -mode=normal<CR>
 " nnoremap <leader>/ :<C-u>Denite grep:. -mode=normal<CR>
 " nnoremap <leader><Space>/ :<C-u>DeniteBufferDir grep:. -mode=normal<CR>
 " nnoremap <leader>d :<C-u>DeniteBufferDir file_rec<CR>
-nnoremap <silent> <leader>dc :<C-u>Denite colorscheme -mode=normal -auto-preview<CR>
 
 nnoremap <silent> <leader>o :<C-u>Denite -buffer-name=outline -winwidth=35 unite:outline -mode=normal<cr>
-nnoremap <silent> <leader>O :<C-u>Denite -mode=normal -winwidth=35 outline<cr>
 " nnorema<silent> p <leader>k :<C-u>Denite -mode=normal -winwidth=35 unite:outline<cr>
 nnoremap <silent> <leader>gr :<C-u>Denite -mode=normal -winwidth=35 grep<cr>
-nnoremap <silent> <leader>y :<C-u>Denite -mode=normal -winwidth=35 register<cr>
 
 nnoremap <silent> <leader>f :<C-u>DeniteBufferDir -mode=normal -no-split -buffer-name=files   file<cr>
 nnoremap <silent> <leader>r :<C-u>Denite -mode=normal -no-split -buffer-name=mru     file_mru<cr>
 " nnoremap <silent><leader>m :<C-u>Denite buffer<CR>
 nnoremap <silent> <leader>b :<C-u>Denite -mode=normal -no-split -buffer-name=buffers buffer<cr>
-nnoremap <silent> <leader>L :<C-u>Denite location_list -mode=normal -no-empty -auto-preview<CR>
-nnoremap <silent> <leader>n :<C-u>Denite line -mode=insert -no-split -buffer-name=line<cr>
-nnoremap <silent> <leader>N :<C-u>DeniteCursorWord line -mode=insert -no-split -buffer-name=line<cr>
+nnoremap <silent> <leader>l :<C-u>Denite line -mode=insert -no-split -buffer-name=line<cr>
 
-nnoremap <silent> <leader>j  :call execute('Denite -resume -select=+'.v:count1.' -immediately')<CR>
-nnoremap <silent> <leader>k  :call execute('Denite -resume -select=-'.v:count1.' -immediately')<CR>
+nnoremap <silent> <leader>O :<C-u>Denite -mode=normal -winwidth=35 outline<cr>
+
+nnoremap <silent> <leader>dj  :call execute('Denite -resume -select=+'.v:count1.' -immediately')<CR>
+nnoremap <silent> <leader>dk  :call execute('Denite -resume -select=-'.v:count1.' -immediately')<CR>
 
 nnoremap <silent> <leader>hs :<C-u>Denite history:search -mode=normal<CR>
 nnoremap <silent> <leader>hc :<C-u>Denite history:cmd -mode=normal<CR>
-nnoremap <silent> <leader>ss :<C-u>Denite -mode=normal -winwidth=35 session<cr>
+nnoremap <silent> <leader>ds :<C-u>Denite -mode=normal -winwidth=35 session<cr>
+nnoremap <silent> <leader>dc :<C-u>Denite colorscheme -mode=normal -auto-preview<CR>
 nnoremap <silent> <leader>dq  :<C-u>Denite -mode=normal -auto-resize quickfix<CR>
+nnoremap <silent> <leader>d :<C-u>Denite location_list -mode=normal -no-empty -auto-preview<CR>
+nnoremap <silent> <leader>dn :<C-u>DeniteCursorWord line -mode=insert -no-split -buffer-name=line<cr>
 nnoremap <silent> <leader>dr  :<C-u>Denite -resume<CR>
 nnoremap <silent> <leader>da :<C-u>Denite autocmd -mode=normal -auto-preview<CR>
 nnoremap <silent> <leader>dm :<C-u>Denite marks -mode=normal<CR>
-nnoremap <silent> <leader>dk :<C-u>Denite keymap -mode=normal<CR>
+" nnoremap <silent> <leader>dk :<C-u>Denite keymap -mode=normal<CR>
 nnoremap <silent> <leader>df :<C-u>Denite file_manager -mode=normal <CR>
 nnoremap <silent> <leader>da :<C-u>Denite ale -mode=normal -auto-preview<CR>
+nnoremap <silent> <leader>dy :<C-u>Denite -mode=normal -winwidth=35 register<cr>
 " nnoremap <silent> <space>l  :<C-u>Denite -mode=normal -auto-resize location_list<CR>
 
 " Ag command on grep source
