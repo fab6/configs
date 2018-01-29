@@ -6,10 +6,11 @@
 "  - how can I use sessions --> For each topic a splitted vimfiler!?
 "  - what should be my default session
 " Denite:
-"  - get to know other features
+"  - syntax highlighting e.g. for 'line'
 " Git:
 "  - easier git handling
 " Vimfiler:
+"  -
 " Terminal:
 "  - how can I access the history withouth the cursor keys
 " Python:
@@ -41,9 +42,9 @@ Plug 'Shougo/neomru.vim'
 Plug 'Shougo/vimproc.vim', { 'do' : 'make', }
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/unite-outline'
-Plug 'rhysd/unite-oldfiles.vim'
-Plug 'chemzqm/unite-location'
-Plug 'tsukkee/unite-tag'
+" Plug 'rhysd/unite-oldfiles.vim'
+" Plug 'chemzqm/unite-location'
+" Plug 'tsukkee/unite-tag'
 Plug 'Shougo/denite.nvim'
 Plug 'chemzqm/vim-easygit'
 Plug 'chemzqm/denite-git'
@@ -67,7 +68,7 @@ Plug 'xolox/vim-session'
 Plug 'jiangmiao/auto-pairs'
 Plug 'mattboehm/vim-accordion'
 Plug 'osyo-manga/vim-anzu'
-Plug 'rafi/awesome-vim-colorschemes'
+" Plug 'rafi/awesome-vim-colorschemes'
 Plug 'brettanomyces/nvim-terminus'
 Plug 'haya14busa/incsearch.vim'
 Plug 'haya14busa/incsearch-fuzzy.vim'
@@ -86,7 +87,7 @@ Plug 'wesQ3/vim-windowswap'
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'rudes/vim-java', { 'for': 'java' }
 Plug 'plasticboy/vim-markdown'
-Plug 'chrisbra/NrrwRgn'
+" Plug 'chrisbra/NrrwRgn'
 " Terminal:
 Plug 'mklabs/split-term.vim'
 Plug 'kassio/neoterm'
@@ -348,6 +349,7 @@ set wildignore=.aux,.bak,.dvi,.gz,.idx,.log,.ps,.swp,.tar,.pdf,.rpm,.deb,.o,.e,*
 nnoremap <leader>e :e ./<CR>
 
 let mapleader="\<SPACE>"
+"let mapleader=","
 
 "" have the h and l cursor keys wrap between lines (like <Space> and <BkSpc> do
 "" by default), and ~ covert case over line breaks; also have the cursor keys
@@ -498,24 +500,24 @@ nnoremap <silent> <leader>r :<C-u>Denite -mode=normal -no-split -buffer-name=mru
 nnoremap <silent> <leader>b :<C-u>Denite -mode=normal -no-split -buffer-name=buffers buffer<cr>
 nnoremap <silent> <leader>l :<C-u>Denite line -mode=insert -no-split -buffer-name=line<cr>
 
-nnoremap <silent> <leader>da :<C-u>Denite ale -mode=normal -auto-preview<CR>
+nnoremap <silent> <leader>a :<C-u>Denite ale -mode=normal -auto-preview<CR>
 nnoremap <silent> <leader>m :<C-u>Denite marks -mode=normal<CR>
 nnoremap <silent> <leader>M :<C-u>Denite menu -mode=normal<CR>
 nnoremap <silent> <leader>g :<C-u>Denite -mode=normal -winwidth=35 grep<cr>
 
 " nnoremap <silent> <leader>da :<C-u>Denite autocmd -mode=normal -auto-preview<CR>
 " nnoremap <silent> <leader>dk :<C-u>Denite keymap -mode=normal<CR>
-nnoremap <silent> <leader>df :<C-u>Denite file_manager -mode=normal <CR>
-nnoremap <silent> <leader>dc :<C-u>Denite colorscheme -mode=normal -auto-preview<CR>
-nnoremap <silent> <leader>dj :call execute('Denite -resume -select=+'.v:count1.' -immediately')<CR>
-nnoremap <silent> <leader>dk :call execute('Denite -resume -select=-'.v:count1.' -immediately')<CR>
-nnoremap <silent> <leader>dl :<C-u>Denite -mode=normal -auto-resize location_list<CR>
-nnoremap <silent> <leader>dn :<C-u>DeniteCursorWord line -mode=insert -no-split -buffer-name=line<cr>
-nnoremap <silent> <leader>do :<C-u>Denite -mode=normal -winwidth=35 outline<cr>
-nnoremap <silent> <leader>dq :<C-u>Denite -mode=normal -auto-resize quickfix<CR>
-nnoremap <silent> <leader>ds :<C-u>Denite -mode=normal -winwidth=35 session<cr>
-nnoremap <silent> <leader>dr :<C-u>Denite -resume<CR>
-nnoremap <silent> <leader>dy :<C-u>Denite -mode=normal -winwidth=35 register<cr>
+nnoremap <silent> <leader>Df :<C-u>Denite file_manager -mode=normal <CR>
+" nnoremap <silent> <leader>Dc :<C-u>Denite colorscheme -mode=normal -auto-preview<CR>
+nnoremap <silent> <leader>Dj :call execute('Denite -resume -select=+'.v:count1.' -immediately')<CR>
+nnoremap <silent> <leader>Dk :call execute('Denite -resume -select=-'.v:count1.' -immediately')<CR>
+nnoremap <silent> <leader>Dl :<C-u>Denite -mode=normal -auto-resize location_list<CR>
+nnoremap <silent> <leader>Dn :<C-u>DeniteCursorWord line -mode=insert -no-split -buffer-name=line<cr>
+nnoremap <silent> <leader>Do :<C-u>Denite -mode=normal -winwidth=35 outline<cr>
+nnoremap <silent> <leader>Dq :<C-u>Denite -mode=normal -auto-resize quickfix<CR>
+nnoremap <silent> <leader>Ds :<C-u>Denite -mode=normal -winwidth=35 session<cr>
+nnoremap <silent> <leader>Dr :<C-u>Denite -resume<CR>
+nnoremap <silent> <leader>Dy :<C-u>Denite -mode=normal -winwidth=35 register<cr>
 
 nnoremap <silent> <leader>hs :<C-u>Denite history:search -mode=normal<CR>
 nnoremap <silent> <leader>hc :<C-u>Denite history:cmd -mode=normal<CR>
@@ -607,14 +609,39 @@ let s:menus = {}
 let s:menus.Git= {
             \ 'description': 'Git commands'
             \ }
+let s:menus.Git.command_candidates = [
+            \ ['Log d', 'Denite gitlog'],
+            \ ['Log All d', 'Denite gitlog:all -auto-preview -mode=normal'],
+            \ ['Status d', 'Denite status'],
+            \ ['Status g', 'Gstatus'],
+            \ ['Add g', 'Gadd'],
+            \ ['Commit g', 'Gcommit'],
+            \ ['Pull g', 'Gpull'],
+            \ ['Push g', 'Gpush'],
+            \ ['Diff g', 'Gdiff'],
+            \ ['DiffThis g', 'GdiffThis'],
+            \ ['Change g', 'Denite gitchanged'],
+            \ ['Branch g', 'Denite gitbranch'],
+            \ ]
+
+" nnoremap <leader>gl :Denite gitlog<CR>
+" nnoremap <leader>gL :Denite gitlog:all<CR>
+" nnoremap <leader>gS :Denite gitstatus<CR>
+" nnoremap <leader>gs :Gstatus<CR>
+" nnoremap <leader>gc :Denite gitchanged<CR>
+" nnoremap <leader>gb :Denite gitbranch<CR>
+" nnoremap <leader>gp :Gpull
+" nnoremap <leader>gP :Gpush
+" nnoremap <leader>ga :Gadd
+" nnoremap <leader>gc :Gcommit
 
 let s:menus.Denite = {
             \ 'description': 'Denite commands'
             \ }
+            " \ ['ColorScheme', 'Denite colorscheme -mode=normal'],
 let s:menus.Denite.command_candidates = [
             \ ['File Manager', 'Denite file_manager -mode=normal'],
             \ ['Autocmd', 'Denite autocmd -mode=normal'],
-            \ ['ColorScheme', 'Denite colorscheme -mode=normal'],
             \ ['History Command', 'Denite history:cmd -mode=normal'],
             \ ['History Search', 'Denite history:search -mode=normal'],
             \ ['Location list', 'Denite location_list -mode=normal'],
@@ -626,16 +653,49 @@ let s:menus.Sessions = {
             \ 'description': 'Sessions commands'
             \ }
 
-let s:menus.Unite= {
-            \ 'description': 'Unite commands'
-            \ }
+" let s:menus.Unite= {
+"             \ 'description': 'Unite commands'
+"             \ }
 let s:menus.VimFiler= {
             \ 'description': 'VimFiler commands'
             \ }
+let s:menus.VimFiler.command_candidates = [
+            \ ['Explorer 1', ':<C-u>VimFilerExplorer -sort-type=Time -status -split -simple -parent -winwidth=35 -no-quit -find'],
+            \ ['Explorer 2', ':VimFilerExplorer -status -find -winwidth=80 -sort-type=Time'],
+            \ ]
 
 let s:menus.Arduino= {
             \ 'description': 'Arduino commands'
             \ }
+let s:menus.Arduino.command_candidates = [
+            \ ['Port ttyACM0', "let g:arduino_serial_port = '/dev/ttyACM0'"],
+            \ ['Port USB', "let g:arduino_serial_port = '/dev/USB'"],
+            \ ]
+
+let s:menus.Windows= {
+            \ 'description': 'Windows commands'
+            \ }
+let s:menus.Windows.command_candidates = [
+            \ ['MarkWindowSwap', "test"],
+            \ ['Equal Size', "test"],
+            \ ]
+
+let s:menus.Toggles= {
+            \ 'description': 'Toggle commands'
+            \ }
+let s:menus.Toggles.command_candidates = [
+            \ ['LineNr', "test"],
+            \ ['Cursor Position', "test"],
+            \ ['Indenting Color', "test"],
+            \ ['Ale', "test"],
+            \ ]
+
+let s:menus.Bookmarks= {
+            \ 'description': 'Bookmarks commands'
+            \ }
+let s:menus.Bookmarks.command_candidates = [
+            \ ['1 /home/fbraenns', ":e /home/fbraenns"],
+            \ ]
 
 call denite#custom#var('menu', 'menus', s:menus)
 
@@ -710,12 +770,12 @@ let g:pymode_lint_unmodified = 0
 let g:pymode_lint_message = 0
 let g:pymode_rope_completion = 0
 " let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'mccabe']
-" let g:pymode_lint_todo_symbol = 'WW'
-" let g:pymode_lint_comment_symbol = 'CC'
-" let g:pymode_lint_visual_symbol = 'RR'
-" let g:pymode_lint_error_symbol = 'EE'
-" let g:pymode_lint_info_symbol = 'II'
-" let g:pymode_lint_pyflakes_symbol = 'FF'
+let g:pymode_lint_todo_symbol = 'WW'
+let g:pymode_lint_comment_symbol = 'CC'
+let g:pymode_lint_visual_symbol = 'RR'
+let g:pymode_lint_error_symbol = 'EE'
+let g:pymode_lint_info_symbol = 'II'
+let g:pymode_lint_pyflakes_symbol = 'FF'
 " let g:pymode_lint_options_pep8 =
 "     \ {'max_line_length': g:pymode_options_max_line_length})
 let g:pymode_rope = 0
@@ -779,11 +839,11 @@ augroup END
 "==================================================================================================
 " VimFiler
 
-nnoremap <Leader>jf :<C-u>VimFilerExplorer -sort-type=Time -status -split -simple -parent -winwidth=35 -no-quit -find<CR>
-nnoremap <Leader>ff :VimFilerExplorer -status -find -winwidth=80 -sort-type=Time <CR>
+nnoremap <leader>jf :<C-u>VimFilerExplorer -sort-type=Time -status -split -simple -parent -winwidth=35 -no-quit -find<CR>
+nnoremap <leader>ff :VimFilerExplorer -status -find -winwidth=80 -sort-type=Time <CR>
 
-map <space>d :VimFilerBufferDir -status -sort-type=Time<CR>
-map <space>D :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=30 -toggle -no-quit -explorer<CR><CR>
+map <leader>d :VimFilerBufferDir -status -sort-type=Time<CR>
+map <leader>D :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=29 -toggle -no-quit -explorer<CR><CR>
 " map <space>E :VimFilerBufferDir -status -split -simple -winwidth=30 -toggle -no-quit<CR><CR>
 nnoremap <F2> :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=30 -toggle -no-quit<CR>
 
@@ -920,6 +980,7 @@ let g:arduino_programmer = 'arduino:usbtinyisp'
 " default. If not set, vim-arduino will attempt to guess which port to use. See
 " also |:ArduinoChoosePort| >
 let g:arduino_serial_port = '/dev/ttyACM0'
+" let g:arduino_serial_port = '/dev/USB'
 " Search these patterns to find a likely serial port to upload to. >
 "   let g:arduino_serial_port_globs = ['/dev/ttyACM*',
 "                                     \'/dev/ttyUSB*',
