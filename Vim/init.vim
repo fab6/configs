@@ -421,6 +421,15 @@ vnoremap <leader>P "+P
 " :vnoremap <C-c> "+y
 " :vnoremap <C-d> "+d
 "
+:tnoremap <C-p> <up>
+:tnoremap <C-n> <down>
+:tnoremap <C-h> <left>
+:tnoremap <C-l> <right>
+:tnoremap <C-r> <C-right>
+:tnoremap <C-b> <C-left>
+:tnoremap <C-0> <Home>
+:tnoremap <C-a> <Home>
+:tnoremap <C-e> <End>
 "To use `ALT+{h,j,k,l}` to navigate windows from any mode:
 :tnoremap <A-h> <C-\><C-N><C-w>h
 :tnoremap <A-j> <C-\><C-N><C-w>j
