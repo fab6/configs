@@ -49,6 +49,10 @@ Plug 'chemzqm/vim-easygit'
 Plug 'chemzqm/denite-git'
 Plug 'chemzqm/denite-extra'
 Plug 'rafi/vim-denite-session'
+Plug 'notomo/denite-autocmd'
+Plug 'yyotti/denite-marks'
+Plug 'notomo/denite-keymap'
+Plug 'yuntan/denite-cheatsheet'
 Plug 'zchee/deoplete-jedi'
 Plug 'thirtythreeforty/lessspace.vim'
 Plug 'chrisbra/csv.vim'
@@ -69,6 +73,7 @@ Plug 'haya14busa/incsearch.vim'
 Plug 'haya14busa/incsearch-fuzzy.vim'
 Plug 'rhysd/vim-gfm-syntax'
 Plug 'dhruvasagar/vim-table-mode'
+Plug 'iamcco/file-manager.vim'
 " Programming:
 Plug 'python-mode/python-mode' , { 'for': 'python' }
 Plug 'jvirtanen/vim-octave', { 'for': 'octave' }
@@ -76,6 +81,7 @@ Plug 'stevearc/vim-arduino', { 'for': 'arduino' }
 Plug 'nvie/vim-flake8', { 'for': 'python' }
 Plug 'sudar/vim-arduino-syntax', { 'for': 'arduino' }
 Plug 'w0rp/ale'
+Plug 'iyuuya/denite-ale'
 Plug 'wesQ3/vim-windowswap'
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'rudes/vim-java', { 'for': 'java' }
@@ -475,40 +481,47 @@ let g:neosnippet#snippets_directory='~/.nvim/snippets'
 " Denite
 "
 " nnoremap <C-p> :<C-u>Denite file_rec<CR>
-nnoremap <leader>m :<C-u>Denite buffer<CR>
-" nnoremap <leader><Space>b :<C-u>DeniteBufferDir buffer<CR>
-nnoremap <leader>8 :<C-u>DeniteCursorWord grep:. -mode=normal<CR>
+" nnorema<silent>p <leader><Space>b :<C-u>DeniteBufferDir buffer<CR>
+nnoremap <silent><leader>8 :<C-u>DeniteCursorWord grep:. -mode=normal<CR>
 " nnoremap <leader>/ :<C-u>Denite grep:. -mode=normal<CR>
 " nnoremap <leader><Space>/ :<C-u>DeniteBufferDir grep:. -mode=normal<CR>
 " nnoremap <leader>d :<C-u>DeniteBufferDir file_rec<CR>
-nnoremap <leader>hs :<C-u>Denite history:search -mode=normal<CR>
-nnoremap <leader>hc :<C-u>Denite history:cmd -mode=normal<CR>
-nnoremap <leader>c :<C-u>Denite colorscheme -mode=normal -auto-preview<CR>
 
-nnoremap <leader>o :<C-u>Denite -buffer-name=outline -winwidth=35 unite:outline -mode=normal<cr>
-nnoremap <leader>O :<C-u>Denite -mode=normal -winwidth=35 outline<cr>
-" nnoremap <leader>k :<C-u>Denite -mode=normal -winwidth=35 unite:outline<cr>
-nnoremap <leader>gr :<C-u>Denite -mode=normal -winwidth=35 grep<cr>
-nnoremap <leader>y :<C-u>Denite -mode=normal -winwidth=35 register<cr>
-nnoremap <leader>s :<C-u>Denite -mode=normal -winwidth=35 session<cr>
+nnoremap <silent> <leader>o :<C-u>Denite -buffer-name=outline -winwidth=35 unite:outline -mode=normal<cr>
+" nnorema<silent> p <leader>k :<C-u>Denite -mode=normal -winwidth=35 unite:outline<cr>
+nnoremap <silent> <leader>gr :<C-u>Denite -mode=normal -winwidth=35 grep<cr>
 
-nnoremap <leader>f :<C-u>DeniteBufferDir -mode=normal -no-split -buffer-name=files   file<cr>
-nnoremap <leader>r :<C-u>Denite -mode=normal -no-split -buffer-name=mru     file_mru<cr>
-nnoremap <leader>b :<C-u>Denite -mode=normal -no-split -buffer-name=buffers   buffer<cr>
-nnoremap <leader>L :<C-u>Denite location_list -mode=normal -no-empty -auto-preview<CR>
-nnoremap <leader>n :<C-u>Denite line -mode=insert -no-split -buffer-name=line<cr>
-nnoremap <leader>N :<C-u>DeniteCursorWord line -mode=insert -no-split -buffer-name=line<cr>
+nnoremap <silent> <leader>f :<C-u>DeniteBufferDir -mode=normal -no-split -buffer-name=files   file<cr>
+nnoremap <silent> <leader>r :<C-u>Denite -mode=normal -no-split -buffer-name=mru     file_mru<cr>
+" nnoremap <silent><leader>m :<C-u>Denite buffer<CR>
+nnoremap <silent> <leader>b :<C-u>Denite -mode=normal -no-split -buffer-name=buffers buffer<cr>
+nnoremap <silent> <leader>l :<C-u>Denite line -mode=insert -no-split -buffer-name=line<cr>
 
-nnoremap <silent> <space>p  :<C-u>Denite -resume<CR>
-nnoremap <silent> <space>j  :call execute('Denite -resume -select=+'.v:count1.' -immediately')<CR>
-nnoremap <silent> <space>k  :call execute('Denite -resume -select=-'.v:count1.' -immediately')<CR>
-nnoremap <silent> <space>q  :<C-u>Denite -mode=normal -auto-resize quickfix<CR>
+nnoremap <silent> <leader>O :<C-u>Denite -mode=normal -winwidth=35 outline<cr>
+
+nnoremap <silent> <leader>dj  :call execute('Denite -resume -select=+'.v:count1.' -immediately')<CR>
+nnoremap <silent> <leader>dk  :call execute('Denite -resume -select=-'.v:count1.' -immediately')<CR>
+
+nnoremap <silent> <leader>hs :<C-u>Denite history:search -mode=normal<CR>
+nnoremap <silent> <leader>hc :<C-u>Denite history:cmd -mode=normal<CR>
+nnoremap <silent> <leader>ds :<C-u>Denite -mode=normal -winwidth=35 session<cr>
+nnoremap <silent> <leader>dc :<C-u>Denite colorscheme -mode=normal -auto-preview<CR>
+nnoremap <silent> <leader>dq  :<C-u>Denite -mode=normal -auto-resize quickfix<CR>
+nnoremap <silent> <leader>d :<C-u>Denite location_list -mode=normal -no-empty -auto-preview<CR>
+nnoremap <silent> <leader>dn :<C-u>DeniteCursorWord line -mode=insert -no-split -buffer-name=line<cr>
+nnoremap <silent> <leader>dr  :<C-u>Denite -resume<CR>
+nnoremap <silent> <leader>da :<C-u>Denite autocmd -mode=normal -auto-preview<CR>
+nnoremap <silent> <leader>dm :<C-u>Denite marks -mode=normal<CR>
+" nnoremap <silent> <leader>dk :<C-u>Denite keymap -mode=normal<CR>
+nnoremap <silent> <leader>df :<C-u>Denite file_manager -mode=normal <CR>
+nnoremap <silent> <leader>da :<C-u>Denite ale -mode=normal -auto-preview<CR>
+nnoremap <silent> <leader>dy :<C-u>Denite -mode=normal -winwidth=35 register<cr>
 " nnoremap <silent> <space>l  :<C-u>Denite -mode=normal -auto-resize location_list<CR>
 
 " Ag command on grep source
 call denite#custom#var('grep', 'command', ['ag'])
 call denite#custom#var('grep', 'default_opts',
-		\ ['-i', '--vimgrep'])
+            \ ['-i', '--vimgrep'])
 call denite#custom#var('grep', 'recursive_opts', [])
 call denite#custom#var('grep', 'pattern_opt', [])
 call denite#custom#var('grep', 'separator', ['--'])
@@ -516,29 +529,29 @@ call denite#custom#var('grep', 'final_opts', [])
 
 " Change ignore_globs
 call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
-      \ [ '.git/', '.ropeproject/', '__pycache__/',
-      \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/'])
+            \ [ '.git/', '.ropeproject/', '__pycache__/',
+            \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/'])
 "
 call denite#custom#map(
-      \ 'normal',
-      \ 'h',
-      \ '<denite:move_up_path>',
-      \ 'noremap'
-      \)
+            \ 'normal',
+            \ 'h',
+            \ '<denite:move_up_path>',
+            \ 'noremap'
+            \)
 
 call denite#custom#map(
-      \ 'normal',
-      \ 'f',
-      \ '<denite:scroll_page_forwards>',
-      \ 'noremap'
-      \)
+            \ 'normal',
+            \ 'f',
+            \ '<denite:scroll_page_forwards>',
+            \ 'noremap'
+            \)
 
 call denite#custom#map(
-      \ 'normal',
-      \ 'b',
-      \ '<denite:scroll_page_backwards>',
-      \ 'noremap'
-      \)
+            \ 'normal',
+            \ 'b',
+            \ '<denite:scroll_page_backwards>',
+            \ 'noremap'
+            \)
 " call denite#custom#map(
 "       \ 'normal',
 "       \ 'l',
@@ -547,18 +560,51 @@ call denite#custom#map(
 "       \)
 
 call denite#custom#map(
-      \ 'insert',
-      \ '<C-j>',
-      \ '<denite:move_to_next_line>',
-      \ 'noremap'
-      \)
+            \ 'insert',
+            \ '<C-j>',
+            \ '<denite:move_to_next_line>',
+            \ 'noremap'
+            \)
+call denite#custom#map(
+            \ 'insert',
+            \ '<C-n>',
+            \ '<denite:move_to_next_line>',
+            \ 'noremap'
+            \)
 
 call denite#custom#map(
-      \ 'insert',
-      \ '<C-k>',
-      \ '<denite:move_to_previous_line>',
-      \ 'noremap'
-      \)
+            \ 'insert',
+            \ '<C-k>',
+            \ '<denite:move_to_previous_line>',
+            \ 'noremap'
+            \)
+call denite#custom#map(
+            \ 'insert',
+            \ '<C-p>',
+            \ '<denite:move_to_previous_line>',
+            \ 'noremap'
+            \)
+
+" Add custom menus
+let s:menus = {}
+
+let s:menus.zsh = {
+            \ 'description': 'Edit your import zsh configuration'
+            \ }
+let s:menus.zsh.file_candidates = [
+            \ ['zshrc', '~/.config/zsh/.zshrc'],
+            \ ['zshenv', '~/.zshenv'],
+            \ ]
+
+let s:menus.my_commands = {
+            \ 'description': 'Example commands'
+            \ }
+let s:menus.my_commands.command_candidates = [
+            \ ['Split the window', 'vnew'],
+            \ ['Open zsh menu', 'Denite menu:zsh'],
+            \ ]
+
+call denite#custom#var('menu', 'menus', s:menus)
 
 "==================================================================================================
 " Unite
@@ -603,43 +649,43 @@ call unite#filters#matcher_default#use(['matcher_fuzzy'])
 "
 let python_highlight_all=1
 
-    let g:pymode_trim_whitespaces = 1
-    let g:pymode = 1
-    let g:pymode_options = 1
-    " setlocal complete+=t
-    " setlocal formatoptions-=t
-    " if v:version > 702 && !&relativenumber
-    "     setlocal number
-    " endif
-    " setlocal nowrap
-    " setlocal textwidth=79
-    " setlocal commentstring=#%s
-    " setlocal define=^\s*\\(def\\\\|class\\)
-    let g:pymode_warnings = 1
-    let g:pymode_options_max_line_length = 79
-    let g:pymode_options_colorcolumn = 1
-    let g:pymode_quickfix_minheight = 3
-    let g:pymode_quickfix_maxheight = 6
-    let g:pymode_indent = 1
-    let g:pymode_folding = 0
-    let g:pymode_motion = 1
-    let g:pymode_run_bind = '<leader>r'
-    let g:pymode_breakpoint_bind = '<leader>g'
-    let g:pymode_lint = 0
-    let g:pymode_lint_on_write = 0
-    let g:pymode_lint_unmodified = 0
-    let g:pymode_lint_message = 0
-    let g:pymode_rope_completion = 0
-    " let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'mccabe']
-    " let g:pymode_lint_todo_symbol = 'WW'
-    " let g:pymode_lint_comment_symbol = 'CC'
-    " let g:pymode_lint_visual_symbol = 'RR'
-    " let g:pymode_lint_error_symbol = 'EE'
-    " let g:pymode_lint_info_symbol = 'II'
-    " let g:pymode_lint_pyflakes_symbol = 'FF'
-    " let g:pymode_lint_options_pep8 =
-    "     \ {'max_line_length': g:pymode_options_max_line_length})
-    let g:pymode_rope = 0
+let g:pymode_trim_whitespaces = 1
+let g:pymode = 1
+let g:pymode_options = 1
+" setlocal complete+=t
+" setlocal formatoptions-=t
+" if v:version > 702 && !&relativenumber
+"     setlocal number
+" endif
+" setlocal nowrap
+" setlocal textwidth=79
+" setlocal commentstring=#%s
+" setlocal define=^\s*\\(def\\\\|class\\)
+let g:pymode_warnings = 1
+let g:pymode_options_max_line_length = 79
+let g:pymode_options_colorcolumn = 1
+let g:pymode_quickfix_minheight = 3
+let g:pymode_quickfix_maxheight = 6
+let g:pymode_indent = 1
+let g:pymode_folding = 0
+let g:pymode_motion = 1
+let g:pymode_run_bind = '<leader>R'
+let g:pymode_breakpoint_bind = '<leader>G'
+let g:pymode_lint = 0
+let g:pymode_lint_on_write = 0
+let g:pymode_lint_unmodified = 0
+let g:pymode_lint_message = 0
+let g:pymode_rope_completion = 0
+" let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'mccabe']
+" let g:pymode_lint_todo_symbol = 'WW'
+" let g:pymode_lint_comment_symbol = 'CC'
+" let g:pymode_lint_visual_symbol = 'RR'
+" let g:pymode_lint_error_symbol = 'EE'
+" let g:pymode_lint_info_symbol = 'II'
+" let g:pymode_lint_pyflakes_symbol = 'FF'
+" let g:pymode_lint_options_pep8 =
+"     \ {'max_line_length': g:pymode_options_max_line_length})
+let g:pymode_rope = 0
 " ================  ============================
 " Key               Command
 " ================  ============================
@@ -882,8 +928,8 @@ let g:markdown_fenced_languages = ['cpp', 'json','python']
 
 
 map <F9> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
-\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
-\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+            \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+            \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 let g:windowswap_map_keys = 0 "prevent default bindings
 nnoremap <silent> <leader>yw :call WindowSwap#MarkWindowSwap()<CR>
@@ -902,12 +948,12 @@ let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_save = 1
 let g:ale_lint_on_enter = 1
 " cycle through location list
-nmap <silent> <leader>an <Plug>(ale_next_wrap)
+" nmap <silent> <leader>an <Plug>(ale_next_wrap)
 nmap <silent> <leader>at :ALEToggle<CR>
 
 let g:ale_linters = {
-\   'elixir': [],
-\}
+            \   'elixir': [],
+            \}
 
 let g:ale_rust_cargo_use_check = 1
 " }
@@ -929,40 +975,40 @@ let g:ale_rust_cargo_use_check = 1
 "==================================================================================================
 " TABLE
 function! s:isAtStartOfLine(mapping)
-  let text_before_cursor = getline('.')[0 : col('.')-1]
-  let mapping_pattern = '\V' . escape(a:mapping, '\')
-  let comment_pattern = '\V' . escape(substitute(&l:commentstring, '%s.*$', '', ''), '\')
-  return (text_before_cursor =~? '^' . ('\v(' . comment_pattern . '\v)?') . '\s*\v' . mapping_pattern . '\v$')
+    let text_before_cursor = getline('.')[0 : col('.')-1]
+    let mapping_pattern = '\V' . escape(a:mapping, '\')
+    let comment_pattern = '\V' . escape(substitute(&l:commentstring, '%s.*$', '', ''), '\')
+    return (text_before_cursor =~? '^' . ('\v(' . comment_pattern . '\v)?') . '\s*\v' . mapping_pattern . '\v$')
 endfunction
 
 inoreabbrev <expr> <bar><bar>
-          \ <SID>isAtStartOfLine('\|\|') ?
-          \ '<c-o>:TableModeEnable<cr><bar><space><bar><left><left>' : '<bar><bar>'
+            \ <SID>isAtStartOfLine('\|\|') ?
+            \ '<c-o>:TableModeEnable<cr><bar><space><bar><left><left>' : '<bar><bar>'
 inoreabbrev <expr> __
-          \ <SID>isAtStartOfLine('__') ?
-          \ '<c-o>:silent! TableModeDisable<cr>' : '__'
+            \ <SID>isAtStartOfLine('__') ?
+            \ '<c-o>:silent! TableModeDisable<cr>' : '__'
 "==================================================================================================
 " Denite-Git + Easygit
 call denite#custom#map(
-      \ 'normal',
-      \ 'a',
-      \ '<denite:do_action:add>',
-      \ 'noremap'
-      \)
+            \ 'normal',
+            \ 'a',
+            \ '<denite:do_action:add>',
+            \ 'noremap'
+            \)
 
 call denite#custom#map(
-      \ 'normal',
-      \ 'd',
-      \ '<denite:do_action:delete>',
-      \ 'noremap'
-      \)
+            \ 'normal',
+            \ 'd',
+            \ '<denite:do_action:delete>',
+            \ 'noremap'
+            \)
 
 call denite#custom#map(
-      \ 'normal',
-      \ 'r',
-      \ '<denite:do_action:reset>',
-      \ 'noremap'
-      \)
+            \ 'normal',
+            \ 'r',
+            \ '<denite:do_action:reset>',
+            \ 'noremap'
+            \)
 
 
 " imap <buffer> <C-a> (denite:do_action:add)
@@ -1270,3 +1316,5 @@ hi x252_Grey82 ctermfg=252 guifg=#d0d0d0 "rgb=208,208,208
 hi x253_Grey85 ctermfg=253 guifg=#dadada "rgb=218,218,218
 hi x254_Grey89 ctermfg=254 guifg=#e4e4e4 "rgb=228,228,228
 hi x255_Grey93 ctermfg=255 guifg=#eeeeee "rgb=238,238,238
+
+
