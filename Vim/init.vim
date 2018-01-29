@@ -489,39 +489,40 @@ nnoremap <silent><leader>8 :<C-u>DeniteCursorWord grep:. -mode=normal<CR>
 
 nnoremap <silent> <leader>o :<C-u>Denite -buffer-name=outline -winwidth=35 unite:outline -mode=normal<cr>
 " nnorema<silent> p <leader>k :<C-u>Denite -mode=normal -winwidth=35 unite:outline<cr>
-nnoremap <silent> <leader>gr :<C-u>Denite -mode=normal -winwidth=35 grep<cr>
 
+nnoremap <silent> <leader>v :<C-u>Denite location_list -mode=normal -no-empty -auto-preview<CR>
 nnoremap <silent> <leader>f :<C-u>DeniteBufferDir -mode=normal -no-split -buffer-name=files   file<cr>
 nnoremap <silent> <leader>r :<C-u>Denite -mode=normal -no-split -buffer-name=mru     file_mru<cr>
+
 " nnoremap <silent><leader>m :<C-u>Denite buffer<CR>
 nnoremap <silent> <leader>b :<C-u>Denite -mode=normal -no-split -buffer-name=buffers buffer<cr>
 nnoremap <silent> <leader>l :<C-u>Denite line -mode=insert -no-split -buffer-name=line<cr>
 
-nnoremap <silent> <leader>O :<C-u>Denite -mode=normal -winwidth=35 outline<cr>
+nnoremap <silent> <leader>da :<C-u>Denite ale -mode=normal -auto-preview<CR>
+nnoremap <silent> <leader>m :<C-u>Denite marks -mode=normal<CR>
+nnoremap <silent> <leader>M :<C-u>Denite menu -mode=normal<CR>
+nnoremap <silent> <leader>g :<C-u>Denite -mode=normal -winwidth=35 grep<cr>
 
-nnoremap <silent> <leader>dj  :call execute('Denite -resume -select=+'.v:count1.' -immediately')<CR>
-nnoremap <silent> <leader>dk  :call execute('Denite -resume -select=-'.v:count1.' -immediately')<CR>
+" nnoremap <silent> <leader>da :<C-u>Denite autocmd -mode=normal -auto-preview<CR>
+" nnoremap <silent> <leader>dk :<C-u>Denite keymap -mode=normal<CR>
+nnoremap <silent> <leader>df :<C-u>Denite file_manager -mode=normal <CR>
+nnoremap <silent> <leader>dc :<C-u>Denite colorscheme -mode=normal -auto-preview<CR>
+nnoremap <silent> <leader>dj :call execute('Denite -resume -select=+'.v:count1.' -immediately')<CR>
+nnoremap <silent> <leader>dk :call execute('Denite -resume -select=-'.v:count1.' -immediately')<CR>
+nnoremap <silent> <leader>dl :<C-u>Denite -mode=normal -auto-resize location_list<CR>
+nnoremap <silent> <leader>dn :<C-u>DeniteCursorWord line -mode=insert -no-split -buffer-name=line<cr>
+nnoremap <silent> <leader>do :<C-u>Denite -mode=normal -winwidth=35 outline<cr>
+nnoremap <silent> <leader>dq :<C-u>Denite -mode=normal -auto-resize quickfix<CR>
+nnoremap <silent> <leader>ds :<C-u>Denite -mode=normal -winwidth=35 session<cr>
+nnoremap <silent> <leader>dr :<C-u>Denite -resume<CR>
+nnoremap <silent> <leader>dy :<C-u>Denite -mode=normal -winwidth=35 register<cr>
 
 nnoremap <silent> <leader>hs :<C-u>Denite history:search -mode=normal<CR>
 nnoremap <silent> <leader>hc :<C-u>Denite history:cmd -mode=normal<CR>
-nnoremap <silent> <leader>ds :<C-u>Denite -mode=normal -winwidth=35 session<cr>
-nnoremap <silent> <leader>dc :<C-u>Denite colorscheme -mode=normal -auto-preview<CR>
-nnoremap <silent> <leader>dq  :<C-u>Denite -mode=normal -auto-resize quickfix<CR>
-nnoremap <silent> <leader>d :<C-u>Denite location_list -mode=normal -no-empty -auto-preview<CR>
-nnoremap <silent> <leader>dn :<C-u>DeniteCursorWord line -mode=insert -no-split -buffer-name=line<cr>
-nnoremap <silent> <leader>dr  :<C-u>Denite -resume<CR>
-nnoremap <silent> <leader>da :<C-u>Denite autocmd -mode=normal -auto-preview<CR>
-nnoremap <silent> <leader>dm :<C-u>Denite marks -mode=normal<CR>
-" nnoremap <silent> <leader>dk :<C-u>Denite keymap -mode=normal<CR>
-nnoremap <silent> <leader>df :<C-u>Denite file_manager -mode=normal <CR>
-nnoremap <silent> <leader>da :<C-u>Denite ale -mode=normal -auto-preview<CR>
-nnoremap <silent> <leader>dy :<C-u>Denite -mode=normal -winwidth=35 register<cr>
-" nnoremap <silent> <space>l  :<C-u>Denite -mode=normal -auto-resize location_list<CR>
 
 " Ag command on grep source
 call denite#custom#var('grep', 'command', ['ag'])
-call denite#custom#var('grep', 'default_opts',
-            \ ['-i', '--vimgrep'])
+call denite#custom#var('grep', 'default_opts', ['-i', '--vimgrep'])
 call denite#custom#var('grep', 'recursive_opts', [])
 call denite#custom#var('grep', 'pattern_opt', [])
 call denite#custom#var('grep', 'separator', ['--'])
@@ -588,21 +589,53 @@ call denite#custom#map(
 " Add custom menus
 let s:menus = {}
 
-let s:menus.zsh = {
-            \ 'description': 'Edit your import zsh configuration'
+" let s:menus.zsh = {
+"             \ 'description': 'Edit your import zsh configuration'
+"             \ }
+" let s:menus.zsh.file_candidates = [
+"             \ ['zshrc', '~/.config/zsh/.zshrc'],
+"             \ ['zshenv', '~/.zshenv'],
+"             \ ]
+"
+" let s:menus.my_commands = {
+"             \ 'description': 'Example commands'
+"             \ }
+" let s:menus.my_commands.command_candidates = [
+"             \ ['Split the window', 'vnew'],
+"             \ ['Open zsh menu', 'Denite menu:zsh'],
+"             \ ]
+let s:menus.Git= {
+            \ 'description': 'Git commands'
             \ }
-let s:menus.zsh.file_candidates = [
-            \ ['zshrc', '~/.config/zsh/.zshrc'],
-            \ ['zshenv', '~/.zshenv'],
-            \ ]
 
-let s:menus.my_commands = {
-            \ 'description': 'Example commands'
+let s:menus.Denite = {
+            \ 'description': 'Denite commands'
             \ }
-let s:menus.my_commands.command_candidates = [
-            \ ['Split the window', 'vnew'],
-            \ ['Open zsh menu', 'Denite menu:zsh'],
+let s:menus.Denite.command_candidates = [
+            \ ['File Manager', 'Denite file_manager -mode=normal'],
+            \ ['Autocmd', 'Denite autocmd -mode=normal'],
+            \ ['ColorScheme', 'Denite colorscheme -mode=normal'],
+            \ ['History Command', 'Denite history:cmd -mode=normal'],
+            \ ['History Search', 'Denite history:search -mode=normal'],
+            \ ['Location list', 'Denite location_list -mode=normal'],
+            \ ['QuickFix', 'Denite quickfix -mode=normal'],
+            \ ['Register', 'Denite register -mode=normal'],
+            \ ['Session', 'Denite session -mode=normal'],
             \ ]
+let s:menus.Sessions = {
+            \ 'description': 'Sessions commands'
+            \ }
+
+let s:menus.Unite= {
+            \ 'description': 'Unite commands'
+            \ }
+let s:menus.VimFiler= {
+            \ 'description': 'VimFiler commands'
+            \ }
+
+let s:menus.Arduino= {
+            \ 'description': 'Arduino commands'
+            \ }
 
 call denite#custom#var('menu', 'menus', s:menus)
 
@@ -611,7 +644,7 @@ call denite#custom#var('menu', 'menus', s:menus)
 "
 let g:unite_source_history_yank_enable = 1
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
-nnoremap <silent><Leader>m :Unite -silent -auto-resize -buffer-name=my-directories -default-action=vimfiler bookmark<CR>
+nnoremap <silent><Leader>ub :Unite -silent -auto-resize -buffer-name=my-directories -default-action=vimfiler bookmark<CR>
 
 " Use ag in unite grep source.
 let g:unite_source_grep_command = 'ag'
