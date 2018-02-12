@@ -1412,3 +1412,15 @@ hi x254_Grey89 ctermfg=254 guifg=#e4e4e4 "rgb=228,228,228
 hi x255_Grey93 ctermfg=255 guifg=#eeeeee "rgb=238,238,238
 
 
+nnoremap <F12> :call German_postfix()<CR>
+function German_postfix()
+    imap ue ü
+    imap UE Ü
+    imap OE Ö
+    imap oe ö
+    imap ae ä
+    imap AE Ä
+    imap sz ß
+    imap mfg Mit freundlichen Grüßen
+    imap fb Fabian Brännström
+endfunction
