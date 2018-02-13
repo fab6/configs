@@ -171,6 +171,9 @@ syn region instructions start=/^\s*&/ end=/[/]/ contains=FDS4OBS,hstring,FDS5PA,
 " comments: everything is a comment, unless it is an instruction, see above
 syn match  comment /.*/ contains=instructions
 
+
+setlocal commentstring=!%s
+
 " syntax sync
 syntax sync minlines=150
 syn case match
