@@ -1,311 +1,59 @@
-syn keyword dakotaKeyword iuv_descriptors all fuv_alphas tensor_product
-syn keyword dakotaKeyword max_designs global fixed_seed confidence_level
-syn keyword dakotaKeyword linear_equality_scale_types guuv_descriptors
-syn keyword dakotaKeyword coliny_pattern_search model_fidelity_sequence
-syn keyword dakotaKeyword nonlinear_inequality_constraints epistemic
-syn keyword dakotaKeyword probability_levels find_nugget crossover_rate
-syn keyword dakotaKeyword soft_convergence_limit soga nonlinear_cg ego
-syn keyword dakotaKeyword singular_conv_tol environment merit_max_smooth sr1
-syn keyword dakotaKeyword expansion_bases matlab model_pointer stochastic
-syn keyword dakotaKeyword convergence_tolerance no_expansion tabular_data_file
-syn keyword dakotaKeyword division linear_inequality_scale_types optpp_pds
-syn keyword dakotaKeyword string dynamic id_numerical_hessians euv_descriptors
-syn keyword dakotaKeyword none processors_per_analysis scalar_responses
-syn keyword dakotaKeyword cross_validation_metric cdv_scales min_boxsize_limit
-syn keyword dakotaKeyword field_calibration_terms nlpql_sqp partitions
-syn keyword dakotaKeyword exponential_uncertain hypergeometric_uncertain
-syn keyword dakotaKeyword beta_uncertain least_angle_regression wuv_alphas
-syn keyword dakotaKeyword sub_method_pointer beta_solver_name branch_and_bound
-syn keyword dakotaKeyword histogram_point_uncertain h_refinement weight_function
-syn keyword dakotaKeyword frechet_uncertain huv_bin_descriptors no_approx
-syn keyword dakotaKeyword total_order fd_hessian_step_size coliny_ea
-syn keyword dakotaKeyword nond_global_reliability nond_adaptive_sampling
-syn keyword dakotaKeyword iterator_servers trend global_balance_parameter direct
-syn keyword dakotaKeyword nonlinear_inequality_upper_bounds fuv_betas
-syn keyword dakotaKeyword analysis_components results_file max_bases
-syn keyword dakotaKeyword all_dimensions analysis_concurrency run
-syn keyword dakotaKeyword point_selection post_run combined uniform sequential
-syn keyword dakotaKeyword csv_lower_bounds moga unrestricted
-syn keyword dakotaKeyword import_approx_points_file method method_pointer
-syn keyword dakotaKeyword nond_sampling formats sub_sampling_period conmin
-syn keyword dakotaKeyword cdv_initial_point num_gen_reliability_levels
-syn keyword dakotaKeyword allow_existing_results global_model_pointer bpdn
-syn keyword dakotaKeyword failure_capture obs_data_filename active_only
-syn keyword dakotaKeyword standardized_space interval_probabilities
-syn keyword dakotaKeyword expand_threshold evaluation_cache
-syn keyword dakotaKeyword read_field_coordinates nonlinear_inequality_scales
-syn keyword dakotaKeyword basis_pursuit prior global_reliability emulator
-syn keyword dakotaKeyword import_points_file exploratory_moves two_point
-syn keyword dakotaKeyword num_response_levels approx_model_pointer
-syn keyword dakotaKeyword method_name_list tabular_graphics_file verbose
-syn keyword dakotaKeyword u_taylor_mean refinement_rate
-syn keyword dakotaKeyword generate_posterior_samples conmin_frcg fixed_sequence
-syn keyword dakotaKeyword global_interval_est distance_penalty tana pre_solve
-syn keyword dakotaKeyword ncsu_direct gauv_descriptors dprepro
-syn keyword dakotaKeyword discontinuity_detection discrete_state_range
-syn keyword dakotaKeyword num_intervals original_constraints derivatives chc
-syn keyword dakotaKeyword global_method_pointer multi_objective_weights
-syn keyword dakotaKeyword nond_local_evidence probabilities num_field_objectives
-syn keyword dakotaKeyword orthogonal_distance pilot_samples least_interpolation
-syn keyword dakotaKeyword vector_parameter_study initial_state
-syn keyword dakotaKeyword gradient_based_line_search trial_type descriptors
-syn keyword dakotaKeyword naive delayed_rejection coliny_apps normalized
-syn keyword dakotaKeyword num_scalar_objectives penalty_merit exp_id coliny_beta
-syn keyword dakotaKeyword blocking lambdas mutation_scale layer_rank
-syn keyword dakotaKeyword expand_after_success numerical_hessians pattern_basis
-syn keyword dakotaKeyword labeled dl_solver values display_all_evaluations
-syn keyword dakotaKeyword lipschitz opt_model_pointer solution_target
-syn keyword dakotaKeyword sequence_leap centered_parameter_study niching_type
-syn keyword dakotaKeyword x_taylor_mpp per_response sense volume_boxsize_limit
-syn keyword dakotaKeyword final_point box_behnken abort multi_point_real
-syn keyword dakotaKeyword percent_change simulation selected_population scales
-syn keyword dakotaKeyword secondary_variable_mapping neighbor_order
-syn keyword dakotaKeyword dimension_adaptive u_gaussian_process
-syn keyword dakotaKeyword num_reliability_levels merit1_smooth dsv_upper_bounds
-syn keyword dakotaKeyword gauv_alphas scalar_calibration_terms
-syn keyword dakotaKeyword local_method_pointer absolute
-syn keyword dakotaKeyword quadrature_order_sequence ddv_initial_point
-syn keyword dakotaKeyword continuous_state second_order lnuv_error_factors
-syn keyword dakotaKeyword challenge_points_file random_field final_solutions
-syn keyword dakotaKeyword weight_sets rkd_darts noise_only
-syn keyword dakotaKeyword augmented_lagrangian_merit parallel
-syn keyword dakotaKeyword centering_parameter variables_pointer coliny_cobyla
-syn keyword dakotaKeyword nond_global_evidence export_points_file converge_order
-syn keyword dakotaKeyword lengths ordered_model_fidelities lhs abscissas sc
-syn keyword dakotaKeyword model_pointer_list genie_direct coliny_direct
-syn keyword dakotaKeyword ratio_order nond_global_interval_est cumulative
-syn keyword dakotaKeyword continuous_interval_uncertain pre_run
-syn keyword dakotaKeyword show_misc_options nonlinear_inequality_lower_bounds
-syn keyword dakotaKeyword reliability_levels print_each_pop symbols
-syn keyword dakotaKeyword ddv_upper_bounds wiener fd_step_size
-syn keyword dakotaKeyword negative_binomial_uncertain eval_id solution_accuracy
-syn keyword dakotaKeyword incremental_random lnuv_means fitness_type max_subsets
-syn keyword dakotaKeyword method_name total_points num_generations decay
-syn keyword dakotaKeyword guuv_alphas filename_prefix export_chain_points_file
-syn keyword dakotaKeyword nonblocking luuv_lower_bounds analysis_scheduling
-syn keyword dakotaKeyword actual_model_pointer logit_transform uuv_descriptors
-syn keyword dakotaKeyword pce npsol principal_components approx_method_pointer
-syn keyword dakotaKeyword python steplength_to_boundary random_starts
-syn keyword dakotaKeyword metric_tracker drop_tolerance binomial_uncertain
-syn keyword dakotaKeyword scaling linear_inequality_upper_bounds jump_step
-syn keyword dakotaKeyword least_squares_data_file error_factors one
-syn keyword dakotaKeyword moving_least_squares tuv_descriptors sobol
-syn keyword dakotaKeyword directory_save nugget buv_upper_bounds el_bakry
-syn keyword dakotaKeyword orthogonal_matching_pursuit lagrangian_objective
-syn keyword dakotaKeyword quasi_hessians kriging num_experiments radial debug
-syn keyword dakotaKeyword approx_subproblem auto_refinement std_deviations
-syn keyword dakotaKeyword least_squares_term_scales predicted_variance series
-syn keyword dakotaKeyword truncation_method ea gaussian contract_after_failure
-syn keyword dakotaKeyword num_trials static huv_bin_abscissas wuv_descriptors
-syn keyword dakotaKeyword damped range_probs gpais custom_annotated
-syn keyword dakotaKeyword probability_per_trial cell_type contract_threshold
-syn keyword dakotaKeyword matrix mt19937 gradient restricted scale_types zetas
-syn keyword dakotaKeyword gen_reliability_levels multi_step hammersley
-syn keyword dakotaKeyword roulette_wheel regression_diagnostics
-syn keyword dakotaKeyword numerical_gradients copy_files least_squares_terms
-syn keyword dakotaKeyword posterior_samples_export_filename file_tag linear
-syn keyword dakotaKeyword chain_samples fuv_descriptors diagonal
-syn keyword dakotaKeyword gen_reliabilities optional_interface_responses_pointer
-syn keyword dakotaKeyword tabular_data nlssol asynchronous sbo replace_uniform
-syn keyword dakotaKeyword annotated calibration_data discrete_design_range
-syn keyword dakotaKeyword algebraic_mappings active_set_vector
-syn keyword dakotaKeyword linear_equality_targets categorical filter
-syn keyword dakotaKeyword read_restart major_dimension id_model
-syn keyword dakotaKeyword num_field_responses list_parameter_study trust_region
-syn keyword dakotaKeyword conmin_mfd prob_per_trial dot_sqp local_interval_est
-syn keyword dakotaKeyword variables postprocessor_type range_probabilities
-syn keyword dakotaKeyword nond_bayes_calibration analysis_drivers nested
-syn keyword dakotaKeyword quality_metrics max_function_evaluations id_responses
-syn keyword dakotaKeyword batch_selection dimension_preference mixed_gradients
-syn keyword dakotaKeyword silent d_optimal x_two_point shrinkage_fraction system
-syn keyword dakotaKeyword output_filter max_pts master tensor_grid
-syn keyword dakotaKeyword id_analytic_gradients surrogate_based_local
-syn keyword dakotaKeyword id_interface cdv_descriptors nuv_means
-syn keyword dakotaKeyword recommended_points optimization_method relative
-syn keyword dakotaKeyword scalar_objectives solution_level_control
-syn keyword dakotaKeyword luuv_descriptors original_primary
-syn keyword dakotaKeyword num_response_functions distance approx_method_name
-syn keyword dakotaKeyword surrogate discrete_state_set input_filter wilks
-syn keyword dakotaKeyword nond_local_reliability main_effects id_surrogates
-syn keyword dakotaKeyword design fork nond_local_interval_est contraction_factor
-syn keyword dakotaKeyword multi_objective_weight_sets initialization_type
-syn keyword dakotaKeyword correction bing_li cubature_integrand
-syn keyword dakotaKeyword objective_function_scales seed calibration_terms
-syn keyword dakotaKeyword recover interaction_order cross_validation
-syn keyword dakotaKeyword calibrate_error_multipliers calibration_data_file
-syn keyword dakotaKeyword posterior_density_export_filename verbatim
-syn keyword dakotaKeyword lnuv_upper_bounds local_adaptive speculative
-syn keyword dakotaKeyword elements_per_variable triangular_uncertain
-syn keyword dakotaKeyword parameters_file generalized genie_opt_darts
-syn keyword dakotaKeyword cdv_scale_types search_method discrete_uncertain_range
-syn keyword dakotaKeyword relaxed local_evaluation_scheduling
-syn keyword dakotaKeyword surrogate_based_global normal nl2sol
-syn keyword dakotaKeyword sparse_grid_level_sequence num_parents
-syn keyword dakotaKeyword weibull_uncertain metrics ordinates csv_upper_bounds
-syn keyword dakotaKeyword propagation_model_pointer huv_bin_ordinates
-syn keyword dakotaKeyword uuv_upper_bounds evaluation_concurrency two_sided
-syn keyword dakotaKeyword tuv_upper_bounds multi_point_binary order max_trials
-syn keyword dakotaKeyword adaptive_pattern fsu_quasi_mc diagnostics
-syn keyword dakotaKeyword minimum_points merit2_smooth l2_penalty log_file blend
-syn keyword dakotaKeyword dot nond_pof_darts ignore_bounds num_pairs
-syn keyword dakotaKeyword evaluation_servers num_set_values random
-syn keyword dakotaKeyword hyperprior_alphas freeform nuv_upper_bounds
-syn keyword dakotaKeyword bootstrap_samples samples_on_emulator
-syn keyword dakotaKeyword interval_uncertain collocation_ratio
-syn keyword dakotaKeyword objective_functions merit_max verify_level multipoint
-syn keyword dakotaKeyword importance_sampling psuade_moat cdv_upper_bounds
-syn keyword dakotaKeyword lognormal_uncertain output_file state dir_tag
-syn keyword dakotaKeyword mm_adapt_import bases absolute_conv_tol
-syn keyword dakotaKeyword asynch_pattern_search local
-syn keyword dakotaKeyword num_nonlinear_equality_constraints opt_method_name
-syn keyword dakotaKeyword local_balance_parameter bfgs means reliabilities
-syn keyword dakotaKeyword iuv_interval_probs weights noise_tolerance
-syn keyword dakotaKeyword synchronization reuse_points deactivate mutation_type
-syn keyword dakotaKeyword iterator_scheduling dsv_initial_state
-syn keyword dakotaKeyword expansion_samples_sequence coliny_solis_wets stanford
-syn keyword dakotaKeyword num_designs num_scalar_responses luuv_upper_bounds
-syn keyword dakotaKeyword set_values merit2_squared evaluate_posterior_density
-syn keyword dakotaKeyword id_analytic_hessians calibration_term_scale_types
-syn keyword dakotaKeyword id_quasi_hessians field_objectives
-syn keyword dakotaKeyword num_least_squares_terms secondary_response_mapping
-syn keyword dakotaKeyword calibration_term_scales burn_in_samples linear_rank
-syn keyword dakotaKeyword algebraic_file sequence_start nond_polynomial_chaos
-syn keyword dakotaKeyword hierarchical_tagging num_objective_functions backfill
-syn keyword dakotaKeyword num_offspring complementary num_drawn
-syn keyword dakotaKeyword truth_surrogate_bypass uuv_lower_bounds filename
-syn keyword dakotaKeyword global_evidence global_method_name x_gaussian_process
-syn keyword dakotaKeyword nonlinear_equality_scale_types
-syn keyword dakotaKeyword nonlinear_equality_scales import alphas aleatory
-syn keyword dakotaKeyword nonlinear_equality_targets gradient_threshold
-syn keyword dakotaKeyword nond_importance_sampling responses nlssol_sqp
-syn keyword dakotaKeyword non_nested discrete_design_set interpolate dir_save
-syn keyword dakotaKeyword dot_slp local_model_pointer omp single_objective
-syn keyword dakotaKeyword merit2 merit1 smoothing_factor proposal_updates
-syn keyword dakotaKeyword jump_threshold zeroth_order pof_darts
-syn keyword dakotaKeyword basis_pursuit_denoising askey shuffle_random
-syn keyword dakotaKeyword hyperprior_betas processors_per_evaluation
-syn keyword dakotaKeyword data_distribution region quiet tr_pds
-syn keyword dakotaKeyword discrete_interval_uncertain incremental_lhs
-syn keyword dakotaKeyword constantine stoch_collocation opt_method_pointer
-syn keyword dakotaKeyword constraint_relax responses_pointer adapted
-syn keyword dakotaKeyword average_fitness_tracker algebraic_console id_method
-syn keyword dakotaKeyword central_composite singular_radius
-syn keyword dakotaKeyword posterior_samples_import_filename mesh_adaptive_search
-syn keyword dakotaKeyword continuation named shrinkage_percentage sampling
-syn keyword dakotaKeyword targets header gauv_betas variance_type directory_tag
-syn keyword dakotaKeyword argaez_tapia export_model best_fitness_tracker
-syn keyword dakotaKeyword interface_id replace_points dream method_pointer_list
-syn keyword dakotaKeyword unique_roulette_wheel initial_point dot_bfgs piecewise
-syn keyword dakotaKeyword linear_inequality_constraint_matrix
-syn keyword dakotaKeyword linearized_constraints van_shanno mars
-syn keyword dakotaKeyword constraint_tolerance binary_archive
-syn keyword dakotaKeyword import_expansion_file numpy dot_frcg
-syn keyword dakotaKeyword pairs_per_variable minimum_size calibration_weights
-syn keyword dakotaKeyword both deltas_per_variable nodes covariance
-syn keyword dakotaKeyword loguniform_uncertain use_derivatives non_adaptive
-syn keyword dakotaKeyword nuv_lower_bounds write_restart graphics
-syn keyword dakotaKeyword least_squares_weights dot_mmfd support_layers max_step
-syn keyword dakotaKeyword uncertain exponential slp single constant_penalty
-syn keyword dakotaKeyword top_method_pointer wuv_betas huv_bin_counts
-syn keyword dakotaKeyword lnuv_std_deviations betas bounds
-syn keyword dakotaKeyword multi_point_parameterized_binary one_sided
-syn keyword dakotaKeyword total_pattern_size aprepro basis_type lnuv_descriptors
-syn keyword dakotaKeyword coupled cdv_lower_bounds min_partition
-syn keyword dakotaKeyword nuv_std_deviations export_expansion_file pareto_set
-syn keyword dakotaKeyword fd_gradient_step_size expansion_form buv_descriptors
-syn keyword dakotaKeyword starting_points full_covariance oa_lhs least_squares
-syn keyword dakotaKeyword poly_order discrete_uncertain_set solution_level_cost
-syn keyword dakotaKeyword frcg interpolation cubic new_solutions_generated
-syn keyword dakotaKeyword variance_based_decomp wasabi method_source
-syn keyword dakotaKeyword nuv_descriptors threshold_delta nip initial_delta
-syn keyword dakotaKeyword function_precision refinement_samples restart_file
-syn keyword dakotaKeyword linear_inequality_scales modes initial_samples
-syn keyword dakotaKeyword stop_restart probability_refinement
-syn keyword dakotaKeyword analytic_covariance tr_ratio folds coordinate
-syn keyword dakotaKeyword normal_uncertain model interface dimension
-syn keyword dakotaKeyword gumbel_uncertain mfd cache_tolerance u_taylor_mpp
-syn keyword dakotaKeyword neural_network lnuv_zetas lnuv_lambdas
-syn keyword dakotaKeyword crossover_chain_pairs local_search_probability
-syn keyword dakotaKeyword u_two_point proposal_covariance dakota
-syn keyword dakotaKeyword response_functions adapt_import lasso total_population
-syn keyword dakotaKeyword integer percent set_probs num_steps id_variables
-syn keyword dakotaKeyword mpp_search multidim_parameter_study samples input
-syn keyword dakotaKeyword build_source local_method_name real x_taylor_mean
-syn keyword dakotaKeyword primary_scale_types response_descriptors
-syn keyword dakotaKeyword primary_scales x_conv_tol queso upper_bounds
-syn keyword dakotaKeyword offset_uniform rng uniform_uncertain
-syn keyword dakotaKeyword collocation_points_sequence build_samples grid
-syn keyword dakotaKeyword lnuv_lower_bounds press merit_function replace
-syn keyword dakotaKeyword radial_basis steps_per_variable below_limit
-syn keyword dakotaKeyword expansion_order_sequence
-syn keyword dakotaKeyword num_nonlinear_inequality_constraints
-syn keyword dakotaKeyword nond_stoch_collocation initial_size
-syn keyword dakotaKeyword results_output_file evaluation_scheduling
-syn keyword dakotaKeyword gamma_uncertain linear_inequality_lower_bounds
-syn keyword dakotaKeyword multiplicative output constraint_penalty link_files
-syn keyword dakotaKeyword truncation_tolerance domain_decomposition
-syn keyword dakotaKeyword basic_pattern nonlinear_equality_constraints
-syn keyword dakotaKeyword taylor_series scalar_data_file
-syn keyword dakotaKeyword nonlinear_inequality_scale_types interface_pointer
-syn keyword dakotaKeyword iuv_num_intervals guuv_betas polynomial elements
-syn keyword dakotaKeyword results_output field_responses elitist
-syn keyword dakotaKeyword analysis_servers rf_data_file counts buv_lower_bounds
-syn keyword dakotaKeyword lars x_kriging random_weight_sets optpp_g_newton
-syn keyword dakotaKeyword unique_random max_nodes flat_file
-syn keyword dakotaKeyword num_probability_levels fsu_cvt sample_type euv_betas
-syn keyword dakotaKeyword prime_base dsv_descriptors local_reliability
-syn keyword dakotaKeyword adaptive_sampling response_levels file_save chains
-syn keyword dakotaKeyword mixed_hessians set_probabilities sqp
-syn keyword dakotaKeyword search_scheme_size energy no_hessians buv_alphas
-syn keyword dakotaKeyword initial_trust_radius error_file history_file
-syn keyword dakotaKeyword optional_interface_pointer squared_exponential
-syn keyword dakotaKeyword primary_variable_mapping
-syn keyword dakotaKeyword least_squares_term_scale_types bp simplex peer
-syn keyword dakotaKeyword additive variable_neighborhood_search no_gradients
-syn keyword dakotaKeyword value_based_line_search reuse_samples central
-syn keyword dakotaKeyword random_weight linesearch_tolerance mmfd no_constraints
-syn keyword dakotaKeyword first_order tuv_lower_bounds dace_method_pointer
-syn keyword dakotaKeyword gaussian_process mutation_range range dsv_lower_bounds
-syn keyword dakotaKeyword basis_order step_vector mixed bit_random
-syn keyword dakotaKeyword list_of_points analytic_gradients integration
-syn keyword dakotaKeyword diagonal_covariance linear_equality_constraint_matrix
-syn keyword dakotaKeyword tuv_modes num_config_variables latinize
-syn keyword dakotaKeyword orthogonal_least_interpolation p_refinement
-syn keyword dakotaKeyword least_absolute_shrinkage oversample_ratio text_archive
-syn keyword dakotaKeyword rnum2 interval_probs simple_random output_precision
-syn keyword dakotaKeyword max_iterations richardson_extrap ddv_descriptors
-syn keyword dakotaKeyword linear_equality_scales nodal halton
-syn keyword dakotaKeyword gaussian_process_adaptive_importance_sampling
-syn keyword dakotaKeyword constant_liar histogram_bin_uncertain quadratic
-syn keyword dakotaKeyword offset_cauchy analytic_hessians oli forward
-syn keyword dakotaKeyword continuous_design uncertain_correlation_matrix
-syn keyword dakotaKeyword optpp_q_newton num_cr optpp_newton false_conv_tol
-syn keyword dakotaKeyword equality_constrained sample_refinement
-syn keyword dakotaKeyword geometric_uncertain max_boxsize_limit samples_file
-syn keyword dakotaKeyword hierarchical multilevel karhunen_loeve lower_bounds
-syn keyword dakotaKeyword processors_per_iterator active offset_normal
-syn keyword dakotaKeyword objective_function_scale_types compute local_evidence
-syn keyword dakotaKeyword embedded polynomial_chaos topology
-syn keyword dakotaKeyword tabular_graphics_data adjacency_matrix fitness_metric
-syn keyword dakotaKeyword multilevel_mc u_kriging adaptive_metropolis optpp_cg
-syn keyword dakotaKeyword optpp_fd_newton distribution replacement_type homotopy
-syn keyword dakotaKeyword constant favor_feasible misc_options advancements
-syn keyword dakotaKeyword estimate_order gradient_tolerance expansion_factor
-syn keyword dakotaKeyword bayes_calibration percent_variance_explained gpmsa
-syn keyword dakotaKeyword check work_directory adaptive_penalty_merit
-syn keyword dakotaKeyword convergence_type ddv_lower_bounds hybrid dace
-syn keyword dakotaKeyword import_challenge_points_file gr_threshold vendor oas
-syn keyword dakotaKeyword primary_response_mapping num_coordinates_per_field
-syn keyword dakotaKeyword npsol_sqp display_format metropolis_hastings
-syn keyword dakotaKeyword domination_count posterior_adaptive nond_rkd_darts
-syn keyword dakotaKeyword strict_cache_equality converge_qoi collaborative
-syn keyword dakotaKeyword poisson_uncertain subspace surfpack csv_descriptors
-syn keyword dakotaKeyword csv_initial_state multilevel_sampling multi_start
-syn keyword dakotaKeyword retry id_numerical_gradients buv_betas
-syn keyword dakotaKeyword correlation_lengths dram scilab per_experiment
-syn keyword dakotaKeyword lagrangian_merit uncoupled import_build_points_file
-syn keyword dakotaKeyword svd interval_type acceptance_logic reduced_quadratic
-syn keyword dakotaKeyword mutation_rate population_size
-syn keyword dakotaKeyword augmented_lagrangian_objective efficient_global
-:current_syntax = "dakota"
-hi def link dakotaKeyword Statement
+" Vim syntax file
+" Language: DAKOTA
+" Maintainer: Jacobo Díaz (jadiga00@gmail.com)
+" Last change: February 27, 2008
+" 
+" Thanks to the authors and maintainers of fortran.vim and nastran.vim.
+"
+"----------------------------------------------------------------------
+" Remove any old syntax stuff hanging around
+"syn clear
+if version < 600
+  syntax clear
+elseif exists("b:current_syntax")
+  finish
+endif
+"
+"--------------------DAKOTA SYNTAX---------------------------------------
+"
+syn region DAKOTAString  start=+"+ end=+"+ oneline
+syn region DAKOTAString  start=+'+ end=+'+ oneline
+" Any integer
+syn match DAKOTANumber  "-\=\<[0-9]\+\>"
+" floating point number, with dot, optional exponent
+syn match DAKOTAFloat  "\<[0-9]\+\.[0-9]*\([edED][-+]\=[0-9]\+\)\=\>"
+" floating point number, starting with a dot, optional exponent
+syn match DAKOTAFloat  "\.[0-9]\+\([edED][-+]\=[0-9]\+\)\=\>"
+" floating point number, without dot, with exponent
+syn match DAKOTAFloat  "\<[0-9]\+[edED][-+]\=[0-9]\+\>"
+syn match DAKOTALogical "\(true\|false\)"
+
+" -------Comments
+syn match DAKOTAComment "^\s*\zs#.*$"	contains=@shCommentGroup
+syn match DAKOTAComment  "#.*$"	contains=@shCommentGroup
+
+" -------Implicit Functions
+syn keyword DAKOTAImplicit strategy method model variables interface responses environment
+syn keyword DAKOTAAlgo moga soga lhs list_parameter_study pareto_set npsol_sqp coliny_ea sampling
+
+if version >= 508 || !exists("did_dakota_syntax_inits")
+  if version < 508
+     let did_dakota_syntax_inits = 1
+     command -nargs=+ HiLink hi link <args>
+  else
+     command -nargs=+ HiLink hi link <args>
+  endif
+  " The default methods for highlighting.  Can be overridden later
+  HiLink DAKOTAString	   String
+  HiLink DAKOTANumber      Number
+  HiLink DAKOTAFloat       Float
+  HiLink DAKOTAComment	   Comment
+  HiLink DAKOTAImplicit    PreProc
+  HiLink DAKOTALogical     Boolean
+  HiLink DAKOTAAlgo        Identifier
+  delcommand HiLink
+endif
+
+let b:current_syntax = "dakota"
+
+"EOF vim: ts=8 noet tw=120 sw=8 sts=0
