@@ -57,6 +57,7 @@ Plug 'yyotti/denite-marks'
 Plug 'notomo/denite-keymap'
 Plug 'yuntan/denite-cheatsheet'
 Plug 'zchee/deoplete-jedi'
+" Plug 'davidhalter/jedi-vim' Autocomplete for python
 Plug 'thirtythreeforty/lessspace.vim'
 Plug 'chrisbra/csv.vim'
 Plug 'Yggdroot/indentLine'
@@ -79,12 +80,16 @@ Plug 'rhysd/vim-gfm-syntax'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'iamcco/file-manager.vim'
 " Programming:
+" python
 Plug 'python-mode/python-mode' , { 'for': 'python' }
+Plug 'fisadev/vim-isort'
+Plug 'w0rp/ale'
+"Plug 'bps/vim-textobj-python'
+Plug 'ludovicchabant/vim-gutentags'
 Plug 'jvirtanen/vim-octave', { 'for': 'octave' }
 Plug 'stevearc/vim-arduino', { 'for': 'arduino' }
 Plug 'nvie/vim-flake8', { 'for': 'python' }
 Plug 'sudar/vim-arduino-syntax', { 'for': 'arduino' }
-Plug 'w0rp/ale'
 Plug 'iyuuya/denite-ale'
 Plug 'wesQ3/vim-windowswap'
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
@@ -121,7 +126,6 @@ Plug 'kassio/neoterm'
 " Plug 'easymotion/vim-easymotion'
 " Plug 'kien/ctrlp.vim' Ctrl-P - Fuzzy file search
 " Plug 'ervandew/supertab' Tab completion
-" Plug 'davidhalter/jedi-vim' Autocomplete for python
 " Plug 'vimscripts/modelica'
 " Plug 'vim-syntastic/syntastic'
 "
@@ -355,27 +359,27 @@ cnoremap <C-n> <Down>
 cnoremap <C-j> <Left>
 cnoremap <C-l> <Right>
 "
-:nnoremap <leader>ed :e ~/.config/nvim/init.vim<CR>
-:nnoremap <leader>er :source ~/.config/nvim/init.vim<CR>
-:nnoremap <leader>ef :e ~/.nvim/ftplugin/<CR>
+:nnoremap <leader>fed :e ~/.config/nvim/init.vim<CR>
+:nnoremap <leader>fer :source ~/.config/nvim/init.vim<CR>
+:nnoremap <leader>fef :e ~/.nvim/ftplugin/<CR>
 
 "" Paste Mode On/Off
-" map <F11> :call Paste_on_off()<CR>
-" set pastetoggle=<F11>
-" "
-" let paste_mode = 0 " 0 = normal, 1 = paste
+map <F11> :call Paste_on_off()<CR>
+set pastetoggle=<F11>
 "
-" func! Paste_on_off()
-"     if g:paste_mode == 0
-"         set paste
-"         let g:paste_mode = 1
-"     else
-"         set nopaste
+let paste_mode = 0 " 0 = normal, 1 = paste
 "
-"         let g:paste_mode = 0
-"     endif
-"     return
-" endfunc
+func! Paste_on_off()
+    if g:paste_mode == 0
+        set paste
+        let g:paste_mode = 1
+    else
+        set nopaste
+
+        let g:paste_mode = 0
+    endif
+    return
+endfunc
 
 :map <C-x>0 <C-w>c
 :map <C-x>1 <C-w>o
@@ -474,7 +478,8 @@ nnoremap <silent> <leader>o :<C-u>Denite -buffer-name=outline -winwidth=35 unite
 " nnorema<silent> p <leader>k :<C-u>Denite -mode=normal -winwidth=35 unite:outline<cr>
 
 nnoremap <silent> <leader>v :<C-u>Denite location_list -mode=normal -no-empty -auto-preview<CR>
-nnoremap <silent> <leader>f :<C-u>DeniteBufferDir -mode=normal -no-split -buffer-name=files   file<cr>
+nnoremap <silent> <leader>ff :<C-u>DeniteBufferDir -mode=normal -no-split -buffer-name=files   file<cr>
+nnoremap <silent> <leader>fd :<C-u>DeniteBufferDir -mode=normal -no-split -buffer-name=dir directory_rec<cr>
 nnoremap <silent> <leader>r :<C-u>Denite -mode=normal -no-split -buffer-name=mru     file_mru<cr>
 
 " nnoremap <silent><leader>m :<C-u>Denite buffer<CR>
@@ -821,7 +826,7 @@ augroup END
 " VimFiler
 
 nnoremap <leader>jf :<C-u>VimFilerExplorer -sort-type=Time -status -split -simple -parent -winwidth=35 -no-quit -find<CR>
-nnoremap <leader>ff :VimFilerExplorer -status -find -winwidth=80 -sort-type=Time <CR>
+" nnoremap <leader>ff :VimFilerExplorer -status -find -winwidth=80 -sort-type=Time <CR>
 
 map <leader>d :VimFilerBufferDir -status -sort-type=Time<CR>
 map <leader>D :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=29 -toggle -no-quit -explorer<CR><CR>
@@ -1215,6 +1220,12 @@ endfunction
 
 set background=dark
 colorscheme gruvbox
+" highlight Normal ctermbg=black ctermfg=white
+" set background=dark
+
+" Plug 'morhetz/gruvbox'
+" colorscheme gruvbox
+let g:gruvbox_contrast_dark = 'hard'
 "..................................................................................................
 :highlight ParenMatch ctermbg=blue
 :hi comment ctermfg=242

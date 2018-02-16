@@ -12,6 +12,7 @@ nmap <buffer>2 :VimFiler -status /WORK2/fbraenns/<CR>
 nmap <buffer>3 :VimFiler -status /data/work/fbraenns/<CR>
 nmap <buffer>4 :VimFiler -status /share/Tools/<CR>
 nmap <buffer>9 :VimFiler -status /home/fbraenns/.modulefiles/<CR>
+nmap <buffer>gx :VimFilerCreate -status<CR>
 nmap <buffer>o <Plug>(vimfiler_execute_vimfiler_associated)
 nmap <buffer>C <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_clipboard_copy_file)
 nmap <buffer>R <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_clipboard_move_file)
@@ -30,6 +31,7 @@ nnoremap <buffer><expr><silent> v vimfiler#do_switch_action('vsplit')
 "nmap <buffer>z :call jobstart('xterm') <CR>
 nmap <buffer>,x :call jobstart('xterm',{'detach':1}) <CR>
 nmap <buffer>,y :call jobstart('xterm -e mc . .',{'detach':1}) <CR>
+nmap <buffer>X :call jobstart('xterm -e vi',{'detach':1}) <CR>
 
 nmap <buffer>ce>      @<Plug>(vimfiler_toggle_mark_current_line)
 nmap <buffer>gR :Denite grep -mode=normal<CR>
