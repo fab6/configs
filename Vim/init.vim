@@ -12,7 +12,7 @@
 " Vimfiler:
 "  -
 " Terminal:
-"  - how can I access the history withouth the cursor keys
+"  -
 " Python:
 "  - get to know ale
 " Complete:
@@ -20,7 +20,7 @@
 " Snippets:
 " - modelica
 " - Arduino
-" - Octave?
+" - Octave
 " - Python --> scikit-learn, H2O, Keras, DataAnalysis
 " - OpenFOAM
 "
@@ -42,6 +42,7 @@ Plug 'Shougo/neomru.vim'
 Plug 'Shougo/vimproc.vim', { 'do' : 'make', }
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/unite-outline'
+" Plug 'vim-scripts/vimchant'
 " Plug 'rhysd/unite-oldfiles.vim'
 " Plug 'chemzqm/unite-location'
 " Plug 'tsukkee/unite-tag'
