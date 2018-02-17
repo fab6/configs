@@ -2,7 +2,7 @@
 " TODO
 " Vim:
 "  - client/server
-" Sessions:
+" Sessions / Windows:
 "  - how can I use sessions --> For each topic a splitted vimfiler!?
 "  - what should be my default session
 " Denite:
@@ -10,18 +10,19 @@
 " Git:
 "  - easier git handling
 " Vimfiler:
-"  -
+"  - Create / Split with destination path
 " Terminal:
-"  -
+"  - F3 change directory
 " Python:
 "  - get to know ale
+"  - deoplete does not work as expected right now
 " Complete:
 "  - deoplete does this work for the terminal as well?
 " Snippets:
 " - modelica
 " - Arduino
 " - Octave
-" - Python --> scikit-learn, H2O, Keras, DataAnalysis
+" - Python --> scikit-learn, H2O, Keras, DataAnalysis, bokeh
 " - OpenFOAM
 "
 "
@@ -35,7 +36,8 @@ Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'Shougo/deol.nvim', { 'rev': 'a1b5108fd' }
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'Shougo/tabpagebuffer.vim'
+Plug 'zchee/deoplete-jedi'
+" Plug 'Shougo/tabpagebuffer.vim'
 Plug 'Shougo/vinarise'
 Plug 'Shougo/vimfiler.vim' "needs unite -> new development for denite Plug 'Shougo/defx.nvim'
 Plug 'Shougo/neomru.vim'
@@ -56,47 +58,52 @@ Plug 'notomo/denite-autocmd'
 Plug 'yyotti/denite-marks'
 Plug 'notomo/denite-keymap'
 Plug 'yuntan/denite-cheatsheet'
-Plug 'zchee/deoplete-jedi'
 " Plug 'davidhalter/jedi-vim' Autocomplete for python
 Plug 'thirtythreeforty/lessspace.vim'
 Plug 'chrisbra/csv.vim'
 Plug 'Yggdroot/indentLine'
 Plug 'scrooloose/nerdcommenter'
 Plug 'itchyny/vim-parenmatch'
+Plug 'jiangmiao/auto-pairs'
 Plug 'itchyny/vim-cursorword'
-Plug 'pboettch/vim-cmake-syntax'
+" Plug 'pboettch/vim-cmake-syntax'
 Plug 'itchyny/lightline.vim'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-session'
-Plug 'jiangmiao/auto-pairs'
+" Window manager for handling multiple splits
 Plug 'mattboehm/vim-accordion'
-Plug 'osyo-manga/vim-anzu'
+" Plug 'osyo-manga/vim-anzu'
 " Plug 'rafi/awesome-vim-colorschemes'
 Plug 'morhetz/gruvbox'
-Plug 'brettanomyces/nvim-terminus'
 Plug 'haya14busa/incsearch.vim'
 Plug 'haya14busa/incsearch-fuzzy.vim'
-Plug 'rhysd/vim-gfm-syntax'
-Plug 'dhruvasagar/vim-table-mode'
-Plug 'iamcco/file-manager.vim'
+" Plug 'dhruvasagar/vim-table-mode'
+" Plug 'iamcco/file-manager.vim'
+" .....................................................................
 " Programming:
+" Markdown Syntax Highlighting
+Plug 'rhysd/vim-gfm-syntax'
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+Plug 'rudes/vim-java', { 'for': 'java' }
+Plug 'plasticboy/vim-markdown'
 " python
 Plug 'python-mode/python-mode' , { 'for': 'python' }
 Plug 'fisadev/vim-isort'
 Plug 'w0rp/ale'
 "Plug 'bps/vim-textobj-python'
-Plug 'ludovicchabant/vim-gutentags'
+" Plug 'ludovicchabant/vim-gutentags'
 Plug 'jvirtanen/vim-octave', { 'for': 'octave' }
 Plug 'stevearc/vim-arduino', { 'for': 'arduino' }
 Plug 'nvie/vim-flake8', { 'for': 'python' }
 Plug 'sudar/vim-arduino-syntax', { 'for': 'arduino' }
 Plug 'iyuuya/denite-ale'
+" .....................................................................
+" WindowSwapping
 Plug 'wesQ3/vim-windowswap'
-Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
-Plug 'rudes/vim-java', { 'for': 'java' }
-Plug 'plasticboy/vim-markdown'
 " Plug 'chrisbra/NrrwRgn'
+" .....................................................................
 " Terminal:
+" Plug 'brettanomyces/nvim-terminus'
 Plug 'mklabs/split-term.vim'
 Plug 'kassio/neoterm'
 "--------------------------------------------------------------------------------------------------
@@ -301,8 +308,10 @@ map g# <Plug>(incsearch-nohl-g#)
 map /  <Plug>(incsearch-forward)
 map ?  <Plug>(incsearch-backward)
 map g/ <Plug>(incsearch-stay)
-map n <Plug>(incsearch-nohl)<Plug>(anzu-n-with-echo)
-map N <Plug>(incsearch-nohl)<Plug>(anzu-N-with-echo)
+" map n <Plug>(incsearch-nohl)<Plug>(anzu-n-with-echo)
+map n <Plug>(incsearch-nohl)
+" map N <Plug>(incsearch-nohl)<Plug>(anzu-N-with-echo)
+map N <Plug>(incsearch-nohl)
 map z/ <Plug>(incsearch-fuzzy-/)
 map z? <Plug>(incsearch-fuzzy-?)
 map zg/ <Plug>(incsearch-fuzzy-stay)
@@ -811,14 +820,14 @@ let g:indentLine_color_term = 239
 "==================================================================================================
 " Anzu-Statusline
 "
-set statusline+=%{anzu#search_status()}
-set statusline+=%F
-"" Update the search status results while moving through the file
-augroup anzu-update-search-status
-    autocmd!
-    autocmd CursorMoved *
-                \ :AnzuUpdateSearchStatus|echo anzu#search_status()
-augroup END
+" set statusline+=%{anzu#search_status()}
+" set statusline+=%F
+" "" Update the search status results while moving through the file
+" augroup anzu-update-search-status
+"     autocmd!
+"     autocmd CursorMoved *
+"                 \ :AnzuUpdateSearchStatus|echo anzu#search_status()
+" augroup END
 "
 "
 
@@ -1010,10 +1019,10 @@ map <F9> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<
             \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
             \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
-let g:windowswap_map_keys = 0 "prevent default bindings
-nnoremap <silent> <leader>yw :call WindowSwap#MarkWindowSwap()<CR>
-nnoremap <silent> <leader>pw :call WindowSwap#DoWindowSwap()<CR>
-nnoremap <silent> <leader>ww :call WindowSwap#EasyWindowSwap()<CR>
+" let g:windowswap_map_keys = 0 "prevent default bindings
+" nnoremap <silent> <leader>yw :call WindowSwap#MarkWindowSwap()<CR>
+" nnoremap <silent> <leader>pw :call WindowSwap#DoWindowSwap()<CR>
+" nnoremap <silent> <leader>ww :call WindowSwap#EasyWindowSwap()<CR>
 
 "==================================================================================================
 " ale
