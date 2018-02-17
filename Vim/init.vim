@@ -2,7 +2,7 @@
 " TODO
 " Vim:
 "  - client/server
-" Sessions / Windows:
+" SessionsWindows:
 "  - how can I use sessions --> For each topic a splitted vimfiler!?
 "  - what should be my default session
 " Denite:
@@ -104,7 +104,7 @@ Plug 'wesQ3/vim-windowswap'
 " .....................................................................
 " Terminal:
 " Plug 'brettanomyces/nvim-terminus'
-Plug 'mklabs/split-term.vim'
+" Plug 'mklabs/split-term.vim'
 Plug 'kassio/neoterm'
 "--------------------------------------------------------------------------------------------------
 "ClientServer:
@@ -923,7 +923,7 @@ tnoremap <Leader>% <C-\><C-n>:vsp<CR><C-w><C-w>:term<CR>
 noremap <Leader>% :vsp<CR><C-w><C-w>:term<CR>
 " nmap <leader>T :vs<CR>:terminal<CR>
 
-
+"kassio/neoterm
 nnoremap <F3> :Ttoggle<cr><C-w><C-w>A
 inoremap <F3> <esc>:Ttoggle<cr><C-w><C-w>A
 tnoremap <F3> <C-\><C-n>:Ttoggle<cr>
