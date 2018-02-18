@@ -13,9 +13,12 @@ nmap <buffer>3 :VimFiler -status /data/work/fbraenns/<CR>
 nmap <buffer>4 :VimFiler -status /share/Tools/<CR>
 nmap <buffer>9 :VimFiler -status /home/fbraenns/.modulefiles/<CR>
 nmap <buffer>gx :vs<CR> :VimFilerCreate -status<CR>
+nmap <buffer>gX :sp<CR> :VimFilerCreate -status<CR>
 nmap <buffer>o <Plug>(vimfiler_execute_vimfiler_associated)
-nmap <buffer>C <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_clipboard_copy_file)
-nmap <buffer>R <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_clipboard_move_file)
+nmap <buffer><C-C> <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_clipboard_copy_file)
+nmap <buffer><C-R> <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_clipboard_move_file)
+nmap <buffer>C <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_clipboard_copy_file)<C-w>w<Plug>(vimfiler_clipboard_paste)
+nmap <buffer>R <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_clipboard_move_file)<C-w>w<Plug>(vimfiler_clipboard_paste)
 nmap <buffer>r <Plug>(vimfiler_move_file)
 nmap <buffer>p <Plug>(vimfiler_clipboard_paste)
 nmap <buffer>d <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_delete_file)

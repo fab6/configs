@@ -309,9 +309,10 @@ map /  <Plug>(incsearch-forward)
 map ?  <Plug>(incsearch-backward)
 map g/ <Plug>(incsearch-stay)
 " map n <Plug>(incsearch-nohl)<Plug>(anzu-n-with-echo)
-map n <Plug>(incsearch-nohl)
+" map n <Plug>(incsearch-nohl)
+" map n <Plug>(incsearch-nohl)
 " map N <Plug>(incsearch-nohl)<Plug>(anzu-N-with-echo)
-map N <Plug>(incsearch-nohl)
+" map N <Plug>(incsearch-nohl)
 map z/ <Plug>(incsearch-fuzzy-/)
 map z? <Plug>(incsearch-fuzzy-?)
 map zg/ <Plug>(incsearch-fuzzy-stay)
@@ -368,9 +369,9 @@ cnoremap <C-n> <Down>
 cnoremap <C-j> <Left>
 cnoremap <C-l> <Right>
 "
-:nnoremap <leader>fed :e ~/.config/nvim/init.vim<CR>
+:nnoremap <leader>fed :vs ~/.config/nvim/init.vim<CR>
 :nnoremap <leader>fer :source ~/.config/nvim/init.vim<CR>
-:nnoremap <leader>fef :e ~/.nvim/ftplugin/<CR>
+:nnoremap <leader>fef :vs ~/.nvim/ftplugin/<CR>
 
 "" Paste Mode On/Off
 map <F11> :call Paste_on_off()<CR>
@@ -1264,3 +1265,9 @@ let g:gruvbox_contrast_dark = 'hard'
 :highlight ALEWarningSign ctermbg=65
 :highlight ALEError ctermbg=92
 :highlight ALEErrorSign ctermbg=92
+
+imap jq <ESC>:wq<CR>
+imap jw <ESC>:w<CR>
+imap jk <ESC>
+nmap <leader>q :q!a<CR>
+nmap <leader>Q :wqa<CR>
