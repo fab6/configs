@@ -25,6 +25,8 @@ nmap <buffer>d <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_delete_file)
 nmap <buffer>F <Plug>(vimfiler_new_file)
 nmap <buffer>+ <Plug>(vimfiler_make_directory)
 nmap <buffer>m <Plug>(vimfiler_toggle_mark_current_line)
+nmap <buffer>Q <Plug>(vimfiler_exit):q<CR>
+nmap <buffer>q <Plug>(vimfiler_exit)
 nmap <buffer>b <Plug>(vimfiler_cd_input_directory)<C-u>bookmark:/<CR>
 nnoremap <buffer><expr><silent> s vimfiler#do_switch_action('split')
 nnoremap <buffer><expr><silent> v vimfiler#do_switch_action('vsplit')
