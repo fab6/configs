@@ -1252,12 +1252,13 @@ let g:gruvbox_contrast_dark = 'hard'
 :hi SignColumn ctermbg=black
 
 "..................................................................................................
-" Completion
+" Highlighting
 "highlight Pmenu ctermbg=8 guibg=#606060
 :highlight PmenuSel ctermbg=1 guifg=#dddd00 guibg=#1f82cd
 "highlight PmenuSbar ctermbg=0 guibg=#d6d6d6
 "
 :highlight Cursor ctermfg=red guifg=red
+:highlight vimFilerMarkedFile ctermbg=12
 
 :highlight TermCursor ctermfg=red guifg=red
 

@@ -13,6 +13,8 @@ nmap <buffer>2 :VimFiler -status /WORK2/fbraenns/<CR>
 nmap <buffer>3 :VimFiler -status /data/work/fbraenns/<CR>
 nmap <buffer>4 :VimFiler -status /share/Tools/<CR>
 nmap <buffer>9 :VimFiler -status /home/fbraenns/.modulefiles/<CR>
+
+nmap <buffer>0 <Plug>(vimfiler_cursor_top)
 "
 "nmap <buffer>gx :vs<CR> :VimFilerCreate -status <CR>
 "nmap <buffer>gX :sp<CR> :VimFilerCreate -status <CR>
