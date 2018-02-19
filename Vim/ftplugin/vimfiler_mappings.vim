@@ -1,3 +1,4 @@
+:nunmap <buffer> <Space>
 " nmap <buffer>` :VimFiler -status /home/fbraenns/<CR>
 " nmap <buffer>1 :VimFiler -status /home/fbraenns/00_ALLG/<CR>
 " nmap <buffer>2 :VimFiler -status /home/fbraenns/01_FINANCE/<CR>
@@ -20,10 +21,12 @@ nmap <buffer>9 :VimFiler -status /home/fbraenns/.modulefiles/<CR>
 nmap <buffer>b <Plug>(vimfiler_cd_input_directory)<C-u>bookmark:/<CR>
 nmap <buffer>d <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_delete_file)
 nmap <buffer>m <Plug>(vimfiler_toggle_mark_current_line)
+vmap <buffer>m <Plug>(vimfiler_toggle_mark_selected_lines)
 nmap <buffer>o <Plug>(vimfiler_execute_vimfiler_associated)
 nmap <buffer>p <Plug>(vimfiler_clipboard_paste)
 nmap <buffer>q <Plug>(vimfiler_exit)
 nmap <buffer>r <Plug>(vimfiler_move_file)
+nmap <buffer>w <Plug>(vimfiler_rename_file)
 
 nmap <buffer>C <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_clipboard_copy_file)<C-w>w<Plug>(vimfiler_clipboard_paste)
 nmap <buffer>F <Plug>(vimfiler_new_file)
@@ -31,7 +34,6 @@ nmap <buffer>R <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_clipboard_move_
 nmap <buffer>Q <Plug>(vimfiler_exit):q<CR>
 nmap <buffer>X :call jobstart('xterm -e vi',{'detach':1}) <CR>
 
-nmap <buffer>ce>      @<Plug>(vimfiler_toggle_mark_current_line)
 
 nmap <buffer>gR :Denite grep -mode=normal<CR>
 nmap <buffer>gx :vs<CR> :VimFilerCreate -status<CR>
@@ -48,6 +50,7 @@ nnoremap <buffer><expr><silent> v vimfiler#do_switch_action('vsplit')
 nmap <buffer>,x :call jobstart('xterm',{'detach':1}) <CR>
 nmap <buffer>,y :call jobstart('xterm -e mc . .',{'detach':1}) <CR>
 
+" nmap <buffer>ce>      @<Plug>(vimfiler_toggle_mark_current_line)
 
 "nnoremap <silent> <leader>M :<C-u>Denite menu -mode=normal<CR>
 " nmap <buffer>Z :vs <CR>:terminal<CR>
