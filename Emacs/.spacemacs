@@ -45,7 +45,7 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(dired-narrow dired-rainbow ); ein ein-loaddefs ein-notebook ein-subpackages)
+   dotspacemacs-additional-packages '(dired-narrow dash autothemer dired-rainbow ); ein ein-loaddefs ein-notebook ein-subpackages)
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -100,7 +100,7 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(monokai
+   dotspacemacs-themes '( monokai
                          spacemacs-dark
                          spacemacs-light
                          solarized-light
@@ -250,6 +250,8 @@ before packages are loaded. If you are unsure, you should try in setting them in
   )
 
 (defun dotspacemacs/user-config ()
+  (with-eval-after-load 'helm
+    (setq helm-display-function 'helm-default-display-buffer))
   "Configuration function for user code.
 This function is called at the very end of Spacemacs initialization after
 layers configuration.
@@ -627,11 +629,13 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#0a0814" "#f2241f" "#67b11d" "#b1951d" "#4f97d7" "#a31db1" "#28def0" "#b2b2b2"])
  '(delete-selection-mode nil)
  '(helm-external-programs-associations (quote (("pdf" . "okular"))))
  '(package-selected-packages
    (quote
-    (wolfram-mode thrift stan-mode scad-mode qml-mode matlab-mode julia-mode arduino-mode yapfify which-key use-package toc-org spaceline ranger org-projectile neotree live-py-mode helm-company evil-search-highlight-persist evil-mc ein dumb-jump ace-link eclim smartparens evil yasnippet helm helm-core markdown-mode magit dash ws-butler winum websocket volatile-highlights vimrc-mode vi-tilde-fringe uuidgen undo-tree smeargle restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort powershell powerline popwin pip-requirements persp-mode pcre2el paradox orgit org-present org-pomodoro org-download org-bullets open-junk-file move-text monokai-theme mmm-mode markdown-toc magit-gitflow lorem-ipsum linum-relative link-hint info+ indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-c-yasnippet helm-ag goto-chg google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-commit gh-md fuzzy flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-numbers evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-commentary evil-args evil-anzu eval-sexp-fu disaster dired-rainbow dired-narrow diminish define-word dactyl-mode cython-mode csv-mode company-statistics company-emacs-eclim company-c-headers company-anaconda column-enforce-mode cmake-mode clean-aindent-mode clang-format cl-generic bracketed-paste bind-key auto-yasnippet auto-highlight-symbol aggressive-indent adaptive-wrap ace-window ace-jump-helm-line ac-ispell)))
+    (org-category-capture alert org-plus-contrib hydra dash-functional projectile epl magit-popup ghub with-editor skewer-mode request-deferred deferred js2-mode simple-httpd anaconda-mode pythonic avy company iedit highlight f s async wolfram-mode thrift stan-mode scad-mode qml-mode matlab-mode julia-mode arduino-mode yapfify which-key use-package toc-org spaceline ranger org-projectile neotree live-py-mode helm-company evil-search-highlight-persist evil-mc ein dumb-jump ace-link eclim smartparens evil yasnippet helm helm-core markdown-mode magit dash ws-butler winum websocket volatile-highlights vimrc-mode vi-tilde-fringe uuidgen undo-tree smeargle restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort powershell powerline popwin pip-requirements persp-mode pcre2el paradox orgit org-present org-pomodoro org-download org-bullets open-junk-file move-text monokai-theme mmm-mode markdown-toc magit-gitflow lorem-ipsum linum-relative link-hint info+ indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-c-yasnippet helm-ag goto-chg google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-commit gh-md fuzzy flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-numbers evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-commentary evil-args evil-anzu eval-sexp-fu disaster dired-rainbow dired-narrow diminish define-word dactyl-mode cython-mode csv-mode company-statistics company-emacs-eclim company-c-headers company-anaconda column-enforce-mode cmake-mode clean-aindent-mode clang-format cl-generic bracketed-paste bind-key auto-yasnippet auto-highlight-symbol aggressive-indent adaptive-wrap ace-window ace-jump-helm-line ac-ispell)))
  '(paradox-github-token t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
