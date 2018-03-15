@@ -20,6 +20,8 @@ nmap <buffer>0 <Plug>(vimfiler_cursor_top)
 "nmap <buffer>gX :sp<CR> :VimFilerCreate -status <CR>
 "=======
 "
+"
+"
 nmap <buffer>b <Plug>(vimfiler_cd_input_directory)<C-u>bookmark:/<CR>
 nmap <buffer>d <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_delete_file)
 nmap <buffer>m <Plug>(vimfiler_toggle_mark_current_line)
@@ -38,8 +40,9 @@ nmap <buffer>X :call jobstart('xterm -e vi',{'detach':1}) <CR>
 
 
 nmap <buffer>gR :Denite grep -mode=normal<CR>
-nmap <buffer>gx :vs<CR> :VimFilerCreate -status<CR>
-nmap <buffer>gX :sp<CR> :VimFilerCreate -status<CR>
+nmap <buffer>gx :vs<CR> :VimFilerCreate -status -sort-type=Time<CR>
+nmap <buffer>gX :sp<CR> :VimFilerCreate -status -sort-type=Time<CR>
+nmap <buffer>gY :HiAll<CR>
 
 nmap <buffer>+ <Plug>(vimfiler_make_directory)
 
@@ -50,7 +53,10 @@ nnoremap <buffer><expr><silent> s vimfiler#do_switch_action('split')
 nnoremap <buffer><expr><silent> v vimfiler#do_switch_action('vsplit')
 
 nmap <buffer>,x :call jobstart('xterm',{'detach':1}) <CR>
+nmap <buffer>,X :call jobstart('xterm -e /share/Tools/Editing/NeoVim/nvim.appimage -c ":VimFilerBufferDir -status -sort-type=Time"' ,{'detach':1}) <CR>
 nmap <buffer>,y :call jobstart('xterm -e mc . .',{'detach':1}) <CR>
+
+
 
 " nmap <buffer>ce>      @<Plug>(vimfiler_toggle_mark_current_line)
 
