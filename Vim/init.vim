@@ -1,6 +1,7 @@
 "==================================================================================================
 " TODO
 " Vim:
+"  - Vim-Plug --> faster start-time
 "  - client/server
 " SessionsWindows:
 "  - how can I use sessions --> For each topic a splitted vimfiler!?
@@ -14,7 +15,6 @@
 " Terminal:
 "  - F3 change directory
 " Python:
-"  - get to know ale
 "  - deoplete does not work as expected right now
 " Complete:
 "  - deoplete does this work for the terminal as well?
@@ -25,13 +25,15 @@
 " - Python --> scikit-learn, H2O, Keras, DataAnalysis, bokeh
 " - OpenFOAM
 "
+" On-demand loading
+" Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+" Plug 'tpope/vim-fireplace', { 'for': 'clojure' }<Paste>
 "
 "==================================================================================================
 set runtimepath+=/home/fbraenns/.nvim/
 "--------------------------------------------------------------------------------------------------
 " Specify a directory for plugins
 call plug#begin('/home/fbraenns/.nvim/vimplug')
-Plug 'junegunn/vim-easy-align'
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'Shougo/deol.nvim', { 'rev': 'a1b5108fd' }
@@ -50,12 +52,16 @@ Plug 'Shougo/unite-outline'
 " Plug 'tsukkee/unite-tag'
 Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/denite.nvim'
-Plug 'chemzqm/vim-easygit'
-Plug 'chemzqm/denite-git'
 Plug 'chemzqm/denite-extra'
 Plug 'rafi/vim-denite-session'
-Plug 'notomo/denite-autocmd'
 Plug 'yyotti/denite-marks'
+Plug 'inkarkat/vim-ingo-library'
+Plug 'inkarkat/vim-mark'
+
+Plug 'junegunn/vim-easy-align'
+Plug 'chemzqm/vim-easygit'
+Plug 'chemzqm/denite-git'
+Plug 'notomo/denite-autocmd'
 Plug 'notomo/denite-keymap'
 Plug 'yuntan/denite-cheatsheet'
 " Plug 'davidhalter/jedi-vim' Autocomplete for python
@@ -88,8 +94,9 @@ Plug 'rudes/vim-java', { 'for': 'java' }
 Plug 'plasticboy/vim-markdown'
 " python
 Plug 'python-mode/python-mode' , { 'for': 'python' }
-Plug 'fisadev/vim-isort'
-Plug 'w0rp/ale'
+"Plug 'vyzyv/vimpyter'
+"Plug 'fisadev/vim-isort'
+" Plug 'w0rp/ale'
 "Plug 'bps/vim-textobj-python'
 " Plug 'ludovicchabant/vim-gutentags'
 Plug 'jvirtanen/vim-octave', { 'for': 'octave' }
@@ -144,6 +151,8 @@ call plug#end()
 "==================================================================================================
 " General Settings
 "
+" set cursorline
+" :hi CursorLine ctermbg=gray
 set encoding=utf-8
 set number
 set ut=100
@@ -234,6 +243,9 @@ augroup filetype
     autocmd BufNewFile,BufRead *.data set syntax=gpyro
     "autocmd BufNewFile,BufRead *.in set syntax=dakota
     autocmd BufNewFile,BufRead *.py set filetype=python tabstop=4  softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent fileformat=unix
+    autocmd Filetype ipynb nmap <silent><Leader>b :VimpyterInsertPythonBlock<CR>
+    autocmd Filetype ipynb nmap <silent><Leader>j :VimpyterStartJupyter<CR>
+    autocmd Filetype ipynb nmap <silent><Leader>n :VimpyterStartNteract<CR>
     autocmd BufNewFile,BufRead *.csv set filetype=csv
     autocmd BufNewFile,BufRead *.CSV set filetype=csv
     autocmd BufNewFile,BufRead *.dat set filetype=csv
@@ -298,24 +310,24 @@ set smartcase
 "" show the `best match so far' as search strings are typed:
 " set incsearch
 set hlsearch
-let g:incsearch#auto_nohlsearch = 1
-" map n  <Plug>(incsearch-nohl-n)
-" map N  <Plug>(incsearch-nohl-N)
-map *  <Plug>(incsearch-nohl-*)
-map #  <Plug>(incsearch-nohl-#)
-map g* <Plug>(incsearch-nohl-g*)
-map g# <Plug>(incsearch-nohl-g#)
+"let g:incsearch#auto_nohlsearch = 1
+"" map n  <Plug>(incsearch-nohl-n)
+"" map N  <Plug>(incsearch-nohl-N)
+"map *  <Plug>(incsearch-nohl-*)
+"map #  <Plug>(incsearch-nohl-#)
+"map g* <Plug>(incsearch-nohl-g*)
+"map g# <Plug>(incsearch-nohl-g#)
 map /  <Plug>(incsearch-forward)
 map ?  <Plug>(incsearch-backward)
-map g/ <Plug>(incsearch-stay)
-" map n <Plug>(incsearch-nohl)<Plug>(anzu-n-with-echo)
-" map n <Plug>(incsearch-nohl)
-" map n <Plug>(incsearch-nohl)
-" map N <Plug>(incsearch-nohl)<Plug>(anzu-N-with-echo)
-" map N <Plug>(incsearch-nohl)
-map z/ <Plug>(incsearch-fuzzy-/)
-map z? <Plug>(incsearch-fuzzy-?)
-map zg/ <Plug>(incsearch-fuzzy-stay)
+"map g/ <Plug>(incsearch-stay)
+"" map n <Plug>(incsearch-nohl)<Plug>(anzu-n-with-echo)
+"" map n <Plug>(incsearch-nohl)
+"" map n <Plug>(incsearch-nohl)
+"" map N <Plug>(incsearch-nohl)<Plug>(anzu-N-with-echo)
+"" map N <Plug>(incsearch-nohl)
+"map z/ <Plug>(incsearch-fuzzy-/)
+"map z? <Plug>(incsearch-fuzzy-?)
+"map zg/ <Plug>(incsearch-fuzzy-stay)
 
 "--------------------------------------------------------------------------------------------------
 " Statusline / Faces
@@ -323,9 +335,9 @@ map zg/ <Plug>(incsearch-fuzzy-stay)
 set laststatus=2 "black status line at bottom of window
 
 let g:lightline = {
-            \ 'component_function': {
-            \   'filename': 'LightLineFilename'
-            \ }
+            \ 'colorscheme': 'Dracula',
+            \ 'active': {'left': [['mode','paste'],['readonly','filename','modified']]},
+            \ 'component_function': { 'filename': 'LightLineFilename' }
             \ }
 function! LightLineFilename()
     return expand('%')
@@ -734,60 +746,6 @@ endfunction
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 
 "==================================================================================================
-" PYTHON
-"
-let python_highlight_all=1
-
-let g:pymode_trim_whitespaces = 1
-let g:pymode = 1
-let g:pymode_options = 1
-" setlocal complete+=t
-" setlocal formatoptions-=t
-" if v:version > 702 && !&relativenumber
-"     setlocal number
-" endif
-" setlocal nowrap
-" setlocal textwidth=79
-" setlocal commentstring=#%s
-" setlocal define=^\s*\\(def\\\\|class\\)
-let g:pymode_warnings = 1
-let g:pymode_options_max_line_length = 79
-let g:pymode_options_colorcolumn = 1
-let g:pymode_quickfix_minheight = 3
-let g:pymode_quickfix_maxheight = 6
-let g:pymode_indent = 1
-let g:pymode_folding = 0
-let g:pymode_motion = 1
-let g:pymode_run_bind = '<leader>R'
-let g:pymode_breakpoint_bind = '<leader>G'
-let g:pymode_lint = 0
-let g:pymode_lint_on_write = 0
-let g:pymode_lint_unmodified = 0
-let g:pymode_lint_message = 0
-let g:pymode_rope_completion = 0
-" let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'mccabe']
-let g:pymode_lint_todo_symbol = 'WW'
-let g:pymode_lint_comment_symbol = 'CC'
-let g:pymode_lint_visual_symbol = 'RR'
-let g:pymode_lint_error_symbol = 'EE'
-let g:pymode_lint_info_symbol = 'II'
-let g:pymode_lint_pyflakes_symbol = 'FF'
-" let g:pymode_lint_options_pep8 =
-"     \ {'max_line_length': g:pymode_options_max_line_length})
-let g:pymode_rope = 0
-" ================  ============================
-" Key               Command
-" ================  ============================
-" [[                Jump to previous class or function (normal, visual, operator modes)
-" ]]                Jump to next class or function  (normal, visual, operator modes)
-" [M                Jump to previous class or method (normal, visual, operator modes)
-" ]M                Jump to next class or method (normal, visual, operator modes)
-" aC                Select a class. Ex: vaC, daC, yaC, caC (normal, operator modes)
-" iC                Select inner class. Ex: viC, diC, yiC, ciC (normal, operator modes)
-" aM                Select a function or method. Ex: vaM, daM, yaM, caM (normal, operator modes)
-" iM                Select inner function or method. Ex: viM, diM, yiM, ciM (normal, operator modes)
-
-"==================================================================================================
 " Nerdcommenter
 "
 " Add spaces after comment delimiters by default
@@ -933,57 +891,6 @@ tnoremap <C-w><C-w> <C-\><C-n><C-w><C-w>
 
 
 
-"==================================================================================================
-" Arduino
-"
-let g:arduino_cmd = '/home/fbraenns/03_GA/TOOLs/Arduino/arduino-1.8.5/arduino'
-let g:arduino_dir = '/home/fbraenns/03_GA/TOOLs/Arduino/arduino-1.8.5'
-" Run the arduino command inside a Xvfb. Requires Xvfb to be installed and in the
-" PATH. >
-let g:arduino_run_headless = 1
-"                                                              *'g:arduino_args'*
-" Additional arguments that will be passed to the 'arduino' command during build
-" and upload. See
-" https://github.com/arduino/Arduino/blob/master/build/shared/manpage.adoc for
-" more detail. >
-let g:arduino_args = '--verbose-upload'
-
-" The board type to use when compiling and uploading. See also
-" |:ArduinoChooseBoard|. >
-let g:arduino_board = 'arduino:avr:uno'
-
-" The programmer type to use when compiling and uploading. See also
-" |:ArduinoChooseProgrammer|. >
-let g:arduino_programmer = 'arduino:usbtinyisp'
-<
-" Command used to connect to the serial port for debugging. The strings '{port}'
-" and '{baud}' will be replace with the port and baud values. >
-"   let g:arduino_serial_cmd = 'screen {port} {baud}'
-"   let g:arduino_serial_cmd = 'picocom {port} -b {baud} -l'
-
-" The baud rate to use for the debugging serial connection. >
-"   let g:arduino_serial_baud = 9600
-" Automatically set the baud rate by searching for 'Serial.begin()' >
-"   let g:arduino_auto_baud = 1
-
-" If inside a tmux session, run the serial connection command inside of this
-" tmux command.  Set to '' to disable. The default will create a horizontal
-" split. >
-"   let g:arduino_serial_tmux = 'split-window -d'
-
-" Connect to this serial port when uploading & debugging. This is not set by
-" default. If not set, vim-arduino will attempt to guess which port to use. See
-" also |:ArduinoChoosePort| >
-let g:arduino_serial_port = '/dev/ttyACM0'
-" let g:arduino_serial_port = '/dev/USB'
-" Search these patterns to find a likely serial port to upload to. >
-"   let g:arduino_serial_port_globs = ['/dev/ttyACM*',
-"                                     \'/dev/ttyUSB*',
-"                                     \'/dev/tty.usbmodem*',
-"                                     \'/dev/tty.usbserial*']
-
-
-
 
 "==================================================================================================
 " TABs
@@ -1028,23 +935,23 @@ map <F9> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<
 "==================================================================================================
 " ale
 "
-let g:ale_sign_error = 'E'
-" let g:ale_sign_warning = '⚠'
-let g:ale_sign_warning = 'W'
-" let g:ale_statusline_format = ['E %d', '⚠ %d', '']
-let g:ale_statusline_format = ['E %d', 'W %d', '']
-let g:ale_lint_on_text_changed = 0
-let g:ale_lint_on_save = 1
-let g:ale_lint_on_enter = 1
-" cycle through location list
-" nmap <silent> <leader>an <Plug>(ale_next_wrap)
-nmap <silent> <leader>at :ALEToggle<CR>
-
-let g:ale_linters = {
-            \   'elixir': [],
-            \}
-
-let g:ale_rust_cargo_use_check = 1
+"" let g:ale_sign_error = 'E'
+"" " let g:ale_sign_warning = '⚠'
+"" let g:ale_sign_warning = 'W'
+"" " let g:ale_statusline_format = ['E %d', '⚠ %d', '']
+"" let g:ale_statusline_format = ['E %d', 'W %d', '']
+"" let g:ale_lint_on_text_changed = 0
+"" let g:ale_lint_on_save = 1
+"" let g:ale_lint_on_enter = 1
+"" " cycle through location list
+"" " nmap <silent> <leader>an <Plug>(ale_next_wrap)
+"" nmap <silent> <leader>A :ALEToggle<CR>
+""
+"" let g:ale_linters = {
+""             \   'elixir': [],
+""             \}
+""
+"" let g:ale_rust_cargo_use_check = 1
 " }
 "
 "
@@ -1059,19 +966,19 @@ let g:ale_rust_cargo_use_check = 1
 
 "==================================================================================================
 " TABLE
-function! s:isAtStartOfLine(mapping)
-    let text_before_cursor = getline('.')[0 : col('.')-1]
-    let mapping_pattern = '\V' . escape(a:mapping, '\')
-    let comment_pattern = '\V' . escape(substitute(&l:commentstring, '%s.*$', '', ''), '\')
-    return (text_before_cursor =~? '^' . ('\v(' . comment_pattern . '\v)?') . '\s*\v' . mapping_pattern . '\v$')
-endfunction
-
-inoreabbrev <expr> <bar><bar>
-            \ <SID>isAtStartOfLine('\|\|') ?
-            \ '<c-o>:TableModeEnable<cr><bar><space><bar><left><left>' : '<bar><bar>'
-inoreabbrev <expr> __
-            \ <SID>isAtStartOfLine('__') ?
-            \ '<c-o>:silent! TableModeDisable<cr>' : '__'
+" function! s:isAtStartOfLine(mapping)
+"     let text_before_cursor = getline('.')[0 : col('.')-1]
+"     let mapping_pattern = '\V' . escape(a:mapping, '\')
+"     let comment_pattern = '\V' . escape(substitute(&l:commentstring, '%s.*$', '', ''), '\')
+"     return (text_before_cursor =~? '^' . ('\v(' . comment_pattern . '\v)?') . '\s*\v' . mapping_pattern . '\v$')
+" endfunction
+"
+" inoreabbrev <expr> <bar><bar>
+"             \ <SID>isAtStartOfLine('\|\|') ?
+"             \ '<c-o>:TableModeEnable<cr><bar><space><bar><left><left>' : '<bar><bar>'
+" inoreabbrev <expr> __
+"             \ <SID>isAtStartOfLine('__') ?
+"             \ '<c-o>:silent! TableModeDisable<cr>' : '__'
 "==================================================================================================
 " Denite-Git + Easygit
 call denite#custom#map(
@@ -1236,12 +1143,12 @@ colorscheme gruvbox
 " Plug 'morhetz/gruvbox'
 " colorscheme gruvbox
 let g:gruvbox_contrast_dark = 'hard'
+let g:gruvbox_hls_cursor = 'orange'
 "..................................................................................................
 :highlight ParenMatch ctermbg=blue
 :hi comment ctermfg=242
 :highlight LineNr ctermfg=darkgrey
 :highlight VertSplit ctermfg=darkgray ctermfg=black
-:highlight Search ctermbg=gray ctermfg=black
 
 "..................................................................................................
 " Showmarks
@@ -1262,13 +1169,69 @@ let g:gruvbox_contrast_dark = 'hard'
 
 :highlight TermCursor ctermfg=red guifg=red
 
-:highlight ALEWarning ctermbg=65
-:highlight ALEWarningSign ctermbg=65
-:highlight ALEError ctermbg=92
-:highlight ALEErrorSign ctermbg=92
+" :highlight ALEWarning ctermbg=65
+" :highlight ALEWarningSign ctermbg=65
+" :highlight ALEError ctermbg=92
+" :highlight ALEErrorSign ctermbg=92
 
 imap jq <ESC>:wq<CR>
 imap jw <ESC>:w<CR>
 imap jk <ESC>
 nmap <leader>q :q!a<CR>
 nmap <leader>Q :wqa<CR>
+:hi LightLineMiddle_active ctermbg=70
+":highlight Search ctermbg=gray ctermfg=black
+:hi Search ctermfg=12
+
+hi MyAsserts ctermbg=Cyan
+command -bar -nargs=0 HiAsserts match MyAsserts /.*\.py/
+"      highlight any given regex
+" command -bar -nargs=1 HiIt match MyAsserts /<args>/
+
+let g:mwDefaultHighlightingPalette = 'maximum'
+runtime plugin/mark.vim
+silent MarkClear
+"silent 56Mark /.*\.py/
+silent 1Mark /.*\.py/
+silent 1Mark /.*\.ipynb/
+" silent 58Mark /.*\.ipynb/
+silent 2Mark /.*\.igs/
+silent 2Mark /.*\.iges/
+silent 3Mark /.*\.stp/
+silent 3Mark /.*\.step/
+silent 4Mark /.*\.stl/
+silent 5Mark /.*\.mo/
+silent 5Mark /.*\.fmu/
+
+silent 9Mark /.*\.sim/
+silent 10Mark /.*\.csv/
+silent 11Mark /.*\.dat/
+silent 12Mark /.*\.out/
+silent 13Mark /.*\.in/
+
+silent 7Mark /.*\.fds/
+silent 8Mark /.*\.smv/
+silent 6Mark /.*\.pdf/
+silent 14Mark /.*\.png/
+silent 14Mark /.*\.jpg/
+silent 14Mark /.*\.jpeg/
+silent 15Mark /.*\.log/
+silent 16Mark /.*\.txt/
+
+
+highlight MarkWord1 ctermfg=3 ctermbg=235
+highlight MarkWord2 ctermfg=154 ctermbg=235
+highlight MarkWord3 ctermfg=148 ctermbg=235
+highlight MarkWord4 ctermfg=142 ctermbg=235
+highlight MarkWord5 ctermfg=2 ctermbg=235
+highlight MarkWord6 ctermfg=9 ctermbg=235
+highlight MarkWord7 ctermfg=5 ctermbg=235
+highlight MarkWord8 ctermfg=13 ctermbg=235
+highlight MarkWord9 ctermfg=20 ctermbg=235
+highlight MarkWord10  ctermfg=164 ctermbg=235
+highlight MarkWord11  ctermfg=128 ctermbg=235
+highlight MarkWord12  ctermfg=192 ctermbg=235
+highlight MarkWord13  ctermfg=75 ctermbg=235
+highlight MarkWord14  ctermfg=5 ctermbg=235
+highlight MarkWord15  ctermfg=187 ctermbg=235
+highlight MarkWord16  ctermfg=186 ctermbg=235

@@ -10,13 +10,13 @@ LS_COLORS='di=1:fi=0:ln=31:pi=5:so=5:bd=5:cd=5:or=31:mi=0:ex=35:*.rpm=90:*.ipynb
 #export $LS_COLORS
 
 alias checkL='ssh  mesh01 "python /share/Tools/Python/check_ganglia_v1.py"'
-
+#
 set -o vi
 export OMP_NUM_THREADS=1
 #export OMP_NUM_THREADS=6
 
 export EDITOR="/share/Tools/Editing/NeoVim/nvim.appimage"
-export GOROOT=/share/Tools/golang/go/
+#export GOROOT=/share/Tools/golang/go/
 ###===================================================================
 ### Modules
 ###===================================================================
@@ -25,13 +25,16 @@ export GOROOT=/share/Tools/golang/go/
 #export PYTHOPATH=/
 #export PYTHONHOME=/share/Tools/Python/Distributions/anaconda3/bin/
 
-module load OpenModelica
+#module load OpenModelica
 #module unload python/anaconda2/4.x
 module load python_loc/3.6.0_anac4.3.1
 #
 module load ParaView
-##module load Ansa
 module load VisIt/2.10.3
+##module load Ansa
+module load openmpi/1.10.4
+module load FDS/6.5.3
+module load Aliases/StarCCM+
 #module load Dakota
 #module load Dakota/6.5.0_ac2
 #module load Dakota/6.5.0
@@ -43,20 +46,17 @@ module load VisIt/2.10.3
 #
 #module load Aliases/FDS
 #module unload FDS/6.5.3
-module load FDS/6.5.3
 #module load FDS
 #module load FDS/5.5.3
-module load JuPedSim
-module load Aliases/StarCCM+
-module load CFAST
+#Xmodule load JuPedSim
+#Xmodule load CFAST
 #
-module load openmpi/1.10.4
 #
 # OPF ============================================
 #. ~/.ModulesOPF_rc
 #module unload fireFoam
 #module unload OpenFOAM
-module load OpenFOAM
+#Xmodule load OpenFOAM
 #module load opt/opt_0.3
 #module load divs/0.0.1
 module load divs/0.2
@@ -84,13 +84,14 @@ case $HOST in
 esac
 
 
-export MODELICAPATH=/share/Tools/THERMO/MODELICA/Libraries/modelica-buildings_LBL:/share/Tools/THERMO/MODELICA/Libraries/modelica-buildings_LBL/Buildings
+export MODELICAPATH=/share/Tools/THERMO/MODELICA/Libraries/modelica-buildings_LBL:/share/Tools/THERMO/MODELICA/Libraries/modelica-buildings_LBL/Buildings:/share/software/Optimization/JModelica/2.1b1/ThirdParty/MSL/
 printf "\e[?2004l"
 
 alias vi="nv"
 alias vim="vim -u /home/fbraenns/.vimrc_y"
 alias rg='ranger'
 
+#=============================================================================================================================================
 #===================================================================
 # FZF
 #===================================================================
@@ -136,7 +137,7 @@ fkill() {
   fi
 }
 
-#===================================================================
+#=============================================================================================================================================
 # GIT
 # fshow - git commit browser
 fshow() {
@@ -218,7 +219,7 @@ ftags() {
                                       -c "silent tag $(cut -f2 <<< "$line")"
 }
 
-#===================================================================
+#=============================================================================================================================================
 # Navigation 2
 ffd() {
 find . -type d | fzf
@@ -385,10 +386,10 @@ fdz() {
     fi
 }
 
+#=============================================================================================================================================
 # tm - create new tmux session, or switch to existing one. Works from within tmux too. (@bag-man)
 # `tm` will allow you to select your tmux session via fzf.
 # `tm irc` will attach to the irc session (if it exists), else it will create it.
-
 tmm() {
   [[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"
   if [ $1 ]; then
