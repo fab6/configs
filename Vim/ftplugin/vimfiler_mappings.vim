@@ -1,18 +1,18 @@
 :nunmap <buffer> <Space>
-" nmap <buffer>` :VimFiler -status /home/fbraenns/<CR>
-" nmap <buffer>1 :VimFiler -status /home/fbraenns/00_ALLG/<CR>
-" nmap <buffer>2 :VimFiler -status /home/fbraenns/01_FINANCE/<CR>
-" nmap <buffer>3 :VimFiler -status /home/fbraenns/02_CFD/<CR>
-" nmap <buffer>4 :VimFiler -status /home/fbraenns/03_GA/<CR>
-" nmap <buffer>9 :VimFiler -status /home/fbraenns/99_SHARE/<CR>
+"nmap <buffer>` :VimFiler -status /home/fbraenns/<CR>
+nmap <buffer>1 :VimFiler -status /home/fbraenns/00_ALLG/<CR>
+nmap <buffer>2 :VimFiler -status /home/fbraenns/01_FINANCE/<CR>
+nmap <buffer>3 :VimFiler -status /home/fbraenns/02_CFD/<CR>
+nmap <buffer>4 :VimFiler -status /home/fbraenns/03_GA/<CR>
+nmap <buffer>9 :VimFiler -status /home/fbraenns/99_SHARE/<CR>
 " nmap <buffer>0 :VimFiler -status /share/software/Fire/<CR>
 nmap <buffer>` :VimFiler -status /home/fbraenns/<CR>
 " nmap <buffer>0 :VimFiler -status /home/fbraenns/<CR>
-nmap <buffer>1 :VimFiler -status /WORK1/fbraenns/<CR>
-nmap <buffer>2 :VimFiler -status /WORK2/fbraenns/<CR>
-nmap <buffer>3 :VimFiler -status /data/work/fbraenns/<CR>
-nmap <buffer>4 :VimFiler -status /share/Tools/<CR>
-nmap <buffer>9 :VimFiler -status /home/fbraenns/.modulefiles/<CR>
+" nmap <buffer>1 :VimFiler -status /WORK1/fbraenns/<CR>
+" nmap <buffer>2 :VimFiler -status /WORK2/fbraenns/<CR>
+" nmap <buffer>3 :VimFiler -status /data/work/fbraenns/<CR>
+" nmap <buffer>4 :VimFiler -status /share/Tools/<CR>
+" nmap <buffer>9 :VimFiler -status /home/fbraenns/.modulefiles/<CR>
 
 nmap <buffer>0 <Plug>(vimfiler_cursor_top)
 "
@@ -53,7 +53,8 @@ nnoremap <buffer><expr><silent> s vimfiler#do_switch_action('split')
 nnoremap <buffer><expr><silent> v vimfiler#do_switch_action('vsplit')
 
 nmap <buffer>,x :call jobstart('xterm',{'detach':1}) <CR>
-nmap <buffer>,X :call jobstart('xterm -e /share/Tools/Editing/NeoVim/nvim.appimage -c ":VimFilerBufferDir -status -sort-type=Time"' ,{'detach':1}) <CR>
+"nmap <buffer>,X :call jobstart('xterm -e /share/Tools/Editing/NeoVim/nvim.appimage -c ":VimFilerBufferDir -status -sort-type=Time"' ,{'detach':1}) <CR>
+nmap <buffer>,X :call jobstart('xterm -e nvim -c ":VimFilerBufferDir -status -sort-type=Time"' ,{'detach':1}) <CR>
 nmap <buffer>,y :call jobstart('xterm -e mc . .',{'detach':1}) <CR>
 
 

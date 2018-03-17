@@ -1,5 +1,6 @@
 let g:python_host_skip_check=1
 let g:loaded_python2_provider=1
+set title
 "==================================================================================================
 " TODO
 " Vim:
@@ -13,9 +14,7 @@ let g:loaded_python2_provider=1
 " Git:
 "  - easier git handling
 " Vimfiler:
-"  - Create / Split with destination path
 " Terminal:
-"  - F3 change directory
 " Python:
 "  - deoplete does not work as expected right now
 " Complete:
@@ -1202,8 +1201,11 @@ silent 2Mark /.*\.iges/
 silent 3Mark /.*\.stp/
 silent 3Mark /.*\.step/
 silent 4Mark /.*\.stl/
-silent 5Mark /.*\.mo/
-silent 5Mark /.*\.fmu/
+silent 3Mark /.*\.mo/
+silent 3Mark /.*\.fmu/
+silent 5Mark /.*\.xls/
+silent 5Mark /.*\.xlsx/
+silent 5Mark /.*\.ods/
 
 silent 9Mark /.*\.sim/
 silent 10Mark /.*\.csv/
