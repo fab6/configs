@@ -14,6 +14,7 @@ set title
 " Git:
 "  - easier git handling
 " Vimfiler:
+" - get current filename under cursor
 " Terminal:
 " Python:
 "  - deoplete does not work as expected right now
@@ -25,12 +26,13 @@ set title
 " - Octave
 " - Python --> scikit-learn, H2O, Keras, DataAnalysis, bokeh
 " - OpenFOAM
-"
-" On-demand loading
-" Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-" Plug 'tpope/vim-fireplace', { 'for': 'clojure' }<Paste>
+" Vimplug:
+" -On-demand loading
+"   # Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+"   # Plug 'tpope/vim-fireplace', { 'for': 'clojure' }<Paste>
 "
 "==================================================================================================
+set title
 set runtimepath+=/home/fbraenns/.nvim/
 "--------------------------------------------------------------------------------------------------
 " Specify a directory for plugins
@@ -382,9 +384,9 @@ cnoremap <C-n> <Down>
 cnoremap <C-j> <Left>
 cnoremap <C-l> <Right>
 "
-:nnoremap <leader>fed :vs ~/.config/nvim/init.vim<CR>
+:nnoremap <leader>fed :e ~/.config/nvim/init.vim<CR>
 :nnoremap <leader>fer :source ~/.config/nvim/init.vim<CR>
-:nnoremap <leader>fef :vs ~/.nvim/ftplugin/<CR>
+:nnoremap <leader>fef :e ~/.nvim/ftplugin/<CR>
 
 "" Paste Mode On/Off
 map <F11> :call Paste_on_off()<CR>
@@ -411,28 +413,18 @@ endfunc
 
 "..................................................................................................
 " " Copy to clipboard
-set clipboard+=unnamedplus
-" vnoremap  <leader>y  "+y
-" vnoremap  <leader>y  "*y
-" "nnoremap  <leader>Y  "+yg_
-" " nnoremap  <leader>Y  "*yy
-" " nnoremap  <leader>yy  "+yy
-"
-" " " Paste from clipboard
-" nnoremap <leader>p "+p
-" nnoremap <leader>P "*p
-" " Copy to clipboard
+"set clipboard+=unnamedplus
 vnoremap  <leader>y  "+y
-nnoremap  <leader>Y  "+yg_
-nnoremap  <leader>y  "+y
-nnoremap  <leader>yy  "+yy
+" nnoremap  <leader>Y  "+yg_
+" nnoremap  <leader>y  "+y
+" nnoremap  <leader>yy  "+yy
 
 " " Paste from clipboard
-nnoremap <leader>p "*p
-nnoremap <leader>P "+P
-nnoremap <leader>O "*P
-vnoremap <leader>p "+p
-vnoremap <leader>P "+P
+nnoremap <leader>p ""p
+" nnoremap <leader>P "+P
+" nnoremap <leader>O "*P
+" vnoremap <leader>p "+p
+" vnoremap <leader>P "+P
 " vnoremap <leader>p "+p
 " vnoremap <leader>P "+P
 "
@@ -778,27 +770,13 @@ vnoremap <leader>; :call NERDComment(0,"toggle")<CR>
 let g:indentLine_color_term = 239
 
 "==================================================================================================
-" Anzu-Statusline
-"
-" set statusline+=%{anzu#search_status()}
-" set statusline+=%F
-" "" Update the search status results while moving through the file
-" augroup anzu-update-search-status
-"     autocmd!
-"     autocmd CursorMoved *
-"                 \ :AnzuUpdateSearchStatus|echo anzu#search_status()
-" augroup END
-"
-"
-
-"==================================================================================================
 " VimFiler
 
 nnoremap <leader>jf :<C-u>VimFilerExplorer -sort-type=Time -status -split -simple -parent -winwidth=35 -no-quit -find<CR>
 " nnoremap <leader>ff :VimFilerExplorer -status -find -winwidth=80 -sort-type=Time <CR>
 
-map <leader>d :VimFilerBufferDir -status -sort-type=Time<CR>
-map <leader>D :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=29 -toggle -no-quit -explorer<CR><CR>
+map <silent><leader>d :VimFilerBufferDir -status -sort-type=Time<CR>
+map <silent><leader>D :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=29 -toggle -no-quit -explorer<CR><CR>
 " map <space>E :VimFilerBufferDir -status -split -simple -winwidth=30 -toggle -no-quit<CR><CR>
 nnoremap <F2> :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=30 -toggle -no-quit<CR>
 
@@ -850,6 +828,7 @@ let g:vimfiler_execute_file_list={
             \ 'tiff': 'display',
             \ 'gif': 'display',
             \ 'pdf': 'evince',
+            \ 'csv': 'libreoffice',
             \ 'doc': 'libreoffice',
             \ 'docx': 'libreoffice',
             \ 'xls': 'libreoffice',
@@ -966,21 +945,6 @@ map <F9> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<
 " augroup end
 
 "==================================================================================================
-" TABLE
-" function! s:isAtStartOfLine(mapping)
-"     let text_before_cursor = getline('.')[0 : col('.')-1]
-"     let mapping_pattern = '\V' . escape(a:mapping, '\')
-"     let comment_pattern = '\V' . escape(substitute(&l:commentstring, '%s.*$', '', ''), '\')
-"     return (text_before_cursor =~? '^' . ('\v(' . comment_pattern . '\v)?') . '\s*\v' . mapping_pattern . '\v$')
-" endfunction
-"
-" inoreabbrev <expr> <bar><bar>
-"             \ <SID>isAtStartOfLine('\|\|') ?
-"             \ '<c-o>:TableModeEnable<cr><bar><space><bar><left><left>' : '<bar><bar>'
-" inoreabbrev <expr> __
-"             \ <SID>isAtStartOfLine('__') ?
-"             \ '<c-o>:silent! TableModeDisable<cr>' : '__'
-"==================================================================================================
 " Denite-Git + Easygit
 call denite#custom#map(
             \ 'normal',
@@ -1092,7 +1056,7 @@ autocmd BufNewFile,BufRead *.in set filetype=dakota
 "==================================================================================================
 " CSV
 let g:csv_strict_columns = 1
-let g:csv_highlight_column = 'y'
+"let g:csv_highlight_column = 'y'
 " nmap <leader>vh :CSVHiColum<CR>
 nmap <leader>va ggVG:'<,'>CSVArrangeColumn<CR>
 " nmap <leader>vma :CSVMaxCol<CR>
@@ -1141,15 +1105,18 @@ colorscheme gruvbox
 " highlight Normal ctermbg=black ctermfg=white
 " set background=dark
 
-" Plug 'morhetz/gruvbox'
-" colorscheme gruvbox
-let g:gruvbox_contrast_dark = 'hard'
+ " Plug 'morhetz/gruvbox'
+ " colorscheme gruvbox
+"let g:gruvbox_contrast_dark = 'hard'
 let g:gruvbox_hls_cursor = 'orange'
-"..................................................................................................
+" :hi comment ctermfg=darkgreen
+" :highlight LineNr ctermfg=darkgrey
+" :highlight VertSplit ctermfg=darkgray ctermfg=black
+""..................................................................................................
 :highlight ParenMatch ctermbg=blue
-:hi comment ctermfg=242
-:highlight LineNr ctermfg=darkgrey
-:highlight VertSplit ctermfg=darkgray ctermfg=black
+" :hi comment ctermfg=242
+" :highlight LineNr ctermfg=darkgrey
+" :highlight VertSplit ctermfg=darkgray ctermfg=black
 
 "..................................................................................................
 " Showmarks
@@ -1184,18 +1151,19 @@ nmap <leader>Q :wqa<CR>
 ":highlight Search ctermbg=gray ctermfg=black
 :hi Search ctermfg=12
 
-hi MyAsserts ctermbg=Cyan
-command -bar -nargs=0 HiAsserts match MyAsserts /.*\.py/
-"      highlight any given regex
-" command -bar -nargs=1 HiIt match MyAsserts /<args>/
 
+"..................................................................................................
+" Marking in files, Denite and vimfiler
 let g:mwDefaultHighlightingPalette = 'maximum'
 runtime plugin/mark.vim
 silent MarkClear
+"
 "silent 56Mark /.*\.py/
 silent 1Mark /.*\.py/
+
 silent 1Mark /.*\.ipynb/
 " silent 58Mark /.*\.ipynb/
+"
 silent 2Mark /.*\.igs/
 silent 2Mark /.*\.iges/
 silent 3Mark /.*\.stp/
@@ -1221,21 +1189,25 @@ silent 14Mark /.*\.jpg/
 silent 14Mark /.*\.jpeg/
 silent 15Mark /.*\.log/
 silent 16Mark /.*\.txt/
+silent 17Mark /.*\.sh/
 
 
 highlight MarkWord1 ctermfg=3 ctermbg=235
 highlight MarkWord2 ctermfg=154 ctermbg=235
 highlight MarkWord3 ctermfg=148 ctermbg=235
 highlight MarkWord4 ctermfg=142 ctermbg=235
-highlight MarkWord5 ctermfg=2 ctermbg=235
+highlight MarkWord5 ctermfg=94 ctermbg=235
 highlight MarkWord6 ctermfg=9 ctermbg=235
-highlight MarkWord7 ctermfg=5 ctermbg=235
+highlight MarkWord7 ctermfg=105 ctermbg=235
 highlight MarkWord8 ctermfg=13 ctermbg=235
-highlight MarkWord9 ctermfg=20 ctermbg=235
-highlight MarkWord10  ctermfg=164 ctermbg=235
+highlight MarkWord9 ctermfg=99 ctermbg=235
+highlight MarkWord10  ctermfg=6 ctermbg=235
 highlight MarkWord11  ctermfg=128 ctermbg=235
-highlight MarkWord12  ctermfg=192 ctermbg=235
+highlight MarkWord12  ctermfg=7 ctermbg=235
 highlight MarkWord13  ctermfg=75 ctermbg=235
-highlight MarkWord14  ctermfg=5 ctermbg=235
+highlight MarkWord14  ctermfg=2 ctermbg=235
 highlight MarkWord15  ctermfg=187 ctermbg=235
 highlight MarkWord16  ctermfg=186 ctermbg=235
+highlight MarkWord17  ctermfg=192 ctermbg=235
+
+
