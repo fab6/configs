@@ -47,6 +47,7 @@ Plug 'zchee/deoplete-jedi'
 Plug 'Shougo/vimfiler.vim' "needs unite -> new development for denite Plug 'Shougo/defx.nvim'
 Plug 'Shougo/neomru.vim'
 Plug 'Shougo/vimproc.vim', { 'do' : 'make', }
+" Unite is needed due to vimfiler
 Plug 'Shougo/unite.vim'
 " Plug 'Shougo/unite-outline'
 " Plug 'vim-scripts/vimchant'
@@ -83,7 +84,7 @@ Plug 'xolox/vim-session'
 " Plug 'mattboehm/vim-accordion'
 " Plug 'osyo-manga/vim-anzu'
 " Plug 'rafi/awesome-vim-colorschemes'
-Plug 'morhetz/gruvbox'
+"Plug 'morhetz/gruvbox'
 Plug 'haya14busa/incsearch.vim'
 Plug 'haya14busa/incsearch-fuzzy.vim'
 " Plug 'dhruvasagar/vim-table-mode'
@@ -104,12 +105,12 @@ Plug 'plasticboy/vim-markdown'
 " Plug 'ludovicchabant/vim-gutentags'
 Plug 'jvirtanen/vim-octave', { 'for': 'octave' }
 Plug 'stevearc/vim-arduino', { 'for': 'arduino' }
-Plug 'nvie/vim-flake8', { 'for': 'python' }
+"Plug 'nvie/vim-flake8', { 'for': 'python' }
 Plug 'sudar/vim-arduino-syntax', { 'for': 'arduino' }
 " Plug 'iyuuya/denite-ale'
 " .....................................................................
 " WindowSwapping
-Plug 'wesQ3/vim-windowswap'
+" Plug 'wesQ3/vim-windowswap'
 " Plug 'chrisbra/NrrwRgn'
 " .....................................................................
 " Terminal:
@@ -1110,15 +1111,15 @@ endfunction
 "==================================================================================================
 " COLORSCHEME
 
-set background=dark
-colorscheme gruvbox
+" set background=dark
+" colorscheme gruvbox
 " set background=dark
 
  " Plug 'morhetz/gruvbox'
  " colorscheme gruvbox
 "let g:gruvbox_contrast_dark = 'hard'
-let g:gruvbox_hls_cursor = 'orange'
-highlight Normal ctermbg=black
+" let g:gruvbox_hls_cursor = 'orange'
+highlight Normal ctermbg=234
 "ctermfg=white
 " :hi comment ctermfg=darkgreen
 " :highlight LineNr ctermfg=darkgrey
@@ -1225,24 +1226,43 @@ silent 17Mark /.*\.sh/
 " highlight MarkWord15  ctermfg=187 ctermbg=235
 " highlight MarkWord16  ctermfg=186 ctermbg=235
 " highlight MarkWord17  ctermfg=192 ctermbg=235
+"
+"
+highlight MarkWord1 ctermfg=3 ctermbg=234
+highlight MarkWord2 ctermfg=154 ctermbg=234
+highlight MarkWord3 ctermfg=148 ctermbg=234
+highlight MarkWord4 ctermfg=142 ctermbg=234
+highlight MarkWord5 ctermfg=94 ctermbg=234
+highlight MarkWord6 ctermfg=9 ctermbg=234
+highlight MarkWord7 ctermfg=105 ctermbg=234
+highlight MarkWord8 ctermfg=13 ctermbg=234
+highlight MarkWord9 ctermfg=99 ctermbg=234
+highlight MarkWord10  ctermfg=6 ctermbg=234
+highlight MarkWord11  ctermfg=128 ctermbg=234
+highlight MarkWord12  ctermfg=7 ctermbg=234
+highlight MarkWord13  ctermfg=75 ctermbg=234
+highlight MarkWord14  ctermfg=2 ctermbg=234
+highlight MarkWord15  ctermfg=187 ctermbg=234
+highlight MarkWord16  ctermfg=186 ctermbg=234
+highlight MarkWord17  ctermfg=192 ctermbg=234
 
-highlight MarkWord1 ctermfg=3 ctermbg=Black
-highlight MarkWord2 ctermfg=154 ctermbg=Black
-highlight MarkWord3 ctermfg=148 ctermbg=Black
-highlight MarkWord4 ctermfg=142 ctermbg=Black
-highlight MarkWord5 ctermfg=94 ctermbg=Black
-highlight MarkWord6 ctermfg=9 ctermbg=Black
-highlight MarkWord7 ctermfg=105 ctermbg=Black
-highlight MarkWord8 ctermfg=13 ctermbg=Black
-highlight MarkWord9 ctermfg=99 ctermbg=Black
-highlight MarkWord10  ctermfg=6 ctermbg=Black
-highlight MarkWord11  ctermfg=128 ctermbg=Black
-highlight MarkWord12  ctermfg=7 ctermbg=Black
-highlight MarkWord13  ctermfg=75 ctermbg=Black
-highlight MarkWord14  ctermfg=2 ctermbg=Black
-highlight MarkWord15  ctermfg=187 ctermbg=Black
-highlight MarkWord16  ctermfg=186 ctermbg=Black
-highlight MarkWord17  ctermfg=192 ctermbg=Black
+" highlight MarkWord1 ctermfg=3 ctermbg=Black
+" highlight MarkWord2 ctermfg=154 ctermbg=Black
+" highlight MarkWord3 ctermfg=148 ctermbg=Black
+" highlight MarkWord4 ctermfg=142 ctermbg=Black
+" highlight MarkWord5 ctermfg=94 ctermbg=Black
+" highlight MarkWord6 ctermfg=9 ctermbg=Black
+" highlight MarkWord7 ctermfg=105 ctermbg=Black
+" highlight MarkWord8 ctermfg=13 ctermbg=Black
+" highlight MarkWord9 ctermfg=99 ctermbg=Black
+" highlight MarkWord10  ctermfg=6 ctermbg=Black
+" highlight MarkWord11  ctermfg=128 ctermbg=Black
+" highlight MarkWord12  ctermfg=7 ctermbg=Black
+" highlight MarkWord13  ctermfg=75 ctermbg=Black
+" highlight MarkWord14  ctermfg=2 ctermbg=Black
+" highlight MarkWord15  ctermfg=187 ctermbg=Black
+" highlight MarkWord16  ctermfg=186 ctermbg=Black
+" highlight MarkWord17  ctermfg=192 ctermbg=Black
 
 " endfunction
 
@@ -1264,3 +1284,7 @@ highlight MarkWord17  ctermfg=192 ctermbg=Black
 " :syntax match col2 /Mango/
 " :highlight col3 ctermbg=Blue ctermfg=White
 " :syntax match col3 /Grape/
+"
+:hi Comment ctermfg=darkgrey
+:hi Comment ctermfg=darkgreen
+:hi LineNr ctermfg=darkgrey
