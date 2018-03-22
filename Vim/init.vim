@@ -1,6 +1,7 @@
 let g:python_host_skip_check=1
 let g:loaded_python2_provider=1
 set title
+"let g:loaded_python3_provider=1
 "==================================================================================================
 " TODO
 " Vim:
@@ -43,12 +44,14 @@ Plug 'Shougo/deol.nvim', { 'rev': 'a1b5108fd' }
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-jedi'
 " Plug 'Shougo/tabpagebuffer.vim'
-Plug 'Shougo/vinarise'
+"
+" Plug 'Shougo/vinarise'
 Plug 'Shougo/vimfiler.vim' "needs unite -> new development for denite Plug 'Shougo/defx.nvim'
 Plug 'Shougo/neomru.vim'
 Plug 'Shougo/vimproc.vim', { 'do' : 'make', }
+" Unite is needed due to vimfiler
 Plug 'Shougo/unite.vim'
-Plug 'Shougo/unite-outline'
+" Plug 'Shougo/unite-outline'
 " Plug 'vim-scripts/vimchant'
 " Plug 'rhysd/unite-oldfiles.vim'
 " Plug 'chemzqm/unite-location'
@@ -66,9 +69,9 @@ Plug 'chemzqm/vim-easygit'
 Plug 'chemzqm/denite-git'
 Plug 'notomo/denite-autocmd'
 Plug 'notomo/denite-keymap'
-Plug 'yuntan/denite-cheatsheet'
+" Plug 'yuntan/denite-cheatsheet'
 " Plug 'davidhalter/jedi-vim' Autocomplete for python
-Plug 'thirtythreeforty/lessspace.vim'
+" Plug 'thirtythreeforty/lessspace.vim'
 Plug 'chrisbra/csv.vim'
 Plug 'Yggdroot/indentLine'
 Plug 'scrooloose/nerdcommenter'
@@ -80,10 +83,10 @@ Plug 'itchyny/lightline.vim'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-session'
 " Window manager for handling multiple splits
-Plug 'mattboehm/vim-accordion'
+" Plug 'mattboehm/vim-accordion'
 " Plug 'osyo-manga/vim-anzu'
 " Plug 'rafi/awesome-vim-colorschemes'
-Plug 'morhetz/gruvbox'
+"Plug 'morhetz/gruvbox'
 Plug 'haya14busa/incsearch.vim'
 Plug 'haya14busa/incsearch-fuzzy.vim'
 " Plug 'dhruvasagar/vim-table-mode'
@@ -96,7 +99,7 @@ Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'rudes/vim-java', { 'for': 'java' }
 Plug 'plasticboy/vim-markdown'
 " python
-Plug 'python-mode/python-mode' , { 'for': 'python' }
+" Plug 'python-mode/python-mode' , { 'for': 'python' }
 "Plug 'vyzyv/vimpyter'
 "Plug 'fisadev/vim-isort'
 " Plug 'w0rp/ale'
@@ -104,12 +107,12 @@ Plug 'python-mode/python-mode' , { 'for': 'python' }
 " Plug 'ludovicchabant/vim-gutentags'
 Plug 'jvirtanen/vim-octave', { 'for': 'octave' }
 Plug 'stevearc/vim-arduino', { 'for': 'arduino' }
-Plug 'nvie/vim-flake8', { 'for': 'python' }
+"Plug 'nvie/vim-flake8', { 'for': 'python' }
 Plug 'sudar/vim-arduino-syntax', { 'for': 'arduino' }
-Plug 'iyuuya/denite-ale'
+" Plug 'iyuuya/denite-ale'
 " .....................................................................
 " WindowSwapping
-Plug 'wesQ3/vim-windowswap'
+" Plug 'wesQ3/vim-windowswap'
 " Plug 'chrisbra/NrrwRgn'
 " .....................................................................
 " Terminal:
@@ -489,7 +492,7 @@ nnoremap <silent><leader>8 :<C-u>DeniteCursorWord grep:. -mode=normal<CR>
 " nnoremap <leader><Space>/ :<C-u>DeniteBufferDir grep:. -mode=normal<CR>
 " nnoremap <leader>d :<C-u>DeniteBufferDir file_rec<CR>
 
-nnoremap <silent> <leader>o :<C-u>Denite -buffer-name=outline -winwidth=35 unite:outline -mode=normal<cr>
+" nnoremap <silent> <leader>o :<C-u>Denite -buffer-name=outline -winwidth=35 unite:outline -mode=normal<cr>
 " nnorema<silent> p <leader>k :<C-u>Denite -mode=normal -winwidth=35 unite:outline<cr>
 
 nnoremap <silent> <leader>v :<C-u>Denite location_list -mode=normal -no-empty -auto-preview<CR>
@@ -514,15 +517,22 @@ nnoremap <silent> <leader>Dj :call execute('Denite -resume -select=+'.v:count1.'
 nnoremap <silent> <leader>Dk :call execute('Denite -resume -select=-'.v:count1.' -immediately')<CR>
 nnoremap <silent> <leader>Dl :<C-u>Denite -mode=normal -auto-resize location_list<CR>
 nnoremap <silent> <leader>Dn :<C-u>DeniteCursorWord line -mode=insert -no-split -buffer-name=line<cr>
-nnoremap <silent> <leader>Do :<C-u>Denite -mode=normal -winwidth=35 outline<cr>
+nnoremap <silent> <leader>o :<C-u>Denite -mode=normal -winwidth=35 outline<cr>
 nnoremap <silent> <leader>Dq :<C-u>Denite -mode=normal -auto-resize quickfix<CR>
 nnoremap <silent> <leader>Ds :<C-u>Denite -mode=normal -winwidth=35 session<cr>
 nnoremap <silent> <leader>Dr :<C-u>Denite -resume<CR>
 nnoremap <silent> <leader>Dy :<C-u>Denite -mode=normal -winwidth=35 register<cr>
 
+
+" :DeniteBufferDir [{options}] {sources}			*:DeniteBufferDir*
+" :DeniteCursorWord [{options}] {sources}			*:DeniteCursorWord*
+" :DeniteProjectDir [{options}] {sources}			*:DeniteProjectDir*
+
+
 nnoremap <silent> <leader>hs :<C-u>Denite history:search -mode=normal<CR>
 nnoremap <silent> <leader>hc :<C-u>Denite history:cmd -mode=normal<CR>
 
+" call denite#custom#var('outline', 'command', ['ctags'])
 " Ag command on grep source
 call denite#custom#var('grep', 'command', ['ag'])
 call denite#custom#var('grep', 'default_opts', ['-i', '--vimgrep'])
@@ -726,14 +736,14 @@ function! s:denite_settings()
 endfunction
 
 " Custom mappings for the unite buffer
-autocmd FileType unite call s:unite_settings()
-function! s:unite_settings()
-    " Play nice with supertab
-    let b:SuperTabDisabled=1
-    " Enable navigation with control-j and control-k in insert mode
-    imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-    imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-endfunction
+" autocmd FileType unite call s:unite_settings()
+" function! s:unite_settings()
+"     " Play nice with supertab
+"     let b:SuperTabDisabled=1
+"     " Enable navigation with control-j and control-k in insert mode
+"     imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+"     imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+" endfunction
 
 " Use fuzzy matcher for filtering elements.
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
@@ -860,6 +870,7 @@ let g:vimfiler_execute_file_list={
 " Quickly create a new terminal in a vertical split
 tnoremap <Leader>% <C-\><C-n>:vsp<CR><C-w><C-w>:term<CR>
 noremap <Leader>% :vsp<CR><C-w><C-w>:term<CR>
+noremap <Leader>^ :tabnew<CR>:term<CR>
 " nmap <leader>T :vs<CR>:terminal<CR>
 
 "kassio/neoterm
@@ -895,7 +906,9 @@ nnoremap gd  :tabclose<CR>
 "nnoremap th :tabnext<CR>
 "nnoremap tl :tabprev<CR>
 " nnoremap tn :tabnew<CR>
-nnoremap gn :tabnew<CR>
+nnoremap gN :tabnew<CR>
+nnoremap gn :tabnext<CR>
+
 
 "==================================================================================================
 let g:gfm_syntax_enable_always = 0
@@ -1100,15 +1113,16 @@ endfunction
 "==================================================================================================
 " COLORSCHEME
 
-set background=dark
-colorscheme gruvbox
-" highlight Normal ctermbg=black ctermfg=white
+" set background=dark
+" colorscheme gruvbox
 " set background=dark
 
  " Plug 'morhetz/gruvbox'
  " colorscheme gruvbox
 "let g:gruvbox_contrast_dark = 'hard'
-let g:gruvbox_hls_cursor = 'orange'
+" let g:gruvbox_hls_cursor = 'orange'
+highlight Normal ctermbg=234
+"ctermfg=white
 " :hi comment ctermfg=darkgreen
 " :highlight LineNr ctermfg=darkgrey
 " :highlight VertSplit ctermfg=darkgray ctermfg=black
@@ -1154,7 +1168,15 @@ nmap <leader>Q :wqa<CR>
 
 "..................................................................................................
 " Marking in files, Denite and vimfiler
+
+" augroup filetype
+"     autocmd FileType vimfiler call Marking()
+"     autocmd FileType python :MarkClear
+"     autocmd FileType modelica :MarkClear
+" augroup END
+
 let g:mwDefaultHighlightingPalette = 'maximum'
+" function! Marking()
 runtime plugin/mark.vim
 silent MarkClear
 "
@@ -1199,22 +1221,82 @@ silent 17Mark /.*\.sh/
 silent 17Mark /.*\.ino/
 
 
-highlight MarkWord1 ctermfg=3 ctermbg=235
-highlight MarkWord2 ctermfg=154 ctermbg=235
-highlight MarkWord3 ctermfg=148 ctermbg=235
-highlight MarkWord4 ctermfg=142 ctermbg=235
-highlight MarkWord5 ctermfg=94 ctermbg=235
-highlight MarkWord6 ctermfg=9 ctermbg=235
-highlight MarkWord7 ctermfg=105 ctermbg=235
-highlight MarkWord8 ctermfg=13 ctermbg=235
-highlight MarkWord9 ctermfg=99 ctermbg=235
-highlight MarkWord10  ctermfg=6 ctermbg=235
-highlight MarkWord11  ctermfg=128 ctermbg=235
-highlight MarkWord12  ctermfg=7 ctermbg=235
-highlight MarkWord13  ctermfg=75 ctermbg=235
-highlight MarkWord14  ctermfg=2 ctermbg=235
-highlight MarkWord15  ctermfg=187 ctermbg=235
-highlight MarkWord16  ctermfg=186 ctermbg=235
-highlight MarkWord17  ctermfg=192 ctermbg=235
+" highlight MarkWord1 ctermfg=3 ctermbg=235
+" highlight MarkWord2 ctermfg=154 ctermbg=235
+" highlight MarkWord3 ctermfg=148 ctermbg=235
+" highlight MarkWord4 ctermfg=142 ctermbg=235
+" highlight MarkWord5 ctermfg=94 ctermbg=235
+" highlight MarkWord6 ctermfg=9 ctermbg=235
+" highlight MarkWord7 ctermfg=105 ctermbg=235
+" highlight MarkWord8 ctermfg=13 ctermbg=235
+" highlight MarkWord9 ctermfg=99 ctermbg=235
+" highlight MarkWord10  ctermfg=6 ctermbg=235
+" highlight MarkWord11  ctermfg=128 ctermbg=235
+" highlight MarkWord12  ctermfg=7 ctermbg=235
+" highlight MarkWord13  ctermfg=75 ctermbg=235
+" highlight MarkWord14  ctermfg=2 ctermbg=235
+" highlight MarkWord15  ctermfg=187 ctermbg=235
+" highlight MarkWord16  ctermfg=186 ctermbg=235
+" highlight MarkWord17  ctermfg=192 ctermbg=235
+"
+"
+highlight MarkWord1 ctermfg=3 ctermbg=234
+highlight MarkWord2 ctermfg=154 ctermbg=234
+highlight MarkWord3 ctermfg=148 ctermbg=234
+highlight MarkWord4 ctermfg=142 ctermbg=234
+highlight MarkWord5 ctermfg=94 ctermbg=234
+highlight MarkWord6 ctermfg=9 ctermbg=234
+highlight MarkWord7 ctermfg=105 ctermbg=234
+highlight MarkWord8 ctermfg=13 ctermbg=234
+highlight MarkWord9 ctermfg=99 ctermbg=234
+highlight MarkWord10  ctermfg=6 ctermbg=234
+highlight MarkWord11  ctermfg=128 ctermbg=234
+highlight MarkWord12  ctermfg=7 ctermbg=234
+highlight MarkWord13  ctermfg=75 ctermbg=234
+highlight MarkWord14  ctermfg=2 ctermbg=234
+highlight MarkWord15  ctermfg=187 ctermbg=234
+highlight MarkWord16  ctermfg=186 ctermbg=234
+highlight MarkWord17  ctermfg=192 ctermbg=234
 
+" highlight MarkWord1 ctermfg=3 ctermbg=Black
+" highlight MarkWord2 ctermfg=154 ctermbg=Black
+" highlight MarkWord3 ctermfg=148 ctermbg=Black
+" highlight MarkWord4 ctermfg=142 ctermbg=Black
+" highlight MarkWord5 ctermfg=94 ctermbg=Black
+" highlight MarkWord6 ctermfg=9 ctermbg=Black
+" highlight MarkWord7 ctermfg=105 ctermbg=Black
+" highlight MarkWord8 ctermfg=13 ctermbg=Black
+" highlight MarkWord9 ctermfg=99 ctermbg=Black
+" highlight MarkWord10  ctermfg=6 ctermbg=Black
+" highlight MarkWord11  ctermfg=128 ctermbg=Black
+" highlight MarkWord12  ctermfg=7 ctermbg=Black
+" highlight MarkWord13  ctermfg=75 ctermbg=Black
+" highlight MarkWord14  ctermfg=2 ctermbg=Black
+" highlight MarkWord15  ctermfg=187 ctermbg=Black
+" highlight MarkWord16  ctermfg=186 ctermbg=Black
+" highlight MarkWord17  ctermfg=192 ctermbg=Black
 
+" endfunction
+
+" nnoremap th  :tabfirst<CR>
+" nnoremap tj  :tabnext<CR>
+" nnoremap tk  :tabprev<CR>
+" nnoremap tl  :tablast<CR>
+" nnoremap tt  :tabedit<Space>
+" nnoremap tn  :tabnew<CR>
+" nnoremap tm  :tabm<Space>
+" nnoremap td  :tabclose<CR>
+" Alternatively use
+"nnoremap th :tabnext<CR>
+"nnoremap tl :tabprev<CR>
+"nnoremap tn :tabnew<CR>
+" :highlight col1 ctermbg=Red ctermfg=White
+" :syntax match col1 /Apple/
+" :highlight col2 ctermbg=Green ctermfg=Black
+" :syntax match col2 /Mango/
+" :highlight col3 ctermbg=Blue ctermfg=White
+" :syntax match col3 /Grape/
+"
+:hi Comment ctermfg=darkgrey
+:hi Comment ctermfg=darkgreen
+:hi LineNr ctermfg=darkgrey
