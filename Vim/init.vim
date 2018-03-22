@@ -1175,6 +1175,10 @@ silent 5Mark /.*\.xls/
 silent 5Mark /.*\.xlsx/
 silent 5Mark /.*\.ods/
 
+
+silent 9Mark /.*\.doc/
+silent 9Mark /.*\.docx/
+
 silent 9Mark /.*\.sim/
 silent 10Mark /.*\.csv/
 silent 11Mark /.*\.dat/
@@ -1184,12 +1188,15 @@ silent 13Mark /.*\.in/
 silent 7Mark /.*\.fds/
 silent 8Mark /.*\.smv/
 silent 6Mark /.*\.pdf/
+silent 6Mark /.*\.ppt/
+silent 6Mark /.*\.pptx/
 silent 14Mark /.*\.png/
 silent 14Mark /.*\.jpg/
 silent 14Mark /.*\.jpeg/
 silent 15Mark /.*\.log/
 silent 16Mark /.*\.txt/
 silent 17Mark /.*\.sh/
+silent 17Mark /.*\.ino/
 
 
 highlight MarkWord1 ctermfg=3 ctermbg=235
