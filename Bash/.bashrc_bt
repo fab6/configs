@@ -84,7 +84,8 @@ case $HOST in
 esac
 
 
-export MODELICAPATH=/share/Tools/THERMO/MODELICA/Libraries/modelica-buildings_LBL:/share/Tools/THERMO/MODELICA/Libraries/modelica-buildings_LBL/Buildings:/share/software/Optimization/JModelica/2.1b1/ThirdParty/MSL/
+export MODELICAPATH=/share/Tools/THERMO/MODELICA/Libraries/modelica-buildings_LBL:/share/Tools/THERMO/MODELICA/Libraries/modelica-buildings_LBL/Buildings:/share/software/Optimization/JModelica/2.1b1/ThirdParty/MSL/:/share/Tools/THERMO/MODELICA/Libraries/AixLib_RWTH/AixLib/
+
 printf "\e[?2004l"
 
 alias vi="nv"
