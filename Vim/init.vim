@@ -79,7 +79,7 @@ Plug 'itchyny/vim-parenmatch'
 Plug 'jiangmiao/auto-pairs'
 Plug 'itchyny/vim-cursorword'
 " Plug 'pboettch/vim-cmake-syntax'
-Plug 'itchyny/lightline.vim'
+" Plug 'itchyny/lightline.vim'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-session'
 " Window manager for handling multiple splits
@@ -87,7 +87,7 @@ Plug 'xolox/vim-session'
 " Plug 'osyo-manga/vim-anzu'
 " Plug 'rafi/awesome-vim-colorschemes'
 "Plug 'morhetz/gruvbox'
-Plug 'haya14busa/incsearch.vim'
+" Plug 'haya14busa/incsearch.vim'
 Plug 'haya14busa/incsearch-fuzzy.vim'
 " Plug 'dhruvasagar/vim-table-mode'
 " Plug 'iamcco/file-manager.vim'
@@ -252,9 +252,6 @@ augroup filetype
     autocmd Filetype ipynb nmap <silent><Leader>b :VimpyterInsertPythonBlock<CR>
     autocmd Filetype ipynb nmap <silent><Leader>j :VimpyterStartJupyter<CR>
     autocmd Filetype ipynb nmap <silent><Leader>n :VimpyterStartNteract<CR>
-    autocmd BufNewFile,BufRead *.csv set filetype=csv
-    autocmd BufNewFile,BufRead *.CSV set filetype=csv
-    autocmd BufNewFile,BufRead *.dat set filetype=csv
     autocmd! BufRead,BufNewFile *.m       setf octave
     autocmd! BufRead,BufNewFile *.m       set filetype=octave
     autocmd! BufRead,BufNewFile *.pvs       set filetype=tcl
@@ -267,6 +264,9 @@ augroup filetype
     autocmd BufRead,BufNew,BufNewFile README.md setlocal ft=markdown.gfm
     " autocmd BufEnter * if &buftype == 'terminal' | :startinsert | endif
 augroup END
+    " autocmd BufNewFile,BufRead *.csv set filetype=csv
+    " autocmd BufNewFile,BufRead *.CSV set filetype=csv
+    " autocmd BufNewFile,BufRead *.dat set filetype=csv
 "deoplete? autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 "deoplete? autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 "deoplete? autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
@@ -305,16 +305,19 @@ autocmd FileType html,css set noexpandtab tabstop=2
 autocmd FileType make set noexpandtab shiftwidth=8
 "
 "
+set backspace=eol,start,indent
 "--------------------------------------------------------------------------------------------------
 " Search & Replace
 "
+" assume the /g flag on :s substitutions to replace all matches in a line:
+set gdefault
 "
 "" make searches case-insensitive, unless they contain upper-case letters:
 set ignorecase
 set smartcase
 "
 "" show the `best match so far' as search strings are typed:
-" set incsearch
+set incsearch
 set hlsearch
 "let g:incsearch#auto_nohlsearch = 1
 "" map n  <Plug>(incsearch-nohl-n)
@@ -323,8 +326,8 @@ set hlsearch
 "map #  <Plug>(incsearch-nohl-#)
 "map g* <Plug>(incsearch-nohl-g*)
 "map g# <Plug>(incsearch-nohl-g#)
-map /  <Plug>(incsearch-forward)
-map ?  <Plug>(incsearch-backward)
+" map /  <Plug>(incsearch-forward)
+" map ?  <Plug>(incsearch-backward)
 "map g/ <Plug>(incsearch-stay)
 "" map n <Plug>(incsearch-nohl)<Plug>(anzu-n-with-echo)
 "" map n <Plug>(incsearch-nohl)
@@ -340,14 +343,101 @@ map ?  <Plug>(incsearch-backward)
 "
 set laststatus=2 "black status line at bottom of window
 
-let g:lightline = {
-            \ 'colorscheme': 'Dracula',
-            \ 'active': {'left': [['mode','paste'],['readonly','filename','modified']]},
-            \ 'component_function': { 'filename': 'LightLineFilename' }
-            \ }
-function! LightLineFilename()
-    return expand('%')
+
+let s:mode = ''
+let s:ColorizeModeActive = 0
+
+function! ColorizeMode()
+  let l:mode = mode()
+
+
+  if l:mode != s:mode
+    if mode == 'R'
+      "highlight Normal ctermbg=darkred
+      highlight StatusLine ctermfg=red guifg=yellow
+    elseif mode == 'i'
+      "highlight Normal ctermbg=white
+      highlight StatusLine ctermfg=green guifg=red
+    elseif mode == 'v'
+      "highlight Normal ctermbg=white
+      highlight StatusLine ctermfg=yellow guifg=red
+    elseif mode == 'n'
+      "highlight Normal ctermbg=gray
+      highlight StatusLine ctermfg=30 guifg=white
+    endif
+
+    let s:mode = l:mode
+  endif
+
+  return ',' . l:mode
+  return ''
 endfunction
+
+
+
+if s:ColorizeModeActive == 0
+  if &statusline == ''
+    set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
+  endif
+  let &statusline = &statusline . '%{ColorizeMode()}'
+  let s:ColorizeModeActive = 1
+endif
+
+
+"status2 "set statusline=Vim-%{Version()}\ %{getcwd()}\ \ %1*[%02n]%*\ %(%M%R%H%)\ %2*%F%*\ %=%{Options()}\ %3*<%l,%c%V>%*
+"status2 " " Text between "%{" and "%}" is being evaluated and thus suited for
+"status2 " functions.
+"status2 " " Here I will use the function "Options()" as defined below to show the
+"status2 " " values of some (local) options..
+"status2 " " The strings "%N*" unto "%*" correspond to the highlight group "UserN":
+"status2 " "       User1: color for buffer number
+"status2 hi    User1 cterm=NONE    ctermfg=red    ctermbg=white  guifg=red guibg=white
+"status2 "   "       User2: color for filename
+"status2 hi    User2 cterm=NONE    ctermfg=black  ctermbg=green  guifg=black guibg=green
+"status2 "     "       User3: color for position
+"status2 hi    User3 cterm=NONE    ctermfg=blue   ctermbg=white  guifg=blue guibg=white
+"status2 "
+"status2 fu! Version()
+"status2   return version
+"status2 endf
+"status2
+"status2 " Aussehen der Statuszeile (Sollte wohl besser bei den Farben sein)
+"status2 "set   statusline=%1*[%02n]%*\ %(%M%R%H%)\ *\ %2*%t%*\ %3*<%l,%c%V,%p%%>%*
+"status2 fu! Options()
+"status2   let opt=""
+"status2   if &ai|   let opt=opt." ai"   |endif
+"status2   if &et|   let opt=opt." et"   |endif
+"status2   if &hls|  let opt=opt." hls"  |endif
+"status2   if &nu|   let opt=opt." nu"   |endif
+"status2   if &ek|   let opt=opt." ek"   |endif
+"status2   if &list| let opt=opt." list" |endif
+"status2   if &paste|let opt=opt." paste"|endif
+"status2   if &shiftwidth!=8|let opt=opt." sw=".&shiftwidth|endif
+"status2   let opt=opt." tw=".&tw
+"status2   "let opt=opt."\[".&lines.",".&columns."\]"
+"status2   return opt
+"status2 endf
+"status2 " hi User1 cterm=bold ctermfg=cyan  ctermbg=white guifg=cyan guibg=white
+"status2 hi User1 cterm=NONE ctermfg=red   ctermbg=white guifg=red   guibg=white
+"status2 hi User2 cterm=NONE ctermfg=green ctermbg=white guifg=green guibg=white
+"status2 hi User3 cterm=NONE ctermfg=blue  ctermbg=white guifg=blue  guibg=white
+
+
+"let g:lightline = {
+"            \ 'colorscheme': 'Dracula',
+"            \ 'active': {'left': [['mode','paste'],['readonly','filename','modified']]},
+"            \ 'component_function': { 'filename': 'LightLineFilename' }
+"            \ }
+"function! LightLineFilename()
+"    return expand('%')
+"endfunction
+"
+" Showmarks
+:hi ShowMarksHLl ctermfg=red "For marks a-z
+:hi ShowMarksHLu ctermfg=yellow "For marks A-Z
+:hi ShowMarksHLo ctermfg=magenta "For all other marks
+:hi ShowMarksHLm ctermfg=white "For multiple marks on the same line.
+:hi SignColumn ctermbg=black
 
 "--------------------------------------------------------------------------------------------------
 " BACKUP
@@ -1174,18 +1264,8 @@ nmap <leader>Q :wqa<CR>
 "     autocmd FileType python :MarkClear
 "     autocmd FileType modelica :MarkClear
 " augroup END
-
-let g:mwDefaultHighlightingPalette = 'maximum'
-" function! Marking()
-runtime plugin/mark.vim
-silent MarkClear
 "
-"silent 56Mark /.*\.py/
-silent 1Mark /.*\.py/
-
-silent 1Mark /.*\.ipynb/
-" silent 58Mark /.*\.ipynb/
-"
+<<<<<<< HEAD
 silent 2Mark /.*\.igs/
 silent 2Mark /.*\.iges/
 silent 3Mark /.*\.stp/
@@ -1275,6 +1355,99 @@ highlight MarkWord17  ctermfg=192 ctermbg=234
 " highlight MarkWord15  ctermfg=187 ctermbg=Black
 " highlight MarkWord16  ctermfg=186 ctermbg=Black
 " highlight MarkWord17  ctermfg=192 ctermbg=Black
+=======
+""x "--------------------------------------------------------------------------------------------------
+""x let g:mwDefaultHighlightingPalette = 'maximum'
+""x " function! Marking()
+""x runtime plugin/mark.vim
+""x silent MarkClear
+""x "
+""x "silent 56Mark /.*\.py/
+""x silent 1Mark /.*\.py/
+""x 
+""x silent 1Mark /.*\.ipynb/
+""x " silent 58Mark /.*\.ipynb/
+""x "
+""x silent 2Mark /.*\.igs/
+""x silent 2Mark /.*\.iges/
+""x silent 3Mark /.*\.stp/
+""x silent 3Mark /.*\.step/
+""x silent 4Mark /.*\.stl/
+""x silent 5Mark /.*\.mo/
+""x silent 5Mark /.*\.fmu/
+""x 
+""x silent 9Mark /.*\.sim/
+""x silent 10Mark /.*\.csv/
+""x silent 11Mark /.*\.dat/
+""x silent 12Mark /.*\.out/
+""x silent 13Mark /.*\.in/
+""x 
+""x silent 7Mark /.*\.fds/
+""x silent 8Mark /.*\.smv/
+""x silent 6Mark /.*\.pdf/
+""x silent 14Mark /.*\.png/
+""x silent 14Mark /.*\.jpg/
+""x silent 14Mark /.*\.jpeg/
+""x silent 15Mark /.*\.log/
+""x silent 16Mark /.*\.txt/
+""x silent 17Mark /.*\.sh/
+""x 
+""x 
+""x " highlight MarkWord1 ctermfg=3 ctermbg=235
+""x " highlight MarkWord2 ctermfg=154 ctermbg=235
+""x " highlight MarkWord3 ctermfg=148 ctermbg=235
+""x " highlight MarkWord4 ctermfg=142 ctermbg=235
+""x " highlight MarkWord5 ctermfg=94 ctermbg=235
+""x " highlight MarkWord6 ctermfg=9 ctermbg=235
+""x " highlight MarkWord7 ctermfg=105 ctermbg=235
+""x " highlight MarkWord8 ctermfg=13 ctermbg=235
+""x " highlight MarkWord9 ctermfg=99 ctermbg=235
+""x " highlight MarkWord10  ctermfg=6 ctermbg=235
+""x " highlight MarkWord11  ctermfg=128 ctermbg=235
+""x " highlight MarkWord12  ctermfg=7 ctermbg=235
+""x " highlight MarkWord13  ctermfg=75 ctermbg=235
+""x " highlight MarkWord14  ctermfg=2 ctermbg=235
+""x " highlight MarkWord15  ctermfg=187 ctermbg=235
+""x " highlight MarkWord16  ctermfg=186 ctermbg=235
+""x " highlight MarkWord17  ctermfg=192 ctermbg=235
+""x "
+""x "
+""x highlight MarkWord1 ctermfg=3 ctermbg=234
+""x highlight MarkWord2 ctermfg=154 ctermbg=234
+""x highlight MarkWord3 ctermfg=148 ctermbg=234
+""x highlight MarkWord4 ctermfg=142 ctermbg=234
+""x highlight MarkWord5 ctermfg=94 ctermbg=234
+""x highlight MarkWord6 ctermfg=9 ctermbg=234
+""x highlight MarkWord7 ctermfg=105 ctermbg=234
+""x highlight MarkWord8 ctermfg=13 ctermbg=234
+""x highlight MarkWord9 ctermfg=99 ctermbg=234
+""x highlight MarkWord10  ctermfg=6 ctermbg=234
+""x highlight MarkWord11  ctermfg=128 ctermbg=234
+""x highlight MarkWord12  ctermfg=7 ctermbg=234
+""x highlight MarkWord13  ctermfg=75 ctermbg=234
+""x highlight MarkWord14  ctermfg=2 ctermbg=234
+""x highlight MarkWord15  ctermfg=187 ctermbg=234
+""x highlight MarkWord16  ctermfg=186 ctermbg=234
+""x highlight MarkWord17  ctermfg=192 ctermbg=234
+""x 
+""x " highlight MarkWord1 ctermfg=3 ctermbg=Black
+""x " highlight MarkWord2 ctermfg=154 ctermbg=Black
+""x " highlight MarkWord3 ctermfg=148 ctermbg=Black
+""x " highlight MarkWord4 ctermfg=142 ctermbg=Black
+""x " highlight MarkWord5 ctermfg=94 ctermbg=Black
+""x " highlight MarkWord6 ctermfg=9 ctermbg=Black
+""x " highlight MarkWord7 ctermfg=105 ctermbg=Black
+""x " highlight MarkWord8 ctermfg=13 ctermbg=Black
+""x " highlight MarkWord9 ctermfg=99 ctermbg=Black
+""x " highlight MarkWord10  ctermfg=6 ctermbg=Black
+""x " highlight MarkWord11  ctermfg=128 ctermbg=Black
+""x " highlight MarkWord12  ctermfg=7 ctermbg=Black
+""x " highlight MarkWord13  ctermfg=75 ctermbg=Black
+""x " highlight MarkWord14  ctermfg=2 ctermbg=Black
+""x " highlight MarkWord15  ctermfg=187 ctermbg=Black
+""x " highlight MarkWord16  ctermfg=186 ctermbg=Black
+""x " highlight MarkWord17  ctermfg=192 ctermbg=Black
+>>>>>>> 38c576597f24e48c3aa5d6f955afe4a6b1d2af49
 
 " endfunction
 
@@ -1294,9 +1467,16 @@ highlight MarkWord17  ctermfg=192 ctermbg=234
 " :syntax match col1 /Apple/
 " :highlight col2 ctermbg=Green ctermfg=Black
 " :syntax match col2 /Mango/
-" :highlight col3 ctermbg=Blue ctermfg=White
-" :syntax match col3 /Grape/
+" /\%81v.*/
 "
-:hi Comment ctermfg=darkgrey
-:hi Comment ctermfg=darkgreen
+" :hi Comment ctermfg=darkgrey
+" :hi Comment ctermfg=darkgreen
+:hi Comment ctermfg=28
 :hi LineNr ctermfg=darkgrey
+
+" highlight extensionPDF ctermbg=red ctermfg=white guibg=#592929
+" syn match extensionPDF /txet/
+" :hi TabLineFill ctermfg=LightGreen ctermbg=DarkGreen
+:hi TabLine ctermfg=grey ctermbg=darkgrey
+:hi TabLineSel ctermfg=Blue ctermbg=120
+:hi Title ctermfg=LightBlue ctermbg=Magenta
