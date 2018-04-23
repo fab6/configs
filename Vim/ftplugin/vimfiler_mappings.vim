@@ -48,8 +48,7 @@ nmap <silent><buffer>,x :call jobstart(['xterm'],{'detach':1}) <CR>
 " <<<<<<< HEAD
 "nmap <silent><buffer>,X :call jobstart('xterm -e /share/Tools/Editing/NeoVim/nvim.appimage -c ":VimFilerBufferDir -status -sort-type=Time"' ,{'detach':1}) <CR>
 nmap <silent><buffer>,X :call jobstart('xterm -e /usr/bin/nvim -c ":VimFilerBufferDir -status -sort-type=Time"' ,{'detach':1}) <CR>
-=======
-nmap <silent><buffer>,X :call jobstart('xterm -e /share/Tools/Editing/NeoVim/nvim.appimage -c ":VimFilerBufferDir -status -sort-type=Time"' ,{'detach':1}) <CR>
+"nmap <silent><buffer>,X :call jobstart('xterm -e /share/Tools/Editing/NeoVim/nvim.appimage -c ":VimFilerBufferDir -status -sort-type=Time"' ,{'detach':1}) <CR>
 nmap <silent><buffer>X :VimFilerTab -status -sort-type=Time<CR>
 " >>>>>>> 34075d7da7db166e36fdcd38bf09c9308deff69c
 

@@ -40,7 +40,9 @@ set runtimepath+=/home/fbraenns/.nvim/
 call plug#begin('/home/fbraenns/.nvim/vimplug')
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
-Plug 'Shougo/deol.nvim', { 'rev': 'a1b5108fd' }
+Plug 'Shougo/deol.nvim'
+", 
+"{ 'rev': 'a1b5108fd' }
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-jedi'
 " Plug 'Shougo/tabpagebuffer.vim'
@@ -79,7 +81,8 @@ Plug 'itchyny/vim-parenmatch'
 Plug 'jiangmiao/auto-pairs'
 Plug 'itchyny/vim-cursorword'
 " Plug 'pboettch/vim-cmake-syntax'
-" Plug 'itchyny/lightline.vim'
+"Plug 'itchyny/lightline.vim'
+"Plug 'rafi/vim-tinyline'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-session'
 " Window manager for handling multiple splits
@@ -100,7 +103,7 @@ Plug 'rudes/vim-java', { 'for': 'java' }
 Plug 'plasticboy/vim-markdown'
 " python
 " Plug 'python-mode/python-mode' , { 'for': 'python' }
-"Plug 'vyzyv/vimpyter'
+Plug 'vyzyv/vimpyter'
 "Plug 'fisadev/vim-isort'
 " Plug 'w0rp/ale'
 "Plug 'bps/vim-textobj-python'
@@ -421,6 +424,45 @@ endif
 "status2 hi User1 cterm=NONE ctermfg=red   ctermbg=white guifg=red   guibg=white
 "status2 hi User2 cterm=NONE ctermfg=green ctermbg=white guifg=green guibg=white
 "status2 hi User3 cterm=NONE ctermfg=blue  ctermbg=white guifg=blue  guibg=white
+"
+set statusline=
+set statusline+=%7*\[%n]                                  "buffernr
+set statusline+=%1*\ %<%F\                                "File+path
+set statusline+=%2*\ %y\                                  "FileType
+set statusline+=%3*\ %{''.(&fenc!=''?&fenc:&enc).''}      "Encoding
+set statusline+=%3*\ %{(&bomb?\",BOM\":\"\")}\            "Encoding2
+set statusline+=%4*\ %{&ff}\                              "FileFormat (dos/unix..) 
+set statusline+=%5*\ %{&spelllang}\%{HighlightSearch()}\  "Spellanguage & Highlight on?
+set statusline+=%8*\ %=\ row:%l/%L\ (%03p%%)\             "Rownumber/total (%)
+set statusline+=%9*\ col:%03c\                            "Colnr
+set statusline+=%0*\ \ %m%r%w\ %P\ \                      "Modified? Readonly? Top/bot.
+function! HighlightSearch()
+  if &hls
+    return 'H'
+  else
+    return ''
+  endif
+endfunction
+":hi StatusLineNC   term=reverse cterm=reverse ctermfg=9 gui=bold guifg=black guibg=green 
+:hi StatusLineNC   term=reverse cterm=reverse 
+"hi User1 ctermfg=#ffdad8  ctermbg=#880c0e
+"hi User2 ctermfg=#000000  ctermbg=#F4905C
+"hi User3 ctermfg=#292b00  ctermbg=#f4f597
+"hi User4 ctermfg=#112605  ctermbg=#aefe7B
+"hi User5 ctermfg=#051d00  ctermbg=#7dcc7d
+"hi User7 ctermfg=#ffffff  ctermbg=#880c0e cterm=bold
+"hi User8 ctermfg=#ffffff  ctermbg=#5b7fbb
+"hi User9 ctermfg=#ffffff  ctermbg=#810085
+"hi User0 ctermfg=#ffffff  ctermbg=#094afe
+hi User1 ctermbg=17
+hi User2 ctermbg=28
+hi User3 ctermbg=38
+hi User4 ctermbg=48
+hi User5 ctermbg=118
+hi User7 ctermbg=128
+hi User8 ctermbg=138
+hi User9 ctermbg=147
+hi User9 ctermbg=150
 
 
 "let g:lightline = {
@@ -1038,7 +1080,7 @@ map <F9> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<
 " }
 "
 "
-" :hi x187_LightYellow3 ctermfg=187 guifg=#d7d7af "rgb=215,215,175
+" :hi x187_LightYellow3 ctermfg=187 guifg=#d7d7af ctermfg=/usr/bin/env: ‘php’: No such file or directory "rgb=215,215,175
 " let s:ale_running = 0
 " let l:stl .= '%{s:ale_running ? "[linting]" : ""}'
 " augroup ALEProgress
@@ -1232,9 +1274,9 @@ highlight Normal ctermbg=234
 
 "..................................................................................................
 " Highlighting
-"highlight Pmenu ctermbg=8 guibg=#606060
-:highlight PmenuSel ctermbg=1 guifg=#dddd00 guibg=#1f82cd
-"highlight PmenuSbar ctermbg=0 guibg=#d6d6d6
+"highlight Pmenu ctermbg=8 guibg=#606060 ctermbg=/usr/bin/env: ‘php’: No such file or directory
+":highlight PmenuSel ctermbg=1 guifg=#dddd00 ctermfg=/usr/bin/env: ‘php’: No such file or directory guibg=#1f82cd
+"highlight PmenuSbar ctermbg=0 guibg=#d6d6d6 ctermbg=/usr/bin/env: ‘php’: No such file or directory
 "
 :highlight Cursor ctermfg=red guifg=red
 :highlight vimFilerMarkedFile ctermbg=12
@@ -1265,97 +1307,97 @@ nmap <leader>Q :wqa<CR>
 "     autocmd FileType modelica :MarkClear
 " augroup END
 "
-<<<<<<< HEAD
-silent 2Mark /.*\.igs/
-silent 2Mark /.*\.iges/
-silent 3Mark /.*\.stp/
-silent 3Mark /.*\.step/
-silent 4Mark /.*\.stl/
-silent 3Mark /.*\.mo/
-silent 3Mark /.*\.fmu/
-silent 5Mark /.*\.xls/
-silent 5Mark /.*\.xlsx/
-silent 5Mark /.*\.ods/
-
-
-silent 9Mark /.*\.doc/
-silent 9Mark /.*\.docx/
-
-silent 9Mark /.*\.sim/
-silent 10Mark /.*\.csv/
-silent 11Mark /.*\.dat/
-silent 12Mark /.*\.out/
-silent 13Mark /.*\.in/
-
-silent 7Mark /.*\.fds/
-silent 8Mark /.*\.smv/
-silent 6Mark /.*\.pdf/
-silent 6Mark /.*\.ppt/
-silent 6Mark /.*\.pptx/
-silent 14Mark /.*\.png/
-silent 14Mark /.*\.jpg/
-silent 14Mark /.*\.jpeg/
-silent 15Mark /.*\.log/
-silent 16Mark /.*\.txt/
-silent 17Mark /.*\.sh/
-silent 17Mark /.*\.ino/
-
-
-" highlight MarkWord1 ctermfg=3 ctermbg=235
-" highlight MarkWord2 ctermfg=154 ctermbg=235
-" highlight MarkWord3 ctermfg=148 ctermbg=235
-" highlight MarkWord4 ctermfg=142 ctermbg=235
-" highlight MarkWord5 ctermfg=94 ctermbg=235
-" highlight MarkWord6 ctermfg=9 ctermbg=235
-" highlight MarkWord7 ctermfg=105 ctermbg=235
-" highlight MarkWord8 ctermfg=13 ctermbg=235
-" highlight MarkWord9 ctermfg=99 ctermbg=235
-" highlight MarkWord10  ctermfg=6 ctermbg=235
-" highlight MarkWord11  ctermfg=128 ctermbg=235
-" highlight MarkWord12  ctermfg=7 ctermbg=235
-" highlight MarkWord13  ctermfg=75 ctermbg=235
-" highlight MarkWord14  ctermfg=2 ctermbg=235
-" highlight MarkWord15  ctermfg=187 ctermbg=235
-" highlight MarkWord16  ctermfg=186 ctermbg=235
-" highlight MarkWord17  ctermfg=192 ctermbg=235
+"<<<<<<< HEAD
+"silent 2Mark /.*\.igs/
+"silent 2Mark /.*\.iges/
+"silent 3Mark /.*\.stp/
+"silent 3Mark /.*\.step/
+"silent 4Mark /.*\.stl/
+"silent 3Mark /.*\.mo/
+"silent 3Mark /.*\.fmu/
+"silent 5Mark /.*\.xls/
+"silent 5Mark /.*\.xlsx/
+"silent 5Mark /.*\.ods/
 "
 "
-highlight MarkWord1 ctermfg=3 ctermbg=234
-highlight MarkWord2 ctermfg=154 ctermbg=234
-highlight MarkWord3 ctermfg=148 ctermbg=234
-highlight MarkWord4 ctermfg=142 ctermbg=234
-highlight MarkWord5 ctermfg=94 ctermbg=234
-highlight MarkWord6 ctermfg=9 ctermbg=234
-highlight MarkWord7 ctermfg=105 ctermbg=234
-highlight MarkWord8 ctermfg=13 ctermbg=234
-highlight MarkWord9 ctermfg=99 ctermbg=234
-highlight MarkWord10  ctermfg=6 ctermbg=234
-highlight MarkWord11  ctermfg=128 ctermbg=234
-highlight MarkWord12  ctermfg=7 ctermbg=234
-highlight MarkWord13  ctermfg=75 ctermbg=234
-highlight MarkWord14  ctermfg=2 ctermbg=234
-highlight MarkWord15  ctermfg=187 ctermbg=234
-highlight MarkWord16  ctermfg=186 ctermbg=234
-highlight MarkWord17  ctermfg=192 ctermbg=234
-
-" highlight MarkWord1 ctermfg=3 ctermbg=Black
-" highlight MarkWord2 ctermfg=154 ctermbg=Black
-" highlight MarkWord3 ctermfg=148 ctermbg=Black
-" highlight MarkWord4 ctermfg=142 ctermbg=Black
-" highlight MarkWord5 ctermfg=94 ctermbg=Black
-" highlight MarkWord6 ctermfg=9 ctermbg=Black
-" highlight MarkWord7 ctermfg=105 ctermbg=Black
-" highlight MarkWord8 ctermfg=13 ctermbg=Black
-" highlight MarkWord9 ctermfg=99 ctermbg=Black
-" highlight MarkWord10  ctermfg=6 ctermbg=Black
-" highlight MarkWord11  ctermfg=128 ctermbg=Black
-" highlight MarkWord12  ctermfg=7 ctermbg=Black
-" highlight MarkWord13  ctermfg=75 ctermbg=Black
-" highlight MarkWord14  ctermfg=2 ctermbg=Black
-" highlight MarkWord15  ctermfg=187 ctermbg=Black
-" highlight MarkWord16  ctermfg=186 ctermbg=Black
-" highlight MarkWord17  ctermfg=192 ctermbg=Black
-=======
+"silent 9Mark /.*\.doc/
+"silent 9Mark /.*\.docx/
+"
+"silent 9Mark /.*\.sim/
+"silent 10Mark /.*\.csv/
+"silent 11Mark /.*\.dat/
+"silent 12Mark /.*\.out/
+"silent 13Mark /.*\.in/
+"
+"silent 7Mark /.*\.fds/
+"silent 8Mark /.*\.smv/
+"silent 6Mark /.*\.pdf/
+"silent 6Mark /.*\.ppt/
+"silent 6Mark /.*\.pptx/
+"silent 14Mark /.*\.png/
+"silent 14Mark /.*\.jpg/
+"silent 14Mark /.*\.jpeg/
+"silent 15Mark /.*\.log/
+"silent 16Mark /.*\.txt/
+"silent 17Mark /.*\.sh/
+"silent 17Mark /.*\.ino/
+"
+"
+"" highlight MarkWord1 ctermfg=3 ctermbg=235
+"" highlight MarkWord2 ctermfg=154 ctermbg=235
+"" highlight MarkWord3 ctermfg=148 ctermbg=235
+"" highlight MarkWord4 ctermfg=142 ctermbg=235
+"" highlight MarkWord5 ctermfg=94 ctermbg=235
+"" highlight MarkWord6 ctermfg=9 ctermbg=235
+"" highlight MarkWord7 ctermfg=105 ctermbg=235
+"" highlight MarkWord8 ctermfg=13 ctermbg=235
+"" highlight MarkWord9 ctermfg=99 ctermbg=235
+"" highlight MarkWord10  ctermfg=6 ctermbg=235
+"" highlight MarkWord11  ctermfg=128 ctermbg=235
+"" highlight MarkWord12  ctermfg=7 ctermbg=235
+"" highlight MarkWord13  ctermfg=75 ctermbg=235
+"" highlight MarkWord14  ctermfg=2 ctermbg=235
+"" highlight MarkWord15  ctermfg=187 ctermbg=235
+"" highlight MarkWord16  ctermfg=186 ctermbg=235
+"" highlight MarkWord17  ctermfg=192 ctermbg=235
+""
+""
+"highlight MarkWord1 ctermfg=3 ctermbg=234
+"highlight MarkWord2 ctermfg=154 ctermbg=234
+"highlight MarkWord3 ctermfg=148 ctermbg=234
+"highlight MarkWord4 ctermfg=142 ctermbg=234
+"highlight MarkWord5 ctermfg=94 ctermbg=234
+"highlight MarkWord6 ctermfg=9 ctermbg=234
+"highlight MarkWord7 ctermfg=105 ctermbg=234
+"highlight MarkWord8 ctermfg=13 ctermbg=234
+"highlight MarkWord9 ctermfg=99 ctermbg=234
+"highlight MarkWord10  ctermfg=6 ctermbg=234
+"highlight MarkWord11  ctermfg=128 ctermbg=234
+"highlight MarkWord12  ctermfg=7 ctermbg=234
+"highlight MarkWord13  ctermfg=75 ctermbg=234
+"highlight MarkWord14  ctermfg=2 ctermbg=234
+"highlight MarkWord15  ctermfg=187 ctermbg=234
+"highlight MarkWord16  ctermfg=186 ctermbg=234
+"highlight MarkWord17  ctermfg=192 ctermbg=234
+"
+"" highlight MarkWord1 ctermfg=3 ctermbg=Black
+"" highlight MarkWord2 ctermfg=154 ctermbg=Black
+"" highlight MarkWord3 ctermfg=148 ctermbg=Black
+"" highlight MarkWord4 ctermfg=142 ctermbg=Black
+"" highlight MarkWord5 ctermfg=94 ctermbg=Black
+"" highlight MarkWord6 ctermfg=9 ctermbg=Black
+"" highlight MarkWord7 ctermfg=105 ctermbg=Black
+"" highlight MarkWord8 ctermfg=13 ctermbg=Black
+"" highlight MarkWord9 ctermfg=99 ctermbg=Black
+"" highlight MarkWord10  ctermfg=6 ctermbg=Black
+"" highlight MarkWord11  ctermfg=128 ctermbg=Black
+"" highlight MarkWord12  ctermfg=7 ctermbg=Black
+"" highlight MarkWord13  ctermfg=75 ctermbg=Black
+"" highlight MarkWord14  ctermfg=2 ctermbg=Black
+"" highlight MarkWord15  ctermfg=187 ctermbg=Black
+"" highlight MarkWord16  ctermfg=186 ctermbg=Black
+"" highlight MarkWord17  ctermfg=192 ctermbg=Black
+"=======
 ""x "--------------------------------------------------------------------------------------------------
 ""x let g:mwDefaultHighlightingPalette = 'maximum'
 ""x " function! Marking()
@@ -1447,7 +1489,7 @@ highlight MarkWord17  ctermfg=192 ctermbg=234
 ""x " highlight MarkWord15  ctermfg=187 ctermbg=Black
 ""x " highlight MarkWord16  ctermfg=186 ctermbg=Black
 ""x " highlight MarkWord17  ctermfg=192 ctermbg=Black
->>>>>>> 38c576597f24e48c3aa5d6f955afe4a6b1d2af49
+" >>>>>>> 38c576597f24e48c3aa5d6f955afe4a6b1d2af49
 
 " endfunction
 
@@ -1474,7 +1516,7 @@ highlight MarkWord17  ctermfg=192 ctermbg=234
 :hi Comment ctermfg=28
 :hi LineNr ctermfg=darkgrey
 
-" highlight extensionPDF ctermbg=red ctermfg=white guibg=#592929
+" highlight extensionPDF ctermbg=red ctermfg=white guibg=#592929 ctermbg=/usr/bin/env: ‘php’: No such file or directory
 " syn match extensionPDF /txet/
 " :hi TabLineFill ctermfg=LightGreen ctermbg=DarkGreen
 :hi TabLine ctermfg=grey ctermbg=darkgrey
