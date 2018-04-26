@@ -81,15 +81,16 @@ Plug 'itchyny/vim-parenmatch'
 Plug 'jiangmiao/auto-pairs'
 Plug 'itchyny/vim-cursorword'
 " Plug 'pboettch/vim-cmake-syntax'
-"Plug 'itchyny/lightline.vim'
+Plug 'itchyny/lightline.vim'
 "Plug 'rafi/vim-tinyline'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-session'
+" Plug 'vim-scripts/ShowMarks'
 " Window manager for handling multiple splits
 " Plug 'mattboehm/vim-accordion'
 " Plug 'osyo-manga/vim-anzu'
 " Plug 'rafi/awesome-vim-colorschemes'
-"Plug 'morhetz/gruvbox'
+Plug 'morhetz/gruvbox'
 " Plug 'haya14busa/incsearch.vim'
 Plug 'haya14busa/incsearch-fuzzy.vim'
 " Plug 'dhruvasagar/vim-table-mode'
@@ -121,7 +122,7 @@ Plug 'sudar/vim-arduino-syntax', { 'for': 'arduino' }
 " Terminal:
 " Plug 'brettanomyces/nvim-terminus'
 " Plug 'mklabs/split-term.vim'
-Plug 'kassio/neoterm'
+" Plug 'kassio/neoterm' --> deol
 "--------------------------------------------------------------------------------------------------
 "ClientServer:
 " Plug 'AndrewRadev/vimrunner'
@@ -132,6 +133,7 @@ Plug 'kassio/neoterm'
 " Plug 'skywind3000/asyncrun.vim' "xterm does not stay open
 "Plug 'vim-scripts/indentpython.vim'
 " Plug 'tpope/vim-fugitive'
+"Plug 'gcmt/taboo.vim'
 " Plug 'jreybert/vimagit'
 " Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 " Plug 'junegunn/fzf.vim'
@@ -245,6 +247,7 @@ autocmd BufReadPost *
             \   exe "normal g`\"" |
             \ endif
 augroup filetype
+    "autocmd BufEnter set filetype=c
     autocmd BufNewFile,BufRead *Dict set filetype=c
     autocmd BufNewFile,BufRead *.mo set filetype=modelica
     autocmd BufNewFile,BufRead .spacemacs set filetype=lisp
@@ -425,61 +428,61 @@ endif
 "status2 hi User2 cterm=NONE ctermfg=green ctermbg=white guifg=green guibg=white
 "status2 hi User3 cterm=NONE ctermfg=blue  ctermbg=white guifg=blue  guibg=white
 "
-set statusline=
-set statusline+=%7*\[%n]                                  "buffernr
-set statusline+=%1*\ %<%F\                                "File+path
-set statusline+=%2*\ %y\                                  "FileType
-set statusline+=%3*\ %{''.(&fenc!=''?&fenc:&enc).''}      "Encoding
-set statusline+=%3*\ %{(&bomb?\",BOM\":\"\")}\            "Encoding2
-set statusline+=%4*\ %{&ff}\                              "FileFormat (dos/unix..) 
-set statusline+=%5*\ %{&spelllang}\%{HighlightSearch()}\  "Spellanguage & Highlight on?
-set statusline+=%8*\ %=\ row:%l/%L\ (%03p%%)\             "Rownumber/total (%)
-set statusline+=%9*\ col:%03c\                            "Colnr
-set statusline+=%0*\ \ %m%r%w\ %P\ \                      "Modified? Readonly? Top/bot.
-function! HighlightSearch()
-  if &hls
-    return 'H'
-  else
-    return ''
-  endif
+"3 set statusline=
+"3 set statusline+=%7*\[%n]                                  "buffernr
+"3 set statusline+=%1*\ %<%F\                                "File+path
+"3 set statusline+=%2*\ %y\                                  "FileType
+"3 set statusline+=%3*\ %{''.(&fenc!=''?&fenc:&enc).''}      "Encoding
+"3 set statusline+=%3*\ %{(&bomb?\",BOM\":\"\")}\            "Encoding2
+"3 set statusline+=%4*\ %{&ff}\                              "FileFormat (dos/unix..) 
+"3 set statusline+=%5*\ %{&spelllang}\%{HighlightSearch()}\  "Spellanguage & Highlight on?
+"3 set statusline+=%8*\ %=\ row:%l/%L\ (%03p%%)\             "Rownumber/total (%)
+"3 set statusline+=%9*\ col:%03c\                            "Colnr
+"3 set statusline+=%0*\ \ %m%r%w\ %P\ \                      "Modified? Readonly? Top/bot.
+"3 function! HighlightSearch()
+"3   if &hls
+"3     return 'H'
+"3   else
+"3     return ''
+"3   endif
+"3 endfunction
+"3 "":hi StatusLineNC   term=reverse cterm=reverse ctermfg=9 gui=bold guifg=black guibg=green 
+"3 :hi StatusLineNC   term=reverse cterm=reverse 
+"3 "hi User1 ctermfg=#ffdad8  ctermbg=#880c0e
+"3 "hi User2 ctermfg=#000000  ctermbg=#F4905C
+"3 "hi User3 ctermfg=#292b00  ctermbg=#f4f597
+"3 "hi User4 ctermfg=#112605  ctermbg=#aefe7B
+"3 "hi User5 ctermfg=#051d00  ctermbg=#7dcc7d
+"3 "hi User7 ctermfg=#ffffff  ctermbg=#880c0e cterm=bold
+"3 "hi User8 ctermfg=#ffffff  ctermbg=#5b7fbb
+"3 "hi User9 ctermfg=#ffffff  ctermbg=#810085
+"3 "hi User0 ctermfg=#ffffff  ctermbg=#094afe
+"3 hi User1 ctermbg=17
+"3 hi User2 ctermbg=28
+"3 hi User3 ctermbg=38
+"3 hi User4 ctermbg=48
+"3 hi User5 ctermbg=118
+"3 hi User7 ctermbg=128
+"3 hi User8 ctermbg=138
+"3 hi User9 ctermbg=147
+"3 hi User9 ctermbg=150
+
+
+let g:lightline = {
+            \ 'colorscheme': 'Dracula',
+            \ 'active': {'left': [['mode','paste'],['readonly','filename','modified']]},
+            \ 'component_function': { 'filename': 'LightLineFilename' }
+            \ }
+function! LightLineFilename()
+    return expand('%')
 endfunction
-":hi StatusLineNC   term=reverse cterm=reverse ctermfg=9 gui=bold guifg=black guibg=green 
-:hi StatusLineNC   term=reverse cterm=reverse 
-"hi User1 ctermfg=#ffdad8  ctermbg=#880c0e
-"hi User2 ctermfg=#000000  ctermbg=#F4905C
-"hi User3 ctermfg=#292b00  ctermbg=#f4f597
-"hi User4 ctermfg=#112605  ctermbg=#aefe7B
-"hi User5 ctermfg=#051d00  ctermbg=#7dcc7d
-"hi User7 ctermfg=#ffffff  ctermbg=#880c0e cterm=bold
-"hi User8 ctermfg=#ffffff  ctermbg=#5b7fbb
-"hi User9 ctermfg=#ffffff  ctermbg=#810085
-"hi User0 ctermfg=#ffffff  ctermbg=#094afe
-hi User1 ctermbg=17
-hi User2 ctermbg=28
-hi User3 ctermbg=38
-hi User4 ctermbg=48
-hi User5 ctermbg=118
-hi User7 ctermbg=128
-hi User8 ctermbg=138
-hi User9 ctermbg=147
-hi User9 ctermbg=150
-
-
-"let g:lightline = {
-"            \ 'colorscheme': 'Dracula',
-"            \ 'active': {'left': [['mode','paste'],['readonly','filename','modified']]},
-"            \ 'component_function': { 'filename': 'LightLineFilename' }
-"            \ }
-"function! LightLineFilename()
-"    return expand('%')
-"endfunction
 "
-" Showmarks
-:hi ShowMarksHLl ctermfg=red "For marks a-z
-:hi ShowMarksHLu ctermfg=yellow "For marks A-Z
-:hi ShowMarksHLo ctermfg=magenta "For all other marks
-:hi ShowMarksHLm ctermfg=white "For multiple marks on the same line.
-:hi SignColumn ctermbg=black
+"  Showmarks
+":hi ShowMarksHLl ctermfg=red "For marks a-z
+":hi ShowMarksHLu ctermfg=yellow "For marks A-Z
+":hi ShowMarksHLo ctermfg=magenta "For all other marks
+":hi ShowMarksHLm ctermfg=white "For multiple marks on the same line.
+":hi SignColumn ctermbg=black
 
 "--------------------------------------------------------------------------------------------------
 " BACKUP
@@ -917,7 +920,8 @@ let g:indentLine_color_term = 239
 nnoremap <leader>jf :<C-u>VimFilerExplorer -sort-type=Time -status -split -simple -parent -winwidth=35 -no-quit -find<CR>
 " nnoremap <leader>ff :VimFilerExplorer -status -find -winwidth=80 -sort-type=Time <CR>
 
-map <silent><leader>d :VimFilerBufferDir -status -sort-type=Time<CR>
+map <silent><leader>d :VimFilerCreate -status -sort-type=Time<CR>
+"map <silent><leader>d :VimFilerBufferDir -status -sort-type=Time<CR>
 map <silent><leader>D :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=29 -toggle -no-quit -explorer<CR><CR>
 " map <space>E :VimFilerBufferDir -status -split -simple -winwidth=30 -toggle -no-quit<CR><CR>
 nnoremap <F2> :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=30 -toggle -no-quit<CR>
@@ -934,7 +938,20 @@ function! s:vimfiler_buffer_au()
     setlocal colorcolumn=
     :highlight CursorLine ctermbg=65
 endfunction
-autocmd FileType vimfiler call s:vimfiler_buffer_au()
+" autocmd FileType vimfiler call s:vimfiler_buffer_au()
+autocmd FileType vimfiler call mark#ToggleOn()
+"autocmd FileType python :call mark#ToggleOff()
+"x autocmd BufEnter * if &ft == 'python' | :call mark#ToggleOff()<CR>| endif
+"x autocmd BufEnter * if &ft == 'bash' | :call mark#ToggleOff()<CR>| endif
+"x autocmd BufEnter * if &ft == 'dakota' | :call mark#ToggleOff()<CR>| endif
+"x autocmd BufEnter * if &ft == 'fds' | :call mark#ToggleOff()<CR>| endif
+"x autocmd BufEnter * if &ft == 'c' | :call mark#ToggleOff()<CR>| endif
+"x autocmd BufEnter * if &ft == 'modelica' | :call mark#ToggleOff()<CR>| endif
+"x autocmd BufEnter * if &ft == 'arduino' | :call mark#ToggleOff()<CR>| endif
+"x autocmd BufEnter * if &ft == 'lisp' | :call mark#ToggleOff()<CR>| endif
+"x autocmd BufEnter * if &ft == 'octave' | :call mark#ToggleOff()<CR>| endif
+" autocmd BufEnter * if &ft ==# 'python' | :call mark#ToggleOff()<CR> | endif
+
 
 
 let g:vimfiler_file_icon = '-'
@@ -996,21 +1013,24 @@ let g:vimfiler_execute_file_list={
 "To map <Esc> to exit terminal-mode:
 :tnoremap <Esc> <C-\><C-n>
 
-"To simulate |i_CTRL-R| in terminal-mode:
-:tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
-
-" Quickly create a new terminal in a vertical split
-tnoremap <Leader>% <C-\><C-n>:vsp<CR><C-w><C-w>:term<CR>
-noremap <Leader>% :vsp<CR><C-w><C-w>:term<CR>
-noremap <Leader>^ :tabnew<CR>:term<CR>
-" nmap <leader>T :vs<CR>:terminal<CR>
-
-"kassio/neoterm
-nnoremap <F3> :Ttoggle<cr><C-w><C-w>A
-inoremap <F3> <esc>:Ttoggle<cr><C-w><C-w>A
-tnoremap <F3> <C-\><C-n>:Ttoggle<cr>
-" tnoremap <esc> <C-\><C-n>
-tnoremap <C-w><C-w> <C-\><C-n><C-w><C-w>
+"""To simulate |i_CTRL-R| in terminal-mode:
+"":tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
+""
+""" Quickly create a new terminal in a vertical split
+""tnoremap <Leader>% <C-\><C-n>:vsp<CR><C-w><C-w>:term<CR>
+""noremap <Leader>% :vsp<CR><C-w><C-w>:term<CR>
+""noremap <Leader>^ :tabnew<CR>:term<CR>
+""" nmap <leader>T :vs<CR>:terminal<CR>
+""
+"""kassio/neoterm
+""nnoremap <F3> :Ttoggle<cr><C-w><C-w>A
+nnoremap <F3> :Deol -split -start-insert<CR><C-w><C-w>
+inoremap <F3> :Deol -split -start-insert<CR><C-w><C-w>
+tnoremap <F3> <C-\><C-n>:q<CR><C-w><C-w>
+""inoremap <F3> <esc>:Ttoggle<cr><C-w><C-w>A
+""tnoremap <F3> <C-\><C-n>:Ttoggle<cr>
+""" tnoremap <esc> <C-\><C-n>
+""tnoremap <C-w><C-w> <C-\><C-n><C-w><C-w>
 
 
 
@@ -1169,7 +1189,7 @@ nnoremap <leader>ga :Gadd
 "==================================================================================================
 " FDS
 "
-" autocmd BufNewFile,BufRead *.fds set filetype=fds
+autocmd BufNewFile,BufRead *.fds set filetype=fds
 autocmd BufNewFile,BufRead *.fds5 set syntax=fds
 autocmd BufNewFile,BufRead *.fds set syntax=fds
 autocmd BufNewFile,BufRead *.smv set syntax=fds
@@ -1242,60 +1262,13 @@ function German_postfix()
 " ;| sz  -> ß
 endfunction
 
-"==================================================================================================
-" COLORSCHEME
 
-" set background=dark
-" colorscheme gruvbox
-" set background=dark
-
- " Plug 'morhetz/gruvbox'
- " colorscheme gruvbox
-"let g:gruvbox_contrast_dark = 'hard'
-" let g:gruvbox_hls_cursor = 'orange'
-highlight Normal ctermbg=234
-"ctermfg=white
-" :hi comment ctermfg=darkgreen
-" :highlight LineNr ctermfg=darkgrey
-" :highlight VertSplit ctermfg=darkgray ctermfg=black
-""..................................................................................................
-:highlight ParenMatch ctermbg=blue
-" :hi comment ctermfg=242
-" :highlight LineNr ctermfg=darkgrey
-" :highlight VertSplit ctermfg=darkgray ctermfg=black
-
-"..................................................................................................
-" Showmarks
-:hi ShowMarksHLl ctermfg=red "For marks a-z
-:hi ShowMarksHLu ctermfg=yellow "For marks A-Z
-:hi ShowMarksHLo ctermfg=magenta "For all other marks
-:hi ShowMarksHLm ctermfg=white "For multiple marks on the same line.
-:hi SignColumn ctermbg=black
-
-"..................................................................................................
-" Highlighting
-"highlight Pmenu ctermbg=8 guibg=#606060 ctermbg=/usr/bin/env: ‘php’: No such file or directory
-":highlight PmenuSel ctermbg=1 guifg=#dddd00 ctermfg=/usr/bin/env: ‘php’: No such file or directory guibg=#1f82cd
-"highlight PmenuSbar ctermbg=0 guibg=#d6d6d6 ctermbg=/usr/bin/env: ‘php’: No such file or directory
-"
-:highlight Cursor ctermfg=red guifg=red
-:highlight vimFilerMarkedFile ctermbg=12
-
-:highlight TermCursor ctermfg=red guifg=red
-
-" :highlight ALEWarning ctermbg=65
-" :highlight ALEWarningSign ctermbg=65
-" :highlight ALEError ctermbg=92
-" :highlight ALEErrorSign ctermbg=92
 
 imap jq <ESC>:wq<CR>
 imap jw <ESC>:w<CR>
 imap jk <ESC>
 nmap <leader>q :q!a<CR>
 nmap <leader>Q :wqa<CR>
-:hi LightLineMiddle_active ctermbg=70
-":highlight Search ctermbg=gray ctermfg=black
-:hi Search ctermfg=12
 
 
 "..................................................................................................
@@ -1307,191 +1280,43 @@ nmap <leader>Q :wqa<CR>
 "     autocmd FileType modelica :MarkClear
 " augroup END
 "
-"<<<<<<< HEAD
-"silent 2Mark /.*\.igs/
-"silent 2Mark /.*\.iges/
-"silent 3Mark /.*\.stp/
-"silent 3Mark /.*\.step/
-"silent 4Mark /.*\.stl/
-"silent 3Mark /.*\.mo/
-"silent 3Mark /.*\.fmu/
-"silent 5Mark /.*\.xls/
-"silent 5Mark /.*\.xlsx/
-"silent 5Mark /.*\.ods/
+let g:mwDefaultHighlightingPalette = 'maximum'
+" function! Marking()
+runtime plugin/mark.vim
+silent MarkClear
 "
-"
-"silent 9Mark /.*\.doc/
-"silent 9Mark /.*\.docx/
-"
-"silent 9Mark /.*\.sim/
-"silent 10Mark /.*\.csv/
-"silent 11Mark /.*\.dat/
-"silent 12Mark /.*\.out/
-"silent 13Mark /.*\.in/
-"
-"silent 7Mark /.*\.fds/
-"silent 8Mark /.*\.smv/
-"silent 6Mark /.*\.pdf/
-"silent 6Mark /.*\.ppt/
-"silent 6Mark /.*\.pptx/
-"silent 14Mark /.*\.png/
-"silent 14Mark /.*\.jpg/
-"silent 14Mark /.*\.jpeg/
-"silent 15Mark /.*\.log/
-"silent 16Mark /.*\.txt/
-"silent 17Mark /.*\.sh/
-"silent 17Mark /.*\.ino/
-"
-"
-"" highlight MarkWord1 ctermfg=3 ctermbg=235
-"" highlight MarkWord2 ctermfg=154 ctermbg=235
-"" highlight MarkWord3 ctermfg=148 ctermbg=235
-"" highlight MarkWord4 ctermfg=142 ctermbg=235
-"" highlight MarkWord5 ctermfg=94 ctermbg=235
-"" highlight MarkWord6 ctermfg=9 ctermbg=235
-"" highlight MarkWord7 ctermfg=105 ctermbg=235
-"" highlight MarkWord8 ctermfg=13 ctermbg=235
-"" highlight MarkWord9 ctermfg=99 ctermbg=235
-"" highlight MarkWord10  ctermfg=6 ctermbg=235
-"" highlight MarkWord11  ctermfg=128 ctermbg=235
-"" highlight MarkWord12  ctermfg=7 ctermbg=235
-"" highlight MarkWord13  ctermfg=75 ctermbg=235
-"" highlight MarkWord14  ctermfg=2 ctermbg=235
-"" highlight MarkWord15  ctermfg=187 ctermbg=235
-"" highlight MarkWord16  ctermfg=186 ctermbg=235
-"" highlight MarkWord17  ctermfg=192 ctermbg=235
-""
-""
-"highlight MarkWord1 ctermfg=3 ctermbg=234
-"highlight MarkWord2 ctermfg=154 ctermbg=234
-"highlight MarkWord3 ctermfg=148 ctermbg=234
-"highlight MarkWord4 ctermfg=142 ctermbg=234
-"highlight MarkWord5 ctermfg=94 ctermbg=234
-"highlight MarkWord6 ctermfg=9 ctermbg=234
-"highlight MarkWord7 ctermfg=105 ctermbg=234
-"highlight MarkWord8 ctermfg=13 ctermbg=234
-"highlight MarkWord9 ctermfg=99 ctermbg=234
-"highlight MarkWord10  ctermfg=6 ctermbg=234
-"highlight MarkWord11  ctermfg=128 ctermbg=234
-"highlight MarkWord12  ctermfg=7 ctermbg=234
-"highlight MarkWord13  ctermfg=75 ctermbg=234
-"highlight MarkWord14  ctermfg=2 ctermbg=234
-"highlight MarkWord15  ctermfg=187 ctermbg=234
-"highlight MarkWord16  ctermfg=186 ctermbg=234
-"highlight MarkWord17  ctermfg=192 ctermbg=234
-"
-"" highlight MarkWord1 ctermfg=3 ctermbg=Black
-"" highlight MarkWord2 ctermfg=154 ctermbg=Black
-"" highlight MarkWord3 ctermfg=148 ctermbg=Black
-"" highlight MarkWord4 ctermfg=142 ctermbg=Black
-"" highlight MarkWord5 ctermfg=94 ctermbg=Black
-"" highlight MarkWord6 ctermfg=9 ctermbg=Black
-"" highlight MarkWord7 ctermfg=105 ctermbg=Black
-"" highlight MarkWord8 ctermfg=13 ctermbg=Black
-"" highlight MarkWord9 ctermfg=99 ctermbg=Black
-"" highlight MarkWord10  ctermfg=6 ctermbg=Black
-"" highlight MarkWord11  ctermfg=128 ctermbg=Black
-"" highlight MarkWord12  ctermfg=7 ctermbg=Black
-"" highlight MarkWord13  ctermfg=75 ctermbg=Black
-"" highlight MarkWord14  ctermfg=2 ctermbg=Black
-"" highlight MarkWord15  ctermfg=187 ctermbg=Black
-"" highlight MarkWord16  ctermfg=186 ctermbg=Black
-"" highlight MarkWord17  ctermfg=192 ctermbg=Black
-"=======
-""x "--------------------------------------------------------------------------------------------------
-""x let g:mwDefaultHighlightingPalette = 'maximum'
-""x " function! Marking()
-""x runtime plugin/mark.vim
-""x silent MarkClear
-""x "
-""x "silent 56Mark /.*\.py/
-""x silent 1Mark /.*\.py/
-""x 
-""x silent 1Mark /.*\.ipynb/
-""x " silent 58Mark /.*\.ipynb/
-""x "
-""x silent 2Mark /.*\.igs/
-""x silent 2Mark /.*\.iges/
-""x silent 3Mark /.*\.stp/
-""x silent 3Mark /.*\.step/
-""x silent 4Mark /.*\.stl/
-""x silent 5Mark /.*\.mo/
-""x silent 5Mark /.*\.fmu/
-""x 
-""x silent 9Mark /.*\.sim/
-""x silent 10Mark /.*\.csv/
-""x silent 11Mark /.*\.dat/
-""x silent 12Mark /.*\.out/
-""x silent 13Mark /.*\.in/
-""x 
-""x silent 7Mark /.*\.fds/
-""x silent 8Mark /.*\.smv/
-""x silent 6Mark /.*\.pdf/
-""x silent 14Mark /.*\.png/
-""x silent 14Mark /.*\.jpg/
-""x silent 14Mark /.*\.jpeg/
-""x silent 15Mark /.*\.log/
-""x silent 16Mark /.*\.txt/
-""x silent 17Mark /.*\.sh/
-""x 
-""x 
-""x " highlight MarkWord1 ctermfg=3 ctermbg=235
-""x " highlight MarkWord2 ctermfg=154 ctermbg=235
-""x " highlight MarkWord3 ctermfg=148 ctermbg=235
-""x " highlight MarkWord4 ctermfg=142 ctermbg=235
-""x " highlight MarkWord5 ctermfg=94 ctermbg=235
-""x " highlight MarkWord6 ctermfg=9 ctermbg=235
-""x " highlight MarkWord7 ctermfg=105 ctermbg=235
-""x " highlight MarkWord8 ctermfg=13 ctermbg=235
-""x " highlight MarkWord9 ctermfg=99 ctermbg=235
-""x " highlight MarkWord10  ctermfg=6 ctermbg=235
-""x " highlight MarkWord11  ctermfg=128 ctermbg=235
-""x " highlight MarkWord12  ctermfg=7 ctermbg=235
-""x " highlight MarkWord13  ctermfg=75 ctermbg=235
-""x " highlight MarkWord14  ctermfg=2 ctermbg=235
-""x " highlight MarkWord15  ctermfg=187 ctermbg=235
-""x " highlight MarkWord16  ctermfg=186 ctermbg=235
-""x " highlight MarkWord17  ctermfg=192 ctermbg=235
-""x "
-""x "
-""x highlight MarkWord1 ctermfg=3 ctermbg=234
-""x highlight MarkWord2 ctermfg=154 ctermbg=234
-""x highlight MarkWord3 ctermfg=148 ctermbg=234
-""x highlight MarkWord4 ctermfg=142 ctermbg=234
-""x highlight MarkWord5 ctermfg=94 ctermbg=234
-""x highlight MarkWord6 ctermfg=9 ctermbg=234
-""x highlight MarkWord7 ctermfg=105 ctermbg=234
-""x highlight MarkWord8 ctermfg=13 ctermbg=234
-""x highlight MarkWord9 ctermfg=99 ctermbg=234
-""x highlight MarkWord10  ctermfg=6 ctermbg=234
-""x highlight MarkWord11  ctermfg=128 ctermbg=234
-""x highlight MarkWord12  ctermfg=7 ctermbg=234
-""x highlight MarkWord13  ctermfg=75 ctermbg=234
-""x highlight MarkWord14  ctermfg=2 ctermbg=234
-""x highlight MarkWord15  ctermfg=187 ctermbg=234
-""x highlight MarkWord16  ctermfg=186 ctermbg=234
-""x highlight MarkWord17  ctermfg=192 ctermbg=234
-""x 
-""x " highlight MarkWord1 ctermfg=3 ctermbg=Black
-""x " highlight MarkWord2 ctermfg=154 ctermbg=Black
-""x " highlight MarkWord3 ctermfg=148 ctermbg=Black
-""x " highlight MarkWord4 ctermfg=142 ctermbg=Black
-""x " highlight MarkWord5 ctermfg=94 ctermbg=Black
-""x " highlight MarkWord6 ctermfg=9 ctermbg=Black
-""x " highlight MarkWord7 ctermfg=105 ctermbg=Black
-""x " highlight MarkWord8 ctermfg=13 ctermbg=Black
-""x " highlight MarkWord9 ctermfg=99 ctermbg=Black
-""x " highlight MarkWord10  ctermfg=6 ctermbg=Black
-""x " highlight MarkWord11  ctermfg=128 ctermbg=Black
-""x " highlight MarkWord12  ctermfg=7 ctermbg=Black
-""x " highlight MarkWord13  ctermfg=75 ctermbg=Black
-""x " highlight MarkWord14  ctermfg=2 ctermbg=Black
-""x " highlight MarkWord15  ctermfg=187 ctermbg=Black
-""x " highlight MarkWord16  ctermfg=186 ctermbg=Black
-""x " highlight MarkWord17  ctermfg=192 ctermbg=Black
-" >>>>>>> 38c576597f24e48c3aa5d6f955afe4a6b1d2af49
+"silent 56Mark /.*\.py/
+silent 1Mark /.*\.py/
 
-" endfunction
+silent 1Mark /.*\.ipynb/
+" silent 58Mark /.*\.ipynb/
+"
+silent 2Mark /.*\.igs/
+silent 2Mark /.*\.iges/
+silent 3Mark /.*\.stp/
+silent 3Mark /.*\.step/
+silent 4Mark /.*\.stl/
+silent 5Mark /.*\.mo/
+silent 5Mark /.*\.fmu/
+
+silent 9Mark /.*\.sim/
+silent 10Mark /.*\.csv/
+silent 11Mark /.*\.dat/
+silent 12Mark /.*\.out/
+silent 13Mark /.*\.in/
+
+silent 7Mark /.*\.fds/
+silent 8Mark /.*\.smv/
+silent 6Mark /.*\.pdf/
+silent 14Mark /.*\.png/
+silent 14Mark /.*\.jpg/
+silent 14Mark /.*\.jpeg/
+silent 15Mark /.*\.log/
+silent 16Mark /.*\.txt/
+silent 17Mark /.*\.sh/
+
+nmap <leader>t :call mark#Toggle()<CR>
+
 
 " nnoremap th  :tabfirst<CR>
 " nnoremap tj  :tabnext<CR>
@@ -1511,14 +1336,93 @@ nmap <leader>Q :wqa<CR>
 " :syntax match col2 /Mango/
 " /\%81v.*/
 "
+"==================================================================================================
+" COLORSCHEME
+"x set termguicolors
+" set background=dark
+:let g:gruvbox_bold = '0'
+:let g:gruvbox_italic = '1'
+colorscheme gruvbox
+set background=dark
+
+ " colorscheme gruvbox
+:let g:gruvbox_contrast_dark = 'hard'
+:let g:gruvbox_hls_cursor = 'orange'
+"
+"..................................................................................................
+" Highlighting
+"highlight Normal ctermbg=234
+"ctermfg=white
+" :hi comment ctermfg=darkgreen
+" :highlight LineNr ctermfg=darkgrey
+":highlight VertSplit ctermfg=darkgray ctermfg=black
+""..................................................................................................
+:highlight ParenMatch ctermbg=blue
+" :hi comment ctermfg=242
+" :highlight LineNr ctermfg=darkgrey
+" :highlight VertSplit ctermfg=darkgray ctermfg=black
+
+"..................................................................................................
+" Showmarks
+:hi ShowMarksHLl ctermfg=red "For marks a-z
+:hi ShowMarksHLu ctermfg=yellow "For marks A-Z
+:hi ShowMarksHLo ctermfg=magenta "For all other marks
+:hi ShowMarksHLm ctermfg=white "For multiple marks on the same line.
+:hi SignColumn ctermbg=black
+
+"highlight Pmenu ctermbg=8 guibg=#606060 ctermbg=/usr/bin/env: ‘php’: No such file or directory
+":highlight PmenuSel ctermbg=1 guifg=#dddd00 ctermfg=/usr/bin/env: ‘php’: No such file or directory guibg=#1f82cd
+"highlight PmenuSbar ctermbg=0 guibg=#d6d6d6 ctermbg=/usr/bin/env: ‘php’: No such file or directory
+"
+:highlight Cursor ctermfg=red guifg=red
+:highlight vimFilerMarkedFile ctermbg=12
+
+:highlight TermCursor ctermfg=red guifg=red
+
+"x :hi LightLineMiddle_active ctermbg=98
+":highlight Search ctermbg=gray ctermfg=black
+:hi Search ctermbg=12
+:hi Search ctermfg=226
+" :highlight ALEWarning ctermbg=65
+" :highlight ALEWarningSign ctermbg=65
+" :highlight ALEError ctermbg=92
+" :highlight ALEErrorSign ctermbg=92
+"
+"
+highlight MarkWord1 ctermfg=3 ctermbg=234
+highlight MarkWord2 ctermfg=154 ctermbg=234
+highlight MarkWord3 ctermfg=148 ctermbg=234
+highlight MarkWord4 ctermfg=142 ctermbg=234
+highlight MarkWord5 ctermfg=94 ctermbg=234
+highlight MarkWord6 ctermfg=9 ctermbg=234
+highlight MarkWord7 ctermfg=105 ctermbg=234
+highlight MarkWord8 ctermfg=13 ctermbg=234
+highlight MarkWord9 ctermfg=99 ctermbg=234
+highlight MarkWord10  ctermfg=6 ctermbg=234
+highlight MarkWord11  ctermfg=128 ctermbg=234
+highlight MarkWord12  ctermfg=7 ctermbg=234
+highlight MarkWord13  ctermfg=75 ctermbg=234
+highlight MarkWord14  ctermfg=2 ctermbg=234
+highlight MarkWord15  ctermfg=187 ctermbg=234
+highlight MarkWord16  ctermfg=186 ctermbg=234
+highlight MarkWord17  ctermfg=192 ctermbg=234
+
 " :hi Comment ctermfg=darkgrey
 " :hi Comment ctermfg=darkgreen
-:hi Comment ctermfg=28
-:hi LineNr ctermfg=darkgrey
+"x :hi Comment ctermfg=28
+":hi LineNr ctermfg=darkgrey
 
 " highlight extensionPDF ctermbg=red ctermfg=white guibg=#592929 ctermbg=/usr/bin/env: ‘php’: No such file or directory
 " syn match extensionPDF /txet/
 " :hi TabLineFill ctermfg=LightGreen ctermbg=DarkGreen
-:hi TabLine ctermfg=grey ctermbg=darkgrey
-:hi TabLineSel ctermfg=Blue ctermbg=120
-:hi Title ctermfg=LightBlue ctermbg=Magenta
+"x :hi TabLine ctermfg=grey ctermbg=darkgrey
+"x :hi TabLineSel ctermfg=Blue ctermbg=120
+"x :hi Title ctermfg=LightBlue ctermbg=Magenta
+
+"set sessionoptions+=tabpages,globals
+"x hi Identifier ctermfg=magenta
+"hi String ctermfg=215
+"hi String ctermfg=230
+"x hi String ctermfg=229
+"x hi Comment ctermfg=34
+"x hi PreProc ctermfg=cyan

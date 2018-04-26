@@ -203,5 +203,10 @@ if version >= 508 || !exists("did_blank_syntax_inits")
 
   delcommand HiLink
 endif
+
+"xhi Identifier ctermfg=magenta
+"xhi String ctermfg=215
+"xhi Comment ctermfg=34
+"xhi PreProc ctermfg=cyan
 let b:current_syntax = "fds"
 " vim: ts=8

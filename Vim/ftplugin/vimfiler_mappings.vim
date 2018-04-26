@@ -1,16 +1,16 @@
 :nunmap <buffer> <Space>
+"- nmap <silent><buffer>` :VimFiler -status /home/fbraenns/<CR>
+"- nmap <silent><buffer>1 :VimFiler -status /home/fbraenns/00_ALLG/<CR>
+"- nmap <silent><buffer>2 :VimFiler -status /home/fbraenns/01_FINANCE/<CR>
+"- nmap <silent><buffer>3 :VimFiler -status /home/fbraenns/02_CFD/<CR>
+"- nmap <silent><buffer>4 :VimFiler -status /home/fbraenns/03_GA/<CR>
+"- nmap <silent><buffer>9 :VimFiler -status /home/fbraenns/99_SHARE/<CR>
 nmap <silent><buffer>` :VimFiler -status /home/fbraenns/<CR>
-nmap <silent><buffer>1 :VimFiler -status /home/fbraenns/00_ALLG/<CR>
-nmap <silent><buffer>2 :VimFiler -status /home/fbraenns/01_FINANCE/<CR>
-nmap <silent><buffer>3 :VimFiler -status /home/fbraenns/02_CFD/<CR>
-nmap <silent><buffer>4 :VimFiler -status /home/fbraenns/03_GA/<CR>
-nmap <silent><buffer>9 :VimFiler -status /home/fbraenns/99_SHARE/<CR>
-" nmap <silent><buffer>` :VimFiler -status /home/fbraenns/<CR>
-" nmap <silent><buffer>1 :VimFiler -status /WORK1/fbraenns/<CR>
-" nmap <silent><buffer>2 :VimFiler -status /WORK2/fbraenns/<CR>
-" nmap <silent><buffer>3 :VimFiler -status /data/work/fbraenns/<CR>
-" nmap <silent><buffer>4 :VimFiler -status /share/Tools/<CR>
-" nmap <silent><buffer>9 :VimFiler -status /home/fbraenns/.modulefiles/<CR>
+nmap <silent><buffer>1 :VimFiler -status /WORK1/fbraenns/<CR>
+nmap <silent><buffer>2 :VimFiler -status /WORK2/fbraenns/<CR>
+nmap <silent><buffer>3 :VimFiler -status /data/work/fbraenns/<CR>
+nmap <silent><buffer>4 :VimFiler -status /share/Tools/<CR>
+nmap <silent><buffer>9 :VimFiler -status /home/fbraenns/.modulefiles/<CR>
 nmap <silent><buffer>0 <Plug>(vimfiler_cursor_top)
 
 nmap <silent><buffer>b <Plug>(vimfiler_cd_input_directory)<C-u>bookmark:/<CR>
@@ -46,8 +46,8 @@ nnoremap <silent><buffer><expr><silent> v vimfiler#do_switch_action('vsplit')
 
 nmap <silent><buffer>,x :call jobstart(['xterm'],{'detach':1}) <CR>
 " <<<<<<< HEAD
-"nmap <silent><buffer>,X :call jobstart('xterm -e /share/Tools/Editing/NeoVim/nvim.appimage -c ":VimFilerBufferDir -status -sort-type=Time"' ,{'detach':1}) <CR>
-nmap <silent><buffer>,X :call jobstart('xterm -e /usr/bin/nvim -c ":VimFilerBufferDir -status -sort-type=Time"' ,{'detach':1}) <CR>
+nmap <silent><buffer>,X :call jobstart('xterm -e /share/Tools/Editing/NeoVim/nvim.appimage -c ":VimFilerBufferDir -status -sort-type=Time"' ,{'detach':1}) <CR>
+"nmap <silent><buffer>,X :call jobstart('xterm -e /usr/bin/nvim -c ":VimFilerBufferDir -status -sort-type=Time"' ,{'detach':1}) <CR>
 "nmap <silent><buffer>,X :call jobstart('xterm -e /share/Tools/Editing/NeoVim/nvim.appimage -c ":VimFilerBufferDir -status -sort-type=Time"' ,{'detach':1}) <CR>
 nmap <silent><buffer>X :VimFilerTab -status -sort-type=Time<CR>
 " >>>>>>> 34075d7da7db166e36fdcd38bf09c9308deff69c
