@@ -1389,23 +1389,45 @@ set background=dark
 " :highlight ALEErrorSign ctermbg=92
 "
 "
-highlight MarkWord1 ctermfg=3 ctermbg=234
-highlight MarkWord2 ctermfg=154 ctermbg=234
-highlight MarkWord3 ctermfg=148 ctermbg=234
-highlight MarkWord4 ctermfg=142 ctermbg=234
-highlight MarkWord5 ctermfg=94 ctermbg=234
-highlight MarkWord6 ctermfg=9 ctermbg=234
-highlight MarkWord7 ctermfg=105 ctermbg=234
-highlight MarkWord8 ctermfg=13 ctermbg=234
-highlight MarkWord9 ctermfg=99 ctermbg=234
-highlight MarkWord10  ctermfg=6 ctermbg=234
-highlight MarkWord11  ctermfg=128 ctermbg=234
-highlight MarkWord12  ctermfg=7 ctermbg=234
-highlight MarkWord13  ctermfg=75 ctermbg=234
-highlight MarkWord14  ctermfg=2 ctermbg=234
-highlight MarkWord15  ctermfg=187 ctermbg=234
-highlight MarkWord16  ctermfg=186 ctermbg=234
-highlight MarkWord17  ctermfg=192 ctermbg=234
+"
+"
+" Without Gruvbox
+" highlight MarkWord1 ctermfg=3 ctermbg=234
+" highlight MarkWord2 ctermfg=154 ctermbg=234
+" highlight MarkWord3 ctermfg=148 ctermbg=234
+" highlight MarkWord4 ctermfg=142 ctermbg=234
+" highlight MarkWord5 ctermfg=94 ctermbg=234
+" highlight MarkWord6 ctermfg=9 ctermbg=234
+" highlight MarkWord7 ctermfg=105 ctermbg=234
+" highlight MarkWord8 ctermfg=13 ctermbg=234
+" highlight MarkWord9 ctermfg=99 ctermbg=234
+" highlight MarkWord10  ctermfg=6 ctermbg=234
+" highlight MarkWord11  ctermfg=128 ctermbg=234
+" highlight MarkWord12  ctermfg=7 ctermbg=234
+" highlight MarkWord13  ctermfg=75 ctermbg=234
+" highlight MarkWord14  ctermfg=2 ctermbg=234
+" highlight MarkWord15  ctermfg=187 ctermbg=234
+" highlight MarkWord16  ctermfg=186 ctermbg=234
+" highlight MarkWord17  ctermfg=192 ctermbg=234
+
+"With Gruvbox
+highlight MarkWord1 ctermfg=3 ctermbg=bg
+highlight MarkWord2 ctermfg=154 ctermbg=bg
+highlight MarkWord3 ctermfg=148 ctermbg=bg
+highlight MarkWord4 ctermfg=142 ctermbg=bg
+highlight MarkWord5 ctermfg=94 ctermbg=bg
+highlight MarkWord6 ctermfg=9 ctermbg=bg
+highlight MarkWord7 ctermfg=105 ctermbg=bg
+highlight MarkWord8 ctermfg=13 ctermbg=bg
+highlight MarkWord9 ctermfg=99 ctermbg=bg
+highlight MarkWord10  ctermfg=6 ctermbg=bg
+highlight MarkWord11  ctermfg=128 ctermbg=bg
+highlight MarkWord12  ctermfg=7 ctermbg=bg
+highlight MarkWord13  ctermfg=75 ctermbg=bg
+highlight MarkWord14  ctermfg=2 ctermbg=bg
+highlight MarkWord15  ctermfg=187 ctermbg=bg
+highlight MarkWord16  ctermfg=186 ctermbg=bg
+highlight MarkWord17  ctermfg=192 ctermbg=bg
 
 " :hi Comment ctermfg=darkgrey
 " :hi Comment ctermfg=darkgreen
