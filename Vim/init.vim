@@ -939,7 +939,7 @@ function! s:vimfiler_buffer_au()
     :highlight CursorLine ctermbg=65
 endfunction
 " autocmd FileType vimfiler call s:vimfiler_buffer_au()
-autocmd FileType vimfiler call mark#ToggleOn()
+"autocmd FileType vimfiler call mark#ToggleOn()
 "autocmd FileType python :call mark#ToggleOff()
 "x autocmd BufEnter * if &ft == 'python' | :call mark#ToggleOff()<CR>| endif
 "x autocmd BufEnter * if &ft == 'bash' | :call mark#ToggleOff()<CR>| endif
