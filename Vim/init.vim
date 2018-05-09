@@ -469,7 +469,7 @@ endif
 
 
 let g:lightline = {
-            \ 'colorscheme': 'Dracula',
+            \ 'colorscheme': 'powerline',
             \ 'active': {'left': [['mode','paste'],['readonly','filename','modified']]},
             \ 'component_function': { 'filename': 'LightLineFilename' }
             \ }
@@ -814,7 +814,7 @@ let s:menus.Arduino= {
             \ 'description': 'Arduino commands'
             \ }
 let s:menus.Arduino.command_candidates = [
-            \ ['Port ttyACM0', "let g:arduino_serial_port = '/dev/ttyACM0'"],
+            \ ['Port ttyACM1', "let g:arduino_serial_port = '/dev/ttyACM1'"],
             \ ['Port USB', "let g:arduino_serial_port = '/dev/USB'"],
             \ ]
 

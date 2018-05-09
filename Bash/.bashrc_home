@@ -140,8 +140,12 @@ source ~/.bashrc_fds
 export MODELICAPATH=/share/GA/TOOLs/
 export MODELICAPATH=/share/GA/TOOLs/modelica-buildings_LBL:$MODELICAPATH
 
+export PATH=/home/fbraenns/03_GA/TOOLs/Arduino/arduino-1.8.5/:$PATH
+
 alias vimfiler="TERM=screen-256color nvim -c \"VimFilerDouble\""
 
 
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
