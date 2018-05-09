@@ -8,8 +8,10 @@
 nmap <silent><buffer>` :VimFiler -status /home/fbraenns/<CR>
 nmap <silent><buffer>1 :VimFiler -status /WORK1/fbraenns/<CR>
 nmap <silent><buffer>2 :VimFiler -status /WORK2/fbraenns/<CR>
-nmap <silent><buffer>3 :VimFiler -status /data/work/fbraenns/<CR>
-nmap <silent><buffer>4 :VimFiler -status /share/Tools/<CR>
+nmap <silent><buffer>3 :VimFiler -status /WORK3/fbraenns/<CR>
+nmap <silent><buffer>4 :VimFiler -status /data/work/fbraenns/<CR>
+nmap <silent><buffer>5 :VimFiler -status /share/Tools/<CR>
+nmap <silent><buffer>6 :VimFiler -status /share/software/<CR>
 nmap <silent><buffer>9 :VimFiler -status /home/fbraenns/.modulefiles/<CR>
 nmap <silent><buffer>0 <Plug>(vimfiler_cursor_top)
 
@@ -55,3 +57,8 @@ nmap <silent><buffer>X :VimFilerTab -status -sort-type=Time<CR>
 " Geht nicht, da expand nur den Buffernamen von vimfiler uebertraegt, aber nicht die eigentliche Datei
 nmap <silent><buffer>,O :call jobstart(['xterm','-e','/usr/bin/vim',expand('%:t')],{'detach':1}) <CR>
 nmap <silent><buffer>,y :call jobstart(['xterm','-e','mc','.','.'],{'detach':1}) <CR>
+" nmap <silent><buffer>,s1 :call jobstart(['xterm'],{'detach':1}) <CR>
+" nmap <silent><buffer>,s2 :call jobstart(['xterm'],{'detach':1}) <CR>
+"nmap <silent><buffer>,s2 :call jobstart(['xterm','-e','/share/software/cd-adapco/STAR-CCM+12.02/STAR-CCM+12.02.010-R8/star/bin/starccm+','.','.'],{'detach':1}) <CR>
+nmap <silent><buffer>,s2 :call jobstart('/share/software/cd-adapco/STAR-CCM+12.02/STAR-CCM+12.02.010-R8/star/bin/starccm+',{'detach':1}) <CR>
+nmap <silent><buffer>,s1 :call jobstart('/share/software/cd-adapco/STAR-CCM+11.06/STAR-CCM+11.06.010-R8/star/bin/starccm+',{'detach':1}) <CR>
