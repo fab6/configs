@@ -8,8 +8,10 @@
 nmap <silent><buffer>` :VimFiler -status /home/fbraenns/<CR>
 nmap <silent><buffer>1 :VimFiler -status /WORK1/fbraenns/<CR>
 nmap <silent><buffer>2 :VimFiler -status /WORK2/fbraenns/<CR>
-nmap <silent><buffer>3 :VimFiler -status /data/work/fbraenns/<CR>
-nmap <silent><buffer>4 :VimFiler -status /share/Tools/<CR>
+nmap <silent><buffer>3 :VimFiler -status /WORK3/fbraenns/<CR>
+nmap <silent><buffer>4 :VimFiler -status /data/work/fbraenns/<CR>
+nmap <silent><buffer>5 :VimFiler -status /share/Tools/<CR>
+nmap <silent><buffer>6 :VimFiler -status /share/software/<CR>
 nmap <silent><buffer>9 :VimFiler -status /home/fbraenns/.modulefiles/<CR>
 nmap <silent><buffer>0 <Plug>(vimfiler_cursor_top)
 

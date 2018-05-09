@@ -21,20 +21,21 @@ export EDITOR="/share/Tools/Editing/NeoVim/nvim.appimage"
 ### Modules
 ###===================================================================
 ###===================================================================
+module load divs/0.2
 #module load python/anaconda2/4.x
+#module unload python/anaconda2/4.x
+module load python_loc/3.6.0_anac4.3.1
+module load openmpi/1.10.4
+#module load openmpi/1.10
+module load FDS/6.5.3
+module load Aliases/StarCCM+
+module load ParaView
 #export PYTHOPATH=/
 #export PYTHONHOME=/share/Tools/Python/Distributions/anaconda3/bin/
 
 #module load OpenModelica
-#module unload python/anaconda2/4.x
-module load python_loc/3.6.0_anac4.3.1
-#
-module load ParaView
-module load VisIt/2.10.3
+#module load VisIt/2.10.3
 ##module load Ansa
-module load openmpi/1.10.4
-module load FDS/6.5.3
-module load Aliases/StarCCM+
 #module load Dakota
 #module load Dakota/6.5.0_ac2
 #module load Dakota/6.5.0
@@ -59,7 +60,6 @@ module load Aliases/StarCCM+
 #Xmodule load OpenFOAM
 #module load opt/opt_0.3
 #module load divs/0.0.1
-module load divs/0.2
 # module load divs/setAlias
 # module load divs/path
 
@@ -398,3 +398,5 @@ tmm() {
   fi
   session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
 }
+alias cpwd="pwd | tr -d '\n' | pbcopy && echo 'pwd copied to clipboard'"
+alias pw="pwd | xclip -selection 'clipboard' "
