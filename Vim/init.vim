@@ -184,136 +184,7 @@ Plug 'Shougo/deol.nvim'
     if &term =~ 'xterm'
     endif
 
-" <<<<<<< HEAD
-    let s:mode = l:mode
-  endif
-
-  return ',' . l:mode
-  return ''
-endfunction
-
-
-
-if s:ColorizeModeActive == 0
-  if &statusline == ''
-    set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
-  endif
-  let &statusline = &statusline . '%{ColorizeMode()}'
-  let s:ColorizeModeActive = 1
-endif
-
-
-"status2 "set statusline=Vim-%{Version()}\ %{getcwd()}\ \ %1*[%02n]%*\ %(%M%R%H%)\ %2*%F%*\ %=%{Options()}\ %3*<%l,%c%V>%*
-"status2 " " Text between "%{" and "%}" is being evaluated and thus suited for
-"status2 " functions.
-"status2 " " Here I will use the function "Options()" as defined below to show the
-"status2 " " values of some (local) options..
-"status2 " " The strings "%N*" unto "%*" correspond to the highlight group "UserN":
-"status2 " "       User1: color for buffer number
-"status2 hi    User1 cterm=NONE    ctermfg=red    ctermbg=white  guifg=red guibg=white
-"status2 "   "       User2: color for filename
-"status2 hi    User2 cterm=NONE    ctermfg=black  ctermbg=green  guifg=black guibg=green
-"status2 "     "       User3: color for position
-"status2 hi    User3 cterm=NONE    ctermfg=blue   ctermbg=white  guifg=blue guibg=white
-"status2 "
-"status2 fu! Version()
-"status2   return version
-"status2 endf
-"status2
-"status2 " Aussehen der Statuszeile (Sollte wohl besser bei den Farben sein)
-"status2 "set   statusline=%1*[%02n]%*\ %(%M%R%H%)\ *\ %2*%t%*\ %3*<%l,%c%V,%p%%>%*
-"status2 fu! Options()
-"status2   let opt=""
-"status2   if &ai|   let opt=opt." ai"   |endif
-"status2   if &et|   let opt=opt." et"   |endif
-"status2   if &hls|  let opt=opt." hls"  |endif
-"status2   if &nu|   let opt=opt." nu"   |endif
-"status2   if &ek|   let opt=opt." ek"   |endif
-"status2   if &list| let opt=opt." list" |endif
-"status2   if &paste|let opt=opt." paste"|endif
-"status2   if &shiftwidth!=8|let opt=opt." sw=".&shiftwidth|endif
-"status2   let opt=opt." tw=".&tw
-"status2   "let opt=opt."\[".&lines.",".&columns."\]"
-"status2   return opt
-"status2 endf
-"status2 " hi User1 cterm=bold ctermfg=cyan  ctermbg=white guifg=cyan guibg=white
-"status2 hi User1 cterm=NONE ctermfg=red   ctermbg=white guifg=red   guibg=white
-"status2 hi User2 cterm=NONE ctermfg=green ctermbg=white guifg=green guibg=white
-"status2 hi User3 cterm=NONE ctermfg=blue  ctermbg=white guifg=blue  guibg=white
-"
-"3 set statusline=
-"3 set statusline+=%7*\[%n]                                  "buffernr
-"3 set statusline+=%1*\ %<%F\                                "File+path
-"3 set statusline+=%2*\ %y\                                  "FileType
-"3 set statusline+=%3*\ %{''.(&fenc!=''?&fenc:&enc).''}      "Encoding
-"3 set statusline+=%3*\ %{(&bomb?\",BOM\":\"\")}\            "Encoding2
-"3 set statusline+=%4*\ %{&ff}\                              "FileFormat (dos/unix..) 
-"3 set statusline+=%5*\ %{&spelllang}\%{HighlightSearch()}\  "Spellanguage & Highlight on?
-"3 set statusline+=%8*\ %=\ row:%l/%L\ (%03p%%)\             "Rownumber/total (%)
-"3 set statusline+=%9*\ col:%03c\                            "Colnr
-"3 set statusline+=%0*\ \ %m%r%w\ %P\ \                      "Modified? Readonly? Top/bot.
-"3 function! HighlightSearch()
-"3   if &hls
-"3     return 'H'
-"3   else
-"3     return ''
-"3   endif
-"3 endfunction
-"3 "":hi StatusLineNC   term=reverse cterm=reverse ctermfg=9 gui=bold guifg=black guibg=green 
-"3 :hi StatusLineNC   term=reverse cterm=reverse 
-"3 "hi User1 ctermfg=#ffdad8  ctermbg=#880c0e
-"3 "hi User2 ctermfg=#000000  ctermbg=#F4905C
-"3 "hi User3 ctermfg=#292b00  ctermbg=#f4f597
-"3 "hi User4 ctermfg=#112605  ctermbg=#aefe7B
-"3 "hi User5 ctermfg=#051d00  ctermbg=#7dcc7d
-"3 "hi User7 ctermfg=#ffffff  ctermbg=#880c0e cterm=bold
-"3 "hi User8 ctermfg=#ffffff  ctermbg=#5b7fbb
-"3 "hi User9 ctermfg=#ffffff  ctermbg=#810085
-"3 "hi User0 ctermfg=#ffffff  ctermbg=#094afe
-"3 hi User1 ctermbg=17
-"3 hi User2 ctermbg=28
-"3 hi User3 ctermbg=38
-"3 hi User4 ctermbg=48
-"3 hi User5 ctermbg=118
-"3 hi User7 ctermbg=128
-"3 hi User8 ctermbg=138
-"3 hi User9 ctermbg=147
-"3 hi User9 ctermbg=150
-
-
-let g:lightline = {
-            \ 'colorscheme': 'powerline',
-            \ 'active': {'left': [['mode','paste'],['readonly','filename','modified']]},
-            \ 'component_function': { 'filename': 'LightLineFilename' }
-            \ }
-function! LightLineFilename()
-    return expand('%')
-endfunction
-"
-"  Showmarks
-":hi ShowMarksHLl ctermfg=red "For marks a-z
-":hi ShowMarksHLu ctermfg=yellow "For marks A-Z
-":hi ShowMarksHLo ctermfg=magenta "For all other marks
-":hi ShowMarksHLm ctermfg=white "For multiple marks on the same line.
-":hi SignColumn ctermbg=black
-
-"--------------------------------------------------------------------------------------------------
-" BACKUP
-"
-set backup
-set backupdir=$HOME/.vim.backupdir/
-set backupext=~
-set wildmenu "menu has tab completion
-set wildignore=.aux,.bak,.dvi,.gz,.idx,.log,.ps,.swp,.tar,.pdf,.rpm,.deb,.o,.e,*~
-
-"
-"--------------------------------------------------------------------------------------------------
-" keybindings
-"
-nnoremap <leader>e :e ./<CR>
-" =======
     let g:loaded_matchparen = 1
-" >>>>>>> ab144714f05478ac2f61bcf81e00bc5392c06cfd
 
     "--------------------------------------------------------------------------------------------------
     " User Interface
@@ -947,7 +818,7 @@ let s:menus.Arduino= {
             \ 'description': 'Arduino commands'
             \ }
 let s:menus.Arduino.command_candidates = [
-            \ ['Port ttyACM1', "let g:arduino_serial_port = '/dev/ttyACM1'"],
+            \ ['Port ttyACM0', "let g:arduino_serial_port = '/dev/ttyACM0'"],
             \ ['Port USB', "let g:arduino_serial_port = '/dev/USB'"],
             \ ]
 
