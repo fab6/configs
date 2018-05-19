@@ -400,3 +400,11 @@ tmm() {
 }
 alias cpwd="pwd | tr -d '\n' | pbcopy && echo 'pwd copied to clipboard'"
 alias pw="pwd | xclip -selection 'clipboard' "
+
+
+alias c1v="cd /WORK1/fbraenns/ && /share/Tools/Editing/NeoVim/nvim.appimage +'VimFilerBufferDir -status -sort-type=Time'"
+alias c2v="cd /WORK2/fbraenns/ && /share/Tools/Editing/NeoVim/nvim.appimage +'VimFilerBufferDir -status -sort-type=Time'"
+alias c3v="cd /WORK3/fbraenns/ && /share/Tools/Editing/NeoVim/nvim.appimage +'VimFilerBufferDir -status -sort-type=Time'"
+alias c4v="cd /data/work/fbraenns/ && /share/Tools/Editing/NeoVim/nvim.appimage +'VimFilerBufferDir -status -sort-type=Time'"
+alias c5v="cd /share/Tools/ && /share/Tools/Editing/NeoVim/nvim.appimage +'VimFilerBufferDir -status -sort-type=Time'"
+alias c6v="cd /share/software/ && /share/Tools/Editing/NeoVim/nvim.appimage +'VimFilerBufferDir -status -sort-type=Time'"
