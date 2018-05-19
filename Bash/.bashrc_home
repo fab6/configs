@@ -13,7 +13,9 @@ alias checkL='ssh  mesh01 "python /share/Tools/Python/check_ganglia_v1.py"'
 alias mSyno='sudo mount -t nfs 192.168.178.25:/volume1/share /home/fbraenns/99_SHARE'
 alias umSyno='sudo umount /share'
 alias m4SH='sudo mount -t davfs https://webdav.4shared.com/ /home/fbraenns/99_4shared'
-alias ssPi='ssh fbraenns@192.168.178.46' #LAN RAS
+alias sshPifb='ssh fbraenns@192.168.178.46' #LAN RAS
+alias sshPiPi='ssh pi@192.168.178.46' #LAN RAS
+alias sshPiHass='ssh homeassistant@192.168.178.46' #LAN RAS
 
 alias nv='nvim'
 alias vi='nvim'

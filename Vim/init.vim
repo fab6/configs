@@ -1193,6 +1193,7 @@ nnoremap <leader>ga :Gadd
 "==================================================================================================
 " FDS
 "
+autocmd BufNewFile,BufRead *.snip set syntax=python
 autocmd BufNewFile,BufRead *.fds set filetype=fds
 autocmd BufNewFile,BufRead *.fds5 set syntax=fds
 autocmd BufNewFile,BufRead *.fds set syntax=fds
