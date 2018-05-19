@@ -4,6 +4,8 @@ set title
 "let g:loaded_python3_provider=1
 "==================================================================================================
 " TODO
+" Tabs:
+" - rename tabs to current vimfiler directory
 " Vim:
 "  - Vim-Plug --> faster start-time
 "  - client/server
@@ -15,10 +17,8 @@ set title
 " Git:
 "  - easier git handling
 " Vimfiler:
-" - get current filename under cursor
 " Terminal:
 " Python:
-"  - deoplete does not work as expected right now
 " Complete:
 "  - deoplete does this work for the terminal as well?
 " Snippets:
@@ -28,9 +28,12 @@ set title
 " - Python --> scikit-learn, H2O, Keras, DataAnalysis, bokeh
 " - OpenFOAM
 " Vimplug:
+" - copy and paste to other users!?
 " -On-demand loading
 "   # Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 "   # Plug 'tpope/vim-fireplace', { 'for': 'clojure' }<Paste>
+" CSV:
+" - turn on and of special csv handling
 "
 "==================================================================================================
 set title
@@ -71,6 +74,8 @@ Plug 'Shougo/deol.nvim'
     Plug 'chemzqm/denite-git'
     Plug 'notomo/denite-autocmd'
     Plug 'notomo/denite-keymap'
+    "Press <c-w>o : the current window zooms into a full screen Press <c-w>o again: the previous set of windows is restored
+    " Plug 'itspriddle/ZoomWin'
     " Plug 'yuntan/denite-cheatsheet'
     " Plug 'davidhalter/jedi-vim' Autocomplete for python
     " Plug 'thirtythreeforty/lessspace.vim'
@@ -113,6 +118,7 @@ Plug 'Shougo/deol.nvim'
     Plug 'stevearc/vim-arduino', { 'for': 'arduino' }
     "Plug 'nvie/vim-flake8', { 'for': 'python' }
     Plug 'sudar/vim-arduino-syntax', { 'for': 'arduino' }
+    Plug 'jceb/vim-orgmode'
     " Plug 'iyuuya/denite-ale'
     " .....................................................................
     " WindowSwapping
@@ -924,9 +930,10 @@ let g:indentLine_color_term = 239
 nnoremap <leader>jf :<C-u>VimFilerExplorer -sort-type=Time -status -split -simple -parent -winwidth=35 -no-quit -find<CR>
 " nnoremap <leader>ff :VimFilerExplorer -status -find -winwidth=80 -sort-type=Time <CR>
 
-map <silent><leader>d :VimFilerCreate -status -sort-type=Time<CR>
+map <silent><leader>D :VimFilerCreate -status -sort-type=Time<CR>
 "map <silent><leader>d :VimFilerBufferDir -status -sort-type=Time<CR>
-map <silent><leader>D :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=29 -toggle -no-quit -explorer<CR><CR>
+map <silent><leader>Dd :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=29 -toggle -no-quit -explorer<CR>
+map <silent><leader>d :VimFilerBufferDir -status -sort-type=Time<CR>
 " map <space>E :VimFilerBufferDir -status -split -simple -winwidth=30 -toggle -no-quit<CR><CR>
 nnoremap <F2> :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=30 -toggle -no-quit<CR>
 
@@ -943,17 +950,26 @@ function! s:vimfiler_buffer_au()
     :highlight CursorLine ctermbg=65
 endfunction
 " autocmd FileType vimfiler call s:vimfiler_buffer_au()
-"autocmd FileType vimfiler call mark#ToggleOn()
+autocmd FileType vimfiler :call mark#ToggleOn()
 "autocmd FileType python :call mark#ToggleOff()
-"x autocmd BufEnter * if &ft == 'python' | :call mark#ToggleOff()<CR>| endif
-"x autocmd BufEnter * if &ft == 'bash' | :call mark#ToggleOff()<CR>| endif
-"x autocmd BufEnter * if &ft == 'dakota' | :call mark#ToggleOff()<CR>| endif
-"x autocmd BufEnter * if &ft == 'fds' | :call mark#ToggleOff()<CR>| endif
-"x autocmd BufEnter * if &ft == 'c' | :call mark#ToggleOff()<CR>| endif
-"x autocmd BufEnter * if &ft == 'modelica' | :call mark#ToggleOff()<CR>| endif
-"x autocmd BufEnter * if &ft == 'arduino' | :call mark#ToggleOff()<CR>| endif
-"x autocmd BufEnter * if &ft == 'lisp' | :call mark#ToggleOff()<CR>| endif
-"x autocmd BufEnter * if &ft == 'octave' | :call mark#ToggleOff()<CR>| endif
+"autocmd BufEnter * if &ft == 'python' | :call mark#ToggleOff()<CR>| endif
+autocmd BufEnter *.py :call mark#ToggleOff()
+autocmd BufEnter *.sh :call mark#ToggleOff()
+autocmd BufEnter *.vim :call mark#ToggleOff()
+autocmd BufEnter *.fds :call mark#ToggleOff()
+autocmd BufEnter *.c :call mark#ToggleOff()
+autocmd BufEnter *.mo :call mark#ToggleOff()
+autocmd BufEnter *.ino :call mark#ToggleOff()
+autocmd BufEnter *.m :call mark#ToggleOff()
+autocmd BufEnter *.csv :call mark#ToggleOff()
+"autocmd BufEnter * if &ft == 'bash' | :call mark#ToggleOff()<CR>| endif
+"autocmd BufEnter * if &ft == 'dakota' | :call mark#ToggleOff()<CR>| endif
+"autocmd BufEnter * if &ft == 'fds' | :call mark#ToggleOff()<CR>| endif
+"autocmd BufEnter * if &ft == 'c' | :call mark#ToggleOff()<CR>| endif
+"autocmd BufEnter * if &ft == 'modelica' | :call mark#ToggleOff()<CR>| endif
+"autocmd BufEnter * if &ft == 'arduino' | :call mark#ToggleOff()<CR>| endif
+"autocmd BufEnter * if &ft == 'lisp' | :call mark#ToggleOff()<CR>| endif
+"autocmd BufEnter * if &ft == 'octave' | :call mark#ToggleOff()<CR>| endif
 " autocmd BufEnter * if &ft ==# 'python' | :call mark#ToggleOff()<CR> | endif
 
 
@@ -1031,6 +1047,9 @@ let g:vimfiler_execute_file_list={
 nnoremap <F3> :Deol -split -start-insert<CR><C-w><C-w>
 inoremap <F3> :Deol -split -start-insert<CR><C-w><C-w>
 tnoremap <F3> <C-\><C-n>:q<CR><C-w><C-w>
+nnoremap <F4> :vs<CR>:Deol -start-insert<CR><C-w><C-w>
+inoremap <F4> :vs<CR>:Deol -start-insert<CR><C-w><C-w>
+tnoremap <F4> <C-\><C-n>:q<CR><C-w><C-w>
 ""inoremap <F3> <esc>:Ttoggle<cr><C-w><C-w>A
 ""tnoremap <F3> <C-\><C-n>:Ttoggle<cr>
 """ tnoremap <esc> <C-\><C-n>

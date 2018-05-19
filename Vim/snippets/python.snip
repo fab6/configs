@@ -56,6 +56,28 @@ alias       print_dots
 options     head
         print (100*".")${0}
 
+#-----------------------------------------------------------------------------------
+snippet     p
+abbr        print (...)...
+alias       print_klammer
+options     head
+        print (${1})${2}
+#-----------------------------------------------------------------------------------
+snippet     pp
+abbr        pp
+alias       print_klammer2
+options     head
+        print ("${1}: ",${2})${3}
+
+# print ("${1}: ",${2})${3:jump}
+#         class ${1:#:name}(${2:object}):j
+#
+# snippet     for
+# abbr        for ... in ...: ...
+# options     head
+#         for ${1:#:value} in ${2:#:list}:
+#                 ${0:pass}
+
 # ==================================================================================================
 # Pandas
 # csv files, panels, ...
@@ -197,6 +219,52 @@ options     head
     grid = gridplot([[p1, p2], [None, p3]])
     show(grid)
 
+#-----------------------------------------------------------------------------------
+snippet     head1
+abbr        head_imports1
+alias       head_imports1
+options     head
+    # --------------------------------------------------------------------------------------------------
+    import pandas as pd
+    import numpy as np
+    import seaborn as sns
+    import matplotlib.pyplot as plt
+
+#-----------------------------------------------------------------------------------
+snippet     np
+abbr        numpy_import
+alias       numpy_import
+options     head
+    # --------------------------------------------------------------------------------------------------
+    import numpy as np
+
+#-----------------------------------------------------------------------------------
+snippet     pd
+abbr        pandas_import
+alias       pandas_import
+options     head
+    # --------------------------------------------------------------------------------------------------
+    import pandas as pd
+
+#-----------------------------------------------------------------------------------
+snippet     head2
+abbr        head_imports
+alias       head_imports
+options     head
+    # --------------------------------------------------------------------------------------------------
+    import os
+    import glob
+    import shutil
+    import sys
+    from datetime import date
+    from random import randint
+    # --------------------------------------------------------------------------------------------------
+    import pandas as pd
+    import numpy as np
+    import scipy as sci
+    import seaborn as sns
+    # --------------------------------------------------------------------------------------------------
+    import matplotlib.pyplot as plt
 
 #-----------------------------------------------------------------------------------
 snippet     bk_head
