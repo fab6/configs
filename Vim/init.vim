@@ -103,7 +103,7 @@ Plug 'Shougo/deol.nvim'
     " .....................................................................
     " Programming:
     " Markdown Syntax Highlighting
-    Plug 'rhysd/vim-gfm-syntax'
+    " Plug 'rhysd/vim-gfm-syntax'
     Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
     Plug 'rudes/vim-java', { 'for': 'java' }
     Plug 'plasticboy/vim-markdown'
@@ -273,17 +273,9 @@ Plug 'Shougo/deol.nvim'
         autocmd! BufRead,BufNewFile *.pde set filetype=arduino
         autocmd! BufRead,BufNewFile *.ino set filetype=arduino
         autocmd! BufRead,BufNewFile *.snip set syntax=vim
-        autocmd BufRead,BufNew,BufNewFile README.md setlocal ft=markdown.gfm
+        " autocmd BufRead,BufNew,BufNewFile README.md setlocal ft=markdown.gfm
         " autocmd BufEnter * if &buftype == 'terminal' | :startinsert | endif
     augroup END
-        " autocmd BufNewFile,BufRead *.csv set filetype=csv
-        " autocmd BufNewFile,BufRead *.CSV set filetype=csv
-        " autocmd BufNewFile,BufRead *.dat set filetype=csv
-    "deoplete? autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-    "deoplete? autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-    "deoplete? autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-    "deoplete? autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-    "deoplete? autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
     " in human-language files, automatically format everything at 72 chars:
     " autocmd FileType mail,human set formatoptions+=t textwidth=72
@@ -331,164 +323,52 @@ Plug 'Shougo/deol.nvim'
     "" show the `best match so far' as search strings are typed:
     set incsearch
     set hlsearch
-    "let g:incsearch#auto_nohlsearch = 1
-    "" map n  <Plug>(incsearch-nohl-n)
-    "" map N  <Plug>(incsearch-nohl-N)
-    "map *  <Plug>(incsearch-nohl-*)
-    "map #  <Plug>(incsearch-nohl-#)
-    "map g* <Plug>(incsearch-nohl-g*)
-    "map g# <Plug>(incsearch-nohl-g#)
-    " map /  <Plug>(incsearch-forward)
-    " map ?  <Plug>(incsearch-backward)
-    "map g/ <Plug>(incsearch-stay)
-    "" map n <Plug>(incsearch-nohl)<Plug>(anzu-n-with-echo)
-    "" map n <Plug>(incsearch-nohl)
-    "" map n <Plug>(incsearch-nohl)
-    "" map N <Plug>(incsearch-nohl)<Plug>(anzu-N-with-echo)
-    "" map N <Plug>(incsearch-nohl)
-    "map z/ <Plug>(incsearch-fuzzy-/)
-    "map z? <Plug>(incsearch-fuzzy-?)
-    "map zg/ <Plug>(incsearch-fuzzy-stay)
 
     "--------------------------------------------------------------------------------------------------
     " Statusline / Faces
     "
-    set laststatus=2 "black status line at bottom of window
-
-
-    let s:mode = ''
-    let s:ColorizeModeActive = 0
-
-    function! ColorizeMode()
-    let l:mode = mode()
-
-
-    if l:mode != s:mode
-        if mode == 'R'
-        "highlight Normal ctermbg=darkred
-        highlight StatusLine ctermfg=red guifg=yellow
-        elseif mode == 'i'
-        "highlight Normal ctermbg=white
-        highlight StatusLine ctermfg=green guifg=red
-        elseif mode == 'v'
-        "highlight Normal ctermbg=white
-        highlight StatusLine ctermfg=yellow guifg=red
-        elseif mode == 'n'
-        "highlight Normal ctermbg=gray
-        highlight StatusLine ctermfg=30 guifg=white
-        endif
-
-        let s:mode = l:mode
-    endif
-
-    return ',' . l:mode
-    return ''
-    endfunction
-
-
-
-    if s:ColorizeModeActive == 0
-    if &statusline == ''
-        set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
-    endif
-    let &statusline = &statusline . '%{ColorizeMode()}'
-    let s:ColorizeModeActive = 1
-    endif
-
-
-    "status2 "set statusline=Vim-%{Version()}\ %{getcwd()}\ \ %1*[%02n]%*\ %(%M%R%H%)\ %2*%F%*\ %=%{Options()}\ %3*<%l,%c%V>%*
-    "status2 " " Text between "%{" and "%}" is being evaluated and thus suited for
-    "status2 " functions.
-    "status2 " " Here I will use the function "Options()" as defined below to show the
-    "status2 " " values of some (local) options..
-    "status2 " " The strings "%N*" unto "%*" correspond to the highlight group "UserN":
-    "status2 " "       User1: color for buffer number
-    "status2 hi    User1 cterm=NONE    ctermfg=red    ctermbg=white  guifg=red guibg=white
-    "status2 "   "       User2: color for filename
-    "status2 hi    User2 cterm=NONE    ctermfg=black  ctermbg=green  guifg=black guibg=green
-    "status2 "     "       User3: color for position
-    "status2 hi    User3 cterm=NONE    ctermfg=blue   ctermbg=white  guifg=blue guibg=white
-    "status2 "
-    "status2 fu! Version()
-    "status2   return version
-    "status2 endf
-    "status2
-    "status2 " Aussehen der Statuszeile (Sollte wohl besser bei den Farben sein)
-    "status2 "set   statusline=%1*[%02n]%*\ %(%M%R%H%)\ *\ %2*%t%*\ %3*<%l,%c%V,%p%%>%*
-    "status2 fu! Options()
-    "status2   let opt=""
-    "status2   if &ai|   let opt=opt." ai"   |endif
-    "status2   if &et|   let opt=opt." et"   |endif
-    "status2   if &hls|  let opt=opt." hls"  |endif
-    "status2   if &nu|   let opt=opt." nu"   |endif
-    "status2   if &ek|   let opt=opt." ek"   |endif
-    "status2   if &list| let opt=opt." list" |endif
-    "status2   if &paste|let opt=opt." paste"|endif
-    "status2   if &shiftwidth!=8|let opt=opt." sw=".&shiftwidth|endif
-    "status2   let opt=opt." tw=".&tw
-    "status2   "let opt=opt."\[".&lines.",".&columns."\]"
-    "status2   return opt
-    "status2 endf
-    "status2 " hi User1 cterm=bold ctermfg=cyan  ctermbg=white guifg=cyan guibg=white
-    "status2 hi User1 cterm=NONE ctermfg=red   ctermbg=white guifg=red   guibg=white
-    "status2 hi User2 cterm=NONE ctermfg=green ctermbg=white guifg=green guibg=white
-    "status2 hi User3 cterm=NONE ctermfg=blue  ctermbg=white guifg=blue  guibg=white
+    " set laststatus=2 "black status line at bottom of window
     "
-    "3 set statusline=
-    "3 set statusline+=%7*\[%n]                                  "buffernr
-    "3 set statusline+=%1*\ %<%F\                                "File+path
-    "3 set statusline+=%2*\ %y\                                  "FileType
-    "3 set statusline+=%3*\ %{''.(&fenc!=''?&fenc:&enc).''}      "Encoding
-    "3 set statusline+=%3*\ %{(&bomb?\",BOM\":\"\")}\            "Encoding2
-    "3 set statusline+=%4*\ %{&ff}\                              "FileFormat (dos/unix..) 
-    "3 set statusline+=%5*\ %{&spelllang}\%{HighlightSearch()}\  "Spellanguage & Highlight on?
-    "3 set statusline+=%8*\ %=\ row:%l/%L\ (%03p%%)\             "Rownumber/total (%)
-    "3 set statusline+=%9*\ col:%03c\                            "Colnr
-    "3 set statusline+=%0*\ \ %m%r%w\ %P\ \                      "Modified? Readonly? Top/bot.
-    "3 function! HighlightSearch()
-    "3   if &hls
-    "3     return 'H'
-    "3   else
-    "3     return ''
-    "3   endif
-    "3 endfunction
-    "3 "":hi StatusLineNC   term=reverse cterm=reverse ctermfg=9 gui=bold guifg=black guibg=green 
-    "3 :hi StatusLineNC   term=reverse cterm=reverse 
-    "3 "hi User1 ctermfg=#ffdad8  ctermbg=#880c0e
-    "3 "hi User2 ctermfg=#000000  ctermbg=#F4905C
-    "3 "hi User3 ctermfg=#292b00  ctermbg=#f4f597
-    "3 "hi User4 ctermfg=#112605  ctermbg=#aefe7B
-    "3 "hi User5 ctermfg=#051d00  ctermbg=#7dcc7d
-    "3 "hi User7 ctermfg=#ffffff  ctermbg=#880c0e cterm=bold
-    "3 "hi User8 ctermfg=#ffffff  ctermbg=#5b7fbb
-    "3 "hi User9 ctermfg=#ffffff  ctermbg=#810085
-    "3 "hi User0 ctermfg=#ffffff  ctermbg=#094afe
-    "3 hi User1 ctermbg=17
-    "3 hi User2 ctermbg=28
-    "3 hi User3 ctermbg=38
-    "3 hi User4 ctermbg=48
-    "3 hi User5 ctermbg=118
-    "3 hi User7 ctermbg=128
-    "3 hi User8 ctermbg=138
-    "3 hi User9 ctermbg=147
-    "3 hi User9 ctermbg=150
-
-
-    "x let g:lightline = {
-    "x             \ 'colorscheme': 'powerline',
-    "x             \ 'active': {'left': [['mode','paste'],['readonly','filename','modified']]},
-    "x             \ 'component_function': { 'filename': 'LightLineFilename' }
-    "x             \ }
-    "x function! LightLineFilename()
-    "x     return expand('%')
-    "x endfunction
     "
-    "  Showmarks
-    ":hi ShowMarksHLl ctermfg=red "For marks a-z
-    ":hi ShowMarksHLu ctermfg=yellow "For marks A-Z
-    ":hi ShowMarksHLo ctermfg=magenta "For all other marks
-    ":hi ShowMarksHLm ctermfg=white "For multiple marks on the same line.
-    ":hi SignColumn ctermbg=black
+    " let s:mode = ''
+    " let s:ColorizeModeActive = 0
+    "
+    " function! ColorizeMode()
+    " let l:mode = mode()
+    "
+    "
+    " if l:mode != s:mode
+    "     if mode == 'R'
+    "     "highlight Normal ctermbg=darkred
+    "     highlight StatusLine ctermfg=red guifg=yellow
+    "     elseif mode == 'i'
+    "     "highlight Normal ctermbg=white
+    "     highlight StatusLine ctermfg=green guifg=red
+    "     elseif mode == 'v'
+    "     "highlight Normal ctermbg=white
+    "     highlight StatusLine ctermfg=yellow guifg=red
+    "     elseif mode == 'n'
+    "     "highlight Normal ctermbg=gray
+    "     highlight StatusLine ctermfg=30 guifg=white
+    "     endif
+    "
+    "     let s:mode = l:mode
+    " endif
+    "
+    " return ',' . l:mode
+    " return ''
+    " endfunction
+    "
+    "
+    "
+    " if s:ColorizeModeActive == 0
+    " if &statusline == ''
+    "     set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
+    " endif
+    " let &statusline = &statusline . '%{ColorizeMode()}'
+    " let s:ColorizeModeActive = 1
+    " endif
+
 
     "--------------------------------------------------------------------------------------------------
     " BACKUP
@@ -649,7 +529,7 @@ nnoremap <silent> <leader>r :<C-u>Denite -mode=normal -no-split -buffer-name=mru
 nnoremap <silent> <leader>b :<C-u>Denite -mode=normal -no-split -buffer-name=buffers buffer<cr>
 nnoremap <silent> <leader>l :<C-u>Denite line -mode=insert -no-split -buffer-name=line<cr>
 
-nnoremap <silent> <leader>a :<C-u>Denite ale -mode=normal -auto-preview<CR>
+" nnoremap <silent> <leader>a :<C-u>Denite ale -mode=normal -auto-preview<CR>
 nnoremap <silent> <leader>m :<C-u>Denite marks -mode=normal<CR>
 nnoremap <silent> <leader>M :<C-u>Denite menu -mode=normal<CR>
 nnoremap <silent> <leader>g :<C-u>Denite -mode=normal -winwidth=35 grep<cr>
@@ -880,16 +760,6 @@ function! s:denite_settings()
     imap <buffer> <C-k>   <Plug>(denite_move_previous_line)
 endfunction
 
-" Custom mappings for the unite buffer
-" autocmd FileType unite call s:unite_settings()
-" function! s:unite_settings()
-"     " Play nice with supertab
-"     let b:SuperTabDisabled=1
-"     " Enable navigation with control-j and control-k in insert mode
-"     imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-"     imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-" endfunction
-
 " Use fuzzy matcher for filtering elements.
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 
@@ -935,7 +805,7 @@ map <silent><leader>D :VimFilerCreate -status -sort-type=Time<CR>
 map <silent><leader>Dd :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=29 -toggle -no-quit -explorer<CR>
 map <silent><leader>d :VimFilerBufferDir -status -sort-type=Time<CR>
 " map <space>E :VimFilerBufferDir -status -split -simple -winwidth=30 -toggle -no-quit<CR><CR>
-nnoremap <F2> :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=30 -toggle -no-quit<CR>
+" nnoremap <F2> :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=30 -toggle -no-quit<CR>
 
 augroup filetype
     " open at start up: autocmd VimEnter * if !argc() | VimFiler -status | endif
@@ -950,18 +820,18 @@ function! s:vimfiler_buffer_au()
     :highlight CursorLine ctermbg=65
 endfunction
 " autocmd FileType vimfiler call s:vimfiler_buffer_au()
-autocmd FileType vimfiler :call mark#ToggleOn()
 "autocmd FileType python :call mark#ToggleOff()
 "autocmd BufEnter * if &ft == 'python' | :call mark#ToggleOff()<CR>| endif
-autocmd BufEnter *.py :call mark#ToggleOff()
-autocmd BufEnter *.sh :call mark#ToggleOff()
-autocmd BufEnter *.vim :call mark#ToggleOff()
-autocmd BufEnter *.fds :call mark#ToggleOff()
-autocmd BufEnter *.c :call mark#ToggleOff()
-autocmd BufEnter *.mo :call mark#ToggleOff()
-autocmd BufEnter *.ino :call mark#ToggleOff()
-autocmd BufEnter *.m :call mark#ToggleOff()
-autocmd BufEnter *.csv :call mark#ToggleOff()
+"x autocmd FileType vimfiler :call mark#ToggleOn()
+"x autocmd BufEnter *.py :call mark#ToggleOff()
+"x autocmd BufEnter *.sh :call mark#ToggleOff()
+"x autocmd BufEnter *.vim :call mark#ToggleOff()
+"x autocmd BufEnter *.fds :call mark#ToggleOff()
+"x autocmd BufEnter *.c :call mark#ToggleOff()
+"x autocmd BufEnter *.mo :call mark#ToggleOff()
+"x autocmd BufEnter *.ino :call mark#ToggleOff()
+"x autocmd BufEnter *.m :call mark#ToggleOff()
+"x autocmd BufEnter *.csv :call mark#ToggleOff()
 "autocmd BufEnter * if &ft == 'bash' | :call mark#ToggleOff()<CR>| endif
 "autocmd BufEnter * if &ft == 'dakota' | :call mark#ToggleOff()<CR>| endif
 "autocmd BufEnter * if &ft == 'fds' | :call mark#ToggleOff()<CR>| endif
@@ -974,6 +844,7 @@ autocmd BufEnter *.csv :call mark#ToggleOff()
 
 
 
+"..................................................................................................
 let g:vimfiler_file_icon = '-'
 let g:vimfiler_marked_file_icon = '*'
 let g:vimfiler_as_default_explorer = 1
@@ -989,13 +860,6 @@ let g:vimfiler_enable_auto_cd = 1
 let g:vimfiler_readonly_file_icon = '✗'
 let g:vimfiler_time_format = '%m-%d-%y %H:%M:%S'
 let g:vimfiler_expand_jump_to_first_child = 0
-" let g:vimfiler_ignore_pattern = '\.DS_Store\|\.pyc|\^\.*'
-" let g:vimfiler_ignore_pattern = '\%(.ini\|.sys\|.bat\|.BAK\|.DAT\)$\|^\%(.git\)$'
-" let g:vimfiler_ignore_pattern = '^\%(.vimrc\|\.a\*\)$'
-" let g:vimfiler_ignore_pattern = '\.git\|\.DS_Store\|\.pyc'
-" Default value is '^\.' (dot files pattern).
-
-"let g:vimfiler_data_directory = $DOTVIM.'/.vimfiler'
 let g:vimfiler_data_directory = '~/.vimfiler'
 
 let g:vimfiler_execute_file_list={
@@ -1035,102 +899,40 @@ let g:vimfiler_execute_file_list={
 
 """To simulate |i_CTRL-R| in terminal-mode:
 "":tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
-""
-""" Quickly create a new terminal in a vertical split
-""tnoremap <Leader>% <C-\><C-n>:vsp<CR><C-w><C-w>:term<CR>
-""noremap <Leader>% :vsp<CR><C-w><C-w>:term<CR>
-""noremap <Leader>^ :tabnew<CR>:term<CR>
-""" nmap <leader>T :vs<CR>:terminal<CR>
-""
-"""kassio/neoterm
-""nnoremap <F3> :Ttoggle<cr><C-w><C-w>A
 nnoremap <F3> :Deol -split -start-insert<CR><C-w><C-w>
 inoremap <F3> :Deol -split -start-insert<CR><C-w><C-w>
 tnoremap <F3> <C-\><C-n>:q<CR><C-w><C-w>
 nnoremap <F4> :vs<CR>:Deol -start-insert<CR><C-w><C-w>
 inoremap <F4> :vs<CR>:Deol -start-insert<CR><C-w><C-w>
 tnoremap <F4> <C-\><C-n>:q<CR><C-w><C-w>
-""inoremap <F3> <esc>:Ttoggle<cr><C-w><C-w>A
-""tnoremap <F3> <C-\><C-n>:Ttoggle<cr>
-""" tnoremap <esc> <C-\><C-n>
-""tnoremap <C-w><C-w> <C-\><C-n><C-w><C-w>
 
 
 
 
 "==================================================================================================
 " TABs
-" nnoremap <C-Left> :tabprevious<CR>
-" nnoremap <C-Right> :tabnext<CR>
 nnoremap <silent> <A-Left> :execute 'silent! tabmove ' . (tabpagenr()-2)<CR>
 nnoremap <silent> <A-Right> :execute 'silent! tabmove ' . (tabpagenr()+1)<CR>
 let notabs = 0
 nnoremap <silent> <F8> :let notabs=!notabs<Bar>:if notabs<Bar>:tabo<Bar>:else<Bar>:tab ball<Bar>:tabn<Bar>:endif<CR>
-" nnoremap th  :tabfirst<CR>
-" nnoremap tj  :tabnext<CR>
 nnoremap gl  :tabnext<CR>
-" nnoremap tk  :tabprev<CR>
 nnoremap gh  :tabprev<CR>
-" nnoremap tl  :tablast<CR>
-" nnoremap tt  :tabedit<Space>
-" nnoremap tn  :tabnext<Space>
-" nnoremap tm  :tabm<Space>
-" nnoremap td  :tabclose<CR>
 nnoremap gd  :tabclose<CR>
-" Alternatively use
-"nnoremap th :tabnext<CR>
-"nnoremap tl :tabprev<CR>
-" nnoremap tn :tabnew<CR>
 nnoremap gN :tabnew<CR>
 nnoremap gn :tabnext<CR>
 
 
 "==================================================================================================
-let g:gfm_syntax_enable_always = 0
-let g:gfm_syntax_enable_filetypes = ['markdown.gfm']
-let g:markdown_fenced_languages = ['cpp', 'json','python']
+" let g:gfm_syntax_enable_always = 0
+" let g:gfm_syntax_enable_filetypes = ['markdown.gfm']
+" let g:markdown_fenced_languages = ['cpp', 'json','python']
+
 
 
 map <F9> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
             \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
             \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
-" let g:windowswap_map_keys = 0 "prevent default bindings
-" nnoremap <silent> <leader>yw :call WindowSwap#MarkWindowSwap()<CR>
-" nnoremap <silent> <leader>pw :call WindowSwap#DoWindowSwap()<CR>
-" nnoremap <silent> <leader>ww :call WindowSwap#EasyWindowSwap()<CR>
-
-"==================================================================================================
-" ale
-"
-"" let g:ale_sign_error = 'E'
-"" " let g:ale_sign_warning = '⚠'
-"" let g:ale_sign_warning = 'W'
-"" " let g:ale_statusline_format = ['E %d', '⚠ %d', '']
-"" let g:ale_statusline_format = ['E %d', 'W %d', '']
-"" let g:ale_lint_on_text_changed = 0
-"" let g:ale_lint_on_save = 1
-"" let g:ale_lint_on_enter = 1
-"" " cycle through location list
-"" " nmap <silent> <leader>an <Plug>(ale_next_wrap)
-"" nmap <silent> <leader>A :ALEToggle<CR>
-""
-"" let g:ale_linters = {
-""             \   'elixir': [],
-""             \}
-""
-"" let g:ale_rust_cargo_use_check = 1
-" }
-"
-"
-" :hi x187_LightYellow3 ctermfg=187 guifg=#d7d7af ctermfg=/usr/bin/env: ‘php’: No such file or directory "rgb=215,215,175
-" let s:ale_running = 0
-" let l:stl .= '%{s:ale_running ? "[linting]" : ""}'
-" augroup ALEProgress
-"     autocmd!
-"     autocmd User ALELintPre  let s:ale_running = 1 | redrawstatus
-"     autocmd User ALELintPost let s:ale_running = 0 | redrawstatus
-" augroup end
 
 "==================================================================================================
 " Denite-Git + Easygit
@@ -1320,6 +1122,7 @@ silent 3Mark /.*\.stp/
 silent 3Mark /.*\.step/
 silent 4Mark /.*\.stl/
 silent 5Mark /.*\.mo/
+silent 5Mark /.*\.java/
 silent 5Mark /.*\.fmu/
 
 silent 9Mark /.*\.sim/
@@ -1475,3 +1278,51 @@ highlight MarkWord17  ctermfg=192 ctermbg=bg
 "x hi Comment ctermfg=34
 "x hi PreProc ctermfg=cyan
 
+
+"==================================================================================================
+" Delete white spaces
+nnoremap <F5> :%s/\s\+$//e
+
+"==================================================================================================
+" Python calculator
+:command! -nargs=+ Calc :py3 print (<args>)
+":py3 from math import *
+:py3 import numpy as np
+" :py3 from cmath import *
+nnoremap <F2>  :Calc
+
+
+function! MyTabname(n) abort
+  let buflist = tabpagebuflist(a:n)
+  let winnr = tabpagewinnr(a:n)
+  let _ = expand('#'.buflist[winnr - 1].':t')
+  " if &ft == 'vimfiler'
+  if gettabwinvar(a:n, winnr, '&ft') == 'vimfiler'
+    return 'VMFILE'
+    " return getcwd()
+  else
+    return strlen(_) ? _ : '[No Name]'
+  endif
+endfunction
+
+
+      "\ 'colorscheme': 'wombat',
+      "\ 'active': {
+      "\   'left': [ [ 'mode', 'paste' ],
+      "\             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      "\ },
+      "\ 'component_function': {
+      "\   'gitbranch': 'fugitive#head'
+      "\ },
+let g:lightline = {
+      \ 'tab': {
+      \ 'active': [ 'tabnum', 'mytabname', 'modified' ],
+      \ 'inactive': [ 'tabnum', 'mytabname', 'modified' ] 
+      \ },
+      \ 'tab_component_function': {
+      \ 'mytabname': 'MyTabname',
+      \ 'modified': 'lightline#tab#modified',
+      \ 'readonly': 'lightline#tab#readonly',
+      \ 'tabnum': 'lightline#tab#tabnum'
+      \ },
+      \ }
