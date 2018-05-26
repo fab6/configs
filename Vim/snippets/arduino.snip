@@ -1,117 +1,136 @@
-""# Vim snippets for Arduino
-""#
-""# http://hardwarefun.com
-""#
-""#  Copyright 2013 Sudar Muthu  (http://sudarmuthu.com)
-""#  ------------------------------------------------------------------------------
-""#  "THE BEER-WARE LICENSE" (Revision 42):
-""#  Sudar <http://sudarmuthu.com> wrote this file.
-""#  As long as you retain this notice you can do whatever you want with this stuff.
-""#  If we ever meet and you are overcome with gratitude,
-""#  feel free to express your feelings via beverage :)
-""#  ------------------------------------------------------------------------------
-""
 
-""snippet     if
-""options     head
-""abbr        if () {}
-""    if (${1:#:condition}) {
-""        ${0:TARGET}
-""    }
-""# TODO - add analog read/write
-""
-""extends cpp
-""
-""#  ------------------------------------------------------------------------------
-""# Setup and loop
-""#  ------------------------------------------------------------------------------
-""snippet setup "setup()"
-""	void setup()
-""	{
-""                ${1}//Serial.begin(115200);
-""
-""		${2}
-""	}
-""endsnippet
-""
-""snippet loop "loop()"
-""	void loop()
-""	{
-""		${1}
-""	}
-""endsnippet
-""
-""#  ------------------------------------------------------------------------------
-""# Read and write
-""#  ------------------------------------------------------------------------------
-""snippet dwh "digitalWrite - High"
-""	digitalWrite(${1:13}, ${2:HIGH});
-""endsnippet
-""
-""snippet dwl "digitalWrite - Low"
-""	digitalWrite(${1:13}, ${2:LOW});
-""endsnippet
-""
-""snippet dr "digitalRead"
-""	digitalRead(${1:13});
-""endsnippet
-""snippet ar "analogRead"
-""	analogRead(${1:13});
-""endsnippet
-""
-""#  ------------------------------------------------------------------------------
-""# pinMode function
-""#  ------------------------------------------------------------------------------
-""snippet pmi "pinMode - Input"
-""	pinMode(${1:13}, ${2:INPUT});
-""endsnippet
-""
-""snippet pmo "pinMode - Output"
-""	pinMode(${1:13}, ${2:OUTPUT});
-""endsnippet
-""
-""#  ------------------------------------------------------------------------------
-""# Map
-""#  ------------------------------------------------------------------------------
-""snippet map(x, 0, 1, 2, 3) "map"
-""	map(${1:0}, ${2:0}, ${3:0}, ${4:0}, ${5:0});
-""endsnippet
-""
-""#  ------------------------------------------------------------------------------
-""# Serial
-""#  ------------------------------------------------------------------------------
-""snippet sr "serial read"
-""	Serial.read();
-""endsnippet
-""
-""snippet sp "serial print"
-""	Serial.print(${1:"hello"});
-""endsnippet
-""
-""snippet spl "serial println"
-""	Serial.println((${1:"hello"});
-""endsnippet
-""
-""#  ------------------------------------------------------------------------------
-""# if, else, switch
-""#  ------------------------------------------------------------------------------
-""snippet if "if(condition) {}"
-""        if(${1:condition})
-""        {
-""                ${2:}
-""        }
-""endsnippet
-""
-""snippet elif "else if(condition) {}"
-""        else if(${1:condition})
-""        {
-""                ${2:}
-""        }
-""endsnippet
-""
-""snippet el "else {}"
-""        else
-""        {
-""                ${1:}
-""        }
-""endsnippet
+
+#-----------------------------------------------------------------------------------
+snippet     /.
+abbr        /.
+alias       break_dot
+options     head
+        // ...................................................................................  ${0}
+
+#-----------------------------------------------------------------------------------
+snippet     /-
+abbr        /-
+alias       break_single
+options     head
+        // ----------------------------------------------------------------------------------- ${0}
+
+#-----------------------------------------------------------------------------------
+snippet     /=
+abbr        /=
+alias       break_double
+options     head
+        // ==================================================================================== ${0}
+
+
+#-----------------------------------------------------------------------------------
+snippet     if
+options     head
+abbr        if () {}
+    if (${1:#:condition}) {
+        ${0:TARGET}
+    }
+#  ------------------------------------------------------------------------------
+# Setup and loop
+#  ------------------------------------------------------------------------------
+#XX Vim snippets for Arduino
+#XX
+#XX http://hardwarefun.com
+#XX
+#XX  Copyright 2013 Sudar Muthu  (http://sudarmuthu.com)
+#XX  ------------------------------------------------------------------------------
+#XX  "THE BEER-WARE LICENSE" (Revision 42):
+#XX  Sudar <http://sudarmuthu.com> wrote this file.
+#XX  As long as you retain this notice you can do whatever you want with this stuff.
+#XX  If we ever meet and you are overcome with gratitude,
+#XX  feel free to express your feelings via beverage :)
+#XX  ------------------------------------------------------------------------------
+#XX snippet setup "setup()"
+#XX 	void setup()
+#XX 	{
+#XX                 ${1}//Serial.begin(115200);
+#XX 
+#XX 		${2}
+#XX 	}
+#XX endsnippet
+#XX 
+#XX snippet loop "loop()"
+#XX 	void loop()
+#XX 	{
+#XX 		${1}
+#XX 	}
+#XX endsnippet
+#XX 
+#XX #  ------------------------------------------------------------------------------
+#XX # Read and write
+#XX #  ------------------------------------------------------------------------------
+#XX snippet dwh "digitalWrite - High"
+#XX 	digitalWrite(${1:13}, ${2:HIGH});
+#XX endsnippet
+#XX 
+#XX snippet dwl "digitalWrite - Low"
+#XX 	digitalWrite(${1:13}, ${2:LOW});
+#XX endsnippet
+#XX 
+#XX snippet dr "digitalRead"
+#XX 	digitalRead(${1:13});
+#XX endsnippet
+#XX snippet ar "analogRead"
+#XX 	analogRead(${1:13});
+#XX endsnippet
+#XX 
+#XX #  ------------------------------------------------------------------------------
+#XX # pinMode function
+#XX #  ------------------------------------------------------------------------------
+#XX snippet pmi "pinMode - Input"
+#XX 	pinMode(${1:13}, ${2:INPUT});
+#XX endsnippet
+#XX 
+#XX snippet pmo "pinMode - Output"
+#XX 	pinMode(${1:13}, ${2:OUTPUT});
+#XX endsnippet
+#XX 
+#XX #  ------------------------------------------------------------------------------
+#XX # Map
+#XX #  ------------------------------------------------------------------------------
+#XX snippet map(x, 0, 1, 2, 3) "map"
+#XX 	map(${1:0}, ${2:0}, ${3:0}, ${4:0}, ${5:0});
+#XX endsnippet
+#XX 
+#XX #  ------------------------------------------------------------------------------
+#XX # Serial
+#XX #  ------------------------------------------------------------------------------
+#XX snippet sr "serial read"
+#XX 	Serial.read();
+#XX endsnippet
+#XX 
+#XX snippet sp "serial print"
+#XX 	Serial.print(${1:"hello"});
+#XX endsnippet
+#XX 
+#XX snippet spl "serial println"
+#XX 	Serial.println((${1:"hello"});
+#XX endsnippet
+#XX 
+#XX #  ------------------------------------------------------------------------------
+#XX # if, else, switch
+#XX #  ------------------------------------------------------------------------------
+#XX snippet if "if(condition) {}"
+#XX         if(${1:condition})
+#XX         {
+#XX                 ${2:}
+#XX         }
+#XX endsnippet
+#XX 
+#XX snippet elif "else if(condition) {}"
+#XX         else if(${1:condition})
+#XX         {
+#XX                 ${2:}
+#XX         }
+#XX endsnippet
+#XX 
+#XX snippet el "else {}"
+#XX         else
+#XX         {
+#XX                 ${1:}
+#XX         }
+#XX endsnippet

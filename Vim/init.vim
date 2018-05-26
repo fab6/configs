@@ -115,9 +115,10 @@ Plug 'Shougo/deol.nvim'
     "Plug 'bps/vim-textobj-python'
     " Plug 'ludovicchabant/vim-gutentags'
     Plug 'jvirtanen/vim-octave', { 'for': 'octave' }
-    Plug 'stevearc/vim-arduino', { 'for': 'arduino' }
+    Plug '4Evergreen4/vim-hardy'
+    "Plug 'stevearc/vim-arduino', { 'for': 'arduino' }
     "Plug 'nvie/vim-flake8', { 'for': 'python' }
-    Plug 'sudar/vim-arduino-syntax', { 'for': 'arduino' }
+    "Plug 'sudar/vim-arduino-syntax', { 'for': 'arduino' }
     Plug 'jceb/vim-orgmode'
     " Plug 'iyuuya/denite-ale'
     " .....................................................................
@@ -270,10 +271,13 @@ Plug 'Shougo/deol.nvim'
         autocmd! BufRead,BufNewFile *.pvb       set filetype=tcl
         autocmd! BufRead,BufNewFile *.pvsm       set filetype=xml
         autocmd! BufRead,BufNewFile *.gnu     set filetype=gnu
-        autocmd! BufRead,BufNewFile *.pde set filetype=arduino
+        autocmd! BufRead,BufNewFile *.pde set filetype=c
+        autocmd! BufRead,BufNewFile *.ino set syntax=c
+        autocmd! BufRead,BufNewFile *.ino set syntax=c
         autocmd! BufRead,BufNewFile *.ino set filetype=arduino
         autocmd! BufRead,BufNewFile *.snip set syntax=vim
         autocmd BufRead,BufNew,BufNewFile README.md setlocal ft=markdown.gfm
+        autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
         " autocmd BufEnter * if &buftype == 'terminal' | :startinsert | endif
     augroup END
         " autocmd BufNewFile,BufRead *.csv set filetype=csv
@@ -649,7 +653,6 @@ nnoremap <silent> <leader>r :<C-u>Denite -mode=normal -no-split -buffer-name=mru
 nnoremap <silent> <leader>b :<C-u>Denite -mode=normal -no-split -buffer-name=buffers buffer<cr>
 nnoremap <silent> <leader>l :<C-u>Denite line -mode=insert -no-split -buffer-name=line<cr>
 
-nnoremap <silent> <leader>a :<C-u>Denite ale -mode=normal -auto-preview<CR>
 nnoremap <silent> <leader>m :<C-u>Denite marks -mode=normal<CR>
 nnoremap <silent> <leader>M :<C-u>Denite menu -mode=normal<CR>
 nnoremap <silent> <leader>g :<C-u>Denite -mode=normal -winwidth=35 grep<cr>
@@ -949,6 +952,24 @@ function! s:vimfiler_buffer_au()
     setlocal colorcolumn=
     :highlight CursorLine ctermbg=65
 endfunction
+
+" function mark#ToggleOff()
+" :  echom "Meow!"
+" endfunction
+
+" function! ToggleOff()
+"         if s:enabled
+"                 call s:MarkEnable(0)
+"                 echo 'Disabled marks'
+"         " else
+"         "         call s:MarkEnable(1)
+"         "
+"         "         let l:markCnt = mark#GetCount()
+"         "         echo 'Enabled' (l:markCnt > 0 ? l:markCnt . ' ' : '') . 'marks'
+"         endif
+" endfunction
+
+
 " autocmd FileType vimfiler call s:vimfiler_buffer_au()
 autocmd FileType vimfiler :call mark#ToggleOn()
 "autocmd FileType python :call mark#ToggleOff()
@@ -1476,3 +1497,9 @@ highlight MarkWord17  ctermfg=192 ctermbg=bg
 "x hi Comment ctermfg=34
 "x hi PreProc ctermfg=cyan
 
+"<leader>A
+" nnoremap <silent> <leader>a :! arduino --upload %:p
+" nnoremap <silent> <leader>v :! arduino --verify %:p
+nnoremap <silent> <leader>U :terminal arduino --upload %:p<CR>
+nnoremap <silent> <leader>V :terminal arduino --verify %:p<CR>
+"nnoremap <silent> <leader>a :<C-u>Denite ale -mode=normal -auto-preview<CR>

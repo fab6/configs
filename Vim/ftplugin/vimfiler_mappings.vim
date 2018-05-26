@@ -8,6 +8,10 @@ if hostname() == "asus"
     nmap <silent><buffer>4 :VimFiler -status /home/fbraenns/03_GA/<CR>
     nmap <silent><buffer>9 :VimFiler -status /home/fbraenns/99_SHARE/<CR>
     nmap <silent><buffer>,X :call jobstart('xterm -e /usr/bin/nvim -c ":VimFilerBufferDir -status -sort-type=Time"' ,{'detach':1}) <CR>
+    "nmap <silent><buffer>,A :call jobstart('xterm -e arduino --upload' ,{'detach':1}) <CR>
+    nmap <silent><buffer>,U :call jobstart(['xterm','-e','arduino','--upload',expand('%:t')],{'detach':1}) <CR>
+    nmap <silent><buffer>,V :call jobstart(['xterm','-e','arduino','--verify',expand('%:t')],{'detach':1}) <CR>
+    "nmap <silent><buffer>,O :call jobstart(['xterm','-e','/usr/bin/vim',expand('%:t')],{'detach':1}) <CR>
 else
     nmap <silent><buffer>` :VimFiler -status /home/fbraenns/<CR>
     nmap <silent><buffer>1 :VimFiler -status /WORK1/fbraenns/<CR>
