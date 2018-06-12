@@ -1,19 +1,16 @@
 let g:python_host_skip_check=1
 let g:loaded_python2_provider=1
-set title
 "let g:loaded_python3_provider=1
 "==================================================================================================
 " TODO
 " Tabs:
 " - rename tabs to current vimfiler directory
 " Vim:
-"  - Vim-Plug --> faster start-time
 "  - client/server
 " SessionsWindows:
-"  - how can I use sessions --> For each topic a splitted vimfiler!?
-"  - what should be my default session
+"  - use session to undo buffer views
 " Denite:
-"  - syntax highlighting e.g. for 'line'
+"  - syntax highlighting e.g. for 'line' in python
 " Git:
 "  - easier git handling
 " Vimfiler:
@@ -30,14 +27,10 @@ set title
 " - OpenFOAM
 " Vimplug:
 " - copy and paste to other users!?
-" -On-demand loading
-"   # Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-"   # Plug 'tpope/vim-fireplace', { 'for': 'clojure' }<Paste>
 " CSV:
 " - turn on and of special csv handling
 "
 "==================================================================================================
-set title
 set runtimepath+=/home/fbraenns/.nvim/
 "--------------------------------------------------------------------------------------------------
 " Specify a directory for plugins
@@ -278,12 +271,7 @@ Plug 'cyberkov/openhab-vim'
         autocmd! BufRead,BufNewFile *.ino set syntax=c
         autocmd! BufRead,BufNewFile *.ino set filetype=arduino
         autocmd! BufRead,BufNewFile *.snip set syntax=vim
-" <<<<<<< HEAD
-"         autocmd BufRead,BufNew,BufNewFile README.md setlocal ft=markdown.gfm
         autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
-" =======
-"         " autocmd BufRead,BufNew,BufNewFile README.md setlocal ft=markdown.gfm
-" >>>>>>> b9c06e919cc0ddb91760c397f5a264f2a423ded5
         " autocmd BufEnter * if &buftype == 'terminal' | :startinsert | endif
     augroup END
 
@@ -539,10 +527,6 @@ nnoremap <silent> <leader>r :<C-u>Denite -mode=normal -no-split -buffer-name=mru
 nnoremap <silent> <leader>b :<C-u>Denite -mode=normal -no-split -buffer-name=buffers buffer<cr>
 nnoremap <silent> <leader>l :<C-u>Denite line -mode=insert -no-split -buffer-name=line<cr>
 
-" <<<<<<< HEAD
-" =======
-" " nnoremap <silent> <leader>a :<C-u>Denite ale -mode=normal -auto-preview<CR>
-" >>>>>>> b9c06e919cc0ddb91760c397f5a264f2a423ded5
 nnoremap <silent> <leader>m :<C-u>Denite marks -mode=normal<CR>
 nnoremap <silent> <leader>M :<C-u>Denite menu -mode=normal<CR>
 nnoremap <silent> <leader>g :<C-u>Denite -mode=normal -winwidth=35 grep<cr>
@@ -893,6 +877,8 @@ let g:vimfiler_time_format = '%m-%d-%y %H:%M:%S'
 let g:vimfiler_expand_jump_to_first_child = 0
 let g:vimfiler_data_directory = '~/.vimfiler'
 
+let g:vimfiler_ignore_pattern = [ '*\.bf', '*.sf', '*.s3d', '*.iso', '^\.git$', '^\.DS_Store$']
+
 let g:vimfiler_execute_file_list={
             \ 'txt': 'neovim',
             \ 'vim': 'neovim',
@@ -1212,6 +1198,45 @@ set background=dark
 "
 "..................................................................................................
 " Highlighting
+"
+function! MyTabname(n) abort
+  let buflist = tabpagebuflist(a:n)
+  let winnr = tabpagewinnr(a:n)
+  let _ = expand('#'.buflist[winnr - 1].':t')
+  " if &ft == 'vimfiler'
+  if gettabwinvar(a:n, winnr, '&ft') == 'vimfiler'
+    return 'VMFILE'
+    " return getcwd()
+  else
+    return strlen(_) ? _ : '[No Name]'
+  endif
+endfunction
+
+" let &titlestring = expand('@%')
+" set title
+
+      "\ 'colorscheme': 'wombat',
+      "\ 'active': {
+      "\   'left': [ [ 'mode', 'paste' ],
+      "\             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      "\ },
+      "\ 'component_function': {
+      "\   'gitbranch': 'fugitive#head'
+      "\ },
+let g:lightline = {
+      \ 'tab': {
+      \ 'active': [ 'tabnum', 'mytabname', 'modified' ],
+      \ 'inactive': [ 'tabnum', 'mytabname', 'modified' ] 
+      \ },
+      \ 'tab_component_function': {
+      \ 'mytabname': 'MyTabname',
+      \ 'modified': 'lightline#tab#modified',
+      \ 'readonly': 'lightline#tab#readonly',
+      \ 'tabnum': 'lightline#tab#tabnum'
+      \ },
+      \ }
+"
+"
 "highlight Normal ctermbg=234
 "ctermfg=white
 " :hi comment ctermfg=darkgreen
@@ -1310,14 +1335,12 @@ highlight MarkWord17  ctermfg=192 ctermbg=bg
 "x hi Comment ctermfg=34
 "x hi PreProc ctermfg=cyan
 
-" <<<<<<< HEAD
 "<leader>A
 " nnoremap <silent> <leader>a :! arduino --upload %:p
 " nnoremap <silent> <leader>v :! arduino --verify %:p
 nnoremap <silent> <leader>U :terminal arduino --upload %:p<CR>
 nnoremap <silent> <leader>V :terminal arduino --verify %:p<CR>
 "nnoremap <silent> <leader>a :<C-u>Denite ale -mode=normal -auto-preview<CR>
-" =======
 
 "==================================================================================================
 " Delete white spaces
@@ -1331,20 +1354,39 @@ nnoremap <F5> :%s/\s\+$//e
 " :py3 from cmath import *
 nnoremap <F2>  :Calc
 
+"==================================================================================================
+" Jump back in buffers (vimfiler!?)
+" :browse oldfiles :bro ol
+"https://vi.stackexchange.com/questions/3694/is-there-a-way-to-reliably-go-back-and-forth-in-file-history
+"<C-6>
+"
+"You can also use :oldfiles to get a list of files you edited.
+"The list will have numbers associated with filenames. Pick a file, note the number (say 14) and open it with :edit #<14
+"
+fun! ChooseBuf()
+    redir => buffers
+        silent ls
+    redir end
 
-function! MyTabname(n) abort
-  let buflist = tabpagebuflist(a:n)
-  let winnr = tabpagewinnr(a:n)
-  let _ = expand('#'.buflist[winnr - 1].':t')
-  " if &ft == 'vimfiler'
-  if gettabwinvar(a:n, winnr, '&ft') == 'vimfiler'
-    return 'VMFILE'
-    " return getcwd()
-  else
-    return strlen(_) ? _ : '[No Name]'
-  endif
+    echo l:buffers
+    let l:choice = input('Which one: ')
+    execute ':edit +' . l:choice . 'buf'
+endfun
+command! ChooseBuf call ChooseBuf()
+nnoremap <Leader>B :call ChooseBuf()<CR>
+
+function! GoBackToRecentBuffer()
+  let startName = bufname('%')
+  while 1
+    exe "normal! \<c-o>"
+    let nowName = bufname('%')
+    if nowName != startName
+      break
+    endif
+  endwhile
 endfunction
 
+nnoremap <silent> <C-U> :call GoBackToRecentBuffer()<Enter>
 
       "\ 'colorscheme': 'wombat',
       "\ 'active': {
@@ -1366,4 +1408,8 @@ let g:lightline = {
       \ 'tabnum': 'lightline#tab#tabnum'
       \ },
       \ }
-" >>>>>>> b9c06e919cc0ddb91760c397f5a264f2a423ded5
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
