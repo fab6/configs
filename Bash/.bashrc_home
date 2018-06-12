@@ -4,9 +4,13 @@
 #===================================================================
 # GENERAL
 #===================================================================
-alias lt='ls -rlth'
+alias lt='ls -rlth --color'
 
-LS_COLORS='di=1:fi=0:ln=31:pi=5:so=5:bd=5:cd=5:or=31:mi=0:ex=35:*.rpm=90:*.ipynb=93:*.py=93:*.tar.gz=33:*.tar.bz2=33:*.zip=33:*.gz=33:*.xls=32:*.ods=32:*.xlsx=32:*.doc=34:*.docx=34:*.odt=34:*.fds=31:*.csv=36:*.dat=36'
+LS_COLORS='di=1:fi=0:ln=31:pi=5:so=5:bd=5:cd=5:or=31:mi=0:ex=35:*.pdf=91:*.png=95:*.rpm=90:*.ipynb=93:*.py=93:*.tar.gz=33:*.tar.bz2=33:*.zip=33:*.gz=33:*.xls=32:*.ods=32:*.xlsx=92:*.doc=34:*.docx=34:*.odt=34:*.fds=31:*.csv=36:*.dat=36'
+
+alias ls='ls --color'
+#LS_COLORS='di=1:fi=0:ln=31:pi=5:so=5:bd=5:cd=5:or=31:mi=0:ex=35:*.rpm=90'
+export LS_COLORS
 
 alias checkL='ssh  mesh01 "python /share/Tools/Python/check_ganglia_v1.py"'
 
@@ -16,6 +20,7 @@ alias m4SH='sudo mount -t davfs https://webdav.4shared.com/ /home/fbraenns/99_4s
 alias sshPifb='ssh fbraenns@192.168.178.46' #LAN RAS
 alias sshPiPi='ssh pi@192.168.178.46' #LAN RAS
 alias sshPiHass='ssh homeassistant@192.168.178.46' #LAN RAS
+alias sshOH='ssh openhabian@192.168.178.46' #LAN RAS
 
 alias nv='nvim'
 alias vi='nvim'

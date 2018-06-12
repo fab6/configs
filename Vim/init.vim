@@ -22,6 +22,7 @@ set title
 " Complete:
 "  - deoplete does this work for the terminal as well?
 " Snippets:
+" - OpenHAB
 " - modelica
 " - Arduino
 " - Octave
@@ -44,6 +45,7 @@ call plug#begin('/home/fbraenns/.nvim/vimplug')
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'Shougo/deol.nvim'
+Plug 'cyberkov/openhab-vim'
 ", 
     "{ 'rev': 'a1b5108fd' }
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
