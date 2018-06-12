@@ -6,7 +6,8 @@
 #===================================================================
 alias lt='ls -rlth --color=auto'
 
-LS_COLORS='di=1:fi=0:ln=31:pi=5:so=5:bd=5:cd=5:or=31:mi=0:ex=35:*.rpm=90:*.ipynb=93:*.py=93:*.tar.gz=33:*.tar.bz2=33:*.zip=33:*.gz=33:*.xls=32:*.ods=32:*.xlsx=32:*.doc=34:*.docx=34:*.odt=34:*.fds=31:*.csv=36:*.dat=36'
+LS_COLORS='di=1:fi=0:ln=31:pi=5:so=5:bd=5:cd=5:or=31:mi=0:ex=35:*.rpm=90:*.png=35:*.jpg=35:*.jpeg=35:*.sh=92:*.log=96:*.ipynb=93:*.py=93:*.tar.gz=33:*.tar.bz2=33:*.zip=33:*.gz=33:*.xls=32:*.ods=32:*.xlsx=32:*.doc=34:*.docx=34:*.odt=34:*.pdf=31:*.fds=94:*.sim=94:*.csv=36:*.dat=36:*.mo=33:*.java=33:*.fmu=33:*.stl=95:*.stp=95:*.igs=95:*.iges=95:*.step=95'
+
 export $LS_COLORS
 
 set -o vi
@@ -19,10 +20,12 @@ export EDITOR="/share/Tools/Editing/NeoVim/nvim.appimage"
 ###===================================================================
 module load divs/0.2
 module load Aliases/StarCCM+
-module load python/anaconda3/4.x
+#module load python/anaconda3/4.x
+module load python_loc/3.6.0_anac4.3.1
 module load FDS/6.5.3
+module load VisIt/2.10.3
+module load ParaView/5.2.0
 export OMP_NUM_THREADS=1
-#module load python_loc/3.6.0_anac4.3.1
 
 
 #===================================================================
