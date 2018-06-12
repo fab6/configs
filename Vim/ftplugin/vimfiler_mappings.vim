@@ -24,7 +24,10 @@ endif
 nmap <silent><buffer>0 <Plug>(vimfiler_cursor_top)
 
 "-------------------------------------------------------------------------------------------------- 
-nmap <silent><buffer>b <Plug>(vimfiler_cd_input_directory)<C-u>bookmark:/<CR>
+"nmap <silent><buffer>b <Plug>(vimfiler_cd_input_directory)<C-u>bookmark:/<CR>
+nmap <silent><buffer>B :UniteBookmarkAdd<CR>
+nmap <silent><buffer>b :Unite -silent -auto-resize -buffer-name=Bookmarks -default-action=vimfiler bookmark<CR>
+"VimFilerBufferDir -status -sort-type=Time<CR>
 nmap <silent><buffer>d <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_delete_file)
 nmap <silent><buffer>m <Plug>(vimfiler_toggle_mark_current_line)
 vmap <silent><buffer>m <Plug>(vimfiler_toggle_mark_selected_lines)
@@ -40,6 +43,7 @@ nmap <silent><buffer>F <Plug>(vimfiler_new_file)
 "nmap <silent><buffer>R <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_clipboard_move_file)<C-w>w<Plug>(vimfiler_clipboard_paste)
 nmap <silent><buffer>R <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_clipboard_move_file)<C-w>w<Plug>(vimfiler_clipboard_paste)y
 nmap <silent><buffer>Q <Plug>(vimfiler_exit):q<CR>
+nmap <silent><buffer>S <Plug>(vimfiler_sor)<Plug>(vimfiler_clipboard_copy_file)<C-w>w<Plug>(vimfiler_clipboard_paste)
 
 
 "-------------------------------------------------------------------------------------------------- 
