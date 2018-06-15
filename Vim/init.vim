@@ -106,7 +106,7 @@ Plug 'Shougo/deol.nvim'
     Plug 'stevearc/vim-arduino', { 'for': 'arduino' }
     "Plug 'nvie/vim-flake8', { 'for': 'python' }
     Plug 'sudar/vim-arduino-syntax', { 'for': 'arduino' }
-    Plug 'jceb/vim-orgmode'
+"    Plug 'jceb/vim-orgmode'
     " Plug 'iyuuya/denite-ale'
     " .....................................................................
     " WindowSwapping
@@ -244,6 +244,7 @@ Plug 'Shougo/deol.nvim'
         "autocmd BufEnter set filetype=c
         autocmd BufNewFile,BufRead *Dict set filetype=c
         autocmd BufNewFile,BufRead *.mo set filetype=modelica
+        autocmd BufNewFile,BufRead *.org set syntax=org
         autocmd BufNewFile,BufRead .spacemacs set filetype=lisp
         autocmd BufNewFile,BufRead *.in set syntax=fortran
         autocmd BufNewFile,BufRead *.data set syntax=gpyro
@@ -850,7 +851,7 @@ let g:vimfiler_time_format = '%m-%d-%y %H:%M:%S'
 let g:vimfiler_expand_jump_to_first_child = 0
 let g:vimfiler_data_directory = '~/.vimfiler'
 
-let g:vimfiler_ignore_pattern = [ '*\.bf', '*.sf', '*.s3d', '*.iso', '^\.git$', '^\.DS_Store$']
+let g:vimfiler_ignore_pattern = [ '*\.bf', '*.sf', '*.s3d', '*.iso', '^\.git$', '^\.DS_Store$', '^\.pyc']
 
 let g:vimfiler_execute_file_list={
             \ 'txt': 'neovim',
