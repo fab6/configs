@@ -22,6 +22,11 @@ alias sshPiPi='ssh pi@192.168.178.46' #LAN RAS
 alias sshPiHass='ssh homeassistant@192.168.178.46' #LAN RAS
 alias sshOH='ssh openhabian@192.168.178.46' #LAN RAS
 
+#alias mPi_etc='sudo sshfs -o allow_other,defer_permissions openhabian@192.168.178.46:/etc/ /home/fbraenns/03_GA/TOOLs/OpenHAB/PI_etc'
+alias mPi_etc='sudo sshfs -o allow_other openhabian@192.168.178.46:/etc/openhab2/ /home/fbraenns/03_GA/TOOLs/OpenHAB/PI_etc'
+alias umPi_etc='sudo umount /home/fbraenns/03_GA/TOOLs/OpenHAB/PI_etc/'
+#/etc/fstab sshfs#root@xxx.xxx.xxx.xxx:/ /mnt/droplet
+
 alias nv='nvim'
 alias vi='nvim'
 

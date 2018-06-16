@@ -112,7 +112,7 @@ Plug '4Evergreen4/vim-hardy'
 "Plug 'stevearc/vim-arduino', { 'for': 'arduino' }
 "Plug 'nvie/vim-flake8', { 'for': 'python' }
 "Plug 'sudar/vim-arduino-syntax', { 'for': 'arduino' }
-Plug 'jceb/vim-orgmode'
+" Plug 'jceb/vim-orgmode'
 " Plug 'iyuuya/denite-ale'
 " .....................................................................
 " WindowSwapping
@@ -424,6 +424,7 @@ func! Paste_on_off()
 
         let g:paste_mode = 0
     endif
+<<<<<<< HEAD
     return
 endfunc
 
@@ -519,6 +520,333 @@ nnoremap <silent><leader>8 :<C-u>DeniteCursorWord grep:. -mode=normal<CR>
 nnoremap <silent> <leader>v :<C-u>Denite location_list -mode=normal -no-empty -auto-preview<CR>
 nnoremap <silent> <leader>ff :<C-u>DeniteBufferDir -mode=normal -no-split -buffer-name=files   file<cr>
 nnoremap <silent> <leader>fd :<C-u>DeniteBufferDir -mode=normal -no-split -buffer-name=dir directory_rec<cr>
+" =======
+"     "
+"     "" have fifty lines of command-line (etc) history:
+"     set history=50
+"     "" remember all of these between sessions, but only 10 search terms; also
+"     "" remember info for 10 files, but never any on removable disks, don't remember
+"     "" marks in files, don't rehighlight old search patterns, and only save up to
+"     "" 100 lines of registers; including @10 in there should restrict input buffer
+"     "" but it causes an error for me:
+"     set viminfo=/10,'10,r/mnt/zip,r/mnt/floppy,f0,h,\"100
+"
+"     "" have command-line completion <Tab> (for filenames, help topics, option names)
+"     "" first list the available options and complete the longest common part, then
+"     "" have further <Tab>s cycle through the possibilities:
+"     set wildmode=list:longest,full
+"     "
+"     "" use "[RO]" for "[readonly]" to save space in the message line:
+"     set shortmess+=r
+"     "
+"     "" display the current mode and partially-typed commands in the status line:
+"     set showmode
+"     set showcmd
+"     "
+"     "
+"     "" when ":edit"-command ignore those files:
+"     set suffixes=.aux,.bak,.dvi,.gz,.idx,.log,.ps,.swp,.tar,.pdf,.rpm,.deb,.o,.e,*~
+"
+"     "" don't have files trying to override this .vimrc:
+"     set nomodeline
+"
+"     "--------------------------------------------------------------------------------------------------
+"     " Text Formatting -- General
+"
+"     "" don't make it look like there are line breaks where there aren't:
+"     set nowrap
+"     "
+"     "" use indents of 2 spaces, and have them copied down lines:
+"     set shiftwidth=4
+"     set shiftround
+"     set expandtab
+"     set autoindent
+"
+"     "" normally don't automatically format `text' as it is typed, IE only do this
+"     "" with comments, at 79 characters:
+"     set formatoptions-=t
+"     set textwidth=72
+"
+"     "--------------------------------------------------------------------------------------------------
+"     " File detection
+"     "
+"     autocmd BufReadPost *
+"                 \ if line("'\"") > 0 && line("'\"") <= line("$") |
+"                 \   exe "normal g`\"" |
+"                 \ endif
+"     augroup filetype
+"         "autocmd BufEnter set filetype=c
+"         autocmd BufNewFile,BufRead *Dict set filetype=c
+"         autocmd BufNewFile,BufRead *.mo set filetype=modelica
+"         autocmd BufNewFile,BufRead *.org set syntax=org
+"         autocmd BufNewFile,BufRead .spacemacs set filetype=lisp
+"         autocmd BufNewFile,BufRead *.in set syntax=fortran
+"         autocmd BufNewFile,BufRead *.data set syntax=gpyro
+"         "autocmd BufNewFile,BufRead *.in set syntax=dakota
+"         autocmd BufNewFile,BufRead *.py set filetype=python tabstop=4  softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent fileformat=unix
+"         autocmd Filetype ipynb nmap <silent><Leader>b :VimpyterInsertPythonBlock<CR>
+"         autocmd Filetype ipynb nmap <silent><Leader>j :VimpyterStartJupyter<CR>
+"         autocmd Filetype ipynb nmap <silent><Leader>n :VimpyterStartNteract<CR>
+"         autocmd! BufRead,BufNewFile *.m       setf octave
+"         autocmd! BufRead,BufNewFile *.m       set filetype=octave
+"         autocmd! BufRead,BufNewFile *.pvs       set filetype=tcl
+"         autocmd! BufRead,BufNewFile *.pvb       set filetype=tcl
+"         autocmd! BufRead,BufNewFile *.pvsm       set filetype=xml
+"         autocmd! BufRead,BufNewFile *.gnu     set filetype=gnu
+"         autocmd! BufRead,BufNewFile *.pde set filetype=arduino
+"         autocmd! BufRead,BufNewFile *.ino set filetype=arduino
+"         autocmd! BufRead,BufNewFile *.snip set syntax=vim
+"         " autocmd BufRead,BufNew,BufNewFile README.md setlocal ft=markdown.gfm
+"         " autocmd BufEnter * if &buftype == 'terminal' | :startinsert | endif
+"     augroup END
+"
+"     " in human-language files, automatically format everything at 72 chars:
+"     " autocmd FileType mail,human set formatoptions+=t textwidth=72
+"
+"     " for C-like programming, have automatic indentation:
+"     autocmd FileType c,cpp,slang set cindent
+"
+"     " for actual C (not C++) programming where comments have explicit end
+"     " characters, if starting a new line in the middle of a comment automatically
+"     " insert the comment leader characters:
+"     autocmd FileType c set formatoptions+=ro
+"
+"     " for Perl programming, have things in braces indenting themselves:
+"     autocmd FileType perl set smartindent
+"
+"     " for CSS, also have things in braces indented:
+"     autocmd FileType css set smartindent
+"
+"
+"     " for HTML, generally format text, but if a long line has been created leave it
+"     " alone when editing:
+"     autocmd FileType html set formatoptions+=tl
+"
+"     " for both CSS and HTML, use genuine tab characters for indentation, to make
+"     " files a few bytes smaller:
+"     autocmd FileType html,css set noexpandtab tabstop=2
+"
+"     " in makefiles, don't expand tabs to spaces, since actual tab characters are
+"     " needed, and have indentation at 8 chars to be sure that all indents are tabs
+"     " (despite the mappings later):
+"     autocmd FileType make set noexpandtab shiftwidth=8
+"     "
+"     "
+"     set backspace=eol,start,indent
+"     "--------------------------------------------------------------------------------------------------
+"     " Search & Replace
+"     "
+"     " assume the /g flag on :s substitutions to replace all matches in a line:
+"     set gdefault
+"     "
+"     "" make searches case-insensitive, unless they contain upper-case letters:
+"     set ignorecase
+"     set smartcase
+"     "
+"     "" show the `best match so far' as search strings are typed:
+"     set incsearch
+"     set hlsearch
+"
+"     "--------------------------------------------------------------------------------------------------
+"     " Statusline / Faces
+"     "
+"     " set laststatus=2 "black status line at bottom of window
+"     "
+"     "
+"     " let s:mode = ''
+"     " let s:ColorizeModeActive = 0
+"     "
+"     " function! ColorizeMode()
+"     " let l:mode = mode()
+"     "
+"     "
+"     " if l:mode != s:mode
+"     "     if mode == 'R'
+"     "     "highlight Normal ctermbg=darkred
+"     "     highlight StatusLine ctermfg=red guifg=yellow
+"     "     elseif mode == 'i'
+"     "     "highlight Normal ctermbg=white
+"     "     highlight StatusLine ctermfg=green guifg=red
+"     "     elseif mode == 'v'
+"     "     "highlight Normal ctermbg=white
+"     "     highlight StatusLine ctermfg=yellow guifg=red
+"     "     elseif mode == 'n'
+"     "     "highlight Normal ctermbg=gray
+"     "     highlight StatusLine ctermfg=30 guifg=white
+"     "     endif
+"     "
+"     "     let s:mode = l:mode
+"     " endif
+"     "
+"     " return ',' . l:mode
+"     " return ''
+"     " endfunction
+"     "
+"     "
+"     "
+"     " if s:ColorizeModeActive == 0
+"     " if &statusline == ''
+"     "     set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
+"     " endif
+"     " let &statusline = &statusline . '%{ColorizeMode()}'
+"     " let s:ColorizeModeActive = 1
+"     " endif
+"
+"
+"     "--------------------------------------------------------------------------------------------------
+"     " BACKUP
+"     "
+"     set backup
+"     set backupdir=$HOME/.vim.backupdir/
+"     set backupext=~
+"     set wildmenu "menu has tab completion
+"     set wildignore=.aux,.bak,.dvi,.gz,.idx,.log,.ps,.swp,.tar,.pdf,.rpm,.deb,.o,.e,*~
+"
+"     "
+"     "--------------------------------------------------------------------------------------------------
+"     " keybindings
+"     "
+"     nnoremap <leader>e :e ./<CR>
+"
+"     let mapleader="\<SPACE>"
+"     "let mapleader=","
+"
+"     "" have the h and l cursor keys wrap between lines (like <Space> and <BkSpc> do
+"     "" by default), and ~ covert case over line breaks; also have the cursor keys
+"     "" wrap in insert mode:
+"     set whichwrap=h,l,~,[,]
+"     "
+"     "
+"     "" have % bounce between angled brackets, as well as t'other kinds:
+"     set matchpairs+=<:>
+"     "" have Y behave analogously to D and C rather than to dd and cc (which is
+"     "" already done by yy):
+"     noremap Y y$
+"     map ] f>
+"     map [ F<
+"     " cnoremap <C-a> <Home>
+"     cnoremap <C-e> <End>
+"     cnoremap <C-p> <Up>
+"     cnoremap <C-n> <Down>
+"     cnoremap <C-j> <Left>
+"     cnoremap <C-l> <Right>
+"     "
+"     :nnoremap <leader>fed :e ~/.config/nvim/init.vim<CR>
+"     :nnoremap <leader>fer :source ~/.config/nvim/init.vim<CR>
+"     :nnoremap <leader>fef :e ~/.nvim/ftplugin/<CR>
+"     :nnoremap <leader>fes :e ~/.nvim/snippets/python.snip<CR>
+"
+"     "" Paste Mode On/Off
+"     map <F11> :call Paste_on_off()<CR>
+"     set pastetoggle=<F11>
+"     "
+"     let paste_mode = 0 " 0 = normal, 1 = paste
+"     "
+"     func! Paste_on_off()
+"         if g:paste_mode == 0
+"             set paste
+"             let g:paste_mode = 1
+"         else
+"             set nopaste
+"
+"             let g:paste_mode = 0
+"         endif
+"         return
+"     endfunc
+"
+"     vmap <F6> :!xclip -f -sel clip<CR>
+"     imap <F7> :-1r !xclip -o -sel clip
+"
+"     :map <C-x>0 <C-w>c
+"     :map <C-x>1 <C-w>o
+"
+"     :nmap ,x :call jobstart('xterm',{'detach':1}) <CR>
+"
+"     "..................................................................................................
+"     " " Copy to clipboard
+"     set clipboard+=unnamedplus
+"     vnoremap  <leader>y  "+y
+"     " nnoremap  <leader>Y  "+yg_
+"     " nnoremap  <leader>y  "+y
+"     " nnoremap  <leader>yy  "+yy
+"
+"     " " Paste from clipboard
+"     nnoremap <leader>p ""p
+"     " nnoremap <leader>P "+P
+"     " nnoremap <leader>O "*P
+"     " vnoremap <leader>p "+p
+"     " vnoremap <leader>P "+P
+"     " vnoremap <leader>p "+p
+"     " vnoremap <leader>P "+P
+"     "
+"     " :inoremap <C-v> <ESC>"+pa
+"     " :vnoremap <C-c> "+y
+"     " :vnoremap <C-d> "+d
+"     "
+"     :tnoremap <C-p> <up>
+"     :tnoremap <C-n> <down>
+"     :tnoremap <C-h> <left>
+"     :tnoremap <C-l> <right>
+"     :tnoremap <C-r> <C-right>
+"     :tnoremap <C-b> <C-left>
+"     :tnoremap <C-0> <Home>
+"     :tnoremap <C-a> <Home>
+"     :tnoremap <C-e> <End>
+"     "To use `ALT+{h,j,k,l}` to navigate windows from any mode:
+"     :tnoremap <A-h> <C-\><C-N><C-w>h
+"     :tnoremap <A-j> <C-\><C-N><C-w>j
+"     :tnoremap <A-k> <C-\><C-N><C-w>k
+"     :tnoremap <A-l> <C-\><C-N><C-w>l
+"     :inoremap <A-h> <C-\><C-N><C-w>h
+"     :inoremap <A-j> <C-\><C-N><C-w>j
+"     :inoremap <A-k> <C-\><C-N><C-w>k
+"     :inoremap <A-l> <C-\><C-N><C-w>l
+"     :nnoremap <A-l> <C-w>l
+"     :nnoremap <A-h> <C-w>h
+"     :nnoremap <A-j> <C-w>j
+"     :nnoremap <A-k> <C-w>k
+"
+"     "==================================================================================================
+"     " COMPLETION deoplete.
+"     "
+"     let g:deoplete#enable_at_startup = 1
+"     let g:deoplete#enable_smart_case = 1
+"
+"     " inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+"     " function! s:my_cr_function() abort
+"     "   return deoplete#close_popup() . "\<CR>"
+"     " endfunction
+"
+"
+"     imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+"     smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+"     xmap <C-k>     <Plug>(neosnippet_expand_target)
+"     imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+"
+"
+"     imap <expr><TAB> pumvisible() ? "\<C-n>" : (neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>")
+"     imap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
+"     "imap <expr><CR> pumvisible() ? deoplete#mappings#close_popup() : "\<CR>\<Plug>AutoPairsReturn"
+"
+"     let g:neosnippet#snippets_directory='~/.nvim/snippets'
+"
+"     "==================================================================================================
+"     " Denite
+"     "
+"     " nnoremap <C-p> :<C-u>Denite file_rec<CR>
+"     " nnorema<silent>p <leader><Space>b :<C-u>DeniteBufferDir buffer<CR>
+"     nnoremap <silent><leader>8 :<C-u>DeniteCursorWord grep:. -mode=normal<CR>
+"     " nnoremap <leader>/ :<C-u>Denite grep:. -mode=normal<CR>
+"     " nnoremap <leader><Space>/ :<C-u>DeniteBufferDir grep:. -mode=normal<CR>
+"     " nnoremap <leader>d :<C-u>DeniteBufferDir file_rec<CR>
+"
+"     " nnoremap <silent> <leader>o :<C-u>Denite -buffer-name=outline -winwidth=35 unite:outline -mode=normal<cr>
+"     " nnorema<silent> p <leader>k :<C-u>Denite -mode=normal -winwidth=35 unite:outline<cr>
+"
+"     nnoremap <silent> <leader>v :<C-u>Denite location_list -mode=normal -no-empty -auto-preview<CR>
+"     nnoremap <silent> <leader>ff :<C-u>DeniteBufferDir -mode=normal -no-split -buffer-name=files   file<cr>
+"     nnoremap <silent> <leader>fd :<C-u>DeniteBufferDir -mode=normal -no-split -buffer-name=dir directory_rec<cr>
+" >>>>>>> 4d390c291dd966cf45176314ae8850675d687a56
 nnoremap <silent> <leader>r :<C-u>Denite -mode=normal -no-split -buffer-name=mru     file_mru<cr>
 
 " nnoremap <silent><leader>m :<C-u>Denite buffer<CR>
@@ -875,7 +1203,7 @@ let g:vimfiler_time_format = '%m-%d-%y %H:%M:%S'
 let g:vimfiler_expand_jump_to_first_child = 0
 let g:vimfiler_data_directory = '~/.vimfiler'
 
-let g:vimfiler_ignore_pattern = [ '*\.bf', '*.sf', '*.s3d', '*.iso', '^\.git$', '^\.DS_Store$']
+let g:vimfiler_ignore_pattern = [ '*\.bf', '*.sf', '*.s3d', '*.iso', '^\.git$', '^\.DS_Store$', '^\.pyc']
 
 let g:vimfiler_execute_file_list={
             \ 'txt': 'neovim',
