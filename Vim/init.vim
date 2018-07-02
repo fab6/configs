@@ -1,3 +1,4 @@
+:let g:vimsyn_embed='0'
 let g:python_host_skip_check=1
 let g:loaded_python2_provider=1
 "let g:loaded_python3_provider=1
@@ -57,7 +58,7 @@ Plug 'inkarkat/vim-mark'
 Plug 'junegunn/vim-easy-align'
 Plug 'chemzqm/vim-easygit'
 Plug 'chemzqm/denite-git'
-Plug 'notomo/denite-autocmd'
+" Plug 'notomo/denite-autocmd'
 Plug 'notomo/denite-keymap'
 Plug 'chrisbra/csv.vim'
 Plug 'Yggdroot/indentLine'
@@ -165,67 +166,78 @@ set textwidth=72
 "--------------------------------------------------------------------------------------------------
 " File detection
 "
-autocmd BufReadPost *
-            \ if line("'\"") > 0 && line("'\"") <= line("$") |
-            \   exe "normal g`\"" |
-            \ endif
 augroup filetype
+    " autocmd BufReadPost *
+    "             \ if line("'\"") > 0 && line("'\"") <= line("$") |
+    "             \   exe "normal g`\"" |
+    "             \ endif
     "autocmd BufEnter set filetype=c
     autocmd BufNewFile,BufRead *Dict set filetype=c
     autocmd BufNewFile,BufRead *.mo set filetype=modelica
     autocmd BufNewFile,BufRead .spacemacs set filetype=lisp
-    autocmd BufNewFile,BufRead *.in set syntax=fortran
+    " autocmd BufNewFile,BufRead *.in set syntax=fortran
     autocmd BufNewFile,BufRead *.data set syntax=gpyro
     "autocmd BufNewFile,BufRead *.in set syntax=dakota
     autocmd BufNewFile,BufRead *.py set filetype=python tabstop=4  softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent fileformat=unix
+    autocmd BufNewFile,BufRead *.org set syntax=org
     autocmd Filetype ipynb nmap <silent><Leader>b :VimpyterInsertPythonBlock<CR>
     autocmd Filetype ipynb nmap <silent><Leader>j :VimpyterStartJupyter<CR>
     autocmd Filetype ipynb nmap <silent><Leader>n :VimpyterStartNteract<CR>
     autocmd! BufRead,BufNewFile *.m       setf octave
     autocmd! BufRead,BufNewFile *.m       set filetype=octave
-    autocmd! BufRead,BufNewFile *.pvs       set filetype=tcl
-    autocmd! BufRead,BufNewFile *.pvb       set filetype=tcl
+    " autocmd! BufRead,BufNewFile *.pvs       set filetype=tcl
+    " autocmd! BufRead,BufNewFile *.pvb       set filetype=tcl
     autocmd! BufRead,BufNewFile *.pvsm       set filetype=xml
-    autocmd! BufRead,BufNewFile *.gnu     set filetype=gnu
-    autocmd! BufRead,BufNewFile *.pde set filetype=c
-    autocmd! BufRead,BufNewFile *.ino set syntax=c
-    autocmd! BufRead,BufNewFile *.ino set syntax=c
+    " autocmd! BufRead,BufNewFile *.gnu     set filetype=gnu
+    " autocmd! BufRead,BufNewFile *.pde set filetype=c
+    " autocmd! BufRead,BufNewFile *.ino set syntax=c
     autocmd! BufRead,BufNewFile *.ino set filetype=arduino
     autocmd! BufRead,BufNewFile *.snip set syntax=vim
     autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
     " autocmd BufEnter * if &buftype == 'terminal' | :startinsert | endif
+    " augroup END
+
+    " in human-language files, automatically format everything at 72 chars:
+    " autocmd FileType mail,human set formatoptions+=t textwidth=72
+
+    " for C-like programming, have automatic indentation:
+    " autocmd FileType c,cpp,slang set cindent
+
+    " for actual C (not C++) programming where comments have explicit end
+    " characters, if starting a new line in the middle of a comment automatically
+    " insert the comment leader characters:
+    " autocmd FileType c set formatoptions+=ro
+
+    " for Perl programming, have things in braces indenting themselves:
+    " autocmd FileType perl set smartindent
+
+    " for CSS, also have things in braces indented:
+    " autocmd FileType css set smartindent
+
+
+    " for HTML, generally format text, but if a long line has been created leave it
+    " alone when editing:
+    autocmd FileType html set formatoptions+=tl
+
+    " for both CSS and HTML, use genuine tab characters for indentation, to make
+    " files a few bytes smaller:
+    " autocmd FileType html,css set noexpandtab tabstop=2
+
+    " in makefiles, don't expand tabs to spaces, since actual tab characters are
+    " needed, and have indentation at 8 chars to be sure that all indents are tabs
+    " (despite the mappings later):
+    autocmd FileType make set noexpandtab shiftwidth=8
+    autocmd FileType denite call s:denite_settings()
+    " augroup filetype
+    " open at start up: autocmd VimEnter * if !argc() | VimFiler -status | endif
+    autocmd Filetype vimfiler setlocal cursorline
+    autocmd FileType vimfiler nunmap <buffer> x
+    autocmd BufNewFile,BufRead *.snip set syntax=python
+    autocmd BufNewFile,BufRead *.fds set filetype=fds
+    autocmd BufNewFile,BufRead *.fds5 set syntax=fds
+    autocmd BufNewFile,BufRead *.fds set syntax=fds
+    autocmd BufNewFile,BufRead *.smv set syntax=fds
 augroup END
-
-" in human-language files, automatically format everything at 72 chars:
-" autocmd FileType mail,human set formatoptions+=t textwidth=72
-
-" for C-like programming, have automatic indentation:
-autocmd FileType c,cpp,slang set cindent
-
-" for actual C (not C++) programming where comments have explicit end
-" characters, if starting a new line in the middle of a comment automatically
-" insert the comment leader characters:
-autocmd FileType c set formatoptions+=ro
-
-" for Perl programming, have things in braces indenting themselves:
-autocmd FileType perl set smartindent
-
-" for CSS, also have things in braces indented:
-autocmd FileType css set smartindent
-
-
-" for HTML, generally format text, but if a long line has been created leave it
-" alone when editing:
-autocmd FileType html set formatoptions+=tl
-
-" for both CSS and HTML, use genuine tab characters for indentation, to make
-" files a few bytes smaller:
-autocmd FileType html,css set noexpandtab tabstop=2
-
-" in makefiles, don't expand tabs to spaces, since actual tab characters are
-" needed, and have indentation at 8 chars to be sure that all indents are tabs
-" (despite the mappings later):
-autocmd FileType make set noexpandtab shiftwidth=8
 "
 "
 set backspace=eol,start,indent
@@ -301,7 +313,7 @@ func! Paste_on_off()
 
         let g:paste_mode = 0
     endif
-<<<<<<< HEAD
+    <<<<<<< HEAD
     return
 endfunc
 
@@ -380,6 +392,7 @@ imap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 "imap <expr><CR> pumvisible() ? deoplete#mappings#close_popup() : "\<CR>\<Plug>AutoPairsReturn"
 
 let g:neosnippet#snippets_directory='~/.nvim/snippets'
+autocmd InsertLeave * NeoSnippetClearMarkers
 
 "==================================================================================================
 " Denite
@@ -405,21 +418,21 @@ nnoremap <silent> <leader>l :<C-u>Denite line -mode=insert -no-split -buffer-nam
 
 nnoremap <silent> <leader>m :<C-u>Denite marks -mode=normal<CR>
 nnoremap <silent> <leader>M :<C-u>Denite menu -mode=normal<CR>
-nnoremap <silent> <leader>g :<C-u>Denite -mode=normal -winwidth=35 grep<cr>
+" nnoremap <silent> <leader>g :<C-u>Denite -mode=normal -winwidth=35 grep<cr>
 
 " nnoremap <silent> <leader>da :<C-u>Denite autocmd -mode=normal -auto-preview<CR>
 " nnoremap <silent> <leader>dk :<C-u>Denite keymap -mode=normal<CR>
-nnoremap <silent> <leader>Df :<C-u>Denite file_manager -mode=normal <CR>
+" nnoremap <silent> <leader>Df :<C-u>Denite file_manager -mode=normal <CR>
 " nnoremap <silent> <leader>Dc :<C-u>Denite colorscheme -mode=normal -auto-preview<CR>
 nnoremap <silent> <leader>Dj :call execute('Denite -resume -select=+'.v:count1.' -immediately')<CR>
 nnoremap <silent> <leader>Dk :call execute('Denite -resume -select=-'.v:count1.' -immediately')<CR>
-nnoremap <silent> <leader>Dl :<C-u>Denite -mode=normal -auto-resize location_list<CR>
+" nnoremap <silent> <leader>Dl :<C-u>Denite -mode=normal -auto-resize location_list<CR>
 nnoremap <silent> <leader>Dn :<C-u>DeniteCursorWord line -mode=insert -no-split -buffer-name=line<cr>
 nnoremap <silent> <leader>o :<C-u>Denite -mode=normal -winwidth=35 outline<cr>
-nnoremap <silent> <leader>Dq :<C-u>Denite -mode=normal -auto-resize quickfix<CR>
+" nnoremap <silent> <leader>Dq :<C-u>Denite -mode=normal -auto-resize quickfix<CR>
 nnoremap <silent> <leader>Ds :<C-u>Denite -mode=normal -winwidth=35 session<cr>
 nnoremap <silent> <leader>Dr :<C-u>Denite -resume<CR>
-nnoremap <silent> <leader>Dy :<C-u>Denite -mode=normal -winwidth=35 register<cr>
+" nnoremap <silent> <leader>Dy :<C-u>Denite -mode=normal -winwidth=35 register<cr>
 
 
 " :DeniteBufferDir [{options}] {sources}			*:DeniteBufferDir*
@@ -565,13 +578,13 @@ let s:menus.Sessions = {
 " let s:menus.Unite= {
 "             \ 'description': 'Unite commands'
 "             \ }
-let s:menus.VimFiler= {
-            \ 'description': 'VimFiler commands'
-            \ }
-let s:menus.VimFiler.command_candidates = [
-            \ ['Explorer 1', ':<C-u>VimFilerExplorer -sort-type=Time -status -split -simple -parent -winwidth=35 -no-quit -find'],
-            \ ['Explorer 2', ':VimFilerExplorer -status -find -winwidth=80 -sort-type=Time'],
-            \ ]
+" let s:menus.VimFiler= {
+"             \ 'description': 'VimFiler commands'
+"             \ }
+" let s:menus.VimFiler.command_candidates = [
+"             \ ['Explorer 1', ':<C-u>VimFilerExplorer -sort-type=Time -status -split -simple -parent -winwidth=35 -no-quit -find'],
+"             \ ['Explorer 2', ':VimFilerExplorer -status -find -winwidth=80 -sort-type=Time'],
+"             \ ]
 
 let s:menus.Arduino= {
             \ 'description': 'Arduino commands'
@@ -599,12 +612,12 @@ let s:menus.Toggles.command_candidates = [
             \ ['Ale', "test"],
             \ ]
 
-let s:menus.Bookmarks= {
-            \ 'description': 'Bookmarks commands'
-            \ }
-let s:menus.Bookmarks.command_candidates = [
-            \ ['1 /home/fbraenns', ":e /home/fbraenns"],
-            \ ]
+" let s:menus.Bookmarks= {
+"             \ 'description': 'Bookmarks commands'
+"             \ }
+" let s:menus.Bookmarks.command_candidates = [
+"             \ ['1 /home/fbraenns', ":e /home/fbraenns"],
+"             \ ]
 
 call denite#custom#var('menu', 'menus', s:menus)
 
@@ -624,7 +637,6 @@ let g:unite_source_grep_recursive_opt = ''
 
 " nmap <silent> <S-f> :Unite -no-quit grep<CR>
 
-autocmd FileType denite call s:denite_settings()
 function! s:denite_settings()
     " Play nice with supertab
     let b:SuperTabDisabled=1
@@ -652,8 +664,7 @@ let g:NERDDefaultAlign = 'left'
 let g:NERDAltDelims_java = 1
 
 " Add your own custom formats or override the defaults
-let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' }, 'openhabFile': { 'left': '//'} }
-
+let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' }, 'openhab-items': { 'left': '//'} , 'openhab-rules': { 'left': '//'} , 'openhab-persist': { 'left': '//'} , 'openhab-sitemap': { 'left': '//'} , 'openhab-tings': { 'left': '//'} } 
 " Allow commenting and inverting empty lines (useful when commenting a region)
 let g:NERDCommentEmptyLines = 1
 
@@ -680,11 +691,6 @@ map <silent><leader>d :VimFilerBufferDir -status -sort-type=Time<CR>
 " map <space>E :VimFilerBufferDir -status -split -simple -winwidth=30 -toggle -no-quit<CR><CR>
 " nnoremap <F2> :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=30 -toggle -no-quit<CR>
 
-augroup filetype
-    " open at start up: autocmd VimEnter * if !argc() | VimFiler -status | endif
-    autocmd Filetype vimfiler setlocal cursorline
-    autocmd FileType vimfiler nunmap <buffer> x
-augroup END
 "
 " make vimfiler buffer behave
 function! s:vimfiler_buffer_au()
@@ -907,11 +913,6 @@ nnoremap <leader>ga :Gadd
 "==================================================================================================
 " FDS
 "
-autocmd BufNewFile,BufRead *.snip set syntax=python
-autocmd BufNewFile,BufRead *.fds set filetype=fds
-autocmd BufNewFile,BufRead *.fds5 set syntax=fds
-autocmd BufNewFile,BufRead *.fds set syntax=fds
-autocmd BufNewFile,BufRead *.smv set syntax=fds
 
 
 " autocmd BufNewFile,BufRead *.fds highlight FDSNumber ctermfg=119
@@ -1008,6 +1009,7 @@ silent MarkClear
 "
 "silent 56Mark /.*\.py/
 silent 1Mark /.*\.py/
+silent 12Mark /.*\.pyc/
 
 silent 1Mark /.*\.ipynb/
 " silent 58Mark /.*\.ipynb/
@@ -1291,3 +1293,10 @@ xmap ga <Plug>(EasyAlign)
 
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
+
+:set inccommand=nosplit
+
+" Cx-Cl
+" filter
+" global g commands
+" C-F in command mode or q:

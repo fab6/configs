@@ -1,0 +1,72 @@
+# ==================================================================================================
+# General
+#-----------------------------------------------------------------------------------
+snippet     date_normal
+abbr        dn
+options     word
+    //Today: strftime("%Y-%b-%d")`${0}
+
+
+
+#-----------------------------------------------------------------------------------
+snippet     /.
+abbr        /.
+alias       break_dot
+options     head
+        // ...................................................................................  ${0}
+
+#-----------------------------------------------------------------------------------
+snippet     /-
+abbr        /-
+alias       break_single
+options     head
+        // ----------------------------------------------------------------------------------- ${0}
+
+#-----------------------------------------------------------------------------------
+snippet     /=
+abbr        /=
+alias       break_double
+options     head
+        // ==================================================================================== ${0}
+
+
+#-----------------------------------------------------------------------------------
+snippet     oh_item
+abbr        item
+alias       item
+options     head
+        //Item_Type Item_ID "Item Label" <icon> (Group) { channel="example:thing:channel" }
+        Item_Type ${1:#:Item_ID} "Item Label" <icon> (Group) { channel="example:thing:channel" }
+
+#-----------------------------------------------------------------------------------
+snippet     oh_it_group
+abbr        oh_it_group
+alias       groups
+options     head
+    Group gFF           "First Floor"   <firstfloor>
+    Group gGF           "Ground Floor"  <groundfloor>
+    Group gC            "Cellar"        <cellar>
+    Group Garden        "Garden"        <garden>
+    Group Weather       "Weather"       <sun>
+    
+    Group Status
+    Group Shutters
+    
+    Group GF_Living     "Living Room"   <video>     (gGF)
+    Group GF_Kitchen    "Kitchen"       <kitchen>   (gGF)
+    Group GF_Toilet     "Toilet"        <bath>      (gGF)
+    Group GF_Corridor   "Corridor"      <corridor>  (gGF)
+    
+    Group FF_Bath       "Bathroom"      <bath>      (gFF)
+    Group FF_Office     "Office"        <office>    (gFF)
+    Group FF_Son        "Oliver's Room" <boy_1>     (gFF)
+    Group FF_Daughter   "Amelia's Room" <girl_1>    (gFF)
+    Group FF_Bed        "Bedroom"       <bedroom>   (gFF)
+    Group FF_Corridor   "Corridor"      <corridor>  (gFF)
+    
+    /* active groups */
+    Group:Switch:OR(ON, OFF)        Lights      "All Lights [(%d)]"
+    Group:Switch:OR(ON, OFF)        Heating     "No. of Active Heatings [(%d)]"     <heating>
+    Group:Number:AVG                Temperature "Avg. Room Temperature [%.1f °C]"   <temperature>   (Status)
+    Group:Contact:OR(OPEN, CLOSED)  Windows     "Open windows [(%d)]"               <contact>
+    

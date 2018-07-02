@@ -1,0 +1,75 @@
+# ==================================================================================================
+# General
+#-----------------------------------------------------------------------------------
+snippet     date_normal
+abbr        dn
+options     word
+    //Today: strftime("%Y-%b-%d")`${0}
+
+
+
+#-----------------------------------------------------------------------------------
+snippet     /.
+abbr        /.
+alias       break_dot
+options     head
+        // ...................................................................................  ${0}
+
+#-----------------------------------------------------------------------------------
+snippet     /-
+abbr        /-
+alias       break_single
+options     head
+        // ----------------------------------------------------------------------------------- ${0}
+
+#-----------------------------------------------------------------------------------
+snippet     /=
+abbr        /=
+alias       break_double
+options     head
+        // =================================================================================== ${0}
+
+#-----------------------------------------------------------------------------------
+snippet     Bridge_Fritz
+abbr        Bridge_Fritz
+alias       break_double
+options     head
+        Bridge avmfritz:fritzbox:1 [ ipAddress="192.168.178.1", password ="-", user="htw" ] 
+        {
+            Thing Comet_DECT 119600973656 "Comet_DECT_Nr1" @ "HTW" [ ain="119600973656" ]
+        }
+
+#-----------------------------------------------------------------------------------
+snippet     Bridge_Hue
+abbr        Bridge_Hue
+alias       break_double
+options     head
+
+Bridge hue:bridge:1 [ ipAddress="192.168.178.47" ]
+{
+    0210 bulb1 [ lightId="1" ]
+    0210 bulb2 [ lightId="2" ]
+    0210 bulb3 [ lightId="3" ]
+    0010 bulb4 [ lightId="4" ]
+    0010 bulb5 [ lightId="5" ]
+}
+
+
+#-----------------------------------------------------------------------------------
+snippet     Bridge
+abbr        Bridge
+alias       break_double
+options     head
+        Bridge avmfritz:fritzbox:1 [ ipAddress="192.168.178.1", password ="-", user="htw" ] 
+        {
+            Thing Comet_DECT 119600973656 "Comet_DECT_Nr1" @ "HTW" [ ain="119600973656" ]
+        }
+        Bridge ${1:#:example\:bridge\:id} "${2:Bride Label}" [ ipAddress="192.168.178.1", password ="-", user="htw" ] 
+
+
+#-----------------------------------------------------------------------------------
+snippet     oh_thing
+abbr        thing
+alias       oh_thing
+options     head
+        Thing ${1:#:example\:thing\:id} "${2:#:Thing Label}" [ ain="${3:ain_nmuber 119600973656}" ]
