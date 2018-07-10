@@ -1,6 +1,6 @@
-:let g:vimsyn_embed='0'
-let g:python_host_skip_check=1
-let g:loaded_python2_provider=1
+" :let g:vimsyn_embed='0'
+" let g:python_host_skip_check=1
+" let g:loaded_python2_provider=1
 "let g:loaded_python3_provider=1
 "==================================================================================================
 " TODO
@@ -39,12 +39,15 @@ call plug#begin('/home/fbraenns/.nvim/vimplug')
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'Shougo/deol.nvim'
-Plug 'cyberkov/openhab-vim'
+" Plug 'cyberkov/openhab-vim'
+
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-jedi'
+" Plug 'ncm2/ncm2'
+
 Plug 'Shougo/vimfiler.vim' "needs unite -> new development for denite Plug 'Shougo/defx.nvim'
 Plug 'Shougo/neomru.vim'
-Plug 'Shougo/vimproc.vim', { 'do' : 'make', }
+" Plug 'Shougo/vimproc.vim', { 'do' : 'make', }
 " Unite is needed due to vimfiler
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -64,21 +67,21 @@ Plug 'chrisbra/csv.vim'
 Plug 'Yggdroot/indentLine'
 Plug 'scrooloose/nerdcommenter'
 Plug 'itchyny/vim-parenmatch'
-Plug 'jiangmiao/auto-pairs'
+" Plug 'jiangmiao/auto-pairs'
 Plug 'itchyny/vim-cursorword'
 Plug 'itchyny/lightline.vim'
-Plug 'xolox/vim-misc'
-Plug 'xolox/vim-session'
+" Plug 'xolox/vim-misc'
+" Plug 'xolox/vim-session'
 Plug 'morhetz/gruvbox'
 Plug 'haya14busa/incsearch-fuzzy.vim'
 " .....................................................................
 " Programming:
-Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
-Plug 'rudes/vim-java', { 'for': 'java' }
+" Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+" Plug 'rudes/vim-java', { 'for': 'java' }
 Plug 'plasticboy/vim-markdown'
-Plug 'vyzyv/vimpyter'
+" Plug 'vyzyv/vimpyter'
 Plug 'jvirtanen/vim-octave', { 'for': 'octave' }
-Plug '4Evergreen4/vim-hardy'
+"Plug '4Evergreen4/vim-hardy' "Arduino
 "--------------------------------------------------------------------------------------------------
 
 call plug#end()
@@ -167,33 +170,35 @@ set textwidth=72
 " File detection
 "
 augroup filetype
+    autocmd!
+    autocmd BufNewFile,BufRead *.in set filetype=dakota
+    autocmd BufNewFile,BufRead *Dict set filetype=c
+    autocmd BufNewFile,BufRead *.mo set filetype=modelica
+    autocmd BufNewFile,BufRead .spacemacs set filetype=lisp
+    autocmd BufNewFile,BufRead *.py set filetype=python tabstop=4  softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent fileformat=unix
+    autocmd BufNewFile,BufRead *.org set syntax=org
+    autocmd BufRead,BufNewFile *.m       setf octave
+    autocmd BufRead,BufNewFile *.m       set filetype=octave
+    autocmd BufRead,BufNewFile *.ino set filetype=arduino
+    autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+    " autocmd BufRead,BufNewFile *.pvsm       set filetype=xml
+    " autocmd BufRead,BufNewFile *.snip set syntax=vim
+    " autocmd Filetype ipynb nmap <silent><Leader>b :VimpyterInsertPythonBlock<CR>
+    " autocmd Filetype ipynb nmap <silent><Leader>j :VimpyterStartJupyter<CR>
+    " autocmd Filetype ipynb nmap <silent><Leader>n :VimpyterStartNteract<CR>
+    " autocmd BufNewFile,BufRead *.data set syntax=gpyro
     " autocmd BufReadPost *
     "             \ if line("'\"") > 0 && line("'\"") <= line("$") |
     "             \   exe "normal g`\"" |
     "             \ endif
     "autocmd BufEnter set filetype=c
-    autocmd BufNewFile,BufRead *Dict set filetype=c
-    autocmd BufNewFile,BufRead *.mo set filetype=modelica
-    autocmd BufNewFile,BufRead .spacemacs set filetype=lisp
     " autocmd BufNewFile,BufRead *.in set syntax=fortran
-    autocmd BufNewFile,BufRead *.data set syntax=gpyro
     "autocmd BufNewFile,BufRead *.in set syntax=dakota
-    autocmd BufNewFile,BufRead *.py set filetype=python tabstop=4  softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent fileformat=unix
-    autocmd BufNewFile,BufRead *.org set syntax=org
-    autocmd Filetype ipynb nmap <silent><Leader>b :VimpyterInsertPythonBlock<CR>
-    autocmd Filetype ipynb nmap <silent><Leader>j :VimpyterStartJupyter<CR>
-    autocmd Filetype ipynb nmap <silent><Leader>n :VimpyterStartNteract<CR>
-    autocmd! BufRead,BufNewFile *.m       setf octave
-    autocmd! BufRead,BufNewFile *.m       set filetype=octave
     " autocmd! BufRead,BufNewFile *.pvs       set filetype=tcl
     " autocmd! BufRead,BufNewFile *.pvb       set filetype=tcl
-    autocmd! BufRead,BufNewFile *.pvsm       set filetype=xml
     " autocmd! BufRead,BufNewFile *.gnu     set filetype=gnu
     " autocmd! BufRead,BufNewFile *.pde set filetype=c
     " autocmd! BufRead,BufNewFile *.ino set syntax=c
-    autocmd! BufRead,BufNewFile *.ino set filetype=arduino
-    autocmd! BufRead,BufNewFile *.snip set syntax=vim
-    autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
     " autocmd BufEnter * if &buftype == 'terminal' | :startinsert | endif
     " augroup END
 
@@ -227,7 +232,7 @@ augroup filetype
     " needed, and have indentation at 8 chars to be sure that all indents are tabs
     " (despite the mappings later):
     autocmd FileType make set noexpandtab shiftwidth=8
-    autocmd FileType denite call s:denite_settings()
+    " autocmd FileType denite call s:denite_settings()
     " augroup filetype
     " open at start up: autocmd VimEnter * if !argc() | VimFiler -status | endif
     autocmd Filetype vimfiler setlocal cursorline
@@ -237,6 +242,7 @@ augroup filetype
     autocmd BufNewFile,BufRead *.fds5 set syntax=fds
     autocmd BufNewFile,BufRead *.fds set syntax=fds
     autocmd BufNewFile,BufRead *.smv set syntax=fds
+autocmd InsertLeave * NeoSnippetClearMarkers
 augroup END
 "
 "
@@ -392,7 +398,6 @@ imap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 "imap <expr><CR> pumvisible() ? deoplete#mappings#close_popup() : "\<CR>\<Plug>AutoPairsReturn"
 
 let g:neosnippet#snippets_directory='~/.nvim/snippets'
-autocmd InsertLeave * NeoSnippetClearMarkers
 
 "==================================================================================================
 " Denite
@@ -624,29 +629,29 @@ call denite#custom#var('menu', 'menus', s:menus)
 "==================================================================================================
 " Unite
 "
-let g:unite_source_history_yank_enable = 1
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-nnoremap <silent><Leader>ub :Unite -silent -auto-resize -buffer-name=my-directories -default-action=vimfiler bookmark<CR>
+" let g:unite_source_history_yank_enable = 1
+" call unite#filters#matcher_default#use(['matcher_fuzzy'])
+" nnoremap <silent><Leader>ub :Unite -silent -auto-resize -buffer-name=my-directories -default-action=vimfiler bookmark<CR>
 
 " Use ag in unite grep source.
-let g:unite_source_grep_command = 'ag'
-let g:unite_source_grep_default_opts =
-            \ '-i --vimgrep --hidden --ignore ' .
-            \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
-let g:unite_source_grep_recursive_opt = ''
+" let g:unite_source_grep_command = 'ag'
+" let g:unite_source_grep_default_opts =
+"             \ '-i --vimgrep --hidden --ignore ' .
+"             \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
+" let g:unite_source_grep_recursive_opt = ''
 
 " nmap <silent> <S-f> :Unite -no-quit grep<CR>
 
-function! s:denite_settings()
-    " Play nice with supertab
-    let b:SuperTabDisabled=1
-    " Enable navigation with control-j and control-k in insert mode
-    imap <buffer> <C-j>   <Plug>(denite_move_next_line)
-    imap <buffer> <C-k>   <Plug>(denite_move_previous_line)
-endfunction
+" function! s:denite_settings()
+"     " Play nice with supertab
+"     let b:SuperTabDisabled=1
+"     " Enable navigation with control-j and control-k in insert mode
+"     imap <buffer> <C-j>   <Plug>(denite_move_next_line)
+"     imap <buffer> <C-k>   <Plug>(denite_move_previous_line)
+" endfunction
 
 " Use fuzzy matcher for filtering elements.
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
+" call unite#filters#matcher_default#use(['matcher_fuzzy'])
 
 "==================================================================================================
 " Nerdcommenter
@@ -681,23 +686,23 @@ let g:indentLine_color_term = 239
 "==================================================================================================
 " VimFiler
 
-nnoremap <leader>jf :<C-u>VimFilerExplorer -sort-type=Time -status -split -simple -parent -winwidth=35 -no-quit -find<CR>
+" nnoremap <leader>jf :<C-u>VimFilerExplorer -sort-type=Time -status -split -simple -parent -winwidth=35 -no-quit -find<CR>
 " nnoremap <leader>ff :VimFilerExplorer -status -find -winwidth=80 -sort-type=Time <CR>
 
 map <silent><leader>D :VimFilerCreate -status -sort-type=Time<CR>
 "map <silent><leader>d :VimFilerBufferDir -status -sort-type=Time<CR>
-map <silent><leader>Dd :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=29 -toggle -no-quit -explorer<CR>
+" map <silent><leader>Dd :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=29 -toggle -no-quit -explorer<CR>
 map <silent><leader>d :VimFilerBufferDir -status -sort-type=Time<CR>
 " map <space>E :VimFilerBufferDir -status -split -simple -winwidth=30 -toggle -no-quit<CR><CR>
 " nnoremap <F2> :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=30 -toggle -no-quit<CR>
 
 "
 " make vimfiler buffer behave
-function! s:vimfiler_buffer_au()
-    setlocal nobuflisted
-    setlocal colorcolumn=
-    :highlight CursorLine ctermbg=65
-endfunction
+" function! s:vimfiler_buffer_au()
+"     setlocal nobuflisted
+"     setlocal colorcolumn=
+"     :highlight CursorLine ctermbg=65
+" endfunction
 
 " function mark#ToggleOff()
 " :  echom "Meow!"
@@ -759,7 +764,7 @@ let g:vimfiler_time_format = '%m-%d-%y %H:%M:%S'
 let g:vimfiler_expand_jump_to_first_child = 0
 let g:vimfiler_data_directory = '~/.vimfiler'
 
-let g:vimfiler_ignore_pattern = [ '*\.bf', '*.sf', '*.s3d', '*.iso', '^\.git$', '^\.DS_Store$', '^\.pyc']
+let g:vimfiler_ignore_pattern = ['^\.', '*\.bf', '*.sf', '*.s3d', '*.iso', '^\.git$', '^\.DS_Store$', '^\.pyc']
 
 let g:vimfiler_execute_file_list={
             \ 'txt': 'neovim',
@@ -827,7 +832,7 @@ nnoremap gn :tabnext<CR>
 " let g:markdown_fenced_languages = ['cpp', 'json','python']
 
 
-
+" Get current highlight
 map <F9> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
             \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
             \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
@@ -881,23 +886,23 @@ nnoremap <leader>gb :Denite gitbranch<CR>
 " commit run git commit for seleted file(s).
 " push
 
-let g:easygit_enable_command = 1
+" let g:easygit_enable_command = 1
 " Gcd make vim cd to git root directory.
 " Glcd make vim lcd to git root directory.
 " Gblame Git blame current file, you can use p to preview commit and d to diff with current file.
 " GcommitCurrent Git commit current file with message as command args.
 " GdiffThis Side by side diff of current file with head or any ref.
 " Gcommit Git commit with command line argument.
-nnoremap <leader>gc :Gcommit
+" nnoremap <leader>gc :Gcommit
 " Gedit Edit git reference from git show.
 " Gdiff Git diff with command line argument.
 " Gremove Git remove with command line argument, remove current file when arguments empty.
 " Grename Rename current by git mv, file in buffer list would react the changes.
 " Gmove Git mv with command line argument.
 " Gcheckout Git checkout with command line argument.
-nnoremap <leader>gp :Gpull
-nnoremap <leader>gP :Gpush
-nnoremap <leader>ga :Gadd
+" nnoremap <leader>gp :Gpull
+" nnoremap <leader>gP :Gpush
+" nnoremap <leader>ga :Gadd
 " Gpush Git push with arguments, dispatch when possible.
 " Gpull Git pull with arguments, dispatch when possible.
 " Gfetch Git fetch with arguments, dispatch when possible.
@@ -910,36 +915,6 @@ nnoremap <leader>ga :Gadd
 :let g:session_autoload = 'no'
 
 
-"==================================================================================================
-" FDS
-"
-
-
-" autocmd BufNewFile,BufRead *.fds highlight FDSNumber ctermfg=119
-" autocmd BufNewFile,BufRead *.fds highlight FDSInterger ctermfg=105
-" " autocmd BufNewFile,BufRead *.fds highlight FDSFloat ctermfg=119
-" "126
-" autocmd BufNewFile,BufRead *.fds highlight String ctermfg=185
-" autocmd BufNewFile,BufRead *.fds highlight instructions ctermfg=90
-" autocmd BufNewFile,BufRead *.fds highlight FDS5PA ctermfg=126
-" autocmd BufNewFile,BufRead *.fds highlight NAMELIST ctermfg=cyan
-
-"==================================================================================================
-" Dakota
-autocmd BufNewFile,BufRead *.in set filetype=dakota
-" autocmd BufNewFile,BufRead *.in highlight DAKOTAFloat ctermfg=119
-" " autocmd BufNewFile,BufRead *.in highlight FDSInterger ctermfg=105
-" autocmd BufNewFile,BufRead *.in highlight DAKOTANumber ctermfg=105
-" autocmd BufNewFile,BufRead *.in highlight DAKOTAAlgo ctermfg=126
-" autocmd BufNewFile,BufRead *.in highlight DAKOTAString ctermfg=185
-" autocmd BufNewFile,BufRead *.in highlight DAKOTAImplicit ctermfg=cyan
-" HiLink DAKOTAString	   String
-" HiLink DAKOTANumber	   Constant
-" HiLink DAKOTAFloat	   Constant
-" HiLink DAKOTAComment	   Comment
-" HiLink DAKOTAImplicit	   Identifier
-" HiLink DAKOTALogical	   Statement
-" HiLink DAKOTAAlgo        PreProc
 "==================================================================================================
 " CSV
 let g:csv_strict_columns = 1
@@ -1106,7 +1081,7 @@ endfunction
 let g:lightline = {
             \ 'tab': {
             \ 'active': [ 'tabnum', 'mytabname', 'modified' ],
-            \ 'inactive': [ 'tabnum', 'mytabname', 'modified' ] 
+            \ 'inactive': [ 'tabnum', 'mytabname', 'modified' ]
             \ },
             \ 'tab_component_function': {
             \ 'mytabname': 'MyTabname',
@@ -1125,16 +1100,16 @@ let g:lightline = {
 ""..................................................................................................
 :highlight ParenMatch ctermbg=blue
 " :hi comment ctermfg=242
-" :highlight LineNr ctermfg=darkgrey
+:highlight LineNr ctermfg=darkgrey
 " :highlight VertSplit ctermfg=darkgray ctermfg=black
 
 "..................................................................................................
 " Showmarks
-:hi ShowMarksHLl ctermfg=red "For marks a-z
-:hi ShowMarksHLu ctermfg=yellow "For marks A-Z
-:hi ShowMarksHLo ctermfg=magenta "For all other marks
-:hi ShowMarksHLm ctermfg=white "For multiple marks on the same line.
-:hi SignColumn ctermbg=black
+":hi ShowMarksHLl ctermfg=red "For marks a-z
+":hi ShowMarksHLu ctermfg=yellow "For marks A-Z
+":hi ShowMarksHLo ctermfg=magenta "For all other marks
+":hi ShowMarksHLm ctermfg=white "For multiple marks on the same line.
+":hi SignColumn ctermbg=black
 
 "highlight Pmenu ctermbg=8 guibg=#606060 ctermbg=/usr/bin/env: ‘php’: No such file or directory
 ":highlight PmenuSel ctermbg=1 guifg=#dddd00 ctermfg=/usr/bin/env: ‘php’: No such file or directory guibg=#1f82cd
@@ -1149,6 +1124,8 @@ let g:lightline = {
 ":highlight Search ctermbg=gray ctermfg=black
 :hi Search ctermbg=12
 :hi Search ctermfg=226
+
+
 " :highlight ALEWarning ctermbg=65
 " :highlight ALEWarningSign ctermbg=65
 " :highlight ALEError ctermbg=92
@@ -1215,24 +1192,21 @@ highlight MarkWord17  ctermfg=192 ctermbg=bg
 "x hi Comment ctermfg=34
 "x hi PreProc ctermfg=cyan
 
-"<leader>A
-" nnoremap <silent> <leader>a :! arduino --upload %:p
-" nnoremap <silent> <leader>v :! arduino --verify %:p
-nnoremap <silent> <leader>U :terminal arduino --upload %:p<CR>
-nnoremap <silent> <leader>V :terminal arduino --verify %:p<CR>
-"nnoremap <silent> <leader>a :<C-u>Denite ale -mode=normal -auto-preview<CR>
 
 "==================================================================================================
 " Delete white spaces
 nnoremap <F5> :%s/\s\+$//e
 
 "==================================================================================================
+"BC Calculator
 " Python calculator
-:command! -nargs=+ Calc :py3 print (<args>)
-":py3 from math import *
-:py3 import numpy as np
-" :py3 from cmath import *
-nnoremap <F2>  :Calc
+"OO:command! -nargs=+ Calc :py3 print (<args>)
+"OO":py3 from math import *
+"OO:py3 import numpy as np
+"OO" :py3 from cmath import *
+"OOnnoremap <F2>  :Calc
+nnoremap <F2>  !!bc -l<CR>
+inoremap <F2>  <ESC>!!bc -l<CR>
 
 "==================================================================================================
 " Jump back in buffers (vimfiler!?)
@@ -1243,17 +1217,17 @@ nnoremap <F2>  :Calc
 "You can also use :oldfiles to get a list of files you edited.
 "The list will have numbers associated with filenames. Pick a file, note the number (say 14) and open it with :edit #<14
 "
-fun! ChooseBuf()
-    redir => buffers
-    silent ls
-    redir end
-
-    echo l:buffers
-    let l:choice = input('Which one: ')
-    execute ':edit +' . l:choice . 'buf'
-endfun
-command! ChooseBuf call ChooseBuf()
-nnoremap <Leader>B :call ChooseBuf()<CR>
+" fun! ChooseBuf()
+"     redir => buffers
+"     silent ls
+"     redir end
+"
+"     echo l:buffers
+"     let l:choice = input('Which one: ')
+"     execute ':edit +' . l:choice . 'buf'
+" endfun
+" command! ChooseBuf call ChooseBuf()
+" nnoremap <Leader>B :call ChooseBuf()<CR>
 
 function! GoBackToRecentBuffer()
     let startName = bufname('%')
@@ -1276,18 +1250,18 @@ nnoremap <silent> <C-U> :call GoBackToRecentBuffer()<Enter>
 "\ 'component_function': {
 "\   'gitbranch': 'fugitive#head'
 "\ },
-let g:lightline = {
-            \ 'tab': {
-            \ 'active': [ 'tabnum', 'mytabname', 'modified' ],
-            \ 'inactive': [ 'tabnum', 'mytabname', 'modified' ] 
-            \ },
-            \ 'tab_component_function': {
-            \ 'mytabname': 'MyTabname',
-            \ 'modified': 'lightline#tab#modified',
-            \ 'readonly': 'lightline#tab#readonly',
-            \ 'tabnum': 'lightline#tab#tabnum'
-            \ },
-            \ }
+" let g:lightline = {
+"             \ 'tab': {
+"             \ 'active': [ 'tabnum', 'mytabname', 'modified' ],
+"             \ 'inactive': [ 'tabnum', 'mytabname', 'modified' ]
+"             \ },
+"             \ 'tab_component_function': {
+"             \ 'mytabname': 'MyTabname',
+"             \ 'modified': 'lightline#tab#modified',
+"             \ 'readonly': 'lightline#tab#readonly',
+"             \ 'tabnum': 'lightline#tab#tabnum'
+"             \ },
+"             \ }
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
 
@@ -1300,3 +1274,50 @@ nmap ga <Plug>(EasyAlign)
 " filter
 " global g commands
 " C-F in command mode or q:
+"
+"================================================================================================== 
+"
+"
+"xj    " enable ncm2 for all buffer
+"xj    " autocmd BufEnter * call ncm2#enable_for_buffer()
+"xj
+"xj    " note that must keep noinsert in completeopt, the others is optional
+"xj    set completeopt=noinsert,menuone,noselect
+"xj    " supress the annoying 'match x of y', 'The only match' and 'Pattern not
+"xj    " found' messages
+"xj    set shortmess+=c
+"xj
+"xj    " CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
+"xj    inoremap <c-c> <ESC>
+"xj
+"xj    " When the <Enter> key is pressed while the popup menu is visible, it only
+"xj    " hides the menu. Use this mapping to close the menu and also start a new
+"xj    " line.
+"xj    inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+"xj
+"xj    " Use <TAB> to select the popup menu:
+"xj    inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+"xj    inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+"xj
+"xj    " wrap existing omnifunc
+"xj    " Note that omnifunc does not run in background and may probably block the
+"xj    " editor. If you don't want to be blocked by omnifunc too often, you could
+"xj    " add 180ms delay before the omni wrapper:
+"xj    "  'on_complete': ['ncm2#on_complete#delay', 180,
+"xj    "               \ 'ncm2#on_complete#omni', 'csscomplete#CompleteCSS'],
+"xj    " au User Ncm2Plugin call ncm2#register_source({
+"xj    "         \ 'name' : 'css',
+"xj    "         \ 'priority': 9,
+"xj    "         \ 'subscope_enable': 1,
+"xj    "         \ 'scope': ['css','scss'],
+"xj    "         \ 'mark': 'css',
+"xj    "         \ 'word_pattern': '[\w\-]+',
+"xj    "         \ 'complete_pattern': ':\s*',
+"xj    "         \ 'on_complete': ['ncm2#on_complete#omni', 'csscomplete#CompleteCSS'],
+"xj    "         \ })
+"xj
+"xj    " some completion sources
+"xj    Plug 'ncm2/ncm2-bufword'
+"xj    Plug 'ncm2/ncm2-tmux'
+"xj    Plug 'ncm2/ncm2-path'
+"xj    Plug 'ncm2/ncm2-jedi'

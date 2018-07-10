@@ -49,7 +49,7 @@ nmap <silent><buffer>F <Plug>(vimfiler_new_file)
 "nmap <silent><buffer>R <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_clipboard_move_file)<C-w>w<Plug>(vimfiler_clipboard_paste)
 nmap <silent><buffer>R <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_clipboard_move_file)<C-w>w<Plug>(vimfiler_clipboard_paste)y
 nmap <silent><buffer>Q <Plug>(vimfiler_exit):q<CR>
-nmap <silent><buffer>S <Plug>(vimfiler_sor)<Plug>(vimfiler_clipboard_copy_file)<C-w>w<Plug>(vimfiler_clipboard_paste)
+" nmap <silent><buffer>S <Plug>(vimfiler_sort)<Plug>(vimfiler_clipboard_copy_file)<C-w>w<Plug>(vimfiler_clipboard_paste)
 
 
 "-------------------------------------------------------------------------------------------------- 
