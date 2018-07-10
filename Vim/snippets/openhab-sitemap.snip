@@ -1,0 +1,61 @@
+# ==================================================================================================
+# General
+#-----------------------------------------------------------------------------------
+snippet     date_normal
+abbr        dn
+options     word
+    //Today: strftime("%Y-%b-%d")`${0}
+
+
+
+#-----------------------------------------------------------------------------------
+snippet     /.
+abbr        /.
+alias       break_dot
+options     head
+        // ...................................................................................  ${0}
+
+#-----------------------------------------------------------------------------------
+snippet     /-
+abbr        /-
+alias       break_single
+options     head
+        // ----------------------------------------------------------------------------------- ${0}
+
+#-----------------------------------------------------------------------------------
+snippet     /=
+abbr        /=
+alias       break_double
+options     head
+        // =================================================================================== ${0}
+
+#-----------------------------------------------------------------------------------
+snippet     oh_site
+abbr        sitemap
+alias       groups
+options     head
+        sitemap my label="${1:#:Sitemap Label}"
+        {
+                Frame label="${2:#:First frame}" icon="${3:#:icon}"
+                {
+                        Text item=${4:#:SelectedItem}
+                }
+                Frame label="${5:#:Second frame}" icon="${6:#:icon}"
+                {
+                        Group item=${7:#:OtherSelectedItem}
+                }
+        }
+#-----------------------------------------------------------------------------------
+snippet     oh_site_frame
+abbr        Frame
+alias       groups
+options     head
+       Frame label="${1:#:First frame}" icon="${2:#:icon}"
+       {
+                Text item=${3:#:SelectedItem}
+                Group item=${4:#:OtherSelectedItem}
+
+  //non-link-widget: Switch Selection Slider Setpoint Video Chart Webview Colorpicker Default
+  //Linkablewidget:  Text Group Image Frame
+  //Parameter: name label item period refresh icon mappings minValue maxValue step switchsupport url encoding height refresh visibility valuecolor
+       }

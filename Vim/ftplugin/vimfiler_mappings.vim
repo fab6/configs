@@ -24,6 +24,8 @@ else
     nmap <silent><buffer>,X :call jobstart('xterm -e /share/Tools/Editing/NeoVim/nvim.appimage -c ":VimFilerBufferDir -status -sort-type=Time"' ,{'detach':1}) <CR>
     nmap <silent><buffer>,s2 :call jobstart('/share/software/cd-adapco/STAR-CCM+12.02/STAR-CCM+12.02.010-R8/star/bin/starccm+',{'detach':1}) <CR>
     nmap <silent><buffer>,s1 :call jobstart('/share/software/cd-adapco/STAR-CCM+11.06/STAR-CCM+11.06.010-R8/star/bin/starccm+',{'detach':1}) <CR>
+    "nmap <silent><buffer>,p :call jobstart('python +',{'detach':1}) <CR>
+    "nmap <silent><buffer>,p :call jobstart(['python','/share/Tools/Python/FireSimulation/plotHRR_csv63.py',expand('%:t')],{'detach':1}) <CR>
 endif
 nmap <silent><buffer>0 <Plug>(vimfiler_cursor_top)
 
@@ -47,7 +49,7 @@ nmap <silent><buffer>F <Plug>(vimfiler_new_file)
 "nmap <silent><buffer>R <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_clipboard_move_file)<C-w>w<Plug>(vimfiler_clipboard_paste)
 nmap <silent><buffer>R <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_clipboard_move_file)<C-w>w<Plug>(vimfiler_clipboard_paste)y
 nmap <silent><buffer>Q <Plug>(vimfiler_exit):q<CR>
-nmap <silent><buffer>S <Plug>(vimfiler_sor)<Plug>(vimfiler_clipboard_copy_file)<C-w>w<Plug>(vimfiler_clipboard_paste)
+" nmap <silent><buffer>S <Plug>(vimfiler_sort)<Plug>(vimfiler_clipboard_copy_file)<C-w>w<Plug>(vimfiler_clipboard_paste)
 
 
 "-------------------------------------------------------------------------------------------------- 

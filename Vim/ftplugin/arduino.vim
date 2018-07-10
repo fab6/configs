@@ -1,5 +1,7 @@
 "==================================================================================================
 " Arduino
+nnoremap <silent> <leader>U :terminal arduino --upload %:p<CR>
+nnoremap <silent> <leader>V :terminal arduino --verify %:p<CR>
 "
 let g:arduino_cmd = '/home/fbraenns/03_GA/TOOLs/Arduino/arduino-1.8.5/arduino'
 let g:arduino_dir = '/home/fbraenns/03_GA/TOOLs/Arduino/arduino-1.8.5'
