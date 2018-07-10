@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+alias pc="xclip -selection clipboard -t image/png -o > /home/fbraenns/clip.png"
 #===================================================================
 #===================================================================
 # GENERAL

@@ -2,7 +2,8 @@
 !#XTerm*faceName: Bitstream Vera Serif Mono
 XTerm*faceName: DejaVu Sans Mono for Powerline
 !XTerm*faceName: Monospace
-xterm*faceSize: 13
+!xterm*faceSize: 13
+xterm*faceSize: 12
 xterm*vt100*geometry: 80x25
 xterm*saveLines: 16384
 xterm*loginShell: true

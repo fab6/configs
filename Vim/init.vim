@@ -652,7 +652,7 @@ let g:NERDDefaultAlign = 'left'
 let g:NERDAltDelims_java = 1
 
 " Add your own custom formats or override the defaults
-let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' }, 'openhabFile': { 'left': '//'} }
+let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' }, 'openhab-things': { 'left': '//'} ,'openhab-items': { 'left': '//'} ,'openhab-rules': { 'left': '//'} ,'openhab-sitemap': { 'left': '//'} ,'openhab-persist': { 'left': '//'} }
 
 " Allow commenting and inverting empty lines (useful when commenting a region)
 let g:NERDCommentEmptyLines = 1
@@ -753,7 +753,7 @@ let g:vimfiler_time_format = '%m-%d-%y %H:%M:%S'
 let g:vimfiler_expand_jump_to_first_child = 0
 let g:vimfiler_data_directory = '~/.vimfiler'
 
-let g:vimfiler_ignore_pattern = [ '*\.bf', '*.sf', '*.s3d', '*.iso', '^\.git$', '^\.DS_Store$', '^\.pyc']
+let g:vimfiler_ignore_pattern = ['^\.',  '^\\.bf', '^\.sf', '^\.s3d', '^\.iso', '^\.git$', '^\.DS_Store$', '^\.pyc']
 
 let g:vimfiler_execute_file_list={
             \ 'txt': 'neovim',
