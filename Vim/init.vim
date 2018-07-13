@@ -1,35 +1,8 @@
-" :let g:vimsyn_embed='0'
-" let g:python_host_skip_check=1
-" let g:loaded_python2_provider=1
-"let g:loaded_python3_provider=1
 "==================================================================================================
-" TODO
-" Tabs:
-" - rename tabs to current vimfiler directory
-" Vim:
-"  - client/server
-" SessionsWindows:
-"  - use session to undo buffer views
-" Denite:
-"  - syntax highlighting e.g. for 'line' in python
-" Git:
-"  - easier git handling
-" Vimfiler:
-" Terminal:
-" Python:
-" Complete:
-"  - deoplete does this work for the terminal as well?
-" Snippets:
-" - OpenHAB
-" - modelica
-" - Arduino
-" - Octave
-" - Python --> scikit-learn, H2O, Keras, DataAnalysis, bokeh
-" - OpenFOAM
-" Vimplug:
-" - copy and paste to other users!?
-" CSV:
-" - turn on and of special csv handling
+":let g:vimsyn_embed='0'
+"let g:python_host_skip_check=1
+"let g:loaded_python2_provider=1
+"let g:loaded_python3_provider=1
 "
 "==================================================================================================
 set runtimepath+=/home/fbraenns/.nvim/
@@ -47,7 +20,8 @@ Plug 'zchee/deoplete-jedi'
 
 Plug 'Shougo/vimfiler.vim' "needs unite -> new development for denite Plug 'Shougo/defx.nvim'
 Plug 'Shougo/neomru.vim'
-" Plug 'Shougo/vimproc.vim', { 'do' : 'make', }
+" Wird fuer grep und find benoetigt
+Plug 'Shougo/vimproc.vim', { 'do' : 'make', }  
 " Unite is needed due to vimfiler
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -73,6 +47,8 @@ Plug 'itchyny/lightline.vim'
 " Plug 'xolox/vim-misc'
 " Plug 'xolox/vim-session'
 Plug 'morhetz/gruvbox'
+" Plug 'jpo/vim-railscasts-theme'
+" Plug 'jacoborus/tender.vim'
 Plug 'haya14busa/incsearch-fuzzy.vim'
 " .....................................................................
 " Programming:
@@ -89,8 +65,6 @@ call plug#end()
 "==================================================================================================
 " General Settings
 "
-" set cursorline
-" :hi CursorLine ctermbg=gray
 set encoding=utf-8
 set number
 set ut=100
@@ -181,60 +155,8 @@ augroup filetype
     autocmd BufRead,BufNewFile *.m       set filetype=octave
     autocmd BufRead,BufNewFile *.ino set filetype=arduino
     autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
-    " autocmd BufRead,BufNewFile *.pvsm       set filetype=xml
-    " autocmd BufRead,BufNewFile *.snip set syntax=vim
-    " autocmd Filetype ipynb nmap <silent><Leader>b :VimpyterInsertPythonBlock<CR>
-    " autocmd Filetype ipynb nmap <silent><Leader>j :VimpyterStartJupyter<CR>
-    " autocmd Filetype ipynb nmap <silent><Leader>n :VimpyterStartNteract<CR>
-    " autocmd BufNewFile,BufRead *.data set syntax=gpyro
-    " autocmd BufReadPost *
-    "             \ if line("'\"") > 0 && line("'\"") <= line("$") |
-    "             \   exe "normal g`\"" |
-    "             \ endif
-    "autocmd BufEnter set filetype=c
-    " autocmd BufNewFile,BufRead *.in set syntax=fortran
-    "autocmd BufNewFile,BufRead *.in set syntax=dakota
-    " autocmd! BufRead,BufNewFile *.pvs       set filetype=tcl
-    " autocmd! BufRead,BufNewFile *.pvb       set filetype=tcl
-    " autocmd! BufRead,BufNewFile *.gnu     set filetype=gnu
-    " autocmd! BufRead,BufNewFile *.pde set filetype=c
-    " autocmd! BufRead,BufNewFile *.ino set syntax=c
-    " autocmd BufEnter * if &buftype == 'terminal' | :startinsert | endif
-    " augroup END
-
-    " in human-language files, automatically format everything at 72 chars:
-    " autocmd FileType mail,human set formatoptions+=t textwidth=72
-
-    " for C-like programming, have automatic indentation:
-    " autocmd FileType c,cpp,slang set cindent
-
-    " for actual C (not C++) programming where comments have explicit end
-    " characters, if starting a new line in the middle of a comment automatically
-    " insert the comment leader characters:
-    " autocmd FileType c set formatoptions+=ro
-
-    " for Perl programming, have things in braces indenting themselves:
-    " autocmd FileType perl set smartindent
-
-    " for CSS, also have things in braces indented:
-    " autocmd FileType css set smartindent
-
-
-    " for HTML, generally format text, but if a long line has been created leave it
-    " alone when editing:
     autocmd FileType html set formatoptions+=tl
-
-    " for both CSS and HTML, use genuine tab characters for indentation, to make
-    " files a few bytes smaller:
-    " autocmd FileType html,css set noexpandtab tabstop=2
-
-    " in makefiles, don't expand tabs to spaces, since actual tab characters are
-    " needed, and have indentation at 8 chars to be sure that all indents are tabs
-    " (despite the mappings later):
     autocmd FileType make set noexpandtab shiftwidth=8
-    " autocmd FileType denite call s:denite_settings()
-    " augroup filetype
-    " open at start up: autocmd VimEnter * if !argc() | VimFiler -status | endif
     autocmd Filetype vimfiler setlocal cursorline
     autocmd FileType vimfiler nunmap <buffer> x
     autocmd BufNewFile,BufRead *.snip set syntax=python
@@ -270,6 +192,31 @@ set backupext=~
 set wildmenu "menu has tab completion
 set wildignore=.aux,.bak,.dvi,.gz,.idx,.log,.ps,.swp,.tar,.pdf,.rpm,.deb,.o,.e,*~
 
+"-------------------------------------------------------------------------------------------------- 
+" " Copy to clipboard and Paste from clipboard
+"" Paste Mode On/Off
+map <F11> :call Paste_on_off()<CR>
+set pastetoggle=<F11>
+"
+let paste_mode = 0 " 0 = normal, 1 = paste
+"
+"..................................................................................................
+func! Paste_on_off()
+    if g:paste_mode == 0
+        set paste
+        let g:paste_mode = 1
+    else
+        set nopaste
+
+        let g:paste_mode = 0
+    endif
+    return
+endfunc
+
+"..................................................................................................
+vmap <F6> :!xclip -f -sel clip<CR>
+imap <F7> :-1r !xclip -o -sel clip
+
 "
 "--------------------------------------------------------------------------------------------------
 " keybindings
@@ -304,53 +251,16 @@ cnoremap <C-l> <Right>
 :nnoremap <leader>fef :e ~/.nvim/ftplugin/<CR>
 :nnoremap <leader>fes :e ~/.nvim/snippets/python.snip<CR>
 
-"" Paste Mode On/Off
-map <F11> :call Paste_on_off()<CR>
-set pastetoggle=<F11>
+"-------------------------------------------------------------------------------------------------- 
 "
-let paste_mode = 0 " 0 = normal, 1 = paste
-"
-func! Paste_on_off()
-    if g:paste_mode == 0
-        set paste
-        let g:paste_mode = 1
-    else
-        set nopaste
-
-        let g:paste_mode = 0
-    endif
-    <<<<<<< HEAD
-    return
-endfunc
-
-vmap <F6> :!xclip -f -sel clip<CR>
-imap <F7> :-1r !xclip -o -sel clip
-
 :map <C-x>0 <C-w>c
 :map <C-x>1 <C-w>o
 
 :nmap ,x :call jobstart('xterm',{'detach':1}) <CR>
 
-"..................................................................................................
-" " Copy to clipboard
 set clipboard+=unnamedplus
 vnoremap  <leader>y  "+y
-" nnoremap  <leader>Y  "+yg_
-" nnoremap  <leader>y  "+y
-" nnoremap  <leader>yy  "+yy
-
-" " Paste from clipboard
 nnoremap <leader>p ""p
-" nnoremap <leader>P "+P
-" nnoremap <leader>O "*P
-" vnoremap <leader>p "+p
-" vnoremap <leader>P "+P
-" vnoremap <leader>p "+p
-" vnoremap <leader>P "+P
-"
-" :inoremap <C-v> <ESC>"+pa
-" :vnoremap <C-c> "+y
-" :vnoremap <C-d> "+d
 "
 :tnoremap <C-p> <up>
 :tnoremap <C-n> <down>
@@ -381,12 +291,6 @@ nnoremap <leader>p ""p
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_smart_case = 1
 
-" inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-" function! s:my_cr_function() abort
-"   return deoplete#close_popup() . "\<CR>"
-" endfunction
-
-
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 xmap <C-k>     <Plug>(neosnippet_expand_target)
@@ -395,7 +299,6 @@ imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 
 imap <expr><TAB> pumvisible() ? "\<C-n>" : (neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>")
 imap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
-"imap <expr><CR> pumvisible() ? deoplete#mappings#close_popup() : "\<CR>\<Plug>AutoPairsReturn"
 
 let g:neosnippet#snippets_directory='~/.nvim/snippets'
 
@@ -413,7 +316,7 @@ nnoremap <silent><leader>8 :<C-u>DeniteCursorWord grep:. -mode=normal<CR>
 " nnorema<silent> p <leader>k :<C-u>Denite -mode=normal -winwidth=35 unite:outline<cr>
 
 nnoremap <silent> <leader>v :<C-u>Denite location_list -mode=normal -no-empty -auto-preview<CR>
-nnoremap <silent> <leader>ff :<C-u>DeniteBufferDir -mode=normal -no-split -buffer-name=files   file<cr>
+nnoremap <silent> <leader>ff :<C-u>DeniteBufferDir -mode=normal -no-split -buffer-name=files   file_rec<cr>
 nnoremap <silent> <leader>fd :<C-u>DeniteBufferDir -mode=normal -no-split -buffer-name=dir directory_rec<cr>
 nnoremap <silent> <leader>r :<C-u>Denite -mode=normal -no-split -buffer-name=mru     file_mru<cr>
 
@@ -515,24 +418,10 @@ call denite#custom#map(
             \ 'noremap'
             \)
 
+"-------------------------------------------------------------------------------------------------- 
 " Add custom menus
 let s:menus = {}
 
-" let s:menus.zsh = {
-"             \ 'description': 'Edit your import zsh configuration'
-"             \ }
-" let s:menus.zsh.file_candidates = [
-"             \ ['zshrc', '~/.config/zsh/.zshrc'],
-"             \ ['zshenv', '~/.zshenv'],
-"             \ ]
-"
-" let s:menus.my_commands = {
-"             \ 'description': 'Example commands'
-"             \ }
-" let s:menus.my_commands.command_candidates = [
-"             \ ['Split the window', 'vnew'],
-"             \ ['Open zsh menu', 'Denite menu:zsh'],
-"             \ ]
 let s:menus.Git= {
             \ 'description': 'Git commands'
             \ }
@@ -550,17 +439,6 @@ let s:menus.Git.command_candidates = [
             \ ['Change g', 'Denite gitchanged'],
             \ ['Branch g', 'Denite gitbranch'],
             \ ]
-
-" nnoremap <leader>gl :Denite gitlog<CR>
-" nnoremap <leader>gL :Denite gitlog:all<CR>
-" nnoremap <leader>gS :Denite gitstatus<CR>
-" nnoremap <leader>gs :Gstatus<CR>
-" nnoremap <leader>gc :Denite gitchanged<CR>
-" nnoremap <leader>gb :Denite gitbranch<CR>
-" nnoremap <leader>gp :Gpull
-" nnoremap <leader>gP :Gpush
-" nnoremap <leader>ga :Gadd
-" nnoremap <leader>gc :Gcommit
 
 let s:menus.Denite = {
             \ 'description': 'Denite commands'
@@ -627,31 +505,7 @@ let s:menus.Toggles.command_candidates = [
 call denite#custom#var('menu', 'menus', s:menus)
 
 "==================================================================================================
-" Unite
-"
-" let g:unite_source_history_yank_enable = 1
-" call unite#filters#matcher_default#use(['matcher_fuzzy'])
-" nnoremap <silent><Leader>ub :Unite -silent -auto-resize -buffer-name=my-directories -default-action=vimfiler bookmark<CR>
-
-" Use ag in unite grep source.
-" let g:unite_source_grep_command = 'ag'
-" let g:unite_source_grep_default_opts =
-"             \ '-i --vimgrep --hidden --ignore ' .
-"             \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
-" let g:unite_source_grep_recursive_opt = ''
-
-" nmap <silent> <S-f> :Unite -no-quit grep<CR>
-
-" function! s:denite_settings()
-"     " Play nice with supertab
-"     let b:SuperTabDisabled=1
-"     " Enable navigation with control-j and control-k in insert mode
-"     imap <buffer> <C-j>   <Plug>(denite_move_next_line)
-"     imap <buffer> <C-k>   <Plug>(denite_move_previous_line)
-" endfunction
-
-" Use fuzzy matcher for filtering elements.
-" call unite#filters#matcher_default#use(['matcher_fuzzy'])
+" Unite - only needed for vimfiler
 
 "==================================================================================================
 " Nerdcommenter
@@ -695,54 +549,6 @@ map <silent><leader>D :VimFilerCreate -status -sort-type=Time<CR>
 map <silent><leader>d :VimFilerBufferDir -status -sort-type=Time<CR>
 " map <space>E :VimFilerBufferDir -status -split -simple -winwidth=30 -toggle -no-quit<CR><CR>
 " nnoremap <F2> :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=30 -toggle -no-quit<CR>
-
-"
-" make vimfiler buffer behave
-" function! s:vimfiler_buffer_au()
-"     setlocal nobuflisted
-"     setlocal colorcolumn=
-"     :highlight CursorLine ctermbg=65
-" endfunction
-
-" function mark#ToggleOff()
-" :  echom "Meow!"
-" endfunction
-
-" function! ToggleOff()
-"         if s:enabled
-"                 call s:MarkEnable(0)
-"                 echo 'Disabled marks'
-"         " else
-"         "         call s:MarkEnable(1)
-"         "
-"         "         let l:markCnt = mark#GetCount()
-"         "         echo 'Enabled' (l:markCnt > 0 ? l:markCnt . ' ' : '') . 'marks'
-"         endif
-" endfunction
-
-
-" autocmd FileType vimfiler call s:vimfiler_buffer_au()
-"autocmd FileType python :call mark#ToggleOff()
-"autocmd BufEnter * if &ft == 'python' | :call mark#ToggleOff()<CR>| endif
-"x autocmd FileType vimfiler :call mark#ToggleOn()
-"x autocmd BufEnter *.py :call mark#ToggleOff()
-"x autocmd BufEnter *.sh :call mark#ToggleOff()
-"x autocmd BufEnter *.vim :call mark#ToggleOff()
-"x autocmd BufEnter *.fds :call mark#ToggleOff()
-"x autocmd BufEnter *.c :call mark#ToggleOff()
-"x autocmd BufEnter *.mo :call mark#ToggleOff()
-"x autocmd BufEnter *.ino :call mark#ToggleOff()
-"x autocmd BufEnter *.m :call mark#ToggleOff()
-"x autocmd BufEnter *.csv :call mark#ToggleOff()
-"autocmd BufEnter * if &ft == 'bash' | :call mark#ToggleOff()<CR>| endif
-"autocmd BufEnter * if &ft == 'dakota' | :call mark#ToggleOff()<CR>| endif
-"autocmd BufEnter * if &ft == 'fds' | :call mark#ToggleOff()<CR>| endif
-"autocmd BufEnter * if &ft == 'c' | :call mark#ToggleOff()<CR>| endif
-"autocmd BufEnter * if &ft == 'modelica' | :call mark#ToggleOff()<CR>| endif
-"autocmd BufEnter * if &ft == 'arduino' | :call mark#ToggleOff()<CR>| endif
-"autocmd BufEnter * if &ft == 'lisp' | :call mark#ToggleOff()<CR>| endif
-"autocmd BufEnter * if &ft == 'octave' | :call mark#ToggleOff()<CR>| endif
-" autocmd BufEnter * if &ft ==# 'python' | :call mark#ToggleOff()<CR> | endif
 
 
 
@@ -827,10 +633,6 @@ nnoremap gn :tabnext<CR>
 
 
 "==================================================================================================
-" let g:gfm_syntax_enable_always = 0
-" let g:gfm_syntax_enable_filetypes = ['markdown.gfm']
-" let g:markdown_fenced_languages = ['cpp', 'json','python']
-
 
 " Get current highlight
 map <F9> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
@@ -861,55 +663,12 @@ call denite#custom#map(
             \ 'noremap'
             \)
 
-
-" imap <buffer> <C-a> (denite:do_action:add)
 nnoremap <leader>gl :Denite gitlog<CR>
 nnoremap <leader>gL :Denite gitlog:all<CR>
 nnoremap <leader>gS :Denite gitstatus<CR>
 nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gc :Denite gitchanged<CR>
 nnoremap <leader>gb :Denite gitbranch<CR>
-
-" Actions of gitlog:
-"
-" open default action for open seleted commit.
-" preview preview seleted commit.
-" delete run git diff with current commit for current buffer. (just named delete)
-" reset run git reset with current commit.
-
-" Actions of git status:
-"
-" open open seleted file, default action
-" add run git add for seleted file(s).
-" delete run git diff for seleted file. (just named delete)
-" reset run git reset/checkout or remove for seleted file(s).
-" commit run git commit for seleted file(s).
-" push
-
-" let g:easygit_enable_command = 1
-" Gcd make vim cd to git root directory.
-" Glcd make vim lcd to git root directory.
-" Gblame Git blame current file, you can use p to preview commit and d to diff with current file.
-" GcommitCurrent Git commit current file with message as command args.
-" GdiffThis Side by side diff of current file with head or any ref.
-" Gcommit Git commit with command line argument.
-" nnoremap <leader>gc :Gcommit
-" Gedit Edit git reference from git show.
-" Gdiff Git diff with command line argument.
-" Gremove Git remove with command line argument, remove current file when arguments empty.
-" Grename Rename current by git mv, file in buffer list would react the changes.
-" Gmove Git mv with command line argument.
-" Gcheckout Git checkout with command line argument.
-" nnoremap <leader>gp :Gpull
-" nnoremap <leader>gP :Gpush
-" nnoremap <leader>ga :Gadd
-" Gpush Git push with arguments, dispatch when possible.
-" Gpull Git pull with arguments, dispatch when possible.
-" Gfetch Git fetch with arguments, dispatch when possible.
-" Gadd Git add with arguments.
-" Gstatus Show git status in a temporary buffer.
-" Ggrep Git grep repo of current file, and show result in quickfix
-" Gmerge Git merge with branch complete
 
 :let g:session_autosave = 'no'
 :let g:session_autoload = 'no'
@@ -936,6 +695,8 @@ nmap <leader>va ggVG:'<,'>CSVArrangeColumn<CR>
 " :echo expand("%:.:h:h")" relative path dirname dirname
 "
 
+"==================================================================================================
+" GERMAN Umlaute
 nnoremap <F12> :call German_postfix()<CR>
 function German_postfix()
     imap ue ü
@@ -968,17 +729,11 @@ nmap <leader>q :q!a<CR>
 nmap <leader>Q :wqa<CR>
 
 
-"..................................................................................................
-" Marking in files, Denite and vimfiler
+"==================================================================================================
+" MARKing in files, Denite and vimfiler
 
-" augroup filetype
-"     autocmd FileType vimfiler call Marking()
-"     autocmd FileType python :MarkClear
-"     autocmd FileType modelica :MarkClear
-" augroup END
 "
 let g:mwDefaultHighlightingPalette = 'maximum'
-" function! Marking()
 runtime plugin/mark.vim
 silent MarkClear
 "
@@ -1019,29 +774,9 @@ silent 17Mark /.*\.sh/
 
 nmap <leader>t :call mark#Toggle()<CR>
 
-
-" nnoremap th  :tabfirst<CR>
-" nnoremap tj  :tabnext<CR>
-" nnoremap tk  :tabprev<CR>
-" nnoremap tl  :tablast<CR>
-" nnoremap tt  :tabedit<Space>
-" nnoremap tn  :tabnew<CR>
-" nnoremap tm  :tabm<Space>
-" nnoremap td  :tabclose<CR>
-" Alternatively use
-"nnoremap th :tabnext<CR>
-"nnoremap tl :tabprev<CR>
-"nnoremap tn :tabnew<CR>
-" :highlight col1 ctermbg=Red ctermfg=White
-" :syntax match col1 /Apple/
-" :highlight col2 ctermbg=Green ctermfg=Black
-" :syntax match col2 /Mango/
-" /\%81v.*/
 "
 "==================================================================================================
 " COLORSCHEME
-"x set termguicolors
-" set background=dark
 :let g:gruvbox_bold = '0'
 :let g:gruvbox_italic = '1'
 colorscheme gruvbox
@@ -1053,7 +788,6 @@ set background=dark
 "
 "..................................................................................................
 " Highlighting
-"
 function! MyTabname(n) abort
     let buflist = tabpagebuflist(a:n)
     let winnr = tabpagewinnr(a:n)
@@ -1067,17 +801,6 @@ function! MyTabname(n) abort
     endif
 endfunction
 
-" let &titlestring = expand('@%')
-" set title
-
-"\ 'colorscheme': 'wombat',
-"\ 'active': {
-"\   'left': [ [ 'mode', 'paste' ],
-"\             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
-"\ },
-"\ 'component_function': {
-"\   'gitbranch': 'fugitive#head'
-"\ },
 let g:lightline = {
             \ 'tab': {
             \ 'active': [ 'tabnum', 'mytabname', 'modified' ],
@@ -1091,50 +814,21 @@ let g:lightline = {
             \ },
             \ }
 "
-"
-"highlight Normal ctermbg=234
-"ctermfg=white
-" :hi comment ctermfg=darkgreen
-" :highlight LineNr ctermfg=darkgrey
-":highlight VertSplit ctermfg=darkgray ctermfg=black
 ""..................................................................................................
 :highlight ParenMatch ctermbg=blue
 " :hi comment ctermfg=242
 :highlight LineNr ctermfg=darkgrey
-" :highlight VertSplit ctermfg=darkgray ctermfg=black
 
-"..................................................................................................
-" Showmarks
-":hi ShowMarksHLl ctermfg=red "For marks a-z
-":hi ShowMarksHLu ctermfg=yellow "For marks A-Z
-":hi ShowMarksHLo ctermfg=magenta "For all other marks
-":hi ShowMarksHLm ctermfg=white "For multiple marks on the same line.
-":hi SignColumn ctermbg=black
-
-"highlight Pmenu ctermbg=8 guibg=#606060 ctermbg=/usr/bin/env: ‘php’: No such file or directory
-":highlight PmenuSel ctermbg=1 guifg=#dddd00 ctermfg=/usr/bin/env: ‘php’: No such file or directory guibg=#1f82cd
-"highlight PmenuSbar ctermbg=0 guibg=#d6d6d6 ctermbg=/usr/bin/env: ‘php’: No such file or directory
-"
 :highlight Cursor ctermfg=red guifg=red
 :highlight vimFilerMarkedFile ctermbg=12
 
 :highlight TermCursor ctermfg=red guifg=red
 
-"x :hi LightLineMiddle_active ctermbg=98
-":highlight Search ctermbg=gray ctermfg=black
 :hi Search ctermbg=12
 :hi Search ctermfg=226
-
-
-" :highlight ALEWarning ctermbg=65
-" :highlight ALEWarningSign ctermbg=65
-" :highlight ALEError ctermbg=92
-" :highlight ALEErrorSign ctermbg=92
 "
 "
-"
-"
-" Without Gruvbox
+" Without Gruvbox - black background
 " highlight MarkWord1 ctermfg=3 ctermbg=234
 " highlight MarkWord2 ctermfg=154 ctermbg=234
 " highlight MarkWord3 ctermfg=148 ctermbg=234
@@ -1172,33 +866,12 @@ highlight MarkWord15  ctermfg=187 ctermbg=bg
 highlight MarkWord16  ctermfg=186 ctermbg=bg
 highlight MarkWord17  ctermfg=192 ctermbg=bg
 
-" :hi Comment ctermfg=darkgrey
-" :hi Comment ctermfg=darkgreen
-"x :hi Comment ctermfg=28
-":hi LineNr ctermfg=darkgrey
-
-" highlight extensionPDF ctermbg=red ctermfg=white guibg=#592929 ctermbg=/usr/bin/env: ‘php’: No such file or directory
-" syn match extensionPDF /txet/
-" :hi TabLineFill ctermfg=LightGreen ctermbg=DarkGreen
-"x :hi TabLine ctermfg=grey ctermbg=darkgrey
-"x :hi TabLineSel ctermfg=Blue ctermbg=120
-"x :hi Title ctermfg=LightBlue ctermbg=Magenta
-
-"set sessionoptions+=tabpages,globals
-"x hi Identifier ctermfg=magenta
-"hi String ctermfg=215
-"hi String ctermfg=230
-"x hi String ctermfg=229
-"x hi Comment ctermfg=34
-"x hi PreProc ctermfg=cyan
-
-
 "==================================================================================================
 " Delete white spaces
 nnoremap <F5> :%s/\s\+$//e
 
 "==================================================================================================
-"BC Calculator
+"BC Calculator --> python too slow at start up
 " Python calculator
 "OO:command! -nargs=+ Calc :py3 print (<args>)
 "OO":py3 from math import *
@@ -1210,25 +883,6 @@ inoremap <F2>  <ESC>!!bc -l<CR>
 
 "==================================================================================================
 " Jump back in buffers (vimfiler!?)
-" :browse oldfiles :bro ol
-"https://vi.stackexchange.com/questions/3694/is-there-a-way-to-reliably-go-back-and-forth-in-file-history
-"<C-6>
-"
-"You can also use :oldfiles to get a list of files you edited.
-"The list will have numbers associated with filenames. Pick a file, note the number (say 14) and open it with :edit #<14
-"
-" fun! ChooseBuf()
-"     redir => buffers
-"     silent ls
-"     redir end
-"
-"     echo l:buffers
-"     let l:choice = input('Which one: ')
-"     execute ':edit +' . l:choice . 'buf'
-" endfun
-" command! ChooseBuf call ChooseBuf()
-" nnoremap <Leader>B :call ChooseBuf()<CR>
-
 function! GoBackToRecentBuffer()
     let startName = bufname('%')
     while 1
@@ -1242,27 +896,6 @@ endfunction
 
 nnoremap <silent> <C-U> :call GoBackToRecentBuffer()<Enter>
 
-"\ 'colorscheme': 'wombat',
-"\ 'active': {
-"\   'left': [ [ 'mode', 'paste' ],
-"\             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
-"\ },
-"\ 'component_function': {
-"\   'gitbranch': 'fugitive#head'
-"\ },
-" let g:lightline = {
-"             \ 'tab': {
-"             \ 'active': [ 'tabnum', 'mytabname', 'modified' ],
-"             \ 'inactive': [ 'tabnum', 'mytabname', 'modified' ]
-"             \ },
-"             \ 'tab_component_function': {
-"             \ 'mytabname': 'MyTabname',
-"             \ 'modified': 'lightline#tab#modified',
-"             \ 'readonly': 'lightline#tab#readonly',
-"             \ 'tabnum': 'lightline#tab#tabnum'
-"             \ },
-"             \ }
-" Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
 
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
@@ -1274,50 +907,3 @@ nmap ga <Plug>(EasyAlign)
 " filter
 " global g commands
 " C-F in command mode or q:
-"
-"================================================================================================== 
-"
-"
-"xj    " enable ncm2 for all buffer
-"xj    " autocmd BufEnter * call ncm2#enable_for_buffer()
-"xj
-"xj    " note that must keep noinsert in completeopt, the others is optional
-"xj    set completeopt=noinsert,menuone,noselect
-"xj    " supress the annoying 'match x of y', 'The only match' and 'Pattern not
-"xj    " found' messages
-"xj    set shortmess+=c
-"xj
-"xj    " CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
-"xj    inoremap <c-c> <ESC>
-"xj
-"xj    " When the <Enter> key is pressed while the popup menu is visible, it only
-"xj    " hides the menu. Use this mapping to close the menu and also start a new
-"xj    " line.
-"xj    inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
-"xj
-"xj    " Use <TAB> to select the popup menu:
-"xj    inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-"xj    inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-"xj
-"xj    " wrap existing omnifunc
-"xj    " Note that omnifunc does not run in background and may probably block the
-"xj    " editor. If you don't want to be blocked by omnifunc too often, you could
-"xj    " add 180ms delay before the omni wrapper:
-"xj    "  'on_complete': ['ncm2#on_complete#delay', 180,
-"xj    "               \ 'ncm2#on_complete#omni', 'csscomplete#CompleteCSS'],
-"xj    " au User Ncm2Plugin call ncm2#register_source({
-"xj    "         \ 'name' : 'css',
-"xj    "         \ 'priority': 9,
-"xj    "         \ 'subscope_enable': 1,
-"xj    "         \ 'scope': ['css','scss'],
-"xj    "         \ 'mark': 'css',
-"xj    "         \ 'word_pattern': '[\w\-]+',
-"xj    "         \ 'complete_pattern': ':\s*',
-"xj    "         \ 'on_complete': ['ncm2#on_complete#omni', 'csscomplete#CompleteCSS'],
-"xj    "         \ })
-"xj
-"xj    " some completion sources
-"xj    Plug 'ncm2/ncm2-bufword'
-"xj    Plug 'ncm2/ncm2-tmux'
-"xj    Plug 'ncm2/ncm2-path'
-"xj    Plug 'ncm2/ncm2-jedi'
