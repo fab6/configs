@@ -252,7 +252,22 @@ cnoremap <C-l> <Right>
 :nnoremap <leader>fes :e ~/.nvim/snippets/python.snip<CR>
 
 "-------------------------------------------------------------------------------------------------- 
-"
+" PASTINg
+func! Paste_on_off()
+    if g:paste_mode == 0
+        set paste
+        let g:paste_mode = 1
+    else
+        set nopaste
+
+        let g:paste_mode = 0
+    endif
+    return
+endfunc
+
+vmap <F6> :!xclip -f -sel clip<CR>
+imap <F7> :-1r !xclip -o -sel clip
+
 :map <C-x>0 <C-w>c
 :map <C-x>1 <C-w>o
 
@@ -523,7 +538,8 @@ let g:NERDDefaultAlign = 'left'
 let g:NERDAltDelims_java = 1
 
 " Add your own custom formats or override the defaults
-let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' }, 'openhab-items': { 'left': '//'} , 'openhab-rules': { 'left': '//'} , 'openhab-persist': { 'left': '//'} , 'openhab-sitemap': { 'left': '//'} , 'openhab-tings': { 'left': '//'} } 
+let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' }, 'openhab-things': { 'left': '//'} ,'openhab-items': { 'left': '//'} ,'openhab-rules': { 'left': '//'} ,'openhab-sitemap': { 'left': '//'} ,'openhab-persist': { 'left': '//'} }
+
 " Allow commenting and inverting empty lines (useful when commenting a region)
 let g:NERDCommentEmptyLines = 1
 
