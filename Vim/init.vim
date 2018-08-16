@@ -559,6 +559,7 @@ let g:indentLine_color_term = 239
 " nnoremap <leader>jf :<C-u>VimFilerExplorer -sort-type=Time -status -split -simple -parent -winwidth=35 -no-quit -find<CR>
 " nnoremap <leader>ff :VimFilerExplorer -status -find -winwidth=80 -sort-type=Time <CR>
 
+map <silent><leader>x :Defx<CR>
 map <silent><leader>D :VimFilerCreate -status -sort-type=Time<CR>
 "map <silent><leader>d :VimFilerBufferDir -status -sort-type=Time<CR>
 " map <silent><leader>Dd :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=29 -toggle -no-quit -explorer<CR>
@@ -894,8 +895,13 @@ nnoremap <F5> :%s/\s\+$//e
 "OO:py3 import numpy as np
 "OO" :py3 from cmath import *
 "OOnnoremap <F2>  :Calc
-nnoremap <F2>  !!bc -l<CR>
-inoremap <F2>  <ESC>!!bc -l<CR>
+" nnoremap <F2>  !!bc -l<CR>
+" nnoremap <F2>  !!bc -l<CR>
+" inoremap <F2>  <ESC>!!bc -l<CR>
+" nnoremap <F2>
+" nnoremap <F2>
+inoremap <F2> <C-r>=
+nnoremap <F2> i<C-r>=
 
 "==================================================================================================
 " Jump back in buffers (vimfiler!?)
@@ -923,3 +929,5 @@ nmap ga <Plug>(EasyAlign)
 " filter
 " global g commands
 " C-F in command mode or q:
+"
+" ino <C-A> <C-O>yiW<End>=<C-R>=<C-R>0<CR>

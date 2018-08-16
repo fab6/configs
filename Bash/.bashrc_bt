@@ -22,7 +22,8 @@ export EDITOR="/share/Tools/Editing/NeoVim/nvim.appimage"
 module load divs/0.2
 module load Aliases/StarCCM+
 #module load python/anaconda3/4.x
-module load python_loc/3.6.0_anac4.3.1
+#module load python_loc/3.6.0_anac4.3.1
+module load python_loc/3.6.5_miniC3
 module load FDS/6.5.3
 module load VisIt/2.10.3
 module load ParaView/5.2.0
@@ -81,3 +82,6 @@ tmm() {
   fi
   session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
 }
+
+# added by Miniconda3 installer
+#export PATH="/share/Tools/Python/Distributions/MiniConda3_latest_180813/bin:$PATH"
