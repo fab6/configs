@@ -164,7 +164,7 @@ augroup filetype
     autocmd BufNewFile,BufRead *.fds5 set syntax=fds
     autocmd BufNewFile,BufRead *.fds set syntax=fds
     autocmd BufNewFile,BufRead *.smv set syntax=fds
-autocmd InsertLeave * NeoSnippetClearMarkers
+    autocmd InsertLeave * NeoSnippetClearMarkers
 augroup END
 "
 "
@@ -559,7 +559,7 @@ let g:indentLine_color_term = 239
 " nnoremap <leader>jf :<C-u>VimFilerExplorer -sort-type=Time -status -split -simple -parent -winwidth=35 -no-quit -find<CR>
 " nnoremap <leader>ff :VimFilerExplorer -status -find -winwidth=80 -sort-type=Time <CR>
 
-map <silent><leader>x :Defx<CR>
+map <silent><leader>x :Defx -auto-cd<CR>
 map <silent><leader>D :VimFilerCreate -status -sort-type=Time<CR>
 "map <silent><leader>d :VimFilerBufferDir -status -sort-type=Time<CR>
 " map <silent><leader>Dd :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=29 -toggle -no-quit -explorer<CR>
@@ -802,8 +802,7 @@ set background=dark
 " colorscheme gruvbox
 :let g:gruvbox_contrast_dark = 'hard'
 :let g:gruvbox_hls_cursor = 'orange'
-"
-"..................................................................................................
+
 " Highlighting
 function! MyTabname(n) abort
     let buflist = tabpagebuflist(a:n)
@@ -814,22 +813,43 @@ function! MyTabname(n) abort
         return 'VMFILE'
         " return getcwd()
     else
-        return strlen(_) ? _ : '[No Name]'
+        return strlen(_) ? _ : '[No Name]' 
     endif
 endfunction
 
-let g:lightline = {
-            \ 'tab': {
-            \ 'active': [ 'tabnum', 'mytabname', 'modified' ],
-            \ 'inactive': [ 'tabnum', 'mytabname', 'modified' ]
-            \ },
-            \ 'tab_component_function': {
-            \ 'mytabname': 'MyTabname',
-            \ 'modified': 'lightline#tab#modified',
-            \ 'readonly': 'lightline#tab#readonly',
-            \ 'tabnum': 'lightline#tab#tabnum'
-            \ },
-            \ }
+
+if hostname() == "wolf"
+    let g:lightline = {
+                \ 'colorscheme': 'wombat',
+                \ 'tab': {
+                \ 'active': [ 'tabnum', 'mytabname', 'modified' ],
+                \ 'inactive': [ 'tabnum', 'mytabname', 'modified' ]
+                \ },
+                \ 'tab_component_function': {
+                \ 'mytabname': 'MyTabname',
+                \ 'modified': 'lightline#tab#modified',
+                \ 'readonly': 'lightline#tab#readonly',
+                \ 'tabnum': 'lightline#tab#tabnum'
+                \ },
+                \ }
+else
+    let g:lightline = {
+                \ 'colorscheme': 'landscape',
+                \ 'tab': {
+                \ 'active': [ 'tabnum', 'mytabname', 'modified' ],
+                \ 'inactive': [ 'tabnum', 'mytabname', 'modified' ]
+                \ },
+                \ 'tab_component_function': {
+                \ 'mytabname': 'MyTabname',
+                \ 'modified': 'lightline#tab#modified',
+                \ 'readonly': 'lightline#tab#readonly',
+                \ 'tabnum': 'lightline#tab#tabnum'
+                \ },
+                \ }
+endif
+
+"
+"..................................................................................................
 "
 ""..................................................................................................
 :highlight ParenMatch ctermbg=blue
@@ -838,6 +858,7 @@ let g:lightline = {
 
 :highlight Cursor ctermfg=red guifg=red
 :highlight vimFilerMarkedFile ctermbg=12
+:highlight vimFilerDirectory ctermbg=blue
 
 :highlight TermCursor ctermfg=red guifg=red
 

@@ -21,6 +21,13 @@ options     head
 
 
 #==================================================================================================
+snippet     f_misc
+abbr        f_misc
+alias       f_miscprocessing
+options     head
+        &MISC THICKEN_OBSTRUCTIONS = .TRUE.,  /
+
+#==================================================================================================
 snippet     f_head
 abbr        f_head
 alias       f_headprocessing
@@ -29,16 +36,60 @@ options     head
 
 
 #==================================================================================================
+snippet     f_dump
+abbr        f_dump
+alias       f_dumpprocessing
+options     head
+        &DUMP DT_HRR = 1, DT_BNDF = 1, DT_DEVC = 1, DT_PL3D = 60, DT_SLCF = 1, DT_RESTART = 60, FLUSH_FILE_BUFFERS = .FALSE.,  /
+
+#==================================================================================================
+snippet     f_mat_standard
+abbr        f_mat_standard
+alias       f_mat_standard
+options     head
+        !--- nochmal ueberpruefen
+        &MATL ID                 = 'ALU'
+          EMISSIVITY             = 0.9
+          SPECIFIC_HEAT          = 0.896 
+          DENSITY                = 2700.0 
+          CONDUCTIVITY           = 220.0 /
+
+        &MATL ID                 = 'ALU2'
+          FYI                = 'ENAW_5754'
+          SPECIFIC_HEAT_RAMP = 'c_alu'
+          CONDUCTIVITY		 = 150.0
+          EMISSIVITY             = 0.9
+          DENSITY            = 2670. /
+        &RAMP ID='c_alu', T= 20., F=0.90   /
+        &RAMP ID='c_alu', T=325., F=1.03   /
+        
+        &MATL ID                 = 'MELAMIN'
+          EMISSIVITY             = 0.9
+          SPECIFIC_HEAT          = 1.5 
+          DENSITY                = 10
+          CONDUCTIVITY           = 0.78 / 
+
+        &MATL ID                 = 'INSULATION'
+          FYI                = 'Porextherm'
+          CONDUCTIVITY_RAMP  = 'k_insulation'
+          SPECIFIC_HEAT		 = 0.8
+          DENSITY            = 230.0
+          EMISSIVITY		 = 0.9 /
+        &RAMP ID='k_insulation', T= 10., F=0.019 /
+        &RAMP ID='k_insulation', T=400., F=0.024 /
+
+
+#==================================================================================================
 snippet     f_radi
 abbr        f_radi
 alias       f_radiprocessing
 options     head
-        &RADI NUMBER_RADIATION_ANGLES=${1:"200"}, NMIEANG=${2:"30"}, TIME_STEP_INCREMENT=${3:"1"},/
+        &RADI NUMBER_RADIATION_ANGLES=${1:"500"}, NMIEANG=${2:"30"}, TIME_STEP_INCREMENT=${3:"1"},/
 
 #==================================================================================================
-snippet     post
-abbr        post
-alias       postprocessing
+snippet     f_post
+abbr        f_post
+alias       f_postprocessing
 options     head
         ! &ISOF QUANTITY='TEMPERATURE', VALUE(1)=60., VALUE(2)=200., VALUE(3)=500. ,/
         ! &ISOF QUANTITY='EXTINCTION COEFFICIENT', VALUE(1)=6.2, VALUE(2)=9.2,/
@@ -60,9 +111,9 @@ options     head
         ${0}
 
 #==================================================================================================
-snippet     reac
-abbr        reac
-alias       reaction
+snippet     f_reac
+abbr        f_reac
+alias       f_reaction
 options     head
         &REAC ID='POLYURETHANE', !DO_SBB_2014
               C=1.00,
@@ -75,3 +126,26 @@ options     head
               CO_YIELD=0.075,
               MASS_EXTINCTION_COEFFICIENT=7600./ Tewarson SRPE Handbook 3rd ed
         ${0}
+
+
+#==================================================================================================
+snippet     f_slcf
+abbr        f_slcf
+alias       f_slcf
+options     head
+        &SLCF PBY = 0, QUANTITY = 'TEMPERATURE',  /
+        &SLCF PBY = 0, QUANTITY = 'VELOCITY', VECTOR = .TRUE.,  /
+
+
+#==================================================================================================
+snippet     f_burner_zm5_03x03_top
+abbr        f_burner_zm5_03x03_top
+alias       f_burner_zm5_03x03_top
+options     head
+        &SURF ID = 'FIRE', COLOR = 'RED', TMP_FRONT=100.0, HRRPUA = 1666.7, RAMP_Q = 'FIRE_ZM5_03x03_top',  /
+        &RAMP F = 0, ID = 'FIRE_ZM5_03x03_top', T = 0,  /
+        &RAMP F = 0.5, ID = 'FIRE_ZM5_03x03_top', T = 1,  /
+        &RAMP F = 0.5, ID = 'FIRE_ZM5_03x03_top', T = 119,  /
+        &RAMP F = 1, ID = 'FIRE_ZM5_03x03_top', T = 120,  /
+        &RAMP F = 1, ID = 'FIRE_ZM5_03x03_top', T = 599,  /
+        &RAMP F = 0, ID = 'FIRE_ZM5_03x03_top', T = 600,  /
