@@ -277,6 +277,8 @@ set clipboard+=unnamedplus
 vnoremap  <leader>y  "+y
 nnoremap <leader>p ""p
 "
+"-------------------------------------------------------------------------------------------------- 
+" Window / Buffer Navigation
 :tnoremap <C-p> <up>
 :tnoremap <C-n> <down>
 :tnoremap <C-h> <left>
@@ -700,17 +702,6 @@ nmap <leader>va ggVG:'<,'>CSVArrangeColumn<CR>
 " nmap <leader>vma :CSVMaxCol<CR>
 " nmap <leader>vmi :CSVMinCol<CR>
 
-"==================================================================================================
-" Infos
-"
-" PATHs
-" :echo expand("%:p")    " absolute path
-" :echo expand("%:p:h")  " absolute path dirname
-" :echo expand("%:p:h:h")" absolute path dirname dirname
-" :echo expand("%:.")    " relative path
-" :echo expand("%:.:h")  " relative path dirname
-" :echo expand("%:.:h:h")" relative path dirname dirname
-"
 
 "==================================================================================================
 " GERMAN Umlaute
@@ -946,6 +937,17 @@ nmap ga <Plug>(EasyAlign)
 
 :set inccommand=nosplit
 
+"==================================================================================================
+" Infos
+"
+" PATHs
+" :echo expand("%:p")    " absolute path
+" :echo expand("%:p:h")  " absolute path dirname
+" :echo expand("%:p:h:h")" absolute path dirname dirname
+" :echo expand("%:.")    " relative path
+" :echo expand("%:.:h")  " relative path dirname
+" :echo expand("%:.:h:h")" relative path dirname dirname
+"
 " Cx-Cl
 " filter
 " global g commands
