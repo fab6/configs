@@ -698,9 +698,12 @@ nnoremap <leader>gb :Denite gitbranch<CR>
 let g:csv_strict_columns = 1
 "let g:csv_highlight_column = 'y'
 " nmap <leader>vh :CSVHiColum<CR>
-nmap <leader>va ggVG:'<,'>CSVArrangeColumn<CR>
-" nmap <leader>vma :CSVMaxCol<CR>
-" nmap <leader>vmi :CSVMinCol<CR>
+nmap <leader>ha ggVG:'<,'>CSVArrangeColumn<CR>
+nmap <leader>h1 :let b:csv_headerline=1<CR>
+nmap <leader>h2 :let b:csv_headerline=2<CR>
+nmap <leader>hma :CSVMaxCol<CR>
+nmap <leader>hmi :CSVMinCol<CR>
+nmap <leader>ha :CSVAnalyze<CR>
 
 
 "==================================================================================================
