@@ -14,6 +14,8 @@ export $LS_COLORS
 set -o vi
 export EDITOR="/share/Tools/Editing/NeoVim/nvim.appimage"
 
+alias jn="jupyter notebook"
+
 
 ###===================================================================
 ### Modules
@@ -64,7 +66,8 @@ alias c3v="cd /WORK3/fbraenns/ && /share/Tools/Editing/NeoVim/nvim.appimage +'Vi
 alias c4v="cd /data/work/fbraenns/ && /share/Tools/Editing/NeoVim/nvim.appimage +'VimFilerBufferDir -status -sort-type=Time'"
 alias c5v="cd /share/Tools/ && /share/Tools/Editing/NeoVim/nvim.appimage +'VimFilerBufferDir -status -sort-type=Time'"
 alias c6v="cd /share/software/ && /share/Tools/Editing/NeoVim/nvim.appimage +'VimFilerBufferDir -status -sort-type=Time'"
-alias viv="/share/Tools/Editing/NeoVim/nvim.appimage +'VimFiler -sort-type=Time -status'"
+#alias viv="/share/Tools/Editing/NeoVim/nvim.appimage +'VimFiler -sort-type=Time -status'"
+alias viv="/share/Tools/Editing/NeoVim/nvim.appimage +'Defx -auto-cd'"
 alias cpwd="pwd | tr -d '\n' | pbcopy && echo 'pwd copied to clipboard'"
 alias pw="pwd | xclip -selection 'clipboard' "
 alias vi="nv"

@@ -25,7 +25,6 @@ else
     nmap <silent><buffer>,s2 :call jobstart('/share/software/cd-adapco/STAR-CCM+12.02/STAR-CCM+12.02.010-R8/star/bin/starccm+',{'detach':1}) <CR>
     nmap <silent><buffer>,s1 :call jobstart('/share/software/cd-adapco/STAR-CCM+11.06/STAR-CCM+11.06.010-R8/star/bin/starccm+',{'detach':1}) <CR>
     "nmap <silent><buffer>,p :call jobstart('python +',{'detach':1}) <CR>
-    "nmap <silent><buffer>,p :call jobstart(['python','/share/Tools/Python/FireSimulation/plotHRR_csv63.py',expand('%:t')],{'detach':1}) <CR>
 endif
 nmap <silent><buffer>0 <Plug>(vimfiler_cursor_top)
 
@@ -74,3 +73,4 @@ nmap <silent><buffer>X :VimFilerTab -status -sort-type=Time<CR>
 " Geht nicht, da expand nur den Buffernamen von vimfiler uebertraegt, aber nicht die eigentliche Datei
 nmap <silent><buffer>,O :call jobstart(['xterm','-e','/usr/bin/vim',expand('%:t')],{'detach':1}) <CR>
 nmap <silent><buffer>,y :call jobstart(['xterm','-e','mc','.','.'],{'detach':1}) <CR>
+

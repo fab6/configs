@@ -31,6 +31,7 @@ Plug 'rafi/vim-denite-session'
 Plug 'yyotti/denite-marks'
 Plug 'inkarkat/vim-ingo-library'
 Plug 'inkarkat/vim-mark'
+" Plug 'zakj/vim-showmarks'
 
 Plug 'junegunn/vim-easy-align'
 Plug 'chemzqm/vim-easygit'
@@ -561,7 +562,10 @@ let g:indentLine_color_term = 239
 " nnoremap <leader>jf :<C-u>VimFilerExplorer -sort-type=Time -status -split -simple -parent -winwidth=35 -no-quit -find<CR>
 " nnoremap <leader>ff :VimFilerExplorer -status -find -winwidth=80 -sort-type=Time <CR>
 
+" map <F12> :Defx `expand('%:p:h')` -search=`expand('%:p')`<CR>
 map <silent><leader>x :Defx -auto-cd<CR>
+map <silent><leader>X :Defx -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+"map <silent><leader>X :Defx -auto-cd 'expand('%:p:h')' -search=`expand('%:p')` <CR>
 map <silent><leader>D :VimFilerCreate -status -sort-type=Time<CR>
 "map <silent><leader>d :VimFilerBufferDir -status -sort-type=Time<CR>
 " map <silent><leader>Dd :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=29 -toggle -no-quit -explorer<CR>
@@ -957,3 +961,11 @@ nmap ga <Plug>(EasyAlign)
 " C-F in command mode or q:
 "
 " ino <C-A> <C-O>yiW<End>=<C-R>=<C-R>0<CR>
+"
+" Showmarks
+" :hi ShowMarksHLl ctermfg=red "For marks a-z
+" :hi ShowMarksHLu ctermfg=yellow "For marks A-Z
+" :hi ShowMarksHLo ctermfg=magenta "For all other marks
+" :hi ShowMarksHLm ctermfg=white "For multiple marks on the same line.
+" :hi SignColumn ctermbg=black
+"

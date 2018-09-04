@@ -69,6 +69,43 @@ alias       print_klammer2
 options     head
         print ("${1}: ",${2})
 
+
+# -----------------------------------------------------------------------------------
+snippet     py_prog
+abbr        py_prog
+alias       py_prog
+options     head
+    def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█'):
+        """
+        Call in a loop to create terminal progress bar
+        @params:
+            iteration   - Required  : current iteration (Int)
+            total       - Required  : total iterations (Int)
+            prefix      - Optional  : prefix string (Str)
+            suffix      - Optional  : suffix string (Str)
+            decimals    - Optional  : positive number of decimals in percent complete (Int)
+            length      - Optional  : character length of bar (Int)
+            fill        - Optional  : bar fill character (Str)
+        """
+        percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
+        filledLength = int(length * iteration // total)
+        bar = fill * filledLength + '-' * (length - filledLength)
+        print('\r%s |%s| %s%% %s' % (prefix, bar, percent, suffix), end = '\r')
+        # Print New Line on Complete
+        if iteration == total: 
+            print()
+
+    items = list(range(0, 57))
+    l = len(items)
+    
+    # Initial call to print 0% progress
+    printProgressBar(0, l, prefix = 'Progress:', suffix = 'Complete', length = 50)
+    for i, item in enumerate(items):
+        # Do stuff...
+        sleep(0.1)
+        # Update Progress Bar
+        printProgressBar(i + 1, l, prefix = 'Progress:', suffix = 'Complete', length = 50)
+
 # print ("${1}: ",${2})${3:jump}
 #         class ${1:#:name}(${2:object}):j
 #
@@ -95,6 +132,38 @@ options     head
 # Holoviews
 #-----------------------------------------------------------------------------------
 
+#-----------------------------------------------------------------------------------
+snippet     hv_import
+abbr        hv_import
+alias       hv_import
+options     head
+        import holoviews as hv
+        from holoviews.operation.datashader import datashade, dynspread
+        from bokeh.io import output_file, show
+
+#-----------------------------------------------------------------------------------
+snippet     hv_bokeh_html
+abbr        hv_bokeh_html
+alias       hv_bokeh_html
+options     head
+        #-----------------------------------------------------------------------------------
+        from bokeh.io import output_file, save, show
+        #-----------------------------------------------------------------------------------
+        hv.extension("bokeh")
+        # renderer = hv.renderer('bokeh')
+        # renderer.save(MY_HOLO_OBJECT, 'html_fileName')
+        #renderer = hv.renderer('matplotlib').instance(fig='svg', holomap='gif')
+        #renderer.save(MY_HOLO_OBJECT, 'example_I', style=dict(Image={'cmap':'jet'}))
+        renderer = hv.renderer('bokeh')
+        plot = renderer.get_plot(curve).state
+        save(plot, 'graph.html')
+        output_file("graph.html")
+        show(plot)
+        #-----------------------------------------------------------------------------------
+
+
+
+
 #==================================================================================================
 # Matplotlib
 #-----------------------------------------------------------------------------------
@@ -103,10 +172,13 @@ options     head
 # seaborn
 #-----------------------------------------------------------------------------------
 
-
-#==================================================================================================
-# h2o
 #-----------------------------------------------------------------------------------
+snippet     sns_seaborn_import
+abbr        sns_seaborn_import 
+alias       sns_seaborn_import
+options     head
+        import seaborn as sns
+        sns.set(style="darkgrid", palette="muted")
 
 #==================================================================================================
 # salib - https://salib.readthedocs.io/en/latest/basics.html
@@ -115,6 +187,54 @@ options     head
 #==================================================================================================
 # statsmodel
 #-----------------------------------------------------------------------------------
+
+#==================================================================================================
+# pymc3
+#-----------------------------------------------------------------------------------
+
+#-----------------------------------------------------------------------------------
+snippet     pymc3_misc
+abbr        pymc3_misc
+alias       pymc3_misc
+options     head
+        import pymc3 as pm
+        x_out = df[0].values#.reshape(-1,1).astype(np.float64)
+        y_out = df[1].values#.reshape(-1,1).astype(np.float64)
+        # colNL = []
+        # colBase = "col_"
+        # for col in range((df.shape[1])):
+        #     colNL.append(colBase+str(col))
+        # df.columns = colNL
+        # print  (df.columns)
+        data = dict(x=x_out, y=y_out)
+        
+        # ----------------------------------------------------------------------------------- 
+        #  fig = plt.figure(figsize=(7, 7))
+        #  ax = fig.add_subplot(111, xlabel='x', ylabel='y', title='Generated data and underlying model')
+        #  ax.plot(x_out, y_out, 'x', label='sampled data')
+        #  ax.plot(x, true_regression_line, label='true regression line', lw=2.)
+        #  plt.legend(loc=0);
+        #  plt.show()
+        
+        # ==================================================================================== 
+        
+        with pm.Model() as model:
+            family = pm.glm.families.StudentT()
+            pm.glm.GLM.from_formula('y ~ x', data, family=family)
+            trace = pm.sample(2000, cores=4, tune=10000)
+        
+        plt.figure(figsize=(7, 5))
+        plt.plot(x_out, y_out, 'x', label='data')
+        sns.lmplot(x="col_0", y="col_1",data=df, size=10, fit_reg=True)
+        pm.plot_posterior_predictive_glm(trace, samples=100, label='posterior predictive regression lines')
+        plt.legend(loc=0);
+        plt.show()
+
+
+#==================================================================================================
+# keras
+#-----------------------------------------------------------------------------------
+
 
 #==================================================================================================
 # scikit-learn
@@ -164,7 +284,7 @@ options     head
       reg.fit(X_train.values.reshape(-1,1), y_train.values.reshape(-1,1))<Paste>
 
 #==================================================================================================
-# BOKEH
+# XX BOKEH
 #-----------------------------------------------------------------------------------
 snippet     bk_ax
 abbr        bk_ax
@@ -534,39 +654,24 @@ alias       pd_h2_df
 options     head
     df = hf.as_data_frame(use_pandas=True)
 
-
 # -----------------------------------------------------------------------------------
-snippet     prog
-abbr        prog
-alias       prog
+snippet     h2_array
+abbr        h2_array
+alias       h2_array
 options     head
-    def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█'):
-        """
-        Call in a loop to create terminal progress bar
-        @params:
-            iteration   - Required  : current iteration (Int)
-            total       - Required  : total iterations (Int)
-            prefix      - Optional  : prefix string (Str)
-            suffix      - Optional  : suffix string (Str)
-            decimals    - Optional  : positive number of decimals in percent complete (Int)
-            length      - Optional  : character length of bar (Int)
-            fill        - Optional  : bar fill character (Str)
-        """
-        percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
-        filledLength = int(length * iteration // total)
-        bar = fill * filledLength + '-' * (length - filledLength)
-        print('\r%s |%s| %s%% %s' % (prefix, bar, percent, suffix), end = '\r')
-        # Print New Line on Complete
-        if iteration == total: 
-            print()
-
-    items = list(range(0, 57))
-    l = len(items)
-    
-    # Initial call to print 0% progress
-    printProgressBar(0, l, prefix = 'Progress:', suffix = 'Complete', length = 50)
-    for i, item in enumerate(items):
-        # Do stuff...
-        sleep(0.1)
-        # Update Progress Bar
-        printProgressBar(i + 1, l, prefix = 'Progress:', suffix = 'Complete', length = 50)
+        import h2o
+        import numpy as np
+        # initialize h2o
+        h2o.init()
+        df = h2o.H2OFrame({’A’: [1, 2, 3],’B’: [’a’, ’b’, ’c’],’C’: [0.1, 0.2, 0.3]})
+        df = h2o.H2OFrame(zip(*[[1, 2, 3], [’a’, ’b’, ’c’], [0.1, 0.2, 0.3]]))
+        df2 = h2o.H2OFrame.from_python({’A’: [1, 2, 3], ’B’: [’a’, ’a’, ’b’], ’C’: [’hello’, ’all’, ’world’], ’D’: [’12MAR2015:11:00:00’, ’13MAR2015 :12:00:00’, ’14MAR2015:13:00:00’]}, column_types=[’numeric’, ’enum’, ’string’, ’ time’])
+        # create a (1000, 25) h2o frame with real values (no missing values)
+        hf = h2o.create_frame(rows=1000, cols=25, real_fraction=1, missing_fraction=0) 
+        # First convert to a pandas df, then to a numpy array
+        num_array = hf.as_data_frame().as_matrix()
+        # Reshape the array
+        reshaped_array = num_array.reshape(1000, 25, 25)
+        # Check the dimensions of the reshaped array
+        reshaped_array.shape
+        # The output should be: (1000, 5, 5) 
