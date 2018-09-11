@@ -16,6 +16,7 @@ nnoremap <silent><buffer><expr> w defx#do_action('rename')
 nnoremap <silent><buffer><expr> j line('.') == line('$') ? 'gg' : 'j'
 nnoremap <silent><buffer><expr> k line('.') == 1 ? 'G' : 'k'
 nnoremap <silent><buffer><expr> m defx#do_action('toggle_select') . 'j'
+nnoremap <silent><buffer><expr> o defx#do_action('execute_system')
 nnoremap <silent><buffer><expr> q defx#do_action('quit')
 nnoremap <silent><buffer><expr> h defx#do_action('cd', ['..'])
 

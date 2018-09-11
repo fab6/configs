@@ -88,3 +88,4 @@ tmm() {
 
 # added by Miniconda3 installer
 #export PATH="/share/Tools/Python/Distributions/MiniConda3_latest_180813/bin:$PATH"
+alias jupSetTheme="jt -t gruvboxd -fs 11 -altp -tfs 11 -nfs 12 -ofs 11 -cellw 80% -T -N"

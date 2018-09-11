@@ -968,4 +968,7 @@ nmap ga <Plug>(EasyAlign)
 " :hi ShowMarksHLo ctermfg=magenta "For all other marks
 " :hi ShowMarksHLm ctermfg=white "For multiple marks on the same line.
 " :hi SignColumn ctermbg=black
+:hi CursorLine ctermbg=blue
 "
+autocmd WinEnter * setlocal cursorline
+autocmd WinLeave * setlocal nocursorline
