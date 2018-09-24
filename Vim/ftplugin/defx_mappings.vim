@@ -2,16 +2,14 @@
 "-------------------------------------------------------------------------------------------------- 
 "nnoremap <buffer> o <Plug>(vimfiler_execute_system_associated)
 nnoremap <silent><buffer>B :UniteBookmarkAdd<CR>
-" nnoremap <silent><buffer>C <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_clipboard_copy_file)<Plug>(vimfiler_clipboard_paste)
-nnoremap <silent><buffer>C defx#do_action('copy')<C-w>wdefx#do_action('paste')
-nnoremap <silent><buffer>R defx#do_action('move')<C-w>wdefx#do_action('paste')
-" nnoremap <silent><buffer>R <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_clipboard_move_file)<C-w>w<Plug>(vimfiler_clipboard_paste)y
-" nnoremap <silent><buffer>C <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_clipboard_copy_file)<C-w>w<Plug>(vimfiler_clipboard_paste)
+nnoremap <silent><buffer><expr> C defx#do_action('copy') . '<C-w>w' . defx#do_action('paste')
+nnoremap <silent><buffer><expr> R defx#do_action('move') . '<C-w>w' . defx#do_action('paste')
 nnoremap <silent><buffer><expr> E defx#do_action('open', 'vsplit')
 nnoremap <silent><buffer><expr> K defx#do_action('new_directory')
 nnoremap <silent><buffer><expr> N defx#do_action('new_file')
 nnoremap <silent><buffer><expr> P defx#do_action('open', 'pedit')
-nnoremap <silent><buffer>X :tabnew<CR>:Defx -auto-cd<CR>
+nnoremap <silent><buffer>X :Defx -split="tab" -new<CR>
+" nnoremap <silent><buffer>X :tabnew<CR>:Defx -auto-cd<CR>
 
 nnoremap <silent><buffer>b :Unite -silent -auto-resize -buffer-name=Bookmarks -default-action=vimfiler bookmark<CR>
 nnoremap <silent><buffer><expr> d defx#do_action('remove')
@@ -72,5 +70,4 @@ endif
 
 nmap <silent><buffer>gx :Defx -split="vertical" -new<CR>
 nmap <silent><buffer>gX :Defx -split="horizontal" -new<CR>
-nmap <silent><buffer>X :Defx -split="tab" -new<CR>
 nmap <silent><buffer>gr :Denite grep -mode=normal<CR>
