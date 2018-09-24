@@ -92,6 +92,23 @@ options     head
         &RADI NUMBER_RADIATION_ANGLES=${1:"500"}, NMIEANG=${2:"30"}, TIME_STEP_INCREMENT=${3:"1"},/
 
 #==================================================================================================
+snippet     f_bndf
+abbr        f_bndf
+alias       f_boundaries
+options     head
+        &BNDF QUANTITY='ADIABATIC SURFACE TEMPERATURE' /
+        &BNDF QUANTITY='BACK WALL TEMPERATURE'/
+        &BNDF QUANTITY='GAS TEMPERATURE'/
+        &BNDF QUANTITY='HEAT_FLUX'/
+        &BNDF QUANTITY='GAUGE HEAT FLUX'/
+        &BNDF QUANTITY='CONVECTIVE HEAT FLUX'/
+        &BNDF QUANTITY='NET HEAT FLUX'/
+        &BNDF QUANTITY='INCIDENT HEAT FLUX'/
+        &BNDF QUANTITY='RADIATIVE HEAT FLUX'/
+        &BNDF QUANTITY='WALL TEMPERATURE'/
+        &BNDF QUANTITY='BURNING RATE' /
+        ${0}
+#==================================================================================================
 snippet     f_post
 abbr        f_post
 alias       f_postprocessing

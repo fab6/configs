@@ -2,7 +2,11 @@
 "-------------------------------------------------------------------------------------------------- 
 "nnoremap <buffer> o <Plug>(vimfiler_execute_system_associated)
 nnoremap <silent><buffer>B :UniteBookmarkAdd<CR>
-nnoremap <silent><buffer>C <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_clipboard_copy_file)<C-w>w<Plug>(vimfiler_clipboard_paste)
+" nnoremap <silent><buffer>C <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_clipboard_copy_file)<Plug>(vimfiler_clipboard_paste)
+nnoremap <silent><buffer>C defx#do_action('copy')<C-w>wdefx#do_action('paste')
+nnoremap <silent><buffer>R defx#do_action('move')<C-w>wdefx#do_action('paste')
+" nnoremap <silent><buffer>R <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_clipboard_move_file)<C-w>w<Plug>(vimfiler_clipboard_paste)y
+" nnoremap <silent><buffer>C <Plug>(vimfiler_mark_current_line)<Plug>(vimfiler_clipboard_copy_file)<C-w>w<Plug>(vimfiler_clipboard_paste)
 nnoremap <silent><buffer><expr> E defx#do_action('open', 'vsplit')
 nnoremap <silent><buffer><expr> K defx#do_action('new_directory')
 nnoremap <silent><buffer><expr> N defx#do_action('new_file')
@@ -20,16 +24,25 @@ nnoremap <silent><buffer><expr> o defx#do_action('execute_system')
 nnoremap <silent><buffer><expr> q defx#do_action('quit')
 nnoremap <silent><buffer><expr> h defx#do_action('cd', ['..'])
 
+
+nnoremap <silent><buffer><expr> c defx#do_action('copy')
+nnoremap <silent><buffer><expr> r defx#do_action('move')
+nnoremap <silent><buffer><expr> p defx#do_action('paste')
+
+
 nnoremap <silent><buffer><expr> <CR> defx#do_action('open')
 nnoremap <silent><buffer><expr> <C-l> defx#do_action('redraw')
 nnoremap <silent><buffer><expr> <C-g> defx#do_action('print')
 nnoremap <silent><buffer><expr> <Space> defx#do_action('toggle_select') . 'j'
 nnoremap <silent><buffer><expr> * defx#do_action('toggle_select_all')
+nnoremap <silent><buffer><expr> .  defx#do_action('toggle_ignored_files')
 
 nmap <silent><buffer>,O :call jobstart(['xterm','-e','/usr/bin/vim',expand('%:t')],{'detach':1}) <CR>
 nmap <silent><buffer>,x :call jobstart(['xterm'],{'detach':1}) <CR>
 nmap <silent><buffer>,y :call jobstart(['xterm','-e','mc','.','.'],{'detach':1}) <CR>
 
+" nmap <silent><buffer>gx :vs<CR> :VimFilerCreate -status -sort-type=Time<CR>
+" nmap <silent><buffer>gX :sp<CR> :VimFilerCreate -status -sort-type=Time<CR>
 
 "-------------------------------------------------------------------------------------------------- 
 nnoremap <silent><buffer><expr> ~ defx#do_action('cd')
@@ -57,3 +70,7 @@ nmap <silent><buffer>,P :call jobstart(['xterm','-hold','-e','python','/share/To
 nmap <silent><buffer>,p :call jobstart(['xterm','-hold','-e','python',expand('%:p:h')],{'detach':1}) <CR>
 endif
 
+nmap <silent><buffer>gx :Defx -split="vertical" -new<CR>
+nmap <silent><buffer>gX :Defx -split="horizontal" -new<CR>
+nmap <silent><buffer>X :Defx -split="tab" -new<CR>
+nmap <silent><buffer>gr :Denite grep -mode=normal<CR>

@@ -6,6 +6,13 @@ abbr        dn
 options     word
     #Today: strftime("%Y-%b-%d")`${0}
 
+#-----------------------------------------------------------------------------------
+snippet     today
+abbr        today
+options     word
+    import datetime
+    now = datetime.datetime.now()
+    today = now.strftime("%Y%m%d")
 
 
 #-----------------------------------------------------------------------------------

@@ -29,6 +29,7 @@ Plug 'Shougo/denite.nvim'
 Plug 'chemzqm/denite-extra'
 Plug 'rafi/vim-denite-session'
 Plug 'yyotti/denite-marks'
+Plug 'kmnk/denite-dirmark'
 Plug 'inkarkat/vim-ingo-library'
 Plug 'inkarkat/vim-mark'
 " Plug 'zakj/vim-showmarks'
@@ -196,8 +197,8 @@ set wildignore=.aux,.bak,.dvi,.gz,.idx,.log,.ps,.swp,.tar,.pdf,.rpm,.deb,.o,.e,*
 "-------------------------------------------------------------------------------------------------- 
 " " Copy to clipboard and Paste from clipboard
 "" Paste Mode On/Off
-map <F11> :call Paste_on_off()<CR>
-set pastetoggle=<F11>
+" map <F11> :call Paste_on_off()<CR>
+" set pastetoggle=<F11>
 "
 let paste_mode = 0 " 0 = normal, 1 = paste
 "
@@ -326,8 +327,9 @@ let g:neosnippet#snippets_directory='~/.nvim/snippets'
 " nnoremap <C-p> :<C-u>Denite file_rec<CR>
 " nnorema<silent>p <leader><Space>b :<C-u>DeniteBufferDir buffer<CR>
 nnoremap <silent><leader>8 :<C-u>DeniteCursorWord grep:. -mode=normal<CR>
-" nnoremap <leader>/ :<C-u>Denite grep:. -mode=normal<CR>
-" nnoremap <leader><Space>/ :<C-u>DeniteBufferDir grep:. -mode=normal<CR>
+nnoremap <leader>/ :<C-u>Denite grep:. -mode=normal<CR>
+nnoremap <leader><Space>/ :<C-u>DeniteBufferDir grep:. -mode=normal<CR>
+" nnoremap <silent> <leader>g :<C-u>Denite -mode=normal -winwidth=35 grep<cr>
 " nnoremap <leader>d :<C-u>DeniteBufferDir file_rec<CR>
 
 " nnoremap <silent> <leader>o :<C-u>Denite -buffer-name=outline -winwidth=35 unite:outline -mode=normal<cr>
@@ -344,7 +346,6 @@ nnoremap <silent> <leader>l :<C-u>Denite line -mode=insert -no-split -buffer-nam
 
 nnoremap <silent> <leader>m :<C-u>Denite marks -mode=normal<CR>
 nnoremap <silent> <leader>M :<C-u>Denite menu -mode=normal<CR>
-" nnoremap <silent> <leader>g :<C-u>Denite -mode=normal -winwidth=35 grep<cr>
 
 " nnoremap <silent> <leader>da :<C-u>Denite autocmd -mode=normal -auto-preview<CR>
 " nnoremap <silent> <leader>dk :<C-u>Denite keymap -mode=normal<CR>
@@ -360,7 +361,9 @@ nnoremap <silent> <leader>Ds :<C-u>Denite -mode=normal -winwidth=35 session<cr>
 nnoremap <silent> <leader>Dr :<C-u>Denite -resume<CR>
 " nnoremap <silent> <leader>Dy :<C-u>Denite -mode=normal -winwidth=35 register<cr>
 
-
+" nnoremap <silent><leader>B  :<C-u>Denite -default-action=cd dirmark<CR>
+" nnoremap <silent><leader><leader>B :<C-u>Denite dirmark/add::"' . expand('%:p:h') .  '"<CR>
+"
 " :DeniteBufferDir [{options}] {sources}			*:DeniteBufferDir*
 " :DeniteCursorWord [{options}] {sources}			*:DeniteCursorWord*
 " :DeniteProjectDir [{options}] {sources}			*:DeniteProjectDir*
@@ -377,6 +380,9 @@ call denite#custom#var('grep', 'recursive_opts', [])
 call denite#custom#var('grep', 'pattern_opt', [])
 call denite#custom#var('grep', 'separator', ['--'])
 call denite#custom#var('grep', 'final_opts', [])
+
+" call denite#start([{'name': 'grep', 'args': ['.', ['--python'], pattern]}])
+map <F11> :call denite#custom#var('grep', 'default_opts', ['--python'])<CR>
 
 " Change ignore_globs
 call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
@@ -563,13 +569,17 @@ let g:indentLine_color_term = 239
 " nnoremap <leader>ff :VimFilerExplorer -status -find -winwidth=80 -sort-type=Time <CR>
 
 " map <F12> :Defx `expand('%:p:h')` -search=`expand('%:p')`<CR>
-map <silent><leader>x :Defx -auto-cd<CR>
-map <silent><leader>X :Defx -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+" map <silent><leader>x :Defx -auto-cd<CR>
+" map <silent><leader>X :Defx -auto-cd -split="vertical" -winwidth=50<CR>
+map <silent><leader>d :Defx -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+" map <silent><leader>x :Defx -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+map <silent><leader>x :Defx -split="vertical" -winwidth=50 -direction=topleft -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+map <silent><leader>X :Defx -split="vertical" -winwidth=50 -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
 "map <silent><leader>X :Defx -auto-cd 'expand('%:p:h')' -search=`expand('%:p')` <CR>
 map <silent><leader>D :VimFilerCreate -status -sort-type=Time<CR>
 "map <silent><leader>d :VimFilerBufferDir -status -sort-type=Time<CR>
 " map <silent><leader>Dd :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=29 -toggle -no-quit -explorer<CR>
-map <silent><leader>d :VimFilerBufferDir -status -sort-type=Time<CR>
+" map <silent><leader>d :VimFilerBufferDir -status -sort-type=Time<CR>
 " map <space>E :VimFilerBufferDir -status -split -simple -winwidth=30 -toggle -no-quit<CR><CR>
 " nnoremap <F2> :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=30 -toggle -no-quit<CR>
 
@@ -970,5 +980,6 @@ nmap ga <Plug>(EasyAlign)
 " :hi SignColumn ctermbg=black
 :hi CursorLine ctermbg=blue
 "
+set cursorline
 autocmd WinEnter * setlocal cursorline
 autocmd WinLeave * setlocal nocursorline

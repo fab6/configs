@@ -89,3 +89,5 @@ tmm() {
 # added by Miniconda3 installer
 #export PATH="/share/Tools/Python/Distributions/MiniConda3_latest_180813/bin:$PATH"
 alias jupSetTheme="jt -t gruvboxd -fs 11 -altp -tfs 11 -nfs 12 -ofs 11 -cellw 80% -T -N"
+    # nmap <silent><buffer>,s2 :call jobstart('/share/software/cd-adapco/STAR-CCM+12.02/STAR-CCM+12.02.010-R8/star/bin/starccm+',{'detach':1}) <CR>
+    # nmap <silent><buffer>,s1 :call jobstart('/share/software/cd-adapco/STAR-CCM+11.06/STAR-CCM+11.06.010-R8/star/bin/starccm+',{'detach':1}) <CR>
