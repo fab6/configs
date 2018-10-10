@@ -5,10 +5,11 @@ nnoremap <silent><buffer>B :UniteBookmarkAdd<CR>
 nnoremap <silent><buffer><expr> C defx#do_action('copy') . '<C-w>w' . defx#do_action('paste')
 nnoremap <silent><buffer><expr> R defx#do_action('move') . '<C-w>w' . defx#do_action('paste')
 nnoremap <silent><buffer><expr> E defx#do_action('open', 'vsplit')
+nnoremap <silent><buffer> H :Denite defx/history<CR>
 nnoremap <silent><buffer><expr> K defx#do_action('new_directory')
 nnoremap <silent><buffer><expr> N defx#do_action('new_file')
 nnoremap <silent><buffer><expr> P defx#do_action('open', 'pedit')
-nnoremap <silent><buffer>X :Defx -split="tab" -new<CR>
+nnoremap <silent><buffer><expr> W defx#do_action('copy') . defx#do_action('paste')
 " nnoremap <silent><buffer>X :tabnew<CR>:Defx -auto-cd<CR>
 
 nnoremap <silent><buffer>b :Unite -silent -auto-resize -buffer-name=Bookmarks -default-action=vimfiler bookmark<CR>
@@ -28,6 +29,10 @@ nnoremap <silent><buffer><expr> r defx#do_action('move')
 nnoremap <silent><buffer><expr> p defx#do_action('paste')
 
 
+nnoremap <silent><buffer>0 gg 
+nnoremap <silent><buffer><expr> yy defx#do_action('yank_path')
+
+" nnoremap <silent><buffer><expr> <CR> defx#do_action('open', 'wincmd w \| drop')
 nnoremap <silent><buffer><expr> <CR> defx#do_action('open')
 nnoremap <silent><buffer><expr> <C-l> defx#do_action('redraw')
 nnoremap <silent><buffer><expr> <C-g> defx#do_action('print')
@@ -61,13 +66,19 @@ else
     nmap <silent><buffer><expr> 4  defx#do_action('cd', ['/data/work/fbraenns/'])
     nmap <silent><buffer><expr> 5  defx#do_action('cd', ['/share/Tools/'])
     nmap <silent><buffer><expr> 6  defx#do_action('cd', ['/share/software/'])
-    nmap <silent><buffer><expr> 9  defx#do_action('cd', ['/home/fbraenns/.modulefiles/'])
+    nmap <silent><buffer><expr> 7  defx#do_action('cd', ['/share/Tools/Python/FireSimulation/'])
+    nmap <silent><buffer><expr> 8  defx#do_action('cd', ['/share/software/Fire/FDS/6.6.0/Documentation'])
+    nmap <silent><buffer><expr> 9  defx#do_action('cd', ['/home/fbraenns/.modulefiles/divs/'])
     nmap <silent><buffer>,X :call jobstart('xterm -e /share/Tools/Editing/NeoVim/nvim.appimage -c ":Defx -auto-cd"' ,{'detach':1}) <CR>
 
 nmap <silent><buffer>,P :call jobstart(['xterm','-hold','-e','python','/share/Tools/Python/FireSimulation/plotHRR_csv63.py',expand('%:t')],{'detach':1}) <CR>
 nmap <silent><buffer>,p :call jobstart(['xterm','-hold','-e','python',expand('%:p:h')],{'detach':1}) <CR>
 endif
 
-nmap <silent><buffer>gx :Defx -split="vertical" -new<CR>
-nmap <silent><buffer>gX :Defx -split="horizontal" -new<CR>
+" nnoremap <silent><buffer>X :Defx -split="tab" -new<CR>
+map <silent><buffer>X :Defx -split="tab" -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+map <silent><buffer>gx :Defx -split="vertical" -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+map <silent><buffer>gX :Defx -split="horizontal" -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+" nmap <silent><buffer>gx :Defx -split="vertical" -new<CR>
+" nmap <silent><buffer>gX :Defx -split="horizontal" -new<CR>
 nmap <silent><buffer>gr :Denite grep -mode=normal<CR>

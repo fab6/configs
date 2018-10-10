@@ -37,6 +37,7 @@ Plug 'inkarkat/vim-mark'
 Plug 'junegunn/vim-easy-align'
 Plug 'chemzqm/vim-easygit'
 Plug 'chemzqm/denite-git'
+Plug 'airblade/vim-gitgutter'
 " Plug 'notomo/denite-autocmd'
 Plug 'notomo/denite-keymap'
 Plug 'chrisbra/csv.vim'
@@ -372,6 +373,7 @@ nnoremap <silent> <leader>Dr :<C-u>Denite -resume<CR>
 nnoremap <silent> <leader>hs :<C-u>Denite history:search -mode=normal<CR>
 nnoremap <silent> <leader>hc :<C-u>Denite history:cmd -mode=normal<CR>
 
+call denite#custom#source('_', 'matchers', ['matcher/substring'])
 " call denite#custom#var('outline', 'command', ['ctags'])
 " Ag command on grep source
 call denite#custom#var('grep', 'command', ['ag'])
@@ -441,6 +443,10 @@ call denite#custom#map(
             \ '<denite:move_to_previous_line>',
             \ 'noremap'
             \)
+
+
+call denite#custom#source(
+	\ 'file/rec', 'matchers', ['matcher/cpsm'])
 
 "-------------------------------------------------------------------------------------------------- 
 " Add custom menus
@@ -573,8 +579,8 @@ let g:indentLine_color_term = 239
 " map <silent><leader>X :Defx -auto-cd -split="vertical" -winwidth=50<CR>
 map <silent><leader>d :Defx -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
 " map <silent><leader>x :Defx -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
-map <silent><leader>x :Defx -split="vertical" -winwidth=50 -direction=topleft -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
-map <silent><leader>X :Defx -split="vertical" -winwidth=50 -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+map <silent><leader>x :Defx -new -split="vertical" -winwidth=50 -direction=topleft -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+map <silent><leader>X :Defx -new -split="vertical" -winwidth=50 -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
 "map <silent><leader>X :Defx -auto-cd 'expand('%:p:h')' -search=`expand('%:p')` <CR>
 map <silent><leader>D :VimFilerCreate -status -sort-type=Time<CR>
 "map <silent><leader>d :VimFilerBufferDir -status -sort-type=Time<CR>
