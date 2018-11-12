@@ -1,0 +1,135 @@
+#-----------------------------------------------------------------------------------
+snippet     #=
+abbr        #=
+alias       break_double
+options     head
+        # ==================================================================================== ${0}
+
+#-----------------------------------------------------------------------------------
+snippet     #.
+abbr        #.
+alias       break_dot
+options     head
+        # ...................................................................................  ${0}
+
+#-----------------------------------------------------------------------------------
+snippet     #-
+abbr        #-
+alias       break_single
+options     head
+        # ----------------------------------------------------------------------------------- ${0}
+
+
+#-----------------------------------------------------------------------------------
+snippet     method_coliny_ea
+abbr        coliny
+alias       coliny
+options     head
+        #=======================================================================
+        method
+        max_iterations = 1000
+        max_function_evaluations = 1000
+        coliny_ea
+        #seed = 11011011
+        population_size = 50
+        fitness_type merit_function
+        mutation_type offset_normal
+        mutation_rate 1.0
+        crossover_type two_point
+        crossover_rate 0.0
+        replacement_type chc = 10
+
+
+#-----------------------------------------------------------------------------------
+snippet     method_soga
+abbr        soga
+alias       soga
+options     head
+        #=======================================================================
+        method,
+        id_method='SOGA'
+        soga
+        # scaling 
+         output verbose
+         seed = 1000
+         #population_size = 10000
+         scaling 
+          population_size = 512
+          max_function_evaluations = 200000
+          initialization_type unique_random
+          crossover_type shuffle_random
+          num_offspring = 2
+          num_parents = 2
+          crossover_rate = 0.8
+          mutation_type replace_uniform
+          mutation_rate = 0.1
+          fitness_type merit_function
+          convergence_type average_fitness_tracker 
+          percent_change = 0.005
+          num_generations = 10
+          log_file = 'post_soga.log'
+          print_each_pop
+
+#-----------------------------------------------------------------------------------
+snippet     method_moga
+abbr        moga
+alias       moga
+options     head
+        #=======================================================================
+        method,
+          moga
+          scaling 
+          output verbose
+          seed = 1000
+          final_solutions = 3
+          #population_size = 2000
+          population_size = 4096
+          max_function_evaluations = 500000
+          initialization_type unique_random
+          crossover_type shuffle_random
+          num_offspring = 2
+          num_parents = 2
+          crossover_rate = 0.8
+          mutation_type replace_uniform
+          mutation_rate = 0.1
+          fitness_type domination_count
+          replacement_type below_limit = 6
+          shrinkage_percentage = 0.9
+          convergence_type metric_tracker
+          percent_change = 0.0005 num_generations = 100 
+          log_file = 'post_moga.log'
+          print_each_pop
+          postprocessor_type 
+            orthogonal_distance 0.005 0.005
+
+
+#-----------------------------------------------------------------------------------
+snippet     method_ego
+abbr        ego
+alias       ego
+options     head
+method
+        #=======================================================================
+        # RSM with Gaussian Process
+        global_interval_est ego
+        # seed = 1234567
+        output verbose
+
+
+
+#-----------------------------------------------------------------------------------
+snippet     variables_cont
+abbr        variables_cont
+alias       variables_cont
+options     head
+        #=======================================================================
+        variables,
+        	continuous_design = 35
+        	  lower_bounds   1E7 1E5 1E7 1E5 1E7 1E5   0.1 0.1 0.01 1.0 0.01 1000.0 500.0    0.1 0.1 0.01 1.0 0.01 1000.0 500.0    0.1 0.1 0.01 1.0 0.01 1000.0 500.0    0.1 0.1 0.01 1.0    0.1 0.1 0.01 1.0 
+        	  upper_bounds    1E15 1E6 1E15 1E6 1E15 1E6    0.99 10.0 200.0 4000.0 10.0 60000.0 20000.0    0.99 10.0 200.0 4000.0 10.0 60000.0 20000.0    0.99 10.0 200.0 4000.0 10.0 60000.0 20000.0    0.99 10.0 200.0 4000.0    0.99 10.0 200.0 4000.0 
+        	  descriptor      'V1_A_Val' 'V1_E_Val' 'V2_A_Val' 'V2_E_Val' 'V3_A_Val' 'V3_E_Val'  'V1_em_Val' 'V1_cp_Val' 'V1_k_Val' 'V1_rho_Val' 'V1_Ns_Val' 'V1_HoC_Val' 'V1_HoR_Val'   'V2_em_Val' 'V2_cp_Val' 'V2_k_Val' 'V2_rho_Val' 'V2_Ns_Val' 'V2_HoC_Val' 'V2_HoR_Val'   'V3_em_Val' 'V3_cp_Val' 'V3_k_Val' 'V3_rho_Val' 'V3_Ns_Val' 'V3_HoC_Val' 'V3_HoR_Val'   'V4_em_Val' 'V4_cp_Val' 'V4_k_Val' 'V4_rho_Val'   'V5_em_Val' 'V5_cp_Val' 'V5_k_Val' 'V5_rho_Val' 
+        
+   scale_types = 'auto' 'auto' 'auto' 'auto' 'auto' 'auto'    'auto' 'auto' 'auto' 'auto' 'auto' 'auto' 'auto' 'auto' 'auto' 'auto' 'auto' 'auto' 'auto' 'auto' 'auto' 'auto' 'auto' 'auto' 'auto' 'auto' 'auto' 'auto' 'auto' 'auto' 'auto' 'auto' 'auto' 'auto' 'auto'
+
+
+
