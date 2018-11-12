@@ -26,7 +26,9 @@ module load Aliases/StarCCM+
 #module load python/anaconda3/4.x
 #module load python_loc/3.6.0_anac4.3.1
 module load python_loc/3.6.5_miniC3
-module load FDS/6.5.3
+# module load FDS/6.5.3
+module unload FDS/6.5.3
+module load FDS/6.7.0
 module load VisIt/2.10.3
 module load ParaView/5.2.0
 export OMP_NUM_THREADS=1

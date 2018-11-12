@@ -25,11 +25,14 @@ Plug 'Shougo/vimproc.vim', { 'do' : 'make', }
 " Unite is needed due to vimfiler
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'kristijanhusak/defx-git'
 Plug 'Shougo/denite.nvim'
 Plug 'chemzqm/denite-extra'
 Plug 'rafi/vim-denite-session'
+Plug 'iyuuya/denite-ale'
 Plug 'yyotti/denite-marks'
 Plug 'kmnk/denite-dirmark'
+Plug 'rafi/vim-denite-z'
 Plug 'inkarkat/vim-ingo-library'
 Plug 'inkarkat/vim-mark'
 " Plug 'zakj/vim-showmarks'
@@ -53,6 +56,13 @@ Plug 'morhetz/gruvbox'
 " Plug 'jpo/vim-railscasts-theme'
 " Plug 'jacoborus/tender.vim'
 Plug 'haya14busa/incsearch-fuzzy.vim'
+Plug 'w0rp/ale'
+Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
+
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+
+Plug 'terryma/vim-multiple-cursors'
 " .....................................................................
 " Programming:
 " Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
@@ -325,41 +335,43 @@ let g:neosnippet#snippets_directory='~/.nvim/snippets'
 "==================================================================================================
 " Denite
 "
-" nnoremap <C-p> :<C-u>Denite file_rec<CR>
-" nnorema<silent>p <leader><Space>b :<C-u>DeniteBufferDir buffer<CR>
 nnoremap <silent><leader>8 :<C-u>DeniteCursorWord grep:. -mode=normal<CR>
-nnoremap <leader>/ :<C-u>Denite grep:. -mode=normal<CR>
-nnoremap <leader><Space>/ :<C-u>DeniteBufferDir grep:. -mode=normal<CR>
-" nnoremap <silent> <leader>g :<C-u>Denite -mode=normal -winwidth=35 grep<cr>
-" nnoremap <leader>d :<C-u>DeniteBufferDir file_rec<CR>
 
-" nnoremap <silent> <leader>o :<C-u>Denite -buffer-name=outline -winwidth=35 unite:outline -mode=normal<cr>
-" nnorema<silent> p <leader>k :<C-u>Denite -mode=normal -winwidth=35 unite:outline<cr>
 
-nnoremap <silent> <leader>v :<C-u>Denite location_list -mode=normal -no-empty -auto-preview<CR>
 nnoremap <silent> <leader>ff :<C-u>DeniteBufferDir -mode=normal -no-split -buffer-name=files   file_rec<cr>
 nnoremap <silent> <leader>fd :<C-u>DeniteBufferDir -mode=normal -no-split -buffer-name=dir directory_rec<cr>
-nnoremap <silent> <leader>r :<C-u>Denite -mode=normal -no-split -buffer-name=mru     file_mru<cr>
 
-" nnoremap <silent><leader>m :<C-u>Denite buffer<CR>
+nnoremap <leader>/ :<C-u>Denite grep:. -mode=normal<CR>
+nnoremap <leader><Space>/ :<C-u>DeniteBufferDir grep:. -mode=normal<CR>
+
+nnoremap <silent> <leader>a :<C-u>Denite ale<CR>
 nnoremap <silent> <leader>b :<C-u>Denite -mode=normal -no-split -buffer-name=buffers buffer<cr>
 nnoremap <silent> <leader>l :<C-u>Denite line -mode=insert -no-split -buffer-name=line<cr>
-
 nnoremap <silent> <leader>m :<C-u>Denite marks -mode=normal<CR>
+nnoremap <silent> <leader>o :<C-u>Denite -mode=normal -winwidth=35 outline<cr>
+nnoremap <silent> <leader>r :<C-u>Denite -mode=normal -no-split -buffer-name=mru     file_mru<cr>
+nnoremap <silent> <leader>v :<C-u>Denite location_list -mode=normal -no-empty -auto-preview<CR>
+
 nnoremap <silent> <leader>M :<C-u>Denite menu -mode=normal<CR>
 
+nnoremap <silent> <leader>Dj :call execute('Denite -resume -select=+'.v:count1.' -immediately')<CR>
+nnoremap <silent> <leader>Dk :call execute('Denite -resume -select=-'.v:count1.' -immediately')<CR>
+nnoremap <silent> <leader>Dn :<C-u>DeniteCursorWord line -mode=insert -no-split -buffer-name=line<cr>
+nnoremap <silent> <leader>Ds :<C-u>Denite -mode=normal -winwidth=35 session<cr>
+nnoremap <silent> <leader>Dr :<C-u>Denite -resume<CR>
+
+nnoremap <silent> <leader>hs :<C-u>Denite history:search -mode=normal<CR>
+nnoremap <silent> <leader>hc :<C-u>Denite history:cmd -mode=normal<CR>
+
+" nnoremap <C-p> :<C-u>Denite file_rec<CR>
+" nnorema<silent>p <leader><Space>b :<C-u>DeniteBufferDir buffer<CR>
+" nnoremap <silent><leader>m :<C-u>Denite buffer<CR>
 " nnoremap <silent> <leader>da :<C-u>Denite autocmd -mode=normal -auto-preview<CR>
 " nnoremap <silent> <leader>dk :<C-u>Denite keymap -mode=normal<CR>
 " nnoremap <silent> <leader>Df :<C-u>Denite file_manager -mode=normal <CR>
 " nnoremap <silent> <leader>Dc :<C-u>Denite colorscheme -mode=normal -auto-preview<CR>
-nnoremap <silent> <leader>Dj :call execute('Denite -resume -select=+'.v:count1.' -immediately')<CR>
-nnoremap <silent> <leader>Dk :call execute('Denite -resume -select=-'.v:count1.' -immediately')<CR>
 " nnoremap <silent> <leader>Dl :<C-u>Denite -mode=normal -auto-resize location_list<CR>
-nnoremap <silent> <leader>Dn :<C-u>DeniteCursorWord line -mode=insert -no-split -buffer-name=line<cr>
-nnoremap <silent> <leader>o :<C-u>Denite -mode=normal -winwidth=35 outline<cr>
 " nnoremap <silent> <leader>Dq :<C-u>Denite -mode=normal -auto-resize quickfix<CR>
-nnoremap <silent> <leader>Ds :<C-u>Denite -mode=normal -winwidth=35 session<cr>
-nnoremap <silent> <leader>Dr :<C-u>Denite -resume<CR>
 " nnoremap <silent> <leader>Dy :<C-u>Denite -mode=normal -winwidth=35 register<cr>
 
 " nnoremap <silent><leader>B  :<C-u>Denite -default-action=cd dirmark<CR>
@@ -370,8 +382,23 @@ nnoremap <silent> <leader>Dr :<C-u>Denite -resume<CR>
 " :DeniteProjectDir [{options}] {sources}			*:DeniteProjectDir*
 
 
-nnoremap <silent> <leader>hs :<C-u>Denite history:search -mode=normal<CR>
-nnoremap <silent> <leader>hc :<C-u>Denite history:cmd -mode=normal<CR>
+
+
+function! ToggleSorter(sorter) abort
+    let sorters = split(b:denite_context.sorters, ',')
+    let idx = index(sorters, a:sorter)
+    if idx < 0
+        call add(sorters, a:sorter)
+    else
+        call remove(sorters, idx)
+    endif
+    let b:denite_new_context = {}
+    let b:denite_new_context.sorters = join(sorters, ',')
+    return '<denite:nop>'
+endfunction
+call denite#custom#map('insert', '<C-f>',
+    \ 'ToggleSorter("sorter/reverse")', 'noremap expr nowait')
+
 
 call denite#custom#source('_', 'matchers', ['matcher/substring'])
 " call denite#custom#var('outline', 'command', ['ctags'])
@@ -577,12 +604,13 @@ let g:indentLine_color_term = 239
 " map <F12> :Defx `expand('%:p:h')` -search=`expand('%:p')`<CR>
 " map <silent><leader>x :Defx -auto-cd<CR>
 " map <silent><leader>X :Defx -auto-cd -split="vertical" -winwidth=50<CR>
-map <silent><leader>d :Defx -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+map <silent><leader>d :Defx -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+map <silent><leader>Dr :Defx -resume -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
 " map <silent><leader>x :Defx -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
 map <silent><leader>x :Defx -new -split="vertical" -winwidth=50 -direction=topleft -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
-map <silent><leader>X :Defx -new -split="vertical" -winwidth=50 -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+" map <silent><leader>X :Defx -new -split="vertical" -winwidth=50 -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
 "map <silent><leader>X :Defx -auto-cd 'expand('%:p:h')' -search=`expand('%:p')` <CR>
-map <silent><leader>D :VimFilerCreate -status -sort-type=Time<CR>
+map <silent><leader>Dv :VimFilerCreate -status -sort-type=Time<CR>
 "map <silent><leader>d :VimFilerBufferDir -status -sort-type=Time<CR>
 " map <silent><leader>Dd :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=29 -toggle -no-quit -explorer<CR>
 " map <silent><leader>d :VimFilerBufferDir -status -sort-type=Time<CR>
@@ -702,12 +730,12 @@ call denite#custom#map(
             \ 'noremap'
             \)
 
-nnoremap <leader>gl :Denite gitlog<CR>
-nnoremap <leader>gL :Denite gitlog:all<CR>
-nnoremap <leader>gS :Denite gitstatus<CR>
+nnoremap <leader>gl :Denite -mode=normal gitlog<CR>
+nnoremap <leader>gL :Denite -mode=normal gitlog:all<CR>
+nnoremap <leader>gS :Denite -mode=normal gitstatus<CR>
 nnoremap <leader>gs :Gstatus<CR>
-nnoremap <leader>gc :Denite gitchanged<CR>
-nnoremap <leader>gb :Denite gitbranch<CR>
+nnoremap <leader>gc :Denite -mode=normal gitchanged<CR>
+nnoremap <leader>gb :Denite -mode=normal gitbranch<CR>
 
 :let g:session_autosave = 'no'
 :let g:session_autoload = 'no'
@@ -989,3 +1017,20 @@ nmap ga <Plug>(EasyAlign)
 set cursorline
 autocmd WinEnter * setlocal cursorline
 autocmd WinLeave * setlocal nocursorline
+
+"================================================================================================== 
+" ALE Python
+let g:ale_sign_column_always = 1
+let g:ale_sign_error = '>>'
+let g:ale_sign_warning = '--'
+" let g:ale_set_highlights = 0
+highlight ALEWarning ctermbg=DarkMagenta
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
+
+" nnoremap <silent> <leader>a :<C-u>Denite ale<CR>
+nnoremap <silent> <leader>wd :windo diffthis
+nnoremap <silent> <leader>wo :windo diffoff
+" :windo diffoff
+command! -nargs=+ -complete=command Z
+  \ call denite#start([{'name': 'z', 'args': [<q-args>]}])

@@ -365,6 +365,20 @@ options     head
     # --------------------------------------------------------------------------------------------------
     import numpy as np
 
+
+
+#-----------------------------------------------------------------------------------
+snippet     np_array_append
+abbr        numpy_array_append
+alias       numpy_array_append
+options     head
+    # --------------------------------------------------------------------------------------------------
+    someA = np.array([])
+    # for line in data_array:
+        # result = do_stuff(line)
+        someA = np.append(someA, result)
+
+
 #-----------------------------------------------------------------------------------
 snippet     pd
 abbr        pandas_import

@@ -13,6 +13,8 @@ nnoremap <silent><buffer><expr> W defx#do_action('copy') . defx#do_action('paste
 " nnoremap <silent><buffer>X :tabnew<CR>:Defx -auto-cd<CR>
 
 nnoremap <silent><buffer>b :Unite -silent -auto-resize -buffer-name=Bookmarks -default-action=vimfiler bookmark<CR>
+nnoremap <silent><buffer><expr> cd defx#do_action('change_vim_cwd')
+
 nnoremap <silent><buffer><expr> d defx#do_action('remove')
 nnoremap <silent><buffer><expr> l defx#do_action('open')
 nnoremap <silent><buffer><expr> w defx#do_action('rename')
@@ -33,6 +35,7 @@ nnoremap <silent><buffer>0 gg
 nnoremap <silent><buffer><expr> yy defx#do_action('yank_path')
 
 " nnoremap <silent><buffer><expr> <CR> defx#do_action('open', 'wincmd w \| drop')
+nnoremap <silent><buffer><expr> <C-CR> defx#do_action('drop')
 nnoremap <silent><buffer><expr> <CR> defx#do_action('open')
 nnoremap <silent><buffer><expr> <C-l> defx#do_action('redraw')
 nnoremap <silent><buffer><expr> <C-g> defx#do_action('print')
