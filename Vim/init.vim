@@ -344,7 +344,7 @@ nnoremap <silent> <leader>fd :<C-u>DeniteBufferDir -mode=normal -no-split -buffe
 nnoremap <leader>/ :<C-u>Denite grep:. -mode=normal<CR>
 nnoremap <leader><Space>/ :<C-u>DeniteBufferDir grep:. -mode=normal<CR>
 
-nnoremap <silent> <leader>a :<C-u>Denite ale<CR>
+nnoremap <silent> <leader>a :<C-u>Denite ale -mode=normal<CR>
 nnoremap <silent> <leader>b :<C-u>Denite -mode=normal -no-split -buffer-name=buffers buffer<cr>
 nnoremap <silent> <leader>l :<C-u>Denite line -mode=insert -no-split -buffer-name=line<cr>
 nnoremap <silent> <leader>m :<C-u>Denite marks -mode=normal<CR>
@@ -358,7 +358,7 @@ nnoremap <silent> <leader>Dj :call execute('Denite -resume -select=+'.v:count1.'
 nnoremap <silent> <leader>Dk :call execute('Denite -resume -select=-'.v:count1.' -immediately')<CR>
 nnoremap <silent> <leader>Dn :<C-u>DeniteCursorWord line -mode=insert -no-split -buffer-name=line<cr>
 nnoremap <silent> <leader>Ds :<C-u>Denite -mode=normal -winwidth=35 session<cr>
-nnoremap <silent> <leader>Dr :<C-u>Denite -resume<CR>
+nnoremap <silent> <leader>Dr :<C-u>Denite -resume -mode=normal<CR>
 
 nnoremap <silent> <leader>hs :<C-u>Denite history:search -mode=normal<CR>
 nnoremap <silent> <leader>hc :<C-u>Denite history:cmd -mode=normal<CR>
@@ -604,13 +604,18 @@ let g:indentLine_color_term = 239
 " map <F12> :Defx `expand('%:p:h')` -search=`expand('%:p')`<CR>
 " map <silent><leader>x :Defx -auto-cd<CR>
 " map <silent><leader>X :Defx -auto-cd -split="vertical" -winwidth=50<CR>
-map <silent><leader>d :Defx -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+map <silent><leader>Dd :Defx -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+map <silent><leader>d :Defx -columns=mark:time:filename:size -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
 map <silent><leader>Dr :Defx -resume -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
 " map <silent><leader>x :Defx -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
 map <silent><leader>x :Defx -new -split="vertical" -winwidth=50 -direction=topleft -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
 " map <silent><leader>X :Defx -new -split="vertical" -winwidth=50 -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
 "map <silent><leader>X :Defx -auto-cd 'expand('%:p:h')' -search=`expand('%:p')` <CR>
 map <silent><leader>Dv :VimFilerCreate -status -sort-type=Time<CR>
+
+" map <silent><leader>d :Defx -columns={mark}  <CR>
+" map <silent><leader>d :Defx -columns={mark} -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+
 "map <silent><leader>d :VimFilerBufferDir -status -sort-type=Time<CR>
 " map <silent><leader>Dd :VimFilerBufferDir -status -sort-type=Time -split -simple -winwidth=29 -toggle -no-quit -explorer<CR>
 " map <silent><leader>d :VimFilerBufferDir -status -sort-type=Time<CR>
@@ -733,7 +738,7 @@ call denite#custom#map(
 nnoremap <leader>gl :Denite -mode=normal gitlog<CR>
 nnoremap <leader>gL :Denite -mode=normal gitlog:all<CR>
 nnoremap <leader>gS :Denite -mode=normal gitstatus<CR>
-nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gs :Gstatus -mode=normal<CR>
 nnoremap <leader>gc :Denite -mode=normal gitchanged<CR>
 nnoremap <leader>gb :Denite -mode=normal gitbranch<CR>
 
@@ -1012,7 +1017,7 @@ nmap ga <Plug>(EasyAlign)
 " :hi ShowMarksHLo ctermfg=magenta "For all other marks
 " :hi ShowMarksHLm ctermfg=white "For multiple marks on the same line.
 " :hi SignColumn ctermbg=black
-:hi CursorLine ctermbg=blue
+:hi CursorLine ctermbg=darkgrey
 "
 set cursorline
 autocmd WinEnter * setlocal cursorline
@@ -1034,3 +1039,24 @@ nnoremap <silent> <leader>wo :windo diffoff
 " :windo diffoff
 command! -nargs=+ -complete=command Z
   \ call denite#start([{'name': 'z', 'args': [<q-args>]}])
+
+:hi ALEWarning ctermbg=22
+
+"================================================================================================== 
+" Semshi Python
+:hi semshiSelected ctermbg=blue
+
+nmap <silent> <leader>rr :Semshi rename<CR>
+
+nmap <silent> <Tab> :Semshi goto name next<CR>
+nmap <silent> <S-Tab> :Semshi goto name prev<CR>
+
+nmap <silent> <leader>sc :Semshi goto class next<CR>
+nmap <silent> <leader>sC :Semshi goto class prev<CR>
+
+nmap <silent> <leader>sf :Semshi goto function next<CR>
+nmap <silent> <leader>sF :Semshi goto function prev<CR>
+
+nmap <silent> <leader>se :Semshi error<CR>
+nmap <silent> <leader>sE :Semshi goto error<CR>
+let g:semshi#simplify_markup = 1 
