@@ -57,7 +57,7 @@ Plug 'morhetz/gruvbox'
 " Plug 'jacoborus/tender.vim'
 Plug 'haya14busa/incsearch-fuzzy.vim'
 Plug 'w0rp/ale'
-Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
+" Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
@@ -334,30 +334,32 @@ let g:neosnippet#snippets_directory='~/.nvim/snippets'
 
 "==================================================================================================
 " Denite
-"
-nnoremap <silent><leader>8 :<C-u>DeniteCursorWord grep:. -mode=normal<CR>
+"-------------------------------------------------------------------------------------------------- 
+nnoremap <silent> <leader>8 :<C-u>DeniteCursorWord line -mode=normal -no-split -buffer-name=line<cr>
+nnoremap <silent><leader>* :<C-u>DeniteCursorWord grep:. -mode=normal<CR>
 
+"-------------------------------------------------------------------------------------------------- 
+nnoremap <silent> <leader>ff :<C-u>DeniteBufferDir -mode=insert -no-split -buffer-name=files   file_rec<cr>
+nnoremap <silent> <leader>fd :<C-u>DeniteBufferDir -mode=insert -no-split -buffer-name=dir directory_rec<cr>
+nnoremap <silent> <leader>fg :<C-u>Denite grep:. -mode=normal<CR>
+" nnoremap <leader><Space>/ :<C-u>DeniteBufferDir grep:. -mode=normal<CR>
 
-nnoremap <silent> <leader>ff :<C-u>DeniteBufferDir -mode=normal -no-split -buffer-name=files   file_rec<cr>
-nnoremap <silent> <leader>fd :<C-u>DeniteBufferDir -mode=normal -no-split -buffer-name=dir directory_rec<cr>
-
-nnoremap <leader>/ :<C-u>Denite grep:. -mode=normal<CR>
-nnoremap <leader><Space>/ :<C-u>DeniteBufferDir grep:. -mode=normal<CR>
-
-nnoremap <silent> <leader>a :<C-u>Denite ale -mode=normal<CR>
+"-------------------------------------------------------------------------------------------------- 
 nnoremap <silent> <leader>b :<C-u>Denite -mode=normal -no-split -buffer-name=buffers buffer<cr>
 nnoremap <silent> <leader>l :<C-u>Denite line -mode=insert -no-split -buffer-name=line<cr>
 nnoremap <silent> <leader>m :<C-u>Denite marks -mode=normal<CR>
-nnoremap <silent> <leader>o :<C-u>Denite -mode=normal -winwidth=35 outline<cr>
 nnoremap <silent> <leader>r :<C-u>Denite -mode=normal -no-split -buffer-name=mru     file_mru<cr>
-nnoremap <silent> <leader>v :<C-u>Denite location_list -mode=normal -no-empty -auto-preview<CR>
 
+"-------------------------------------------------------------------------------------------------- 
+nnoremap <silent> <leader>a :<C-u>Denite ale -mode=normal<CR>
+nnoremap <silent> <leader>o :<C-u>Denite -mode=normal -winwidth=35 outline<cr>
+" nnoremap <silent> <leader>v :<C-u>Denite location_list -mode=normal -no-empty -auto-preview<CR>
 nnoremap <silent> <leader>M :<C-u>Denite menu -mode=normal<CR>
 
+"-------------------------------------------------------------------------------------------------- 
+nnoremap <silent> <leader>Ds :<C-u>Denite -mode=normal -winwidth=35 session<cr>
 nnoremap <silent> <leader>Dj :call execute('Denite -resume -select=+'.v:count1.' -immediately')<CR>
 nnoremap <silent> <leader>Dk :call execute('Denite -resume -select=-'.v:count1.' -immediately')<CR>
-nnoremap <silent> <leader>Dn :<C-u>DeniteCursorWord line -mode=insert -no-split -buffer-name=line<cr>
-nnoremap <silent> <leader>Ds :<C-u>Denite -mode=normal -winwidth=35 session<cr>
 nnoremap <silent> <leader>Dr :<C-u>Denite -resume -mode=normal<CR>
 
 nnoremap <silent> <leader>hs :<C-u>Denite history:search -mode=normal<CR>
@@ -380,9 +382,6 @@ nnoremap <silent> <leader>hc :<C-u>Denite history:cmd -mode=normal<CR>
 " :DeniteBufferDir [{options}] {sources}			*:DeniteBufferDir*
 " :DeniteCursorWord [{options}] {sources}			*:DeniteCursorWord*
 " :DeniteProjectDir [{options}] {sources}			*:DeniteProjectDir*
-
-
-
 
 function! ToggleSorter(sorter) abort
     let sorters = split(b:denite_context.sorters, ',')
@@ -1044,19 +1043,19 @@ command! -nargs=+ -complete=command Z
 
 "================================================================================================== 
 " Semshi Python
-:hi semshiSelected ctermbg=blue
-
-nmap <silent> <leader>rr :Semshi rename<CR>
-
-nmap <silent> <Tab> :Semshi goto name next<CR>
-nmap <silent> <S-Tab> :Semshi goto name prev<CR>
-
-nmap <silent> <leader>sc :Semshi goto class next<CR>
-nmap <silent> <leader>sC :Semshi goto class prev<CR>
-
-nmap <silent> <leader>sf :Semshi goto function next<CR>
-nmap <silent> <leader>sF :Semshi goto function prev<CR>
-
-nmap <silent> <leader>se :Semshi error<CR>
-nmap <silent> <leader>sE :Semshi goto error<CR>
-let g:semshi#simplify_markup = 1 
+" :hi semshiSelected ctermbg=blue
+" :Semshi disable
+" nmap <silent> <leader>rr :Semshi rename<CR>
+"
+" nmap <silent> <Tab> :Semshi goto name next<CR>
+" nmap <silent> <S-Tab> :Semshi goto name prev<CR>
+"
+" nmap <silent> <leader>sc :Semshi goto class next<CR>
+" nmap <silent> <leader>sC :Semshi goto class prev<CR>
+"
+" nmap <silent> <leader>sf :Semshi goto function next<CR>
+" nmap <silent> <leader>sF :Semshi goto function prev<CR>
+"
+" nmap <silent> <leader>se :Semshi error<CR>
+" nmap <silent> <leader>sE :Semshi goto error<CR>
+" let g:semshi#simplify_markup = 1
