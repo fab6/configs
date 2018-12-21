@@ -7,6 +7,7 @@ nnoremap <silent><buffer><expr> R defx#do_action('move') . '<C-w>w' . defx#do_ac
 nnoremap <silent><buffer><expr> E defx#do_action('open', 'vsplit')
 nnoremap <silent><buffer> H :Denite defx/history -mode=normal<CR>
 nnoremap <silent><buffer><expr> K defx#do_action('new_directory')
+nnoremap <silent><buffer><expr> M defx#do_action('new_multiple_files')
 nnoremap <silent><buffer><expr> N defx#do_action('new_file')
 nnoremap <silent><buffer><expr> P defx#do_action('open', 'pedit')
 nnoremap <silent><buffer><expr> W defx#do_action('copy') . defx#do_action('paste')
@@ -81,9 +82,9 @@ nmap <silent><buffer>,p :call jobstart(['xterm','-hold','-e','python',expand('%:
 endif
 
 " nnoremap <silent><buffer>X :Defx -split="tab" -new<CR>
-map <silent><buffer>X :Defx -columns=mark:time:filename:size -split="tab" -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
-map <silent><buffer>gx :Defx -columns=mark:time:filename:size -split="vertical" -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
-map <silent><buffer>gX :Defx -columns=mark:time:filename:size -split="horizontal" -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+map <silent><buffer>X :Defx -columns=mark:filename:time:size -split="tab" -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+map <silent><buffer>gx :Defx -columns=mark:filename:time:size -split="vertical" -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+map <silent><buffer>gX :Defx -columns=mark:filename:time:size -split="horizontal" -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
 " nmap <silent><buffer>gx :Defx -split="vertical" -new<CR>
 " nmap <silent><buffer>gX :Defx -split="horizontal" -new<CR>
-nmap <silent><buffer>gr :Denite grep -mode=normal<CR>
+" nmap <silent><buffer>gr :Denite grep -mode=normal<CR>

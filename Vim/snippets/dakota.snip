@@ -115,7 +115,37 @@ method
         # seed = 1234567
         output verbose
 
+#-----------------------------------------------------------------------------------
+snippet     method_efficient_global
+abbr        efficient_global
+alias       efficient_global
+options     head
+method
+        #=======================================================================
+        # Surrogate
+        efficient_global			# EGO Efficient Global Optimization
+        gaussian_process surfpack
+        initial_samples 360
+        # seed = 123456
 
+#-----------------------------------------------------------------------------------
+snippet     method_pattern_search
+abbr        pattern_search
+alias       pattern_search
+options     head
+method
+        #=======================================================================
+        # Simplex!?
+        method
+          coliny_pattern_search
+            initial_delta = 0.5
+            solution_target = 1e-4
+            exploratory_moves
+              basic_pattern
+            contraction_factor = 0.75
+            max_iterations = 1000
+            max_function_evaluations = 2000
+            variable_tolerance = 1e-4
 
 #-----------------------------------------------------------------------------------
 snippet     variables_cont

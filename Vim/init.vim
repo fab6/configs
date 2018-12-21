@@ -1,3 +1,4 @@
+:set guioptions=M
 "==================================================================================================
 ":let g:vimsyn_embed='0'
 "let g:python_host_skip_check=1
@@ -15,7 +16,7 @@ Plug 'Shougo/deol.nvim'
 " Plug 'cyberkov/openhab-vim'
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'zchee/deoplete-jedi'
+" Plug 'zchee/deoplete-jedi'
 " Plug 'ncm2/ncm2'
 
 Plug 'Shougo/vimfiler.vim' "needs unite -> new development for denite Plug 'Shougo/defx.nvim'
@@ -70,6 +71,7 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'plasticboy/vim-markdown'
 " Plug 'vyzyv/vimpyter'
 Plug 'jvirtanen/vim-octave', { 'for': 'octave' }
+Plug 'lervag/vim-foam'
 "Plug '4Evergreen4/vim-hardy' "Arduino
 "--------------------------------------------------------------------------------------------------
 
@@ -77,6 +79,8 @@ call plug#end()
 
 "==================================================================================================
 " General Settings
+"
+"
 "
 set encoding=utf-8
 set number
@@ -155,9 +159,10 @@ set textwidth=72
 
 "--------------------------------------------------------------------------------------------------
 " File detection
-"
 augroup filetype
     autocmd!
+    autocmd BufWinLeave *.* mkview
+    autocmd BufWinEnter *.* silent loadview
     autocmd BufNewFile,BufRead *.in set filetype=dakota
     autocmd BufNewFile,BufRead *Dict set filetype=c
     autocmd BufNewFile,BufRead *.mo set filetype=modelica
@@ -362,8 +367,8 @@ nnoremap <silent> <leader>Dj :call execute('Denite -resume -select=+'.v:count1.'
 nnoremap <silent> <leader>Dk :call execute('Denite -resume -select=-'.v:count1.' -immediately')<CR>
 nnoremap <silent> <leader>Dr :<C-u>Denite -resume -mode=normal<CR>
 
-nnoremap <silent> <leader>hs :<C-u>Denite history:search -mode=normal<CR>
-nnoremap <silent> <leader>hc :<C-u>Denite history:cmd -mode=normal<CR>
+" nnoremap <silent> <leader>hs :<C-u>Denite history:search -mode=normal<CR>
+" nnoremap <silent> <leader>hc :<C-u>Denite history:cmd -mode=normal<CR>
 
 " nnoremap <C-p> :<C-u>Denite file_rec<CR>
 " nnorema<silent>p <leader><Space>b :<C-u>DeniteBufferDir buffer<CR>
@@ -604,7 +609,7 @@ let g:indentLine_color_term = 239
 " map <silent><leader>x :Defx -auto-cd<CR>
 " map <silent><leader>X :Defx -auto-cd -split="vertical" -winwidth=50<CR>
 map <silent><leader>Dd :Defx -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
-map <silent><leader>d :Defx -columns=mark:time:filename:size -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+map <silent><leader>d :Defx -columns=mark:filename:time:size -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
 map <silent><leader>Dr :Defx -resume -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
 " map <silent><leader>x :Defx -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
 map <silent><leader>x :Defx -new -split="vertical" -winwidth=50 -direction=topleft -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
@@ -1027,7 +1032,7 @@ autocmd WinLeave * setlocal nocursorline
 let g:ale_sign_column_always = 1
 let g:ale_sign_error = '>>'
 let g:ale_sign_warning = '--'
-" let g:ale_set_highlights = 0
+let g:ale_set_highlights = 0
 highlight ALEWarning ctermbg=DarkMagenta
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)

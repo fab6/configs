@@ -30,9 +30,13 @@ module load python_loc/3.6.5_miniC3
 module unload FDS/6.5.3
 module load FDS/6.7.0
 module load VisIt/2.10.3
-module load ParaView/5.2.0
+module unload ParaView
+module load ParaView/5.6.0
 export OMP_NUM_THREADS=1
 
+module load openmpi/1.10.4
+module load OpenFOAM/4.1
+. /share/Tools/FIRE/PATO/PATO_v2.2.0/bashrc
 
 #===================================================================
 # Shell / Prompt

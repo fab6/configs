@@ -135,38 +135,6 @@ options     head
         df_stand = (df - df.mean()) / df.std()
 
 
-# ==================================================================================================
-# Holoviews
-#-----------------------------------------------------------------------------------
-
-#-----------------------------------------------------------------------------------
-snippet     hv_import
-abbr        hv_import
-alias       hv_import
-options     head
-        import holoviews as hv
-        from holoviews.operation.datashader import datashade, dynspread
-        from bokeh.io import output_file, show
-
-#-----------------------------------------------------------------------------------
-snippet     hv_bokeh_html
-abbr        hv_bokeh_html
-alias       hv_bokeh_html
-options     head
-        #-----------------------------------------------------------------------------------
-        from bokeh.io import output_file, save, show
-        #-----------------------------------------------------------------------------------
-        hv.extension("bokeh")
-        # renderer = hv.renderer('bokeh')
-        # renderer.save(MY_HOLO_OBJECT, 'html_fileName')
-        #renderer = hv.renderer('matplotlib').instance(fig='svg', holomap='gif')
-        #renderer.save(MY_HOLO_OBJECT, 'example_I', style=dict(Image={'cmap':'jet'}))
-        renderer = hv.renderer('bokeh')
-        plot = renderer.get_plot(curve).state
-        save(plot, 'graph.html')
-        output_file("graph.html")
-        show(plot)
-        #-----------------------------------------------------------------------------------
 
 
 
@@ -696,3 +664,77 @@ options     head
         # Check the dimensions of the reshaped array
         reshaped_array.shape
         # The output should be: (1000, 5, 5) 
+
+
+# ==================================================================================================
+# Holoviews / hvplot
+#-----------------------------------------------------------------------------------
+
+#-----------------------------------------------------------------------------------
+snippet     hv_import
+abbr        hv_import
+alias       hv_import
+options     head
+        import holoviews as hv
+        from holoviews.operation.datashader import datashade, dynspread
+        from bokeh.io import output_file, show
+
+#-----------------------------------------------------------------------------------
+snippet     hv_bokeh_html
+abbr        hv_bokeh_html
+alias       hv_bokeh_html
+options     head
+        #-----------------------------------------------------------------------------------
+        from bokeh.io import output_file, save, show
+        #-----------------------------------------------------------------------------------
+        hv.extension("bokeh")
+        # renderer = hv.renderer('bokeh')
+        # renderer.save(MY_HOLO_OBJECT, 'html_fileName')
+        #renderer = hv.renderer('matplotlib').instance(fig='svg', holomap='gif')
+        #renderer.save(MY_HOLO_OBJECT, 'example_I', style=dict(Image={'cmap':'jet'}))
+        renderer = hv.renderer('bokeh')
+        plot = renderer.get_plot(curve).state
+        save(plot, 'graph.html')
+        output_file("graph.html")
+        show(plot)
+        #-----------------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------------
+snippet     hv_serve
+abbr        hv_serve
+alias       hv_serve
+options     head
+        import holoviews as hv
+        import hvplot
+        hv.extension('bokeh')
+        doc = hv.renderer('bokeh').server_doc(p)
+        doc.title = 'HoloViews Bokeh App'
+
+# -----------------------------------------------------------------------------------
+snippet     hv_df
+abbr        hv_df
+alias       hv_df
+options     head
+        import hvplot.pandas
+        p = data['HRR'].hvplot()
+
+# -----------------------------------------------------------------------------------
+snippet     hv_df_native
+abbr        hv_df_native
+alias       hv_df_native
+options     head
+        # import hvplot.pandas
+        # p = data['HRR'].hvplot()
+        from hvplot import hvPlot
+        import holoviews as hv
+        hv.extension('bokeh')
+        plot = hvPlot(df)
+        plot(y='A')
+
+# -----------------------------------------------------------------------------------
+snippet     hv_scatter
+abbr        hv_scatter
+alias       hv_scatter
+options     head
+        p = hvplot.scatter_matrix(df, c='species')
+
