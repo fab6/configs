@@ -161,8 +161,8 @@ set textwidth=72
 " File detection
 augroup filetype
     autocmd!
-    autocmd BufWinLeave *.* mkview
-    autocmd BufWinEnter *.* silent loadview
+    " autocmd BufWinLeave *.* mkview
+    " autocmd BufWinEnter *.* silent loadview
     autocmd BufNewFile,BufRead *.in set filetype=dakota
     autocmd BufNewFile,BufRead *Dict set filetype=c
     autocmd BufNewFile,BufRead *.mo set filetype=modelica
@@ -609,13 +609,24 @@ let g:indentLine_color_term = 239
 " map <silent><leader>x :Defx -auto-cd<CR>
 " map <silent><leader>X :Defx -auto-cd -split="vertical" -winwidth=50<CR>
 map <silent><leader>Dd :Defx -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
-map <silent><leader>d :Defx -columns=mark:filename:time:size -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
-map <silent><leader>Dr :Defx -resume -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+map <silent><leader>d :Defx -sort="Time" -columns=mark:filename:time:size -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+map <silent><leader>Dr :Defx -sort="Time" -resume -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
 " map <silent><leader>x :Defx -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
-map <silent><leader>x :Defx -new -split="vertical" -winwidth=50 -direction=topleft -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+map <silent><leader>x :Defx -new -sort="Time" -split="vertical" -winwidth=50 -direction=topleft -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
 " map <silent><leader>X :Defx -new -split="vertical" -winwidth=50 -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
 "map <silent><leader>X :Defx -auto-cd 'expand('%:p:h')' -search=`expand('%:p')` <CR>
 map <silent><leader>Dv :VimFilerCreate -status -sort-type=Time<CR>
+
+nnoremap <silent> <Leader>xf :Defx -split=vertical -winwidth=40
+            \ -columns=git:icons:filename:type:size -show-ignored-files
+            \ -direction=topleft `expand('%:p:h')` -search=`expand('%:p')`<CR>
+
+nnoremap <silent> <Leader>xdf :Defx -split=vertical -winwidth=40
+            \ -columns=git:icons:filename:type:size -show-ignored-files
+            \ -direction=topleft `expand('%:p:h')` -search=`expand('%:p')`<CR>
+            \ :Defx -new -split=horizontal
+            \ -columns=git:icons:filename:type:size -show-ignored-files<CR>
+            \ :wincmd p<CR>
 
 " map <silent><leader>d :Defx -columns={mark}  <CR>
 " map <silent><leader>d :Defx -columns={mark} -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
@@ -1064,3 +1075,12 @@ command! -nargs=+ -complete=command Z
 " nmap <silent> <leader>se :Semshi error<CR>
 " nmap <silent> <leader>sE :Semshi goto error<CR>
 " let g:semshi#simplify_markup = 1
+"#
+" if exists('+termguicolors')
+"   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+"   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+"   set termguicolors
+" endif
+if $TERM == "xterm-256color"
+  set t_Co=256
+endif
