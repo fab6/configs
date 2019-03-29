@@ -64,6 +64,16 @@ options     head
         print (100*".")${0}
 
 #-----------------------------------------------------------------------------------
+snippet     pdf
+abbr        print (df...)...
+alias       print_df
+options     head
+        # ...................................................................................
+        print (100*"-")
+        print (${1}.head())
+        print (100*".")
+        print (df.tail())${2}
+#-----------------------------------------------------------------------------------
 snippet     p
 abbr        print (...)...
 alias       print_klammer
@@ -76,6 +86,15 @@ alias       print_klammer2
 options     head
         print ("${1}: ",${2})
 
+#-----------------------------------------------------------------------------------
+snippet     split
+abbr        dfsplit
+alias       split_df
+options     head
+        splitPos = 0.8
+        msk = np.random.rand(len(df)) < splitPos
+        train = df[msk]
+        test = df[~msk]
 
 # -----------------------------------------------------------------------------------
 snippet     py_prog
@@ -320,10 +339,24 @@ abbr        head_imports1
 alias       head_imports1
 options     head
     # --------------------------------------------------------------------------------------------------
+    import os
+    import glob
     import pandas as pd
     import numpy as np
     import seaborn as sns
     import matplotlib.pyplot as plt
+    # ...................................................................................  
+    # sns.set(style="darkgrid", palette="muted")
+    plt.style.use(["science"])
+    params = { 'figure.figsize': [11.2, 8.4],
+               'xtick.labelsize': 16.0,
+               'ytick.labelsize': 16.0,
+               'axes.titlesize': 16,
+               'axes.labelsize': 16,
+               'legend.fontsize': 14}
+    plt.rcParams.update(params)
+    #plt.style.use('ggplot')
+    # --------------------------------------------------------------------------------------------------
 
 #-----------------------------------------------------------------------------------
 snippet     np
@@ -738,3 +771,29 @@ alias       hv_scatter
 options     head
         p = hvplot.scatter_matrix(df, c='species')
 
+
+# -----------------------------------------------------------------------------------
+snippet     sql_df
+abbr        sql_df
+alias       df_sql
+options     head
+        # ----------------------------------------------------------------------------------- ${0}
+        import sqlite3
+        connex = sqlite3.connect("name.db")  # Opens file if exists, else creates file
+        cur = connex.cursor() 
+        df.to_sql(name="tableName", con=connex, if_exists="append", index=False) 
+        connex.close()
+
+
+# -----------------------------------------------------------------------------------
+snippet     df_plot
+abbr        df_plot
+alias       df_plot
+options     head
+        # ----------------------------------------------------------------------------------- ${0}
+        fig, ax = plt.subplots()
+        df.plot(kind='line', lw=3, label=True, ax=ax)
+        ax.set_xlabel(xaxisLabel)
+        ax.set_ylabel(yaxisLabel)
+        #  ax.set_xticklabels(df_T_mean.index)
+        plt.show()

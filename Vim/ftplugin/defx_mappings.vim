@@ -1,7 +1,10 @@
 
+		" nnoremap <silent><buffer><expr> <CR>
+		" \ defx#is_directory() ?
+		" \ defx#do_action('open') :
+		" \ defx#do_action('multi', ['drop', 'quit'])
 "-------------------------------------------------------------------------------------------------- 
 "nnoremap <buffer> o <Plug>(vimfiler_execute_system_associated)
-nnoremap <silent><buffer>B :UniteBookmarkAdd<CR>
 nnoremap <silent><buffer><expr> C defx#do_action('copy') . '<C-w>w' . defx#do_action('paste')
 nnoremap <silent><buffer><expr> R defx#do_action('move') . '<C-w>w' . defx#do_action('paste')
 " nnoremap <silent><buffer><expr> E defx#do_action('open', 'vsplit')
@@ -11,12 +14,21 @@ nnoremap <silent><buffer><expr> M defx#do_action('new_multiple_files')
 nnoremap <silent><buffer><expr> N defx#do_action('new_file')
 nnoremap <silent><buffer><expr> P defx#do_action('open', 'pedit')
 nnoremap <silent><buffer><expr> T defx#do_action('toggle_sort', 'Time')
-nnoremap <silent><buffer><expr> N defx#do_action('toggle_sort', 'Filename')
+" nnoremap <silent><buffer><expr> t defx#do_action('toggle_sort', 'time')
+nnoremap <silent><buffer><expr> N defx#do_action('toggle_sort', 'filename')
+nnoremap <silent><buffer><expr> O defx#do_action('execute_system')
+" nnoremap <silent><buffer><expr> N defx#do_action('toggle_sort', 'Filename')
 nnoremap <silent><buffer><expr> E defx#do_action('toggle_sort', 'extension')
+nnoremap <silent><buffer><expr> S defx#do_action('toggle_sort', 'Size')
 nnoremap <silent><buffer><expr> W defx#do_action('copy') . defx#do_action('paste')
+
 " nnoremap <silent><buffer>X :tabnew<CR>:Defx -auto-cd<CR>
 
-nnoremap <silent><buffer>b :Unite -silent -auto-resize -buffer-name=Bookmarks -default-action=vimfiler bookmark<CR>
+nnoremap <silent><buffer>b :<C-u>Denite -mode=insert defx/dirmark<cr>
+nnoremap <silent><buffer>B :<C-u>Denite -mode=insert dirmark/add<cr>
+" nnoremap <silent><buffer>B :UniteBookmarkAdd<CR>
+" nnoremap <silent><buffer>B :Denite dirmark<CR>
+" nnoremap <silent><buffer>b :Unite -silent -auto-resize -buffer-name=Bookmarks -default-action=vimfiler bookmark<CR>
 nnoremap <silent><buffer><expr> cd defx#do_action('change_vim_cwd')
 
 nnoremap <silent><buffer><expr> d defx#do_action('remove')
@@ -25,18 +37,23 @@ nnoremap <silent><buffer><expr> w defx#do_action('rename')
 nnoremap <silent><buffer><expr> j line('.') == line('$') ? 'gg' : 'j'
 nnoremap <silent><buffer><expr> k line('.') == 1 ? 'G' : 'k'
 nnoremap <silent><buffer><expr> m defx#do_action('toggle_select') . 'j'
-nnoremap <silent><buffer><expr> o defx#do_action('execute_system')
+nnoremap <silent><buffer><expr> o defx#do_action('open_or_close_tree')
 nnoremap <silent><buffer><expr> q defx#do_action('quit')
 nnoremap <silent><buffer><expr> h defx#do_action('cd', ['..'])
+
+nnoremap <silent><buffer><expr> tc defx#do_action('toggle_columns', 'mark:filename:type:size:time')
+
 
 
 nnoremap <silent><buffer><expr> c defx#do_action('copy')
 nnoremap <silent><buffer><expr> r defx#do_action('move')
 nnoremap <silent><buffer><expr> p defx#do_action('paste')
 
+nnoremap <silent><buffer><expr> ; defx#do_action('repeat')
 nnoremap <silent><buffer><expr> ! defx#do_action('execute_command')
 
 
+"-------------------------------------------------------------------------------------------------- 
 nnoremap <silent><buffer>0 gg 
 nnoremap <silent><buffer><expr> yy defx#do_action('yank_path')
 
@@ -49,6 +66,7 @@ nnoremap <silent><buffer><expr> <Space> defx#do_action('toggle_select') . 'j'
 nnoremap <silent><buffer><expr> * defx#do_action('toggle_select_all')
 nnoremap <silent><buffer><expr> .  defx#do_action('toggle_ignored_files')
 
+"-------------------------------------------------------------------------------------------------- 
 nmap <silent><buffer>,O :call jobstart(['xterm','-e','/usr/bin/vim',expand('%:t')],{'detach':1}) <CR>
 nmap <silent><buffer>,x :call jobstart(['xterm'],{'detach':1}) <CR>
 nmap <silent><buffer>,y :call jobstart(['xterm','-e','mc','.','.'],{'detach':1}) <CR>
@@ -60,6 +78,7 @@ nmap <silent><buffer>,y :call jobstart(['xterm','-e','mc','.','.'],{'detach':1})
 nnoremap <silent><buffer><expr> ~ defx#do_action('cd')
 nnoremap <silent><buffer><expr> ` defx#do_action('cd')
 
+"-------------------------------------------------------------------------------------------------- 
 if hostname() == "asus"
     nnoremap <silent><buffer><expr> 1 defx#do_action('cd /home/fbraenns/00_ALLG/')
     nnoremap <silent><buffer><expr> 2 defx#do_action('cd /home/fbraenns/01_FINANCE/')
@@ -79,15 +98,15 @@ else
     nmap <silent><buffer><expr> 8  defx#do_action('cd', ['/share/software/Fire/FDS/6.6.0/Documentation'])
     nmap <silent><buffer><expr> 9  defx#do_action('cd', ['/home/fbraenns/.modulefiles/divs/'])
     nmap <silent><buffer>,X :call jobstart('xterm -e /share/Tools/Editing/NeoVim/nvim.appimage -c ":Defx -auto-cd"' ,{'detach':1}) <CR>
-
+    " nmap <silent><buffer>,Y :call jobstart('xterm -e /share/Tools/Editing/vim_190111/bin/vim' ,{'detach':1}) <CR>
+    nmap <silent><buffer>,Y :call jobstart(['xterm','-e','/share/Tools/Editing/vim_190111/bin/vim',expand('%:t')],{'detach':1}) <CR>
+    
+"-------------------------------------------------------------------------------------------------- 
 nmap <silent><buffer>,P :call jobstart(['xterm','-hold','-e','python','/share/Tools/Python/FireSimulation/plotHRR_csv63.py',expand('%:t')],{'detach':1}) <CR>
 nmap <silent><buffer>,p :call jobstart(['xterm','-hold','-e','python',expand('%:p:h')],{'detach':1}) <CR>
 endif
 
-" nnoremap <silent><buffer>X :Defx -split="tab" -new<CR>
-map <silent><buffer>X :Defx -sort="Time" -columns=mark:filename:time:size -split="tab" -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
-map <silent><buffer>gx :Defx -sort="Time" -columns=mark:filename:time:size -split="vertical" -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
-map <silent><buffer>gX :Defx -sort="Time" -columns=mark:filename:time:size -split="horizontal" -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
-" nmap <silent><buffer>gx :Defx -split="vertical" -new<CR>
-" nmap <silent><buffer>gX :Defx -split="horizontal" -new<CR>
-" nmap <silent><buffer>gr :Denite grep -mode=normal<CR>
+"-------------------------------------------------------------------------------------------------- 
+map <silent><buffer>X :Defx -sort="Time" -split="tab" -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+map <silent><buffer>gx :Defx -sort="Time" -split="vertical" -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+map <silent><buffer>gX :Defx -sort="Time" -split="horizontal" -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>

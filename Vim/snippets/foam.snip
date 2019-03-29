@@ -1,0 +1,122 @@
+# ==================================================================================================
+# General
+#-----------------------------------------------------------------------------------
+snippet     date_normal
+abbr        dn
+options     word
+    //Today: strftime("%Y-%b-%d")`${0}
+
+
+
+#-----------------------------------------------------------------------------------
+snippet     //.
+abbr        //.
+alias       break_dot
+options     head
+        // ...................................................................................  ${0}
+
+#-----------------------------------------------------------------------------------
+snippet     //-
+abbr        //-
+alias       break_single
+options     head
+        // ----------------------------------------------------------------------------------- ${0}
+
+#-----------------------------------------------------------------------------------
+snippet     //=
+abbr        //=
+alias       break_double
+options     head
+        // ==================================================================================== ${0}
+
+#-----------------------------------------------------------------------------------
+snippet     opf_T_out
+abbr        opf_T_out
+alias       opf_Temperature_outlet
+options     head
+        {
+        type            inletOutlet;
+        inletValue      uniform $internalField;
+        value           uniform $internalField;
+        }
+
+
+
+#-----------------------------------------------------------------------------------
+snippet     opf_T_wall_coupledRad
+abbr        opf_T_wall_coupledRad
+alias       opf_Temperature_coupledRad
+options     head
+        {
+        type            compressible::turbulentTemperatureRadCoupledMixed;
+        value           uniform $internalField;
+        Tnbr            T;
+        qrNbr           none;
+        qr              qr;
+        kappaMethod     fluidThermo;
+        }
+
+#-----------------------------------------------------------------------------------
+snippet     opf_T_kValue
+abbr        opf_T_kValue
+alias       opf_Temperature_coupledRad
+options     head
+        {
+        type            externalWallHeatFluxTemperature;
+        mode            coefficient;
+        Ta              uniform 294.75;
+        h               uniform 10;
+        kappaMethod     solidThermo;
+        value           uniform 294.75;
+        }
+
+#-----------------------------------------------------------------------------------
+snippet     opf_T_fire_ESIv1806
+abbr        opf_T_fire_ESIv1806
+alias       opf_T_fire
+options     head
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0.04";
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform 298.15;
+
+boundaryField
+{
+    ".*OUT.*"
+    {
+        type            inletOutlet;
+        inletValue      uniform 298.15;
+        value           uniform 298.15;
+    }
+    ".*WW.*"
+    {
+        type            zeroGradient;
+    }
+
+    ".*CONV.*"
+    {
+        type            externalWallHeatFluxTemperature;
+        mode            coefficient;
+        Ta              uniform 313;
+        h               uniform 1000000;
+        thicknessLayers ( 1 2 );
+        kappaLayers     ( 100 200 );
+        kappaMethod     solidThermo;
+        kappa           none;
+        value           uniform 300;
+    }
+    ".*FIRE.*"
+    {
+        type            fixedValue;
+        value           uniform 398.15;
+    }
+}

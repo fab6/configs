@@ -1,3 +1,4 @@
+setxkbmap us
 #!/usr/bin/env bash
 
 #===================================================================
@@ -15,6 +16,7 @@ export $LS_COLORS
 
 set -o vi
 export EDITOR="/share/Tools/Editing/NeoVim/nvim.appimage"
+alias vib="vi -u ~/.config/nvim/init_basic.vim"
 
 alias jn="jupyter notebook"
 
@@ -24,21 +26,25 @@ alias jn="jupyter notebook"
 ###===================================================================
 ###===================================================================
 module load divs/0.2
-module load Aliases/StarCCM+
-#module load python/anaconda3/4.x
-#module load python_loc/3.6.0_anac4.3.1
-module load python_loc/3.6.5_miniC3
-# module load FDS/6.5.3
-module unload FDS/6.5.3
 module load FDS/6.7.0
+module load Aliases/StarCCM+
+#module load python_loc/3.6.0_anac4.3.1
+# module load python_loc/3.6.5_miniC3
+# module load FDS/6.5.3
+# module unload FDS/6.5.3
 module load VisIt/2.10.3
-module unload ParaView
+# module unload ParaView
 module load ParaView/5.6.0
 export OMP_NUM_THREADS=1
 
+module load python/anaconda2/4.x
 module load openmpi/1.10.4
-module load OpenFOAM/4.1
-. /share/Tools/FIRE/PATO/PATO_v2.2.0/bashrc
+module load Dakota/6.8.0_ac2 
+module unload python/anaconda2/4.x 
+module load python_loc/3.6.5_miniC3
+#module load OpenFOAM/4.1
+module load OpenFOAM/v1806+
+# . /share/Tools/FIRE/PATO/PATO_v2.2.0/bashrc
 
 #===================================================================
 # Shell / Prompt
@@ -65,7 +71,7 @@ printf "\e[?2004l"
 
 #=============================================================================================================================================
 source ~/.fzf_custom.sh 
-
+source ~/.fzf-extras/fzf-extras.sh
 #=============================================================================================================================================
 ##export MODELICAPATH=/share/Tools/THERMO/MODELICA/Libraries/modelica-buildings_LBL:/share/Tools/THERMO/MODELICA/Libraries/modelica-buildings_LBL/Buildings:/share/software/Optimization/JModelica/2.1b1/ThirdParty/MSL/:/share/Tools/THERMO/MODELICA/Libraries/AixLib_RWTH/AixLib/
 alias c1v="cd /WORK1/fbraenns/ && /share/Tools/Editing/NeoVim/nvim.appimage +'VimFilerBufferDir -status -sort-type=Time'"
@@ -75,12 +81,17 @@ alias c4v="cd /data/work/fbraenns/ && /share/Tools/Editing/NeoVim/nvim.appimage 
 alias c5v="cd /share/Tools/ && /share/Tools/Editing/NeoVim/nvim.appimage +'VimFilerBufferDir -status -sort-type=Time'"
 alias c6v="cd /share/software/ && /share/Tools/Editing/NeoVim/nvim.appimage +'VimFilerBufferDir -status -sort-type=Time'"
 #alias viv="/share/Tools/Editing/NeoVim/nvim.appimage +'VimFiler -sort-type=Time -status'"
-alias viv="/share/Tools/Editing/NeoVim/nvim.appimage +'Defx -auto-cd'"
+alias viv="/share/Tools/Editing/NeoVim/nvim.appimage +'Defx -auto-cd -sort="Time"'"
 alias cpwd="pwd | tr -d '\n' | pbcopy && echo 'pwd copied to clipboard'"
 alias pw="pwd | xclip -selection 'clipboard' "
 alias vi="nv"
-alias vim="vim -u /home/fbraenns/.vimrc_y"
+# alias vimY="/usr/bin/vim -u /home/fbraenns/.vimrc_Y"
+# alias vimz="/usr/bin/vim -u /home/fbraenns/.vimrc_z"
+# alias vim="/usr/bin/vim -u /home/fbraenns/.vimrc_min"
 
+alias viM="/share/Tools/Editing/vim_190111/bin/vim -u /home/fbraenns/.vimrc_min -N"
+alias vim="/share/Tools/Editing/vim_190111/bin/vim -u /home/fbraenns/.vimrc_Y -N"
+alias reName='for filename in *.png; do mv "$filename" "p_$filename"; done;'
 
 #=============================================================================================================================================
 # tm - create new tmux session, or switch to existing one. Works from within tmux too. (@bag-man)
@@ -99,3 +110,22 @@ tmm() {
 alias jupSetTheme="jt -t gruvboxd -fs 11 -altp -tfs 11 -nfs 12 -ofs 11 -cellw 80% -T -N"
     # nmap <silent><buffer>,s2 :call jobstart('/share/software/cd-adapco/STAR-CCM+12.02/STAR-CCM+12.02.010-R8/star/bin/starccm+',{'detach':1}) <CR>
     # nmap <silent><buffer>,s1 :call jobstart('/share/software/cd-adapco/STAR-CCM+11.06/STAR-CCM+11.06.010-R8/star/bin/starccm+',{'detach':1}) <CR>
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+source /share/Tools/Divs/fzf-marks/fzf-marks.plugin.bash
+
+
+alias f='. fzf-fs'
+export FZF_FS_CONFIG_DIR="/home/fbraenns/.config/fzf-fs.d/"
+
+#export FZF_FS_OS=Linux;
+export FZF_FS_LS_COMMAND="command ls --color=auto -q";
+export FZF_FS_LS_COMMAND_COLOR="command ls --color=always -q"
+alias ranger="/share/Tools/Python/Distributions/MiniConda3_latest_180813/bin/ranger"
+alias veusz="/share/Tools/Python/Distributions/MiniConda3_latest_180813/bin/veusz"
+alias rg="source /share/Tools/Python/Distributions/MiniConda3_latest_180813/bin/"
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+source /share/Tools/FIRE/cantera/BIN/bin/setup_cantera
+export PATH="/share/Tools/FIRE/cantera/BIN/bin/:$PATH"
+
