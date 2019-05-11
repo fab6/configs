@@ -405,8 +405,8 @@ nnoremap <silent> <leader>fg :<C-u>Denite grep:. -mode=normal<CR>
 " nnoremap <leader><Space>/ :<C-u>DeniteBufferDir grep:. -mode=normal<CR>
 
 "-------------------------------------------------------------------------------------------------- 
-nnoremap <silent> <leader>b :<C-u>Denite -mode=insert defx/dirmark<cr>
-nnoremap <silent> <leader>B :<C-u>Denite -mode=insert dirmark/add<cr>
+nnoremap <silent> <leader>b :<C-u>Denite -mode=normal defx/dirmark<cr>
+nnoremap <silent> <leader>B :<C-u>Denite -mode=normal dirmark/add<cr>
 " nnoremap <silent> <leader>B :<C-u>Denite -mode=normal defx/dirmark<cr>
 " nnoremap <silent> <leader>BB :<C-u>Denite -mode=normal -no-split -buffer-name=buffers buffer<cr>
 nnoremap <silent> <leader>l :<C-u>Denite line -mode=insert -no-split -buffer-name=line<cr>
@@ -698,18 +698,16 @@ nnoremap <silent> <Leader>xdf :Defx -split=vertical -winwidth=40
 
 " map <silent><leader>d :Defx -columns={mark}  <CR>
 " map <silent><leader>d :Defx -columns={mark} -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
-	call defx#custom#column('mark', {
-		      \ 'directory_icon': '▸',
-		      \ 'readonly_icon': '✗',
-		      \ 'selected_icon': '✓',
-		      \ })
+" call defx#custom#column('mark', {
+"                       \ 'directory_icon': '▸',
+"                       \ 'readonly_icon': '✗',
+"                       \ 'selected_icon': '✓',
+"                       \ })
 
 call denite#custom#action('buffer,directory,file,openable', 'defx',
       \ {context -> execute('Defx ' . context['targets'][0]['action__path'])})
 
-call defx#custom#option('_', {
-            \ 'columns': 'icons:filename:size:git',
-            \ })
+call defx#custom#option('_', { 'columns': 'icons:filename:size:git', })
 
 let g:defx_as_default_explorer = 1 "geht nicht"
 "map <silent><leader>d :VimFilerBufferDir -status -sort-type=Time<CR>

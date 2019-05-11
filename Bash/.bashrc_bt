@@ -17,6 +17,8 @@ export $LS_COLORS
 set -o vi
 export EDITOR="/share/Tools/Editing/NeoVim/nvim.appimage"
 alias vib="vi -u ~/.config/nvim/init_basic.vim"
+alias vid="vi -u ~/.config/nvim/init_pure_defx.vim"
+alias vidd="vi -u ~/.config/nvim/init_pure_noplug_defx.vim"
 
 alias jn="jupyter notebook"
 
@@ -126,6 +128,6 @@ alias veusz="/share/Tools/Python/Distributions/MiniConda3_latest_180813/bin/veus
 alias rg="source /share/Tools/Python/Distributions/MiniConda3_latest_180813/bin/"
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-source /share/Tools/FIRE/cantera/BIN/bin/setup_cantera
+source /share/Tools/FIRE/ChemicalKinetics/cantera/BIN/bin/setup_cantera
 export PATH="/share/Tools/FIRE/cantera/BIN/bin/:$PATH"
 
