@@ -1,0 +1,145 @@
+setxkbmap us
+#!/usr/bin/env bash
+
+ml FDS
+ml StarCCM+
+#===================================================================
+#===================================================================
+export TERM=xterm-256color
+
+# GENERAL
+#===================================================================
+alias lt='ls -rlth --color=auto'
+alias ls='ls --color=auto'
+alias cpwd="pwd | tr -d '\n' | pbcopy && echo 'pwd copied to clipboard'"
+alias pw="pwd | xclip -selection 'clipboard' "
+
+LS_COLORS='di=1:fi=0:ln=31:pi=5:so=5:bd=5:cd=5:or=31:mi=0:ex=35:*.rpm=90:*.png=35:*.jpg=35:*.jpeg=35:*.sh=92:*.log=96:*.ipynb=93:*.py=93:*.tar.gz=33:*.tar.bz2=33:*.zip=33:*.gz=33:*.xls=32:*.ods=32:*.xlsx=32:*.doc=34:*.docx=34:*.odt=34:*.pdf=31:*.fds=94:*.sim=94:*.csv=36:*.dat=36:*.mo=33:*.java=33:*.fmu=33:*.stl=95:*.stp=95:*.igs=95:*.iges=95:*.step=95'
+
+export $LS_COLORS
+
+set -o vi
+export EDITOR="/share/Tools/Editing/NeoVim/nvim.appimage"
+alias vib="vi -u ~/.config/nvim/init_basic.vim"
+alias vid="vi -u ~/.config/nvim/init_pure_defx.vim"
+alias vidd="vi -u ~/.config/nvim/init_pure_noplug_defx.vim"
+#alias vi="nv"
+alias vi="/share/Tools/Editing/NeoVim/nvim.appimage"
+# alias vimY="/usr/bin/vim -u /home/fbraenns/.vimrc_Y"
+# alias vimz="/usr/bin/vim -u /home/fbraenns/.vimrc_z"
+# alias vim="/usr/bin/vim -u /home/fbraenns/.vimrc_min"
+
+alias viM="/share/Tools/Editing/vim_190111/bin/vim -u /home/fbraenns/.vimrc_min -N"
+alias vim="/share/Tools/Editing/vim_190111/bin/vim -u /home/fbraenns/.vimrc_Y -N"
+
+#alias viv="/share/Tools/Editing/NeoVim/nvim.appimage +'VimFiler -sort-type=Time -status'"
+alias viv="/share/Tools/Editing/NeoVim/nvim.appimage +'Defx -auto-cd -sort="Time"'"
+
+#===================================================================
+# Shell / Prompt
+#===================================================================
+source ~/.git-prompt.sh
+case $HOST in
+    "wolf" )
+        PS1='\[\033[01;32m\]\h\[\033[00m\]$(__git_ps1 " (%s)"): \[\033[01;36m\]\w\[\033[00m\]\n\$ '
+        ;;
+    "mesh01" )
+        PS1='\[\033[01;33m\]\h\[\033[00m\]$(__git_ps1 " (%s)"): \[\033[01;36m\]\w\[\033[00m\]\n\$ '
+        ;;
+    "master" )
+        PS1='\[\033[01;35m\]\h\[\033[00m\]$(__git_ps1 " (%s)"): \[\033[01;36m\]\w\[\033[00m\]\n\$ '
+        ;;
+    *)
+        PS1='\[\033[01;36m\]\h\[\033[00m\]$(__git_ps1 " (%s)"): \[\033[01;36m\]\w\[\033[00m\]\n\$ '
+        ;;
+esac
+
+
+printf "\e[?2004l"
+
+
+#=============================================================================================================================================
+# FZF
+source ~/.fzf_custom.sh 
+source ~/.fzf-extras/fzf-extras.sh
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+source /share/Tools/Divs/fzf-marks/fzf-marks.plugin.bash
+
+alias f='. fzf-fs'
+export FZF_FS_CONFIG_DIR="/home/fbraenns/.config/fzf-fs.d/"
+
+#export FZF_FS_OS=Linux;
+export FZF_FS_LS_COMMAND="command ls --color=auto -q";
+export FZF_FS_LS_COMMAND_COLOR="command ls --color=always -q"
+
+#=============================================================================================================================================
+# TMUX
+# tm - create new tmux session, or switch to existing one. Works from within tmux too. (@bag-man)
+# `tm` will allow you to select your tmux session via fzf.
+# `tm irc` will attach to the irc session (if it exists), else it will create it.
+tmm() {
+  [[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"
+  if [ $1 ]; then
+    tmux $change -t "$1" 2>/dev/null || (tmux new-session -d -s $1 && tmux $change -t "$1"); return
+  fi
+  session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
+}
+
+
+
+#=============================================================================================================================================
+alias jn="jupyter notebook"
+##export MODELICAPATH=/share/Tools/THERMO/MODELICA/Libraries/modelica-buildings_LBL:/share/Tools/THERMO/MODELICA/Libraries/modelica-buildings_LBL/Buildings:/share/software/Optimization/JModelica/2.1b1/ThirdParty/MSL/:/share/Tools/THERMO/MODELICA/Libraries/AixLib_RWTH/AixLib/
+alias c1v="cd /WORK1/fbraenns/ && /share/Tools/Editing/NeoVim/nvim.appimage +'VimFilerBufferDir -status -sort-type=Time'"
+alias c2v="cd /WORK2/fbraenns/ && /share/Tools/Editing/NeoVim/nvim.appimage +'VimFilerBufferDir -status -sort-type=Time'"
+alias c3v="cd /WORK/fbraenns/ && /share/Tools/Editing/NeoVim/nvim.appimage +'VimFilerBufferDir -status -sort-type=Time'"
+alias c4v="cd /data/work/fbraenns/ && /share/Tools/Editing/NeoVim/nvim.appimage +'VimFilerBufferDir -status -sort-type=Time'"
+alias c5v="cd /share/Tools/ && /share/Tools/Editing/NeoVim/nvim.appimage +'VimFilerBufferDir -status -sort-type=Time'"
+alias c6v="cd /share/software/ && /share/Tools/Editing/NeoVim/nvim.appimage +'VimFilerBufferDir -status -sort-type=Time'"
+alias reName='for filename in *.png; do mv "$filename" "p_$filename"; done;'
+
+
+alias jupSetTheme="jt -t gruvboxd -fs 11 -altp -tfs 11 -nfs 12 -ofs 11 -cellw 80% -T -N"
+
+#alias ranger="/share/Tools/Python/Distributions/MiniConda3_latest_180813/bin/ranger"
+#alias veusz="/share/Tools/Python/Distributions/MiniConda3_latest_180813/bin/veusz"
+#alias rg="source /share/Tools/Python/Distributions/MiniConda3_latest_180813/bin/"
+
+
+###===================================================================
+### Modules
+###===================================================================
+###===================================================================
+# ml use /home/fbraenns/.modulefiles/python_loc/
+# echo $MODULEPATH
+#export MODULEPATH="/home/fbraenns/.modulefiles/python_loc/:$MODULEPATH"
+#ml unload openmpi
+#ml load openmpi/3.1
+##ml load python/anaconda/3.6
+#ml load Dakota/6.10.0
+#ml load 3.6.5_minC3
+
+#module load divs/0.2
+#module unload FDS/6.7.0
+#module load FDS/6.7.1
+#module load Aliases/StarCCM+
+##module load python_loc/3.6.0_anac4.3.1
+## module load python_loc/3.6.5_miniC3
+## module load FDS/6.5.3
+## module unload FDS/6.5.3
+#module load VisIt/2.10.3
+## module unload ParaView
+#module load ParaView/5.6.0
+export OMP_NUM_THREADS=1
+#
+#module unload python/anaconda2/4.x
+##module load python/anaconda2/4.x
+#module load openmpi/1.10.4
+##module load Dakota/6.8.0_ac2 
+#module unload Dakota/6.8.0_ac2 
+##module unload python/anaconda2/4.x 
+##module load python_loc/3.6.5_miniC3
+##module load OpenFOAM/4.1
+#module load OpenFOAM/v1806+
+# . /share/Tools/FIRE/PATO/PATO_v2.2.0/bashrc

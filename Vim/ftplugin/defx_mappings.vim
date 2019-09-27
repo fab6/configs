@@ -8,7 +8,7 @@
 nnoremap <silent><buffer><expr> C defx#do_action('copy') . '<C-w>w' . defx#do_action('paste')
 nnoremap <silent><buffer><expr> R defx#do_action('move') . '<C-w>w' . defx#do_action('paste')
 " nnoremap <silent><buffer><expr> E defx#do_action('open', 'vsplit')
-nnoremap <silent><buffer> H :Denite defx/history -mode=normal<CR>
+nnoremap <silent><buffer> H :Denite defx/history<CR>
 nnoremap <silent><buffer><expr> K defx#do_action('new_directory')
 nnoremap <silent><buffer><expr> M defx#do_action('new_multiple_files')
 nnoremap <silent><buffer><expr> N defx#do_action('new_file')
@@ -24,8 +24,8 @@ nnoremap <silent><buffer><expr> W defx#do_action('copy') . defx#do_action('paste
 
 " nnoremap <silent><buffer>X :tabnew<CR>:Defx -auto-cd<CR>
 
-nnoremap <silent><buffer>b :<C-u>Denite -mode=insert defx/dirmark<cr>
-nnoremap <silent><buffer>B :<C-u>Denite -mode=insert dirmark/add<cr>
+nnoremap <silent><buffer>b :<C-u>Denite defx/dirmark<cr>
+nnoremap <silent><buffer>B :<C-u>Denite dirmark/add<cr>
 " nnoremap <silent><buffer>B :UniteBookmarkAdd<CR>
 " nnoremap <silent><buffer>B :Denite dirmark<CR>
 " nnoremap <silent><buffer>b :Unite -silent -auto-resize -buffer-name=Bookmarks -default-action=vimfiler bookmark<CR>
@@ -104,9 +104,47 @@ else
 "-------------------------------------------------------------------------------------------------- 
 nmap <silent><buffer>,P :call jobstart(['xterm','-hold','-e','python','/share/Tools/Python/FireSimulation/plotHRR_csv63.py',expand('%:t')],{'detach':1}) <CR>
 nmap <silent><buffer>,p :call jobstart(['xterm','-hold','-e','python',expand('%:p:h')],{'detach':1}) <CR>
+" nmap <silent><buffer>,o :call jobstart(['display',expand('%:p:h')],{'detach':1})
+" nur auf directory nmap <silent><buffer>,o :call jobstart(['display'] ,{'detach':1}) <CR>
 endif
 
 "-------------------------------------------------------------------------------------------------- 
-map <silent><buffer>X :Defx -sort="Time" -split="tab" -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
-map <silent><buffer>gx :Defx -sort="Time" -split="vertical" -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
-map <silent><buffer>gX :Defx -sort="Time" -split="horizontal" -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+map <silent><buffer>X :Defx -sort=Time -split=tab -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+map <silent><buffer>gx :Defx -sort=Time -split=vertical -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+map <silent><buffer>,v :Defx -sort=Time -split=vertical -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+map <silent><buffer>gX :Defx -sort=Time -split=horizontal -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+map <silent><buffer>,h :Defx -sort=Time -split=horizontal -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+map <silent><buffer>gf :Defx -sort=Time -split=floating -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+
+" map <silent><buffer>X :Defx -sort="Time" -split=tab -new -auto-cd <CR>
+" map <silent><buffer>gx :Defx -sort="Time" -split=vertical -new -auto-cd <CR>
+" map <silent><buffer>gX :Defx -sort="Time" -split=horizontal -new -auto-cd <CR>
+" map <silent><buffer>gf :Defx -sort="Time" -split=floating -new -auto-cd <CR>
+
+
+"
+"         function! Test(context) abort
+"           echomsg string(a:context.targets)
+"             :! display string(a:context.targets)
+"             "jobstart(['xterm','-hold','-e','display',expand('%:p:h')],{'detach':1}) <CR>
+" " nmap <silent><buffer>,o :call jobstart(['xterm','-hold','-e','display',expand('%:p:h')],{'detach':1}) <CR>
+"         endfunction
+"         nnoremap <silent><buffer><expr> f
+"         \ defx#do_action('call', 'Test')
+"
+"         " or you can use SID hack
+"         function! s:Test(context) abort
+"           echomsg string(a:context.targets)
+"         endfunction
+"         function! s:SID_PREFIX() abort
+"           return matchstr(expand('<sfile>'),
+"           \ '<SNR>\d\+_\zeSID_PREFIX$')
+"         endfunction
+"         let g:sid = s:SID_PREFIX()
+"         nnoremap <silent><buffer><expr> f
+"         \ defx#do_action('call', g:sid.'Test')
+"
+"nnoremap <silent><buffer><expr>gl  defx#do_action('call', 'DefxTmuxExplorer')
+"nnoremap <silent><buffer><expr>gr  defx#do_action('call', 'DefxDeniteGrep')
+"nnoremap <silent><buffer><expr>gf  defx#do_action('call', 'DefxDeniteFile')
+"nnoremap <silent><buffer><expr>gw   defx#do_action('call', 'DefxToggleWidth')

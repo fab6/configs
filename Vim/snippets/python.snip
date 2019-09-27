@@ -348,7 +348,8 @@ options     head
     # ...................................................................................  
     # sns.set(style="darkgrid", palette="muted")
     plt.style.use(["science"])
-    params = { 'figure.figsize': [11.2, 8.4],
+    params = { 'figure.figsize': [14.2, 10.4],
+               'figure.facecolor': 'white',
                'xtick.labelsize': 16.0,
                'ytick.labelsize': 16.0,
                'axes.titlesize': 16,
@@ -797,3 +798,37 @@ options     head
         ax.set_ylabel(yaxisLabel)
         #  ax.set_xticklabels(df_T_mean.index)
         plt.show()
+
+
+# -----------------------------------------------------------------------------------
+snippet     readDat
+abbr        pd_readDat
+alias       csvRead
+options     head
+        # ----------------------------------------------------------------------------------- ${0}
+        ext=datFile.split(".")[1]
+        print ("Extension: ", ext)
+        if ext == "csv":
+            print ("Found CSV")
+            df = pd.read_csv(datFile, skiprows=0, header=None)
+        elif ext == "dat":
+            print ("Found dakota dat")
+            df = pd.read_table(datFile, skiprows=0, index_col=0, delim_whitespace=True)
+            try:
+                df = df[~df['interface'].str.contains("interface")]
+            except:
+                print ("no hybrid")
+            df = df.drop('interface',1)
+            df = df.apply(pd.to_numeric)
+            #  print (df.dtypes)
+        else:
+            print ("Extension not known")
+            exit()
+        print (100*".")
+        print (df.head())
+        print (100*".")
+        print (df.tail())
+        print (100*".")
+        numberColumns = len(df.columns)
+        print (numberColumns)
+        # ----------------------------------------------------------------------------------- ${0}

@@ -1,0 +1,25 @@
+09_OPF_addons__: /share/Tools/OpenFOAM/Solver
+09_OPF_app_comb: /share/software/OpenFOAM/ESI/OpenFOAM-v1806/applications/solvers/combustion/fireFoam
+09_OPF_src_comb: /share/software/OpenFOAM/ESI/OpenFOAM-v1806/src/combustionModels/
+DIR_WORK3_WORK2_____ : /WORK3/fbraenns/WORK2
+02_HEAT_OUU____:
+00_INTERFLAM__ : /data/work/fbraenns/Fire/Conferences_Seminars/INTERFLAM_2016
+00_IAFSS_Subst : /WORK3/fbraenns/WORK2/FIRE/CONFERENCES/IAFSS_2017/OPT/LHS/Substrate_SENS
+02_RAST_CMA_ag : /WORK3/fbraenns/WORK2/Tools/Optimization/Benchmarks/Rastrigin/20dim/Hansen_CMA/v1_CMA_restart/avg
+03_KERAS_HEAT_ : /WORK3/fbraenns/WORK2/THERMO/HeatConduction/FDS_LHS_AI/Par3/v0_LHS_100k/keras/opt_setting/75kw2_check_dataCount
+02_HEAT_optFDS : /WORK3/fbraenns/WORK2/THERMO/HeatConduction/OPT/HeatConduction_Par3
+03_HEAT_ANALYT : /WORK3/fbraenns/WORK2/THERMO/HeatConduction/Analytical_LHS_AI_SENS
+02_RASTRIGIN__ : /WORK3/fbraenns/WORK2/Tools/Optimization/Benchmarks/Rastrigin/20dim/dakota
+09_OPF_src_____: /share/software/OpenFOAM/ESI/OpenFOAM-v1806/src/
+02_HEAT_FDS3__ : /WORK3/fbraenns/WORK2/THERMO/HeatConduction/FDS_LHS_AI/Par3
+09_OPF_src_radi: /share/software/OpenFOAM/ESI/OpenFOAM-v1806/src/thermophysicalModels/radiation/submodels/absorptionEmissionModel
+02_IAFSS_OPT2o : /WORK3/fbraenns/WORK2/FIRE/CONFERENCES/IAFSS_2017/OPT/MLR_M3/M3_DK
+02 IAFSSsyntM3 : /WORK3/fbraenns/WORK2/FIRE/CONFERENCES/IAFSS_2017/OPT/SYNTH_M3/SYNTH_M3_DK/2nd_Study_v8based/v15_SOGA_256_v2
+DIR_Tools_____ : /share/Tools
+09_OPF_tut_____: /share/software/OpenFOAM/ESI/OpenFOAM-v1806/tutorials/combustion/fireFoam/LES
+04_IAFSS_SENS_ : /WORK3/fbraenns/WORK2/FIRE/CONFERENCES/IAFSS_2017/OPT/SENS/M3_DK
+00_FIRE_McCaff : /WORK3/fbraenns/WORK2/FIRE/PLUME/McCaffrey/OPF/
+04_IAFSS_UA___ : /WORK3/fbraenns/WORK2/FIRE/CONFERENCES/IAFSS_2017/OPT/UA
+08_LBM_________: /share/Tools/LBM
+02_OPT_TGA____ : /WORK3/fbraenns/WORK2/Tools/Optimization/Benchmarks/TGA/TGA1
+02_OPT_IN_1_5_1: /WORK3/fbraenns/WORK2/FIRE/CONFERENCES/IAFSS_2017/OPT/IN_1_5_1

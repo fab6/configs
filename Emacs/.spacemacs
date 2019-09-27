@@ -3,8 +3,8 @@
 ;; It must be stored in your home directory.
 (defun dotspacemacs/layers ()
   "Configuration Layers declaration.
-You should not put any user code in this function besides modifying the variable
-values."
+  You should not put any user code in this function besides modifying the variable
+  values."
   (setq-default
    ;; Base distribution to use. This is a layer contained in the directory
    ;; `+distribution'. For now available distributions are `spacemacs-base'
@@ -17,48 +17,54 @@ values."
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
    '(
-     helm
-     ipython-notebook
-     windows-scripts
-     markdown
-     ;javascript
-     java
-     csv
      ;; ----------------------------------------------------------------
-     ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     ranger
+     shell
+     helm
+     csv
+     Julia
+     ipython-notebook
+     windows-scripts
+     octave
+     markdown
+     lua
+     tmux
+     html
+     java
      auto-completion
      python
      evil-commentary
      c-c++
-     org
      git
      FDS
      DAKOTA
      vimscript
-     ;;ivy
+     latex
      )
+                                        ;yaml javascript ranger company org tabbar MODELICA ivy
+
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(dired-narrow dash autothemer dired-rainbow ); ein ein-loaddefs ein-notebook ein-subpackages)
+   dotspacemacs-additional-packages '(gited autothemer emacs-async dired-ranger dired-filter dired-open dired-collapse dired dired-narrow helm-dired-history dired-rainbow dired-sort-map)
+                                        ;dired+ realgud modelica ein ein-loaddefs ein-notebook ein-subpackages)
    ;; A list of packages and/or extensions that will not be install and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(orgit org-plus-contrib)
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
    ;; are declared in a layer which is not a member of
    ;; the list `dotspacemacs-configuration-layers'. (default t)
-   dotspacemacs-delete-orphan-packages t))
+   dotspacemacs-delete-orphan-packages t)
+  )
 
 (defun dotspacemacs/init ()
   "Initialization function.
-This function is called at the very startup of Spacemacs initialization
-before layers configuration.
-You should not put any user code in there besides modifying the variable
-values."
+  This function is called at the very startup of Spacemacs initialization
+  before layers configuration.
+  You should not put any user code in there besides modifying the variable
+  values."
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
   (setq-default
@@ -68,12 +74,12 @@ values."
    ;; This variable has no effect if Emacs is launched with the parameter
    ;; `--insecure' which forces the value of this variable to nil.
    ;; (default t)
-   dotspacemacs-elpa-https nil 
+   dotspacemacs-elpa-https nil
    ;; Maximum allowed time in seconds to contact an ELPA repository.
-   dotspacemacs-elpa-timeout 5
+   dotspacemacs-elpa-timeout 3
    ;; If non nil then spacemacs will check for updates at startup
    ;; when the current branch is not `develop'. (default t)
-   dotspacemacs-check-for-update t
+   dotspacemacs-check-for-update nil
    ;; One of `vim', `emacs' or `hybrid'. Evil is always enabled but if the
    ;; variable is `emacs' then the `holy-mode' is enabled at startup. `hybrid'
    ;; uses emacs key bindings for vim's insert mode, but otherwise leaves evil
@@ -100,7 +106,9 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '( monokai
+                                        ;monokai
+   dotspacemacs-themes '(monokai
+                         gruvbox
                          spacemacs-dark
                          spacemacs-light
                          solarized-light
@@ -150,7 +158,7 @@ values."
    dotspacemacs-display-default-layout nil
    ;; If non nil then the last auto saved layouts are resume automatically upon
    ;; start. (default nil)
-   dotspacemacs-auto-resume-layouts nil
+   dotspacemacs-auto-resume-layouts t
    ;; Location where to auto-save files. Possible values are `original' to
    ;; auto-save the file in-place, `cache' to auto-save the file to another
    ;; file stored in the cache directory and `nil' to disable auto-saving.
@@ -170,12 +178,13 @@ values."
    ;; define the position to display `helm', options are `bottom', `top',
    ;; `left', or `right'. (default 'bottom)
    dotspacemacs-helm-position 'bottom
+   ;; dotspacemacs-helm-use-fuzzy 'always
    ;; If non nil the paste micro-state is enabled. When enabled pressing `p`
    ;; several times cycle between the kill ring content. (default nil)
    dotspacemacs-enable-paste-micro-state nil
    ;; Which-key delay in seconds. The which-key buffer is the popup listing
    ;; the commands bound to the current keystroke sequence. (default 0.4)
-   dotspacemacs-which-key-delay 1.4
+   dotspacemacs-which-key-delay 0.3
    ;; Which-key frame position. Possible values are `right', `bottom' and
    ;; `right-then-bottom'. right-then-bottom tries to display the frame to the
    ;; right; if there is insufficient space it displays it at the bottom.
@@ -215,8 +224,8 @@ values."
    dotspacemacs-line-numbers t
    ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
    ;; (default nil)
-   dotspacemacs-smartparens-strict-mode nil 
-   dotspacemacs-smart-closing-parenthesis nil 
+   dotspacemacs-smartparens-strict-mode nil
+   dotspacemacs-smart-closing-parenthesis nil
    ;; Select a scope to highlight delimiters. Possible values are `any',
    ;; `current', `all' or `nil'. Default is `all' (highlight any scope and
    ;; emphasis the current one). (default 'all)
@@ -238,61 +247,53 @@ values."
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
    dotspacemacs-whitespace-cleanup nil
-   ))
+   dotspacemacs-large-file-size 50
+   )
+  )
 
 (defun dotspacemacs/user-init ()
   "Initialization function for user code.
-It is called immediately after `dotspacemacs/init', before layer configuration
-executes.
- This function is mostly useful for variables that need to be set
-before packages are loaded. If you are unsure, you should try in setting them in
-`dotspacemacs/user-config' first."
+  It is called immediately after `dotspacemacs/init', before layer configuration
+  executes.
+  This function is mostly useful for variables that need to be set
+  before packages are loaded. If you are unsure, you should try in setting them in
+  `dotspacemacs/user-config' first."
+  (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
   )
 
 (defun dotspacemacs/user-config ()
-  (with-eval-after-load 'helm
-    (setq helm-display-function 'helm-default-display-buffer))
   "Configuration function for user code.
-This function is called at the very end of Spacemacs initialization after
-layers configuration.
-This is the place where most of your configurations should be done. Unless it is
-explicitly specified that a variable should be set before a package is loaded,
-you should place your code here."
-;(require 'ein)
-;(require 'ein-loaddefs)
-;(require 'ein-notebook)
-;(require 'ein-subpackages)
-;; Completion -----------------------------------------------------------------------------
-(global-company-mode)
-;(auto-completion :variables
-;                 auto-completion-enable-snippets-in-popup t
-;                 )
-;
-(setq-default dotspacemacs-configuration-layers
-              '((auto-completion :variables
-                                 auto-completion-enable-snippets-in-popup t)))
-;(setq-default dotspacemacs-configuration-layers
-;              '((auto-completion :variables
-;                                 auto-completion-enable-sort-by-usage t)))
-;
-; (setq-default dotspacemacs-configuration-layers
-;               '((auto-completion :variables
-;                                  auto-completion-enable-help-tooltip t)))
+  This function is called at the very end of Spacemacs initialization after
+  layers configuration.
+  This is the place where most of your configurations should be done. Unless it is
+  explicitly specified that a variable should be set before a package is loaded,
+  you should place your code here."
+
+  ;; Completion -----------------------------------------------------------------------------
+  (global-company-mode t)
+
+                                        ;
+  (setq-default dotspacemacs-configuration-layers
+                '((auto-completion :variables auto-completion-enable-snippets-in-popup t)))
+  (setq-default dotspacemacs-configuration-layers
+                '((auto-completion :variables auto-completion-enable-sort-by-usage t)))
+  
+  (setq-default dotspacemacs-configuration-layers
+                '((auto-completion :variables auto-completion-enable-help-tooltip t)))
 
 
-(setq-default dotspacemacs-configuration-layers '(
-                                                  (auto-completion :variables
-                                                                   auto-completion-return-key-behavior 'complete
-                                                                   auto-completion-tab-key-behavior 'cycle
-                                                                   auto-completion-complete-with-key-sequence nil
-                                                                   auto-completion-complete-with-key-sequence-delay 0.1
-                                                                   auto-completion-private-snippets-directory nil)
-                                                  ))
+  (setq-default dotspacemacs-configuration-layers
+                '((auto-completion :variables
+                                   auto-completion-return-key-behavior 'complete
+                                   auto-completion-tab-key-behavior 'cycle
+                                   auto-completion-complete-with-key-sequence nil
+                                   auto-completion-complete-with-key-sequence-delay 0.1
+                                   auto-completion-private-snippets-directory t)
+                  ))
 
 
-
- ;; company delay until suggestions are shown
- (setq company-idle-delay 0.05)
+  ;; company delay until suggestions are shown
+  (setq company-idle-delay 0.05)
 
   ;; weight by frequency
   (setq company-transformers '(company-sort-by-occurrence))
@@ -302,341 +303,570 @@ you should place your code here."
   (defvar company-mode/enable-yas t "Enable yasnippet for all backends.")
 
   (defun company-mode/backend-with-yas (backend)
-     (if (or (not company-mode/enable-yas) (and (listp backend)    (member 'company-yasnippet backend)))
-  ;       backend
-       (append (if (consp backend) backend (list backend))
-               '(:with company-yasnippet))))
-  ;
-   (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
+    (if (or (not company-mode/enable-yas) (and (listp backend)    (member 'company-yasnippet backend)))
+                                        ;       backend
+        (append (if (consp backend) backend (list backend))
+                '(:with company-yasnippet))))
+                                        ;
+  (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
+
+  ;; HELM -----------------------------------------------------------------------------
+  (defun helm-buffers-sort-transformer@donot-sort (_ candidates _)
+    candidates)
+
+  (advice-add 'helm-buffers-sort-transformer :around 'helm-buffers-sort-transformer@donot-sort)
+
+  (setq helm-M-x-fuzzy-match                  t
+        helm-bookmark-show-location           t
+        helm-buffers-fuzzy-matching           t
+        helm-completion-in-region-fuzzy-match t
+        helm-file-cache-fuzzy-match           t
+        helm-imenu-fuzzy-match                t
+        helm-mode-fuzzy-match                 t
+        helm-locate-fuzzy-match               t 
+        helm-quick-update                     t
+        helm-recentf-fuzzy-match              t
+        helm-semantic-fuzzy-match             t)
 
   ;; Git -----------------------------------------------------------------------------
   (global-git-commit-mode t)
 
   ;; Python -----------------------------------------------------------------------------
   ;(add-hook 'python-mode-hook 'spacemacs/toggle-highlight-indentation-on)
-(add-hook 'python-mode-hook 'highlight-indentation-mode)
+  (add-hook 'python-mode-hook 'highlight-indentation-mode)
+  (setq python-shell-completion-native-enable nil)
 
   (defun run-python-once ()
     (remove-hook 'python-mode-hook 'run-python-once)
     (run-python (python-shell-parse-command)))
 
-  (add-hook 'python-mode-hook 'run-python-once)
+  ;; (setq python-shell-interpreter "/share/Tools/Python/Distributions/MiniConda3_latest_180813/bin/python")
+  (setq python-shell-interpreter "/share/Tools/Python/Distributions/MiniConda3_latest_190809/bin/python")
+  (setq python-shell-interpreter-args "-m IPython --simple-prompt -i")
 
-(setq python-shell-interpreter "//home/fbraenns/00_ALLG/Software/Anac3/bin/python")
-(setq python-shell-interpreter-args "-m IPython --simple-prompt -i")
-
-
+  ;; ein python jupyter -----------------------------------------------------------------------------
+                                        ;(require 'ein)
+                                        ;(require 'ein-loaddefs)
+                                        ;(require 'ein-notebook)
+                                        ;(require 'ein-subpackages)
   ;; ;; FDS -----------------------------------------------------------------------------
   ;; (require 'fds-mode)
 
   ;; ;; Dakota -----------------------------------------------------------------------------
   ;; (require 'dakota-mode)
 
-;; Commands -----------------------------------------------------------------------------
-(defun runPythonInTerminal() ;; Fenster geht immer zu
-  "RunPythonInTerminal"
-  (interactive)
-  (call-process-shell-command (concat (dired-shell-stuff-it "xfce4-terminal -e python " (dired-get-marked-files) nil)" ")); " "
-  )
+  ;; Commands -----------------------------------------------------------------------------
+  (defun runPythonInTerminal() ;; Fenster geht immer zu
+    "RunPythonInTerminal"
+    (interactive)
+    (call-process-shell-command (concat (dired-shell-stuff-it "xfce4-terminal -e python " (dired-get-marked-files) nil)" ")); 
+    )
 
-(defun openInParaView()
-  "Open in vim terminal"
-  (interactive)
-  (call-process-shell-command (concat (dired-shell-stuff-it "/data/Software/ParaView/ParaView-5.0.0-Qt4-OpenGL2-MPI-Linux-64bit/bin/paraview --data=" (dired-get-marked-files) nil))); " "
-  )
-(defun openInVisit()
-  "Open in vim terminal"
-  (interactive)
-  (call-process-shell-command (concat (dired-shell-stuff-it "/data/Software/Visit/2.10.0/bin/visit -o " (dired-get-marked-files) nil))); " "
-  )
+  (defun openInParaView()
+    "Open in vim terminal"
+    (interactive)
+    (call-process-shell-command (concat (dired-shell-stuff-it "/data/Software/ParaView/ParaView-5.0.0-Qt4-OpenGL2-MPI-Linux-64bit/bin/paraview --data=" (dired-get-marked-files) nil))); " "
+    )
 
-(defun openInVim()
-  "Open in vim terminal"
-  (interactive)
-  (call-process-shell-command (concat (dired-shell-stuff-it "xfce4-terminal -e vim " (dired-get-marked-files) nil))); " "
-  )
-(defun openInLibreOffice()
-  (interactive)
-  (save-window-excursion
-    (dired-do-async-shell-command
-     "libreoffice" current-prefix-arg
-     (dired-get-marked-files t current-prefix-arg))))
-(defun openInDisplay()
-  (interactive)
-  (save-window-excursion
-    (dired-do-async-shell-command
-     "display" current-prefix-arg
-     (dired-get-marked-files t current-prefix-arg))))
-(defun openInVeusz()
-  (interactive)
-  (save-window-excursion
-    (dixred-do-async-shell-command
-     "veusz" current-prefix-arg
-     (dired-get-marked-files t current-prefix-arg))))
+  (defun openInVisit()
+    "Open in vim terminal"
+    (interactive)
+    (call-process-shell-command (concat (dired-shell-stuff-it "/data/Software/Visit/2.10.0/bin/visit -o " (dired-get-marked-files) nil))); " "
+    )
 
-(defun xterm ()
-  (interactive)
-  (call-process-shell-command "xfce4-terminal" nil 0 nil ))
+  ;; (defun openInNVim()
+  ;; "Open in NeoVim terminal"
+  ;; (interactive)
+  ;; (call-process-shell-command (concat (dired-shell-stuff-it "xterm -e /share/Tools/Editing/NeoVim/nvim.appimage " (dired-get-marked-files) nil))); " "
+  ;; )
 
-(defun xterm_tmux ()
-  (interactive)
-  (call-process-shell-command "xfce4-terminal -e tmux" nil 0 nil ))
+  (defun openInNVim()
+    (interactive)
+    (save-window-excursion
+      (dired-do-async-shell-command
+       "xterm -e /share/Tools/Editing/NeoVim/nvim.appimage" current-prefix-arg
+       (dired-get-marked-files t current-prefix-arg))))
 
+  (defun openInVim()
+    "Open in vim terminal"
+    (interactive)
+    (call-process-shell-command (concat (dired-shell-stuff-it "xfce4-terminal -e vim " (dired-get-marked-files) nil))); " "
+    )
+  (defun openInLibreOffice()
+    (interactive)
+    (save-window-excursion
+      (dired-do-async-shell-command
+       "libreoffice" current-prefix-arg
+       (dired-get-marked-files t current-prefix-arg))))
+  (defun openInDisplay()
+    (interactive)
+    (save-window-excursion
+      (dired-do-async-shell-command
+       "display" current-prefix-arg
+       (dired-get-marked-files t current-prefix-arg))))
 
-;; DIRED-----------------------------------------------------------------------------
+  (defun openInVeusz()
+    (interactive)
+    (save-window-excursion
+      (dixred-do-async-shell-command
+       "veusz" current-prefix-arg
+       (dired-get-marked-files t current-prefix-arg))))
 
-(defun copybackground()
-  "Copy"
-  (interactive)
-  (call-process-shell-command (concat (dired-shell-stuff-it "cp -R "
-                                                            (dired-get-marked-files) nil) " "
-                                                            (dired-dwim-target-directory) " &")); funktioniert aber nicht im Hintergrund
-  )
+  (defun xterm ()
+    (interactive)
+                                        ;(call-process-shell-command "konsole" nil 0 nil ))
+    (call-process-shell-command "xterm" nil 0 nil ))
+  ;;(call-process-shell-command "xfce4-terminal" nil 0 nil ))
 
-(eval-after-load 'dired
-  '(evil-define-key 'normal dired-mode-map
-     ;;     (kbd "h") 'diredp-up-directory-reuse-dir-buffer
-     ;;     (kbd "l") 'diredp-find-file-reuse-dir-buffer)
-     (kbd "h") 'dired-up-directory
+  (defun xterm_tmux ()
+    (interactive)
+    (call-process-shell-command "xfce4-terminal -e tmux" nil 0 nil ))
 
-     ;; Auto-refresh dired on file change
-                                        ;(define-key dired-mode-map ",g" 'revert-buffer)
-                                        ;(add-hook 'dired-mode-hook 'auto-revert-mode)
-     (kbd "l") 'dired-find-file
-     (kbd "b") 'scroll-down
-     (kbd "f") 'scroll-up
+;;;###autoload
+  ;;  https://oremacs.com/2016/02/24/dired-rsync/
+  (defun huge_ora-dired-rsync (dest)
+    (interactive
+     (list
+      (expand-file-name
+       (read-file-name
+        "Rsync to:"
+        (dired-dwim-target-directory)))))
+    ;; store all selected files into "files" list
+    (let ((files (dired-get-marked-files
+                  nil current-prefix-arg))
+          ;; the rsync command
+          (tmtxt/rsync-command
+           "rsync -arvz --progress "))
+      ;; add all selected file names as arguments
+      ;; to the rsync command
+      (dolist (file files)
+        (setq tmtxt/rsync-command
+              (concat tmtxt/rsync-command
+                      (shell-quote-argument file)
+                      " ")))
+      ;; append the destination
+      (setq tmtxt/rsync-command
+            (concat tmtxt/rsync-command
+                    (shell-quote-argument dest)))
+      ;; run the async shell command
+      (async-shell-command tmtxt/rsync-command "*rsync*")
+      ;; finally, switch to that window
+      (other-window 1)))
 
-     (kbd "x") 'xterm
-     (kbd "X") 'xterm_tmux
-                                        ;(kbd "X") 'openInVim
-
-                                        ;(kbd "q") 'evil-record-macro
-     (kbd "0") 'evil-goto-first-line
-     (kbd "G") 'evil-goto-line
-
-     (kbd "d") 'dired-do-delete
-     (kbd "c") 'copybackground
-     (kbd "W") 'wdired-change-to-wdired-mode
-
-     (kbd "N") 'dired-narrow
-                                        ;(kbd "F") 'helm-find-files
-                                        ;(kbd "F") 'find-files
-
-     (kbd  "`" ) '(lambda () (interactive) (bookmark-jump "`"))
-                                        ;(kbd  "0" ) '(lambda () (interactive) (bookmark-jump "0"))
-     (kbd  "1" ) '(lambda () (interactive) (bookmark-jump "1"))
-     (kbd  "2" ) '(lambda () (interactive) (bookmark-jump "2"))
-     (kbd  "3" ) '(lambda () (interactive) (bookmark-jump "3"))
-     (kbd  "4" ) '(lambda () (interactive) (bookmark-jump "4"))
-     (kbd  "5" ) '(lambda () (interactive) (bookmark-jump "5"))
-     (kbd  "6" ) '(lambda () (interactive) (bookmark-jump "6"))
-     (kbd  "7" ) '(lambda () (interactive) (bookmark-jump "7"))
-     (kbd  "8" ) '(lambda () (interactive) (bookmark-jump "8"))
-     (kbd  "9" ) '(lambda () (interactive) (bookmark-jump "9"))
+  (define-key dired-mode-map "Y" 'huge_ora-dired-rsync)
 
 
-     (kbd "ss") '(lambda () "sort by Size" (interactive) (dired-sort-other (concat dired-listing-switches " -S")))
-     (kbd "sx") '(lambda () "sort by extension" (interactive) (dired-sort-other (concat dired-listing-switches " -X")))
-     (kbd "sd") '(lambda () "sort by time" (interactive) (dired-sort-other (concat dired-listing-switches " -t")))
-     (kbd "sn") '(lambda () "sort by name" (interactive) (dired-sort-other (concat dired-listing-switches)))
+  ;; DIRED-----------------------------------------------------------------------------
+
+  ;; dired Ranger -----------------------------------------------------------------------------
+  (require 'dired-ranger)  
+
+  ;; dired async -----------------------------------------------------------------------------
+  (require 'dired-async)  
+
+  ;; dired filter-----------------------------------------------------------------------------
+  (require 'dired-filter)  
+
+  ;; dired open-----------------------------------------------------------------------------
+  (require 'dired-open)  
+
+  ;; dired collapse-----------------------------------------------------------------------------
+  (require 'dired-collapse)  
 
 
-     )
-  )
-
-(setq dired-guess-shell-alist-user
-      (list
-       (list "\\.pdf$" "/usr/bin/evince");; fixed rule
-       ))
-       ;; ;; possibly more rules...
-       ;; (list "\\.bar$";; rule with condition test
-       ;;       '(if condition
-       ;;            "bar-command-1"
-       ;;          "bar-command-2"))))
-
-;; dired RAINBOW -----------------------------------------------------------------------------
-
-(require 'dired-rainbow)
+  ;; dired narrow-----------------------------------------------------------------------------
                                         ;(require 'dired-narrow)
-(setq dired-listing-switches "-lXGh --group-directories-first")
-(setq dired-dwim-target t)
+
+  ;; dired misc -----------------------------------------------------------------------------
+  ;; (defun dired-dotfiles-toggle ()
+  ;;   "Show/hide dot-files"
+  ;;   (interactive)
+  ;;   (when (equal major-mode 'dired-mode)
+  ;;     (if (or (not (boundp 'dired-dotfiles-show-p)) dired-dotfiles-show-p) ; if currently showing
+  ;;         (progn 
+  ;;           (set (make-local-variable 'dired-dotfiles-show-p) nil)
+  ;;           (message "h")
+  ;;           (dired-mark-files-regexp "^\\\.")
+  ;;           (dired-do-kill-lines))
+  ;;       (progn (revert-buffer) ; otherwise just revert to re-show
+  ;;              (set (make-local-variable 'dired-dotfiles-show-p) t)))))
+
+  ;; (defun copybackground()
+  ;;   "Copy"
+  ;;   (interactive)
+  ;;   (call-process-shell-command (concat (dired-shell-stuff-it "cp -R "
+  ;;                                                             (dired-get-marked-files) nil) " "
+  ;;                                       (dired-dwim-target-directory) " &")); funktioniert aber nicht im Hintergrund
+  ;;   )
+
+  ;; dired Keys -----------------------------------------------------------------------------
+  (eval-after-load 'dired
+    '(evil-define-key 'normal dired-mode-map
+       (kbd "b") 'scroll-down
+       (kbd "c") 'dired-async-do-copy
+       (kbd "d") 'dired-async-do-delete
+       (kbd "f") 'scroll-up
+       (kbd "h") 'dired-up-directory
+       (kbd "l") 'dired-find-file
+       (kbd "r") 'dired-async-do-rename
+       ;; (kbd "X") 'xterm_tmux
+       (kbd "0") 'evil-goto-first-line
+       (kbd "C") 'dired-ranger-copy
+       (kbd "F") 'helm-find-files
+       (kbd "K") 'dired-create-directory
+       (kbd "M") 'dired-ranger-move
+       (kbd "G") 'evil-goto-line
+       (kbd "N") 'dired-narrow
+       (kbd "P") 'dired-ranger-paste
+       (kbd "W") 'wdired-change-to-wdired-mode
+       (kbd "X") 'openInNVim
+
+       (kbd ",\/") 'find-name-dired
+
+       (kbd ",c") 'helm-calcul-expression
+       
+       (kbd ",c") 'dired-do-copy
+       (kbd ",d") 'dired-do-delete
+       (kbd ",e") 'openInDisplay
+       (kbd ",f") 'make-frame
+       (kbd ",g") 'helm-do-ag
+       (kbd ",h") 'split-window-vertically
+       (kbd ",k") 'kill-buffer
+       (kbd ",p") 'runPythonInTerminal
+       (kbd ",r") 'dired-do-rename
+       (kbd ",v") 'split-window-horizontally
+       (kbd ",x") 'xterm
+       (kbd ",X") 'xterm_tmux
+
+       (kbd ",C") 'helm-calcul-expression
+       (kbd ",G") 'helm-ag
+       (kbd ",R") 'revert-buffer
+
+       (kbd  "`" ) '(lambda () (interactive) (bookmark-jump "`"))
+       (kbd  "1" ) '(lambda () (interactive) (bookmark-jump "1"))
+       (kbd  "2" ) '(lambda () (interactive) (bookmark-jump "2"))
+       (kbd  "3" ) '(lambda () (interactive) (bookmark-jump "3"))
+       (kbd  "4" ) '(lambda () (interactive) (bookmark-jump "4"))
+       (kbd  "5" ) '(lambda () (interactive) (bookmark-jump "5"))
+       (kbd  "6" ) '(lambda () (interactive) (bookmark-jump "6"))
+       (kbd  "7" ) '(lambda () (interactive) (bookmark-jump "7"))
+       (kbd  "8" ) '(lambda () (interactive) (bookmark-jump "8"))
+       (kbd  "9" ) '(lambda () (interactive) (bookmark-jump "9"))
+
+       (kbd "ss") '(lambda () "sort by Size" (interactive) (dired-sort-other (concat dired-listing-switches " -S")))
+       (kbd "sx") '(lambda () "sort by extension" (interactive) (dired-sort-other (concat dired-listing-switches " -X")))
+       (kbd "sd") '(lambda () "sort by time" (interactive) (dired-sort-other (concat dired-listing-switches " -t")))
+       (kbd "sn") '(lambda () "sort by name" (interactive) (dired-sort-other (concat dired-listing-switches)))
+       )
+    )
+
+  (setq dired-recursive-deletes 'always)
+
+  (setq dired-guess-shell-alist-user
+        (list
+         (list "\\.pdf$" "/usr/bin/evince");; fixed rule
+         ))
+  ;; ;; possibly more rules...
+  ;; (list "\\.bar$";; rule with condition test
+  ;;       '(if condition
+  ;;            "bar-command-1"
+  ;;          "bar-command-2"))))
+
+  ;; Dired History does not work yet
+  ;; (package-install 'helm-dired-history)
+  ;; (require 'savehist)
+  ;; (add-to-list 'savehist-additional-variables 'helm-dired-history-variable)
+  ;; (savehist-mode 1)
+
+  ;; (with-eval-after-load 'dired
+  ;;                       (require 'helm-dired-history) 
+  ;;                       ;; if you are using ido,you'd better disable ido for dired
+  ;;                       ;; (define-key (cdr ido-minor-mode-map-entry) [remap dired] nil) ;in ido-setup-hook
+  ;;                       (define-key dired-mode-map "," 'dired))
 
 
-(dired-rainbow-define-chmod executable-unix "AntiqueWhite3" "-.*x.*")
-(defconst my-dired-media-files-extensions
-  '("mp3" "mp4" "MP3" "MP4" "avi" "mpg" "flv" "ogg")
-  "Media files.")
+  ;; dired RAINBOW -----------------------------------------------------------------------------
+  (require 'dired-rainbow)
+  (setq dired-listing-switches "-lXGh --group-directories-first")
+  (setq dired-dwim-target t)
 
-(dired-rainbow-define html "#4e9a06" ("htm" "html" "xhtml"))
-(dired-rainbow-define document "lightblue" ("chm" "CHM" "tex" ))
-(dired-rainbow-define pdf "OrangeRed" ("pdf" ))
-(dired-rainbow-define document2 "DodgerBlue1" ( "doc" "docx" "xls" "xlsx" "ppt" "pptx" "odt" "ott" "rtf" "sdw" "ods" "sxc" "odp" "otp" ))
-(dired-rainbow-define tables "green2" ("xls" "xlsx" "ods" "sxc" ))
-(dired-rainbow-define python "LightGoldenrod1" ("py"))
-;; (dired-rainbow-define fds "cyan" ("fds"))
-(dired-rainbow-define fds2 "Gold" ("smv" "out"))
-(dired-rainbow-define RestartFDS "Chocolate" ("restart"))
-(dired-rainbow-define data "Orange" ("pickle" "json""h5" "vtk" "silo" "xmf" "csv"))
-(dired-rainbow-define data2 "Gold" ("dat"))
 
-(dired-rainbow-define CAD "yellow" ("igs" "stp" "stl" "blend" "ansa"))
-;; (dired-rainbow-define STL "dark salmon" ("stl"))
-(dired-rainbow-define Sims "cyan" ("sim" "fds" "ccm" "cf" ))
-(dired-rainbow-define Sims "brown" ("el" ))
-(dired-rainbow-define Zips "violet" ("tar" "zip" "rar" "gz" ))
-(dired-rainbow-define Bash "yellow green" ("sh" ))
-(dired-rainbow-define Plot "pink" ("vsz"  "gnu" "plot" ))
+  (dired-rainbow-define-chmod executable-unix "AntiqueWhite3" "-.*x.*")
+  (defconst my-dired-media-files-extensions '("mp3" "mp4" "MP3" "MP4" "avi" "mpg" "flv" "ogg") "Media files.")
 
-(dired-rainbow-define pics "turquoise" ("png" "jpg" "tiff"))
-(dired-rainbow-define media "#ce5c00" my-dired-media-files-extensions)
-
+  (dired-rainbow-define html "#4e9a06" ("htm" "html" "xhtml"))
+  (dired-rainbow-define pdf "OrangeRed" ("pdf" ))
+  (dired-rainbow-define document1 "lightblue" ("chm" "CHM" "tex" ))
+  (dired-rainbow-define document2 "DodgerBlue1" ( "doc" "docx" "ppt" "pptx" "odt" "ott" "rtf" "sdw" "ods" "sxc" "odp" "otp" ))
+  (dired-rainbow-define tables "green2" ("xls" "xlsx" "xlsm" "ods" "sxc" ))
+  (dired-rainbow-define programing1 "LightGoldenrod1" ("ipynb" ))
+  (dired-rainbow-define programing2 "LightSalmon1" ("py"))
+  (dired-rainbow-define programing3 "LightGoldenrod3" ("cpp" "c" "hpp" "java"))
+  (dired-rainbow-define data1 "Orange" ("pickle" "json" "h5" "vtk" "silo" "xmf" ))
+  (dired-rainbow-define data2 "DarkOrange1" ("csv" ))
+  (dired-rainbow-define data3 "Gold" ("dat"))
+  (dired-rainbow-define data3 "Gold" ("db" "sqlite"))
+  ;; (dired-rainbow-define data2 "goldenrod3" ("dat"))
+  (dired-rainbow-define CAD "yellow" ("igs" "stp" "stl" "blend" "ansa"))
+  ;; (dired-rainbow-define STL "dark salmon" ("stl"))
+  (dired-rainbow-define Sims1 "cyan" ("sim" "fds" "ccm" "cf" ))
+  (dired-rainbow-define fds2 "Gold" ("smv" "out"))
+  (dired-rainbow-define fds3 "Chocolate" ("restart"))
+  (dired-rainbow-define Sims2 "brown" ("el" ))
+  (dired-rainbow-define Sims3 "RosyBrown3" ("machine"))
+  (dired-rainbow-define Zips "violet" ("tar" "zip" "rar" "gz" "7z" "z"))
+  (dired-rainbow-define Bash "yellow green" ("sh" ))
+  (dired-rainbow-define Plot "pink" ("vsz"  "gnu" "plot" ))
+  (dired-rainbow-define pics "turquoise" ("png" "jpg" "tiff"))
+  (dired-rainbow-define media "#ce5c00" my-dired-media-files-extensions)
                                         ; boring regexp due to lack of imagination
-;; (dired-rainbow-define log (:inherit default :italic t) ".*\\.log")
-;(dired-rainbow-define log "MediumSpringGreen" ("log" "ini" "txt"))
-;; (dired-rainbow-define log2 "SpringGreen1" ("log" "ini" "txt"))
-(dired-rainbow-define log2 "SpringGreen1" (".*\log.*" "log" "ini" "txt"))
-(dired-rainbow-define OPF "brown1" (".*\Properties" ".*\Dict"))
-(dired-rainbow-define Dakota "cyan2" ("rst"  "in"))
+  ;; (dired-rainbow-define log (:inherit default :italic t) ".*\\.log")
+                                        ;(dired-rainbow-define log "MediumSpringGreen" ("log" "ini" "txt"))
+  ;; (dired-rainbow-define log2 "SpringGreen1" ("log" "ini" "txt"))
+  (dired-rainbow-define log1 "SpringGreen1" (".*\log.*" "log" "txt"))
+  (dired-rainbow-define OPF1 "brown1" (".*\Properties" ".*\Dict"))
+  (dired-rainbow-define Dakota1 "SpringGreen3" ("in"))
+  (dired-rainbow-define Dakota2 "cyan2" ("rst" ))
 
-(setq dired-recursive-deletes 'always)
-;; KEYS-----------------------------------------------------------------------------
+  ;; RANGER -----------------------------------------------------------------------------
+  ;; (setq ranger-cleanup-on-disable t)
+  ;; (setq ranger-show-dotfiles t)
+  ;; (setq ranger-ignored-extensions '("mkv" "iso" "mp4"))
+  ;; (setq ranger-max-preview-size 10)
 
-(spacemacs/set-leader-keys "d" 'dired-jump)
-(spacemacs/set-leader-keys "Cc" 'helm-calcul-expression)
+  ;; KEYS-----------------------------------------------------------------------------
+  (spacemacs/set-leader-keys "d" 'dired-jump)
+  ;; (spacemacs/set-leader-keys "Cc" 'helm-calcul-expression)
 
-(define-key evil-normal-state-map (kbd ",f") 'make-frame)
-(define-key evil-normal-state-map (kbd ",t") 'toggle-truncate-lines)
+  (define-key evil-normal-state-map (kbd ",c") 'helm-calcul-expression)
+  (define-key evil-normal-state-map (kbd ",f") 'make-frame)
+  (define-key evil-normal-state-map (kbd ",t") 'toggle-truncate-lines)
 
-(define-key evil-normal-state-map (kbd ",a") 'helm-ag)
-;(define-key evil-normal-state-map (kbd ",a") 'counsel-ag)
-(define-key evil-normal-state-map (kbd ",A") 'helm-do-ag)
-(define-key evil-normal-state-map (kbd ",E") 'spacemacs/open-in-external-app)
-
-;(define-key evil-normal-state-map (kbd ",d") 'dired-jump)
-;(define-key evil-normal-state-map (kbd ",D") 'dired-jump-other-window)
-
-;(define-key evil-normal-state-map (kbd ",R") 'helm-recentf)
-;(define-key evil-normal-state-map (kbd ",r") 'counsel-recentf)
-
-(define-key evil-normal-state-map (kbd ",q") 'server-edit)
-
-(define-key evil-normal-state-map (kbd ",o") 'helm-find-files)
-;(define-key evil-normal-state-map (kbd ",b") 'helm-buffers-list)
-(define-key evil-normal-state-map (kbd ",O") 'helm-occur)
-(define-key evil-normal-state-map (kbd ",\/") 'helm-find)
-;(define-key evil-normal-state-map (kbd ",\\") 'counsel-find-file-extern)
+  (define-key evil-normal-state-map (kbd ",G") 'helm-ag)
+                                        ;(define-key evil-normal-state-map (kbd "<SPC>fg") 'helm-ag)
+                                        ;(define-key evil-normal-state-map (kbd ",a") 'counsel-ag)
+  (define-key evil-normal-state-map (kbd ",g") 'helm-do-ag)
+                                        ;(define-key evil-normal-state-map (kbd "<SPC>fG") 'helm-ag)
+  ;; spc f o;; (define-key evil-normal-state-map (kbd ",E") 'spacemacs/open-file-or-directory-in-external-app)
+                                        ;(define-key evil-normal-state-map (kbd "K") 'makedir)
+  (define-key evil-normal-state-map (kbd "K") 'dired-create-directory)
 
 
-(define-key evil-normal-state-map (kbd ",k") 'kill-buffer)
-(define-key evil-normal-state-map (kbd ",x") 'xterm)
-(define-key evil-normal-state-map (kbd ",w") 'save-buffer)
-(define-key evil-normal-state-map (kbd ",v") 'split-window-horizontally)
-(define-key evil-normal-state-map (kbd ",h") 'split-window-vertically)
+                                        ;(define-key evil-normal-state-map (kbd ",d") 'dired-jump)
+                                        ;(define-key evil-normal-state-map (kbd ",D") 'dired-jump-other-window)
 
-(define-key evil-normal-state-map (kbd  ",`" ) '(lambda () (interactive) (bookmark-jump "`")))
-;(define-key evil-normal-state-map (kbd  "0" ) '(lambda () (interactive) (bookmark-jump "0")))
-(define-key evil-normal-state-map (kbd  ",1" ) '(lambda () (interactive) (bookmark-jump "1")))
-(define-key evil-normal-state-map (kbd  ",2" ) '(lambda () (interactive) (bookmark-jump "2")))
-(define-key evil-normal-state-map (kbd  ",3" ) '(lambda () (interactive) (bookmark-jump "3")))
-(define-key evil-normal-state-map (kbd  ",4" ) '(lambda () (interactive) (bookmark-jump "4")))
-(define-key evil-normal-state-map (kbd  ",5" ) '(lambda () (interactive) (bookmark-jump "5")))
-(define-key evil-normal-state-map (kbd  ",6" ) '(lambda () (interactive) (bookmark-jump "6")))
-(define-key evil-normal-state-map (kbd  ",7" ) '(lambda () (interactive) (bookmark-jump "7")))
-(define-key evil-normal-state-map (kbd  ",8" ) '(lambda () (interactive) (bookmark-jump "8")))
-(define-key evil-normal-state-map (kbd  ",9" ) '(lambda () (interactive) (bookmark-jump "9")))
+                                        ;(define-key evil-normal-state-map (kbd ",R") 'helm-recentf)
+                                        ;(define-key evil-normal-state-map (kbd ",r") 'counsel-recentf)
 
-(define-key evil-visual-state-map (kbd "M-h") 'evil-window-left)
-(define-key evil-visual-state-map (kbd "M-j") 'evil-window-down)
-(define-key evil-visual-state-map (kbd "M-k") 'evil-window-up)
-(define-key evil-visual-state-map (kbd "M-l") 'evil-window-right)
+  (define-key evil-normal-state-map (kbd ",q") 'server-edit)
 
-(define-key evil-insert-state-map (kbd "M-h") 'evil-window-left)
-(define-key evil-insert-state-map (kbd "M-j") 'evil-window-down)
-(define-key evil-insert-state-map (kbd "M-k") 'evil-window-up)
-(define-key evil-insert-state-map (kbd "M-l") 'evil-window-right)
+  ;; spc f F (define-key evil-normal-state-map (kbd ",o") 'helm-find-files)
+                                        ;(define-key evil-normal-state-map (kbd ",o") 'helm-find-files)
+                                        ;(define-key evil-normal-state-map (kbd ",b") 'helm-buffers-list)
+  ;; --> helm-swoop reicht aus (define-key evil-normal-state-map (kbd ",O") 'helm-occur)
+                                        ;(define-key evil-normal-state-map (kbd ",\/") 'helm-find)
+  (define-key evil-normal-state-map (kbd ",\/") 'find-name-dired)
+                                        ;(kbd ",\/") 'find-name-dired)
+                                        ;(define-key evil-normal-state-map (kbd ",\\") 'counsel-find-file-extern)
 
 
-(define-key evil-normal-state-map (kbd "M-h") 'evil-window-left)
-(define-key evil-normal-state-map (kbd "M-j") 'evil-window-down)
-(define-key evil-normal-state-map (kbd "M-k") 'evil-window-up)
-(define-key evil-normal-state-map (kbd "M-l") 'evil-window-right)
+  (define-key evil-normal-state-map (kbd ",k") 'kill-buffer)
+  (define-key evil-normal-state-map (kbd ",x") 'xterm)
+  (define-key evil-normal-state-map (kbd ",w") 'save-buffer)
+  (define-key evil-normal-state-map (kbd ",v") 'split-window-horizontally)
+  (define-key evil-normal-state-map (kbd "gx") 'split-window-horizontally)
+  (define-key evil-normal-state-map (kbd ",h") 'split-window-vertically)
+  (define-key evil-normal-state-map (kbd "gX") 'split-window-vertically)
 
-;; RANGER -----------------------------------------------------------------------------
-(setq ranger-cleanup-on-disable t)
-(setq ranger-show-dotfiles t)
-(setq ranger-ignored-extensions '("mkv" "iso" "mp4"))
-(setq ranger-max-preview-size 10)
+  (define-key evil-normal-state-map (kbd  ",`" ) '(lambda () (interactive) (bookmark-jump "`")))
+                                        ;(define-key evil-normal-state-map (kbd  "0" ) '(lambda () (interactive) (bookmark-jump "0")))
+  (define-key evil-normal-state-map (kbd  ",1" ) '(lambda () (interactive) (bookmark-jump "1")))
+  (define-key evil-normal-state-map (kbd  ",2" ) '(lambda () (interactive) (bookmark-jump "2")))
+  (define-key evil-normal-state-map (kbd  ",3" ) '(lambda () (interactive) (bookmark-jump "3")))
+  (define-key evil-normal-state-map (kbd  ",4" ) '(lambda () (interactive) (bookmark-jump "4")))
+  (define-key evil-normal-state-map (kbd  ",5" ) '(lambda () (interactive) (bookmark-jump "5")))
+  (define-key evil-normal-state-map (kbd  ",6" ) '(lambda () (interactive) (bookmark-jump "6")))
+  (define-key evil-normal-state-map (kbd  ",7" ) '(lambda () (interactive) (bookmark-jump "7")))
+  (define-key evil-normal-state-map (kbd  ",8" ) '(lambda () (interactive) (bookmark-jump "8")))
+  (define-key evil-normal-state-map (kbd  ",9" ) '(lambda () (interactive) (bookmark-jump "9")))
 
-;; MISC -----------------------------------------------------------------------------
-(add-to-list 'auto-mode-alist '("\\Dict$" . c++-mode)) ; cfast
-(add-to-list 'auto-mode-alist '("\\Properties$" . c++-mode)) ; cfast
-(add-to-list 'auto-mode-alist '("\\Zones$" . c++-mode)) ; cfast
-(add-to-list 'auto-mode-alist '("\\Gas$" . c++-mode)) ; cfast
-(add-to-list 'auto-mode-alist '("\\Controls$" . c++-mode)) ; cfast
+  (define-key evil-visual-state-map (kbd "M-h") 'evil-window-left)
+  (define-key evil-visual-state-map (kbd "M-j") 'evil-window-down)
+  (define-key evil-visual-state-map (kbd "M-k") 'evil-window-up)
+  (define-key evil-visual-state-map (kbd "M-l") 'evil-window-right)
 
-;(add-to-list 'auto-mode-alist '("transportProperties" . c++-mode))
-;(add-to-list 'auto-mode-alist '("turbulenceProperties" . c++-mode))
+  ;; (define-key evil-insert-state-map (kbd "M-Shift-Tab") 'spacemacs/helm-yas)
+  (define-key evil-insert-state-map (kbd "Tab") 'yas-expand)
+  (define-key evil-insert-state-map (kbd "C-/") 'yas-expand)
+
+  (define-key evil-insert-state-map (kbd "M-h") 'evil-window-left)
+  (define-key evil-insert-state-map (kbd "M-j") 'evil-window-down)
+  (define-key evil-insert-state-map (kbd "M-k") 'evil-window-up)
+  (define-key evil-insert-state-map (kbd "M-l") 'evil-window-right)
+
+
+  (define-key evil-normal-state-map (kbd "M-h") 'evil-window-left)
+  (define-key evil-normal-state-map (kbd "M-j") 'evil-window-down)
+  (define-key evil-normal-state-map (kbd "M-k") 'evil-window-up)
+  (define-key evil-normal-state-map (kbd "M-l") 'evil-window-right)
+
+
+  ;; MISC -----------------------------------------------------------------------------
+  (add-to-list 'auto-mode-alist '("\\Dict$" . c++-mode)) ; cfast
+  (add-to-list 'auto-mode-alist '("\\Properties$" . c++-mode)) ; cfast
+  (add-to-list 'auto-mode-alist '("\\Zones$" . c++-mode)) ; cfast
+  (add-to-list 'auto-mode-alist '("\\Gas$" . c++-mode)) ; cfast
+  (add-to-list 'auto-mode-alist '("\\Controls$" . c++-mode)) ; cfast
+
+                                        ;(add-to-list 'auto-mode-alist '("transportProperties" . c++-mode))
                                         ;(add-to-list 'auto-mode-alist '("turbulenceProperties" . c++-mode))
-;(add-to-list 'auto-mode-alist '("mechanicalProperties" . c++-mode))
-;(add-to-list 'auto-mode-alist '("fvSolutdion" . c++-mode))
-;(add-to-list 'auto-mode-alist '("fvOptions" . c++-mode))
-;(add-to-list 'auto-mode-alist '("decomposeDict" . c++-mode))
-;(add-to-list 'auto-mode-alist '("mapFields" . c++-mode))
-;(add-to-list 'auto-mode-alist '("sampleDict" . c++-mode))
-;(add-to-list 'auto-mode-alist '("rotationDict" . c++-mode))
-;(add-to-list 'auto-mode-alist '("sampleSurfaceDict" . c++-mode))
-;(add-to-list 'auto-mode-alist '("mirrorMeshDict" . c++-mode))
-;(add-to-list 'auto-mode-alist '("fvScheme" . c++-mode))
-;(add-to-list 'auto-mode-alist '("controlDict" . c++-mode))
-;(add-to-list 'auto-mode-alist '("caseSetup" . c++-mode))
-;(add-to-list 'auto-mode-alist '("changeDictionaryDict" . c++-mode))
+                                        ;(add-to-list 'auto-mode-alist '("turbulenceProperties" . c++-mode))
+                                        ;(add-to-list 'auto-mode-alist '("mechanicalProperties" . c++-mode))
+                                        ;(add-to-list 'auto-mode-alist '("fvSolutdion" . c++-mode))
+                                        ;(add-to-list 'auto-mode-alist '("fvOptions" . c++-mode))
+                                        ;(add-to-list 'auto-mode-alist '("decomposeDict" . c++-mode))
+                                        ;(add-to-list 'auto-mode-alist '("mapFields" . c++-mode))
+                                        ;(add-to-list 'auto-mode-alist '("sampleDict" . c++-mode))
+                                        ;(add-to-list 'auto-mode-alist '("rotationDict" . c++-mode))
+                                        ;(add-to-list 'auto-mode-alist '("sampleSurfaceDict" . c++-mode))
+                                        ;(add-to-list 'auto-mode-alist '("mirrorMeshDict" . c++-mode))
+                                        ;(add-to-list 'auto-mode-alist '("fvScheme" . c++-mode))
+                                        ;(add-to-list 'auto-mode-alist '("controlDict" . c++-mode))
+                                        ;(add-to-list 'auto-mode-alist '("caseSetup" . c++-mode))
+                                        ;(add-to-list 'auto-mode-alist '("changeDictionaryDict" . c++-mode))
 
-(add-to-list 'auto-mode-alist '("\\k$" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\omega$" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\epsilon$" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\nut$" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\T$" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\U$" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\p$" . c++-mode))
+  (add-to-list 'auto-mode-alist '("\\k$" . c++-mode))
+  (add-to-list 'auto-mode-alist '("\\omega$" . c++-mode))
+  (add-to-list 'auto-mode-alist '("\\epsilon$" . c++-mode))
+  (add-to-list 'auto-mode-alist '("\\nut$" . c++-mode))
+  (add-to-list 'auto-mode-alist '("\\T$" . c++-mode))
+  (add-to-list 'auto-mode-alist '("\\U$" . c++-mode))
+  (add-to-list 'auto-mode-alist '("\\p$" . c++-mode))
 
-(add-to-list 'auto-mode-alist '("setFieldsDict" . c++-mode))
-(add-to-list 'auto-mode-alist '("decomposeParDict" . c++-mode))
-(add-to-list 'auto-mode-alist '("owners" . c++-mode))
-(add-to-list 'auto-mode-alist '("boundary" . c++-mode))
-(add-to-list 'auto-mode-alist '("faces" . c++-mode))
-(add-to-list 'auto-mode-alist '("points" . c++-mode))
-(add-to-list 'auto-mode-alist '("neighbour" . c++-mode))
+  (add-to-list 'auto-mode-alist '("setFieldsDict" . c++-mode))
+  (add-to-list 'auto-mode-alist '("decomposeParDict" . c++-mode))
+  (add-to-list 'auto-mode-alist '("owners" . c++-mode))
+  (add-to-list 'auto-mode-alist '("boundary" . c++-mode))
+  (add-to-list 'auto-mode-alist '("faces" . c++-mode))
+  (add-to-list 'auto-mode-alist '("points" . c++-mode))
+  (add-to-list 'auto-mode-alist '("neighbour" . c++-mode))
 
-(add-to-list 'auto-mode-alist '("\\.inp$" . f90-mode))
-(add-to-list 'auto-mode-alist '("\\.data$" . f90-mode)) ;gpyro
-;(add-to-list 'auto-mode-alist '("\\.in$" . f90-mode)) ; cfast
+  (add-to-list 'auto-mode-alist '("\\.inp$" . f90-mode))
+  (add-to-list 'auto-mode-alist '("\\.data$" . f90-mode)) ;gpyro
+                                        ;(add-to-list 'auto-mode-alist '("\\.in$" . f90-mode)) ; cfast
 
-(add-to-list 'auto-mode-alist '("0.0.1" . tcl-mode))
-(add-to-list 'auto-mode-alist '("4.0" . tcl-mode))
-(add-to-list 'auto-mode-alist '("\\.fds" . fds-mode))
-(add-to-list 'auto-mode-alist '("\\.in" . dakota-mode))
-(add-to-list 'auto-mode-alist '("\\.cf" . f90-mode))
-(add-to-list 'auto-mode-alist '("\\.dak" . dakota-mode))
-(add-to-list 'auto-mode-alist '("\\.vsz" . python-mode))
+  (add-to-list 'auto-mode-alist '("0.0.1" . tcl-mode))
+  (add-to-list 'auto-mode-alist '("4.0" . tcl-mode))
+                                        ;(add-to-list 'auto-mode-alist '("\\.fds" . fds-mode))
+  (add-to-list 'auto-mode-alist '("\\.fds" . f90-mode))
+  (add-to-list 'auto-mode-alist '("\\.in" . dakota-mode))
+                                        ;(add-to-list 'auto-mode-alist '("\\.in" . python-mode))
+  (add-to-list 'auto-mode-alist '("\\.cf" . f90-mode))
+  (add-to-list 'auto-mode-alist '("\\.dak" . dakota-mode))
+  (add-to-list 'auto-mode-alist '("\\.vsz" . python-mode))
 
-(defun dotspacemacs/user-config ()
-  (setq-default evil-escape-key-sequence "fj"))
+  ;; (defun dotspacemacs/user-config ()
+  (setq-default evil-escape-key-sequence "fj")
+
+  ;; -----------------------------------------------------------------------------
+  ;; (setq py--font-lock-syntactic-face-function
+  ;;       (lambda (state)
+  ;;         (cond ((nth 3 state)
+  ;;                font-lock-string-face)
+  ;;               ((and (nth 4 state)(nth 8 state)
+  ;;                     (progn (save-excursion
+  ;;                              (goto-char (nth 8 state))
+  ;;                              (looking-at (concat comment-start (regexp-quote "*"))))))
+  ;;                nil)
+  ;;               (t font-lock-comment-face))))
+
+  ;; (font-lock-syntactic-face-function
+  ;;  . py--font-lock-syntactic-face-function)
+
+                                        ;python debugger (load-library "realgud")
+  ;; (setq company-idle-delay 0.5)
+  ;; -----------------------------------------------------------------------------
+  (require 'anaconda-mode)
+  (remove-hook 'anaconda-mode-response-read-fail-hook
+               'anaconda-mode-show-unreadable-response)
+
+  ;; -----------------------------------------------------------------------------
+  ;;https://emacs.stackexchange.com/questions/26912/smartparens-do-not-insert-parenthesis-pair-when-point-is-at-the-beginning-of-wo/26938
+  (use-package smartparens-config
+    :ensure smartparens
+    :diminish smartparens-mode
+    :config
+    (progn
+      (smartparens-global-mode 1)
+      (show-smartparens-global-mode 1)
+      ;; (setq
+      ;;  smartparens-strict-mode nil
+      ;;  sp-autoinsert-if-followed-by-word nil
+      ;;  sp-autoskip-closing-pair 'always
+      ;;  sp-base-key-bindings 'paredit
+      ;;  sp-hybrid-kill-entire-symbol nil)
+      (sp-pair "(" nil :unless '(sp-point-before-word-p))
+      (sp-pair "[" nil :unless '(sp-point-before-word-p))
+      (sp-pair "{" nil :unless '(sp-point-before-word-p))
+      (sp-local-pair 'latex-mode "$" nil :unless '(sp-point-before-word-p))
+      ))
+  (sp-pair "(" nil :unless '(sp-point-before-word-p))
+  (sp-pair "[" nil :unless '(sp-point-before-word-p))
+  (sp-pair "{" nil :unless '(sp-point-before-word-p))
+  (sp-local-pair 'latex-mode "$" nil :unless '(sp-point-before-word-p))
+
+
+  ;; Modelica -----------------------------------------------------------------------------
+                                        ; (load-file "/home/fbraenns/.emacs.d/private/local/modelica-mode.el")
+                                        ; (require 'modelica-mode)
+                                        ; (autoload 'modelica-mode "modelica-mode" "Modelica Editing Mode" t)
+                                        ; (setq auto-mode-alist (cons '("\.mo$" . modelica-mode) auto-mode-alist))
+
+  ;; Enable Modelica browsing
+                                        ; (autoload 'mdc-browse "mdc-browse" "Modelica Class Browsing" t)
+                                        ; (autoload 'br-mdc "br-mdc" "Modelica Class Browsing" t)
+
+                                        ; (defvar br-env-lang-avector
+                                        ;   '[
+                                        ;     ("C++/C"   . "c++-")
+                                        ;     ("Eiffel"  . "eif-")
+                                        ;     ("Info"    . "info-")
+                                        ;     ("Java"    . "java-")
+                                        ;     ("Lisp"    . "clos-")
+                                        ;     ; ("Modelica" . "mdc-")
+                                        ;     ("Obj-C"   . "objc-")
+                                        ;     ("Python"  . "python-")
+                                        ;     ]
+                                        ;   "Association vector of elements of OO-Browser languages.")
+
+  ;; -----------------------------------------------------------------------------
+  ;; ;; Autostart OO-Browser (the installation is assumed under ~/oo-browser)
+  ;; (setq load-path (append
+  ;;                  '("~/oo-browser/"
+  ;;                    "~/oo-browser/hypb/")
+  ;;                  load-path))
+  ;; (load "br-start")
+  ;; (global-set-key "\C-c\C-o" 'oo-browser)
   )
 
 
+;; -----------------------------------------------------------------------------
+;; -----------------------------------------------------------------------------
+;; -----------------------------------------------------------------------------
+;; CUSTOM-----------------------------------------------------------------------------
+;; -----------------------------------------------------------------------------
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector
-   ["#0a0814" "#f2241f" "#67b11d" "#b1951d" "#4f97d7" "#a31db1" "#28def0" "#b2b2b2"])
  '(delete-selection-mode nil)
- '(helm-external-programs-associations (quote (("pdf" . "okular"))))
+ '(helm-external-programs-associations (quote (("csv" . "libreoffice") ("pdf" . "okular"))))
  '(package-selected-packages
    (quote
-    (org-category-capture alert org-plus-contrib hydra dash-functional projectile epl magit-popup ghub with-editor skewer-mode request-deferred deferred js2-mode simple-httpd anaconda-mode pythonic avy company iedit highlight f s async wolfram-mode thrift stan-mode scad-mode qml-mode matlab-mode julia-mode arduino-mode yapfify which-key use-package toc-org spaceline ranger org-projectile neotree live-py-mode helm-company evil-search-highlight-persist evil-mc ein dumb-jump ace-link eclim smartparens evil yasnippet helm helm-core markdown-mode magit dash ws-butler winum websocket volatile-highlights vimrc-mode vi-tilde-fringe uuidgen undo-tree smeargle restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort powershell powerline popwin pip-requirements persp-mode pcre2el paradox orgit org-present org-pomodoro org-download org-bullets open-junk-file move-text monokai-theme mmm-mode markdown-toc magit-gitflow lorem-ipsum linum-relative link-hint info+ indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-c-yasnippet helm-ag goto-chg google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-commit gh-md fuzzy flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-numbers evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-commentary evil-args evil-anzu eval-sexp-fu disaster dired-rainbow dired-narrow diminish define-word dactyl-mode cython-mode csv-mode company-statistics company-emacs-eclim company-c-headers company-anaconda column-enforce-mode cmake-mode clean-aindent-mode clang-format cl-generic bracketed-paste bind-key auto-yasnippet auto-highlight-symbol aggressive-indent adaptive-wrap ace-window ace-jump-helm-line ac-ispell)))
- '(paradox-github-token t))
+    (dired-open dired-filter dired-collapse dired-ranger xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help org-plus-contrib yapfify yaml-mode ws-butler winum which-key web-mode volatile-highlights vimrc-mode vi-tilde-fringe uuidgen use-package toc-org tagedit spaceline smeargle slim-mode scss-mode sass-mode restart-emacs realgud rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode powershell popwin pip-requirements persp-mode pcre2el paradox org-bullets open-junk-file neotree move-text monokai-theme mmm-mode markdown-toc magit-gitflow lua-mode lorem-ipsum live-py-mode linum-relative link-hint indent-guide hy-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-dired-history helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-commentary evil-args evil-anzu eval-sexp-fu emmet-mode ein dumb-jump disaster dired-rainbow dired-narrow diminish define-word dactyl-mode cython-mode csv-mode company-web company-statistics company-emacs-eclim company-c-headers company-auctex company-anaconda column-enforce-mode cmake-mode clean-aindent-mode clang-format autothemer auto-yasnippet auto-highlight-symbol auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
+ '(paradox-github-token t)
+ '(safe-local-variable-values (quote ((eval progn (pp-buffer) (indent-buffer))))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -652,9 +882,22 @@ you should place your code here."
  '(diredp-flag-mark ((t (:background "gray20" :foreground "Yellow"))))
  '(diredp-flag-mark-line ((t (:foreground "azure" :background "dim gray"))))
  '(evil-search-highlight-persist-highlight-face ((t (:background "yellow1" :foreground "black"))))
- '(font-lock-comment-face ((t (:foreground "lime green" :height 1.0))))
+ '(font-lock-comment-face ((t (:foreground "gray42" :height 1.0))))
  '(helm-ff-directory ((t (:background "gray30" :foreground "white smoke"))))
  '(helm-selection ((t (:inherit bold :background "LightBlue4" :underline nil))))
  '(helm-selection-line ((t (:background "goldenrod" :foreground "#F8F8F0" :underline nil))))
  '(helm-source-header ((t (:background "sienna3" :foreground "#272822" :underline nil))))
  '(hl-line ((t (:background "dark slate gray")))))
+
+                                        ; ,----[ C-h I german-postfix RET ]
+                                        ;| Input method: german-postfix (mode line indicator:DE<)
+                                        ;|
+                                        ;| German (Deutsch) input method
+                                        ;|
+                                        ;| ae  -> ä
+                                        ;| aee -> ae
+                                        ;| oe  -> ö
+                                        ;| oee -> oe
+                                        ;| ue  -> ü (not after a/e/q)
+                                        ;| uee -> ue
+                                        ;| sz  -> ß

@@ -8,6 +8,7 @@ export TERM=xterm-256color
 # GENERAL
 #===================================================================
 alias lt='ls -rlth --color=auto'
+alias lta='ls -rltha --color=auto'
 alias ls='ls --color=auto'
 
 LS_COLORS='di=1:fi=0:ln=31:pi=5:so=5:bd=5:cd=5:or=31:mi=0:ex=35:*.rpm=90:*.png=35:*.jpg=35:*.jpeg=35:*.sh=92:*.log=96:*.ipynb=93:*.py=93:*.tar.gz=33:*.tar.bz2=33:*.zip=33:*.gz=33:*.xls=32:*.ods=32:*.xlsx=32:*.doc=34:*.docx=34:*.odt=34:*.pdf=31:*.fds=94:*.sim=94:*.csv=36:*.dat=36:*.mo=33:*.java=33:*.fmu=33:*.stl=95:*.stp=95:*.igs=95:*.iges=95:*.step=95'
@@ -19,34 +20,20 @@ export EDITOR="/share/Tools/Editing/NeoVim/nvim.appimage"
 alias vib="vi -u ~/.config/nvim/init_basic.vim"
 alias vid="vi -u ~/.config/nvim/init_pure_defx.vim"
 alias vidd="vi -u ~/.config/nvim/init_pure_noplug_defx.vim"
-
+alias vi="/share/Tools/Editing/NeoVim/nvim.appimage"
+alias viv="/share/Tools/Editing/NeoVim/nvim.appimage +'Defx -auto-cd -sort="Time"'"
+# alias vimY="/usr/bin/vim -u /home/fbraenns/.vimrc_Y"
+# alias vimz="/usr/bin/vim -u /home/fbraenns/.vimrc_z"
+# alias vim="/usr/bin/vim -u /home/fbraenns/.vimrc_min"
+# alias viM="/share/Tools/Editing/vim_190111/bin/vim -u /home/fbraenns/.vimrc_min -N"
+#alias vim="/share/Tools/Editing/vim_190111/bin/vim -u /home/fbraenns/.vimrc_Y -N"
 alias jn="jupyter notebook"
+alias jn_tunnel89="jupyter notebook --no-browser --port=8889 --ip=0.0.0.0"
+alias jn_tunnel91="jupyter notebook --no-browser --port=8891 --ip=0.0.0.0"
+alias jn_tunnel92="jupyter notebook --no-browser --port=8892 --ip=0.0.0.0"
+alias jn_tunnel93="jupyter notebook --no-browser --port=8893 --ip=0.0.0.0"
 
 
-###===================================================================
-### Modules
-###===================================================================
-###===================================================================
-module load divs/0.2
-module load FDS/6.7.0
-module load Aliases/StarCCM+
-#module load python_loc/3.6.0_anac4.3.1
-# module load python_loc/3.6.5_miniC3
-# module load FDS/6.5.3
-# module unload FDS/6.5.3
-module load VisIt/2.10.3
-# module unload ParaView
-module load ParaView/5.6.0
-export OMP_NUM_THREADS=1
-
-module load python/anaconda2/4.x
-module load openmpi/1.10.4
-module load Dakota/6.8.0_ac2 
-module unload python/anaconda2/4.x 
-module load python_loc/3.6.5_miniC3
-#module load OpenFOAM/4.1
-module load OpenFOAM/v1806+
-# . /share/Tools/FIRE/PATO/PATO_v2.2.0/bashrc
 
 #===================================================================
 # Shell / Prompt
@@ -72,30 +59,22 @@ printf "\e[?2004l"
 
 
 #=============================================================================================================================================
-source ~/.fzf_custom.sh 
-source ~/.fzf-extras/fzf-extras.sh
-#=============================================================================================================================================
-##export MODELICAPATH=/share/Tools/THERMO/MODELICA/Libraries/modelica-buildings_LBL:/share/Tools/THERMO/MODELICA/Libraries/modelica-buildings_LBL/Buildings:/share/software/Optimization/JModelica/2.1b1/ThirdParty/MSL/:/share/Tools/THERMO/MODELICA/Libraries/AixLib_RWTH/AixLib/
 alias c1v="cd /WORK1/fbraenns/ && /share/Tools/Editing/NeoVim/nvim.appimage +'VimFilerBufferDir -status -sort-type=Time'"
 alias c2v="cd /WORK2/fbraenns/ && /share/Tools/Editing/NeoVim/nvim.appimage +'VimFilerBufferDir -status -sort-type=Time'"
 alias c3v="cd /WORK3/fbraenns/ && /share/Tools/Editing/NeoVim/nvim.appimage +'VimFilerBufferDir -status -sort-type=Time'"
 alias c4v="cd /data/work/fbraenns/ && /share/Tools/Editing/NeoVim/nvim.appimage +'VimFilerBufferDir -status -sort-type=Time'"
 alias c5v="cd /share/Tools/ && /share/Tools/Editing/NeoVim/nvim.appimage +'VimFilerBufferDir -status -sort-type=Time'"
 alias c6v="cd /share/software/ && /share/Tools/Editing/NeoVim/nvim.appimage +'VimFilerBufferDir -status -sort-type=Time'"
-#alias viv="/share/Tools/Editing/NeoVim/nvim.appimage +'VimFiler -sort-type=Time -status'"
-alias viv="/share/Tools/Editing/NeoVim/nvim.appimage +'Defx -auto-cd -sort="Time"'"
+
+
+#=============================================================================================================================================
+alias jupSetTheme="jt -t gruvboxd -fs 11 -altp -tfs 11 -nfs 12 -ofs 11 -cellw 80% -T -N"
 alias cpwd="pwd | tr -d '\n' | pbcopy && echo 'pwd copied to clipboard'"
 alias pw="pwd | xclip -selection 'clipboard' "
-alias vi="nv"
-# alias vimY="/usr/bin/vim -u /home/fbraenns/.vimrc_Y"
-# alias vimz="/usr/bin/vim -u /home/fbraenns/.vimrc_z"
-# alias vim="/usr/bin/vim -u /home/fbraenns/.vimrc_min"
-
-alias viM="/share/Tools/Editing/vim_190111/bin/vim -u /home/fbraenns/.vimrc_min -N"
-alias vim="/share/Tools/Editing/vim_190111/bin/vim -u /home/fbraenns/.vimrc_Y -N"
 alias reName='for filename in *.png; do mv "$filename" "p_$filename"; done;'
 
 #=============================================================================================================================================
+# TMUX
 # tm - create new tmux session, or switch to existing one. Works from within tmux too. (@bag-man)
 # `tm` will allow you to select your tmux session via fzf.
 # `tm irc` will attach to the irc session (if it exists), else it will create it.
@@ -107,11 +86,11 @@ tmm() {
   session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
 }
 
-# added by Miniconda3 installer
-#export PATH="/share/Tools/Python/Distributions/MiniConda3_latest_180813/bin:$PATH"
-alias jupSetTheme="jt -t gruvboxd -fs 11 -altp -tfs 11 -nfs 12 -ofs 11 -cellw 80% -T -N"
-    # nmap <silent><buffer>,s2 :call jobstart('/share/software/cd-adapco/STAR-CCM+12.02/STAR-CCM+12.02.010-R8/star/bin/starccm+',{'detach':1}) <CR>
-    # nmap <silent><buffer>,s1 :call jobstart('/share/software/cd-adapco/STAR-CCM+11.06/STAR-CCM+11.06.010-R8/star/bin/starccm+',{'detach':1}) <CR>
+
+#=============================================================================================================================================
+# FZF
+source ~/.fzf_custom.sh 
+source ~/.fzf-extras/fzf-extras.sh
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 source /share/Tools/Divs/fzf-marks/fzf-marks.plugin.bash
@@ -123,11 +102,164 @@ export FZF_FS_CONFIG_DIR="/home/fbraenns/.config/fzf-fs.d/"
 #export FZF_FS_OS=Linux;
 export FZF_FS_LS_COMMAND="command ls --color=auto -q";
 export FZF_FS_LS_COMMAND_COLOR="command ls --color=always -q"
-alias ranger="/share/Tools/Python/Distributions/MiniConda3_latest_180813/bin/ranger"
-alias veusz="/share/Tools/Python/Distributions/MiniConda3_latest_180813/bin/veusz"
-alias rg="source /share/Tools/Python/Distributions/MiniConda3_latest_180813/bin/"
 
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-source /share/Tools/FIRE/ChemicalKinetics/cantera/BIN/bin/setup_cantera
-export PATH="/share/Tools/FIRE/cantera/BIN/bin/:$PATH"
 
+
+
+#=============================================================================================================================================
+#- export OMP_NUM_THREADS=1
+#- 
+#- 
+#- alias ml_env_dakota="ml restore Dakota_610"
+#- 
+#- alias ml_OPF_v1906="ml OpenFOAM/v1906"
+#- alias ml_OPF_v1812="ml OpenFOAM/v1812"
+#- alias ml_Dakota_610="ml Dakota/6.10.0"
+#- alias ml_star1306="ml StarCCM+/13.06"
+#- #-- Python virtual env
+#- #-- haengen ggf. aber noch von der Python version ab
+#- alias v_tf2="source /share/Tools/Python/virtualEnvs/tf2beta/bin/activate"
+#- #set_alias("v_pyviz","source /share/Tools/Python/virtualEnvs/tf2beta/bin/activate")
+#- #------------------
+#- #-- einige python Umgebungen werden ggf. fuer externe Tools benoetigt,
+#- #-- z.B.:
+#- #set_alias("v_dakota","source /share/Tools/Python/virtualEnvs/tf2beta/bin/activate")
+#- 
+#- alias bokehPlotUI="python /share/Tools/Python/PLOTTING/BOKEH/XLS2BOKEH/readXLS4Plot_v2.py"
+#- alias cd1="cd /WORK1/fbraenns/"
+#- alias cd2="cd /WORK2/fbraenns/"
+#- alias cd3="cd /WORK3/fbraenns/"
+#- alias cd4="cd /data/work/fbraenns/"
+#- alias cd5="cd /share/Tools/"
+#- alias cd6="cd /share/software/"
+#- 
+#- #---------
+#- #set_alias("nv","/share/Tools/Editing/NeoVim/nvim.appimage")
+#- #set_alias("vim8","/share/Tools/Editing/vim_190111/bin/vim")
+#- alias tm="tmux -2"
+#- #set_alias("tma","tmux attach")
+#- 
+#- #---------
+#- #set_alias("cDataShader","source activate DataShader170510")
+#- alias sqlitestudio="/share/Tools/SQL/SQLiteStudio/sqlitestudio"
+#- 
+#- #-- set_alias("resc","java -jar /share/Tools/Cloud/POC_2018/rescale.jar")
+#- #-- set_alias("mlist","module list")
+#- #-- set_alias("mavail","module avail")
+#- #-- set_alias("mpurge","module purge")
+#- #-- set_alias("mload","module load")
+#- #-- set_alias("muload","module unload")
+#- #-- set_alias("mdivs","module load divs/0.0.1")
+#- #-- set_alias("mNoFMGL","module unload fireFoam/2.4.x")
+#- #-- set_alias("mS_OPF_FMGL2_4x","module load fireFoam/2.4.x")
+#- #-- set_alias("mS_OPF_FMGL2_4x_dev","module load fireFoam/dev-16.09.20")
+#- #-- set_alias("mS_OPF_3.0_x","module load OpenFOAM/3.0.x")
+#- #-- set_alias("mS_OPF_4.1","module load openmpi/1.10; module load OpenFOAM/4.1")
+#- #-- set_alias("mS_OPF_1606p_x","module load OpenFOAM/v1606+")
+#- #-- set_alias("mS_OPF_1806p_x","module load OpenFOAM/v1806+")
+#- 
+#- #-- set_alias("mOPF_Engys","module unload OpenFOAM; module load OpenFOAM/2.2_Engys_1.1")
+#- #-- set_alias("mPy3loc","module purge; module load divs/0.2; module unload python/anaconda2/4.x; module load python_loc/3.6.0_anac4.3.1")
+#- #-- set_alias("mPy3Mini","module purge; module load divs/0.2; module unload python_loc; module unload python; module load python_loc/3.6.5_miniC3")
+#- #-- set_alias("mPyNo","module purge; module load divs/0.2; module unload python/anaconda2/4.x; module unload python/anaconda3/4.x")
+#- #-- set_alias("mPy2_7x","module purge; module load divs/0.2; module unload python_loc/3.6.0_anac4.3.1; module load python/anaconda2/4.x")
+#- #-- set_alias("mPy2_7","module unload python_loc/3.6.0_anac4.3.1; module load python/anaconda2/4.x")
+#- #-- set_alias("mDako65","module unload python/anaconda3/4.x; module load python/anaconda2/4.x; module load openmpi/1.10.4; module load Dakota/6.5.0")
+#- #-- set_alias("mDako652","module unload python/anaconda3/4.x; module load python/anaconda2/4.x; module load openmpi/1.10.4; module load Dakota/6.5.0_ac2")
+#- #-- set_alias("mDako68_def","module unload python/anaconda3/4.x; module load python/anaconda2/4.x; module load openmpi/1.10.4; module load Dakota/6.8.0_ac2")
+#- #-- set_alias("mDako68","module unload python/anaconda3/4.x;module load python/anaconda2/4.x; module load openmpi/1.10.4; module load Dakota/6.8.0_ac2 ;module unload python/anaconda2/4.x ; module load python_loc/3.6.5_miniC3")
+#- #-- set_alias("mFrontier","module unload python/anaconda3/4.x; module load modeFRONTIER/6.2.0")
+#- #-- set_alias("mJModelica","module unload python_loc/3.6.0_anac4.3.1; module load python/anaconda2/4.x; module load JModelica/2.1b1")
+#- #-- set_alias("mOModelica","module unload python_loc/3.6.0_anac4.3.1; module load python/anaconda2/4.x; module load OpenModelica/1.11.0")
+#- #-- set_alias("mFDS553","module unload FDS; module load FDS/5.5.3")
+#- #-- set_alias("mJulia","module load julia")
+#- #--
+#- #--
+#- #set_alias("pyLoad","python /share/Tools/Python/ganglia_grep.py")
+#- #set_alias("fds2VTK","python /share/Tools/FIRE/FDS/FDS2VTK/fds2VTK/fds2VTK.py")
+#- #set_alias("XLS2FDS","python /share/Tools/FIRE/FDS/XLS2FDS/xls2fds-dev/fds6.5_fds2excel.py")
+#- #set_alias("XLS2FDS5","python /share/Tools/FIRE/FDS/XLS2FDS/xls2fds-dev/fds5_fds2excel.py")
+#- #set_alias("plotHRR","python /share/Tools/Python/FireSimulation/plotHRR_csv63.py")
+#- #set_alias("plotHRR_hv","panel serve /share/Tools/Python/FireSimulation/plotHRR_hvplot_csv67.py --args")
+#- #set_alias("veuszPack","python /share/software_old/Python/VSZ_SKript/exportVSZ.py")
+#- #set_alias("zipFDS","python /share/Tools/Python/FireSimulation/zipFDS_v2.py")
+#- #set_alias("unzipFDS","python /share/Tools/Python/FireSimulation/unzipFDS_v1.py")
+#- #set_alias("scale2Meter","python /share/Tools/Python/ScriptsForSTLHandling/scaleSTL2meter.py")
+#- #set_alias("cleanSTLsplit","sh /share/OpenFOAM/Tools/Pre/CleanSTL/split_stls.sh")
+#- #set_alias("ETK_temp","python /share/Tools/Python/ETK_temp.py")
+#- #set_alias("veuszPlotUI","python /share/Tools/Python/VEUSZ_PLOT_UI/VeuszPlotUI-dev/readXLS4Plot.py")
+#- #set_alias("Veusz","module purge; veusz")
+#- #set_alias("OPF2mm","python /share/software_old/OpenFOAM/Addons/PreProcessing/readDictionary/translateFreeplaneFOAM.py")
+#- #set_alias("starLog2Csv","bash /share/Tools/Starccm/log2Csv_v1.sh")
+#- #set_alias("starPlotLog","python /share/Tools/Starccm/plotLogFile_v1.py")
+#- 
+#- 
+#- 
+#- #---------
+#- #set_alias("opt_DK_SENS_delta","python /share/Tools/OPTIMIZATION/Dakota/post_salib_delta_v1.py")
+#- #set_alias("opt_DK_SENS_multi_delta","python /share/Tools/OPTIMIZATION/Dakota/post_salib_delta_multiple_v1.py")
+#- #set_alias("opt_DK_scatter_holov","bokeh serve --show /share/Tools/OPTIMIZATION/Dakota/post_scatter_df_v1.py --args ")
+#- #set_alias("opt_DK_describe","python /share/Tools/OPTIMIZATION/Dakota/post_Describe_Dakota_Dat_v1.py")
+#- #set_alias("opt_DK_Post_OBJ2","python /share/Tools/OPTIMIZATION/Dakota/post_extract_opt_v1.py")
+#- #set_alias("opt_DK_Post_OBJ1","python /share/Tools/OPTIMIZATION/Dakota/post_convergence_1opt_v1.py")
+#- #set_alias("opt_DK_scatter_snsPair","python /share/Tools/OPTIMIZATION/Dakota/post_scatter_matrix_reg_v1.py")
+#- #set_alias("opt_DK_dat2CSV","python /share/Tools/OPTIMIZATION/Dakota/post_convertDak2csv_v1.py")
+#- #set_alias("opt_DK_SelectBest","python /share/Tools/OPTIMIZATION/Dakota/post_extract_best_v1.py")
+#- #set_alias("opt_LOG2CSV","python /share/Tools/OPTIMIZATION/Dakota/post_convert_log2csv_v1.py")
+#- #set_alias("opt_Gauss_std","python /share/Tools/OPTIMIZATION/Dakota/calc_std_gaussian_v1.py")
+#- #
+#- #---------
+#- #set_alias("xdat","java -jar /share/Tools/xdat/xdat.jar")
+#- #set_alias("smv","/share/software/Fire/FDS/6.1.1/bin/smokeview")
+#- #set_alias("opf_rmTime","python /share/Tools/Python/removeTimeIterations.py")
+#- #set_alias("rs_up","bash /share/Tools/Cloud/POC_2018/scripts/rs_upload_file_v1.sh")
+#- #set_alias("rs_sub","bash /share/Tools/Cloud/POC_2018/scripts/rs_submit_v1.sh")
+#- #set_alias("octave","/share/Tools/Divs/octave/Octave-3.8.2_BIN/bin/octave")
+#- #set_alias("fdsTar","python /share/Tools/Python/FireSimulation/tarFDS_v1.py")
+#- #
+#- #---------
+#- #set_alias("blenderOld","/usr/bin/blender")
+#- #set_alias("blender","/share/Tools/Blender/blender-2.79b-linux-glibc219-x86_64/blender")
+#- #
+#- #---------
+#- #set_alias("deapOpt","/share/Tools/OPTIMIZATION/pyMOBT/deap-dev/deap_optimization.py")
+#- #set_alias("deapOptScoopAll","python -m scoop /share/Tools/OPTIMIZATION/pyMOBT/deap-dev/deap_optimization.py")
+#- #set_alias("deapOptScoopOne","python -m scoop -n 1 /share/Tools/OPTIMIZATION/pyMOBT/deap-dev/deap_optimization.py")
+#- #set_alias("deapOptScoopMachine","l#python-m scoop-nX--hostfilemachine/share/Tools/OPTIMIZATION/pyMOBT/deap-dev/deap_optimization.py")
+#- #set_alias("killProcess","argv1/share/Tools/killClusterProcess.sh")
+#- #set_alias("png2avi","python /share/Tools/Python/png2avi_v2.py")
+#- #set_alias("visOPF","visit -o system/controlDict")
+#- #set_alias("h20","head -n 20 ")
+#- #set_alias("h100","head -n 100 ")
+#- #set_alias("t20","tail -n 20 ")
+#- #set_alias("t100","tail -n 100 ")
+#- #set_alias("ccmake3.13","/share/Tools/Divs/cmake-3.13.3-Linux-x86_64/bin/ccmake")
+#- #set_alias("cmake3.13","/share/Tools/Divs/cmake-3.13.3-Linux-x86_64/bin/cmake")
+#- #help([[ Divs Programs - alias
+#- #
+#- #]])
+#- #
+#- #
+#- #-- alias opfTags="find -H "$WM_PROJECT_DIR"  -name "*.[HC]" -o -name lnInclude -prune -o -name Doxygen -prune | ctags-exuberant -e --extra=+fq --file-scope=no --c-kinds=+p -o .tags/etags -L"
+
+#ml -py
+
+#--# >>> conda initialize >>>
+#--# !! Contents within this block are managed by 'conda init' !!
+#--__conda_setup="$('/share/Tools/Python/Distributions/MiniConda3_latest_190809/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+#--export conda_setupt="$('/share/Tools/Python/Distributions/MiniConda3_latest_190809/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+#--if [ $? -eq 0 ]; then
+#--    #eval "$__conda_setup"
+#--    echo "HA1"
+#--else
+#--    echo "HA2"
+#--    if [ -f "/share/Tools/Python/Distributions/MiniConda3_latest_190809/etc/profile.d/conda.sh" ]; then
+#--        . "/share/Tools/Python/Distributions/MiniConda3_latest_190809/etc/profile.d/conda.sh"
+#--        echo "HA3"
+#--    else
+#--        export PATH="/share/Tools/Python/Distributions/MiniConda3_latest_190809/bin:$PATH"
+#--        echo "HA4"
+#--    fi
+#--fi
+#--unset __conda_setup
+export JUPYTERLAB_DIR="$HOME/.local/share/jupyter/lab"

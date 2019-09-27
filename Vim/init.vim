@@ -13,28 +13,35 @@ set runtimepath+=/home/fbraenns/.nvim/
 call plug#begin('/home/fbraenns/.nvim/vimplug')
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
+
 Plug 'Shougo/deol.nvim'
 " Plug 'cyberkov/openhab-vim'
 
-"Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " Plug 'zchee/deoplete-jedi'
+"Plug 'Shougo/deoplete-clang2.git'
+Plug 'zxqfl/tabnine-vim'
+Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
 "-------------------------------------------------------------------------------------------------- 
-Plug 'ncm2/ncm2'
+"Plug 'ncm2/ncm2'
 " assuming you're using vim-plug: https://github.com/junegunn/vim-plug
 " Plug 'ncm2/ncm2'
-Plug 'roxma/nvim-yarp'
+"Plug 'roxma/nvim-yarp'
 
 " enable ncm2 for all buffers
-autocmd BufEnter * call ncm2#enable_for_buffer()
+" autocmd BufEnter * call ncm2#enable_for_buffer()
 
 " IMPORTANT: :help Ncm2PopupOpen for more information
 set completeopt=noinsert,menuone,noselect
 
+Plug 'lervag/vimtex'
+
 " NOTE: you need to install completion sources to get completions. Check
 " our wiki page for a list of sources: https://github.com/ncm2/ncm2/wiki
-Plug 'ncm2/ncm2-bufword'
-Plug 'ncm2/ncm2-path'
+" Plug 'ncm2/ncm2-bufword'
+" Plug 'ncm2/ncm2-path'
 
+Plug 'xywei/vim-dealii-prm'
 
 " Plug 'neoclide/coc.nvim' , {'tag': '*', 'do': { -> coc#util#install()}}
 
@@ -57,11 +64,13 @@ Plug 'kmnk/denite-dirmark' "Bookmarks for defx
 " Plug '/home/fbraenns/.fzf/bin/fzf'
 Plug 'junegunn/fzf.vim'
 " Plug 'tiagoinacio/fzf-bookmark.vim'
+" Plug 'yuki-ycino/fzf-preview.vim'
+Plug 'JuliaEditorSupport/julia-vim'
 
 " Plug 'chemzqm/denite-extra'
 " Plug 'chemzqm/denite-git'
 " Plug 'notomo/denite-keymap'
-" Plug 'rafi/vim-denite-session'
+Plug 'rafi/vim-denite-session'
 " Plug 'iyuuya/denite-ale'
 " Plug 'yyotti/denite-marks'
 " Plug 'rafi/vim-denite-z'
@@ -72,6 +81,7 @@ Plug 'inkarkat/vim-mark'
 
 Plug 'junegunn/vim-easy-align'
 Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
 
 Plug 'chrisbra/csv.vim'
 Plug 'Yggdroot/indentLine'
@@ -82,8 +92,9 @@ Plug 'itchyny/vim-parenmatch'
 Plug 'jiangmiao/auto-pairs'
 Plug 'itchyny/vim-cursorword'
 Plug 'itchyny/lightline.vim'
-" Plug 'xolox/vim-misc'
-" Plug 'xolox/vim-session'
+Plug 'xolox/vim-misc'
+Plug 'xolox/vim-session'
+
 Plug 'morhetz/gruvbox'
 Plug 'chriskempson/base16-vim'
 Plug 'rainglow/vim'
@@ -105,7 +116,7 @@ Plug 'lervag/vim-foam'
 " Plug 'chemzqm/vim-easygit'
 " Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 " Plug 'rudes/vim-java', { 'for': 'java' }
-" Plug 'vyzyv/vimpyter'
+Plug 'vyzyv/vimpyter'
 "Plug '4Evergreen4/vim-hardy' "Arduino
 "--------------------------------------------------------------------------------------------------
 
@@ -230,6 +241,71 @@ augroup filetype
     autocmd WinEnter * setlocal cursorline
     autocmd WinLeave * setlocal nocursorline
 augroup END
+
+  "   autocmd BufEnter * call ncm2#enable_for_buffer()
+  "   autocmd Filetype tex call ncm2#register_source({
+  "           \ 'name': 'vimtex',
+  "           \ 'priority': 8,
+  "           \ 'scope': ['tex'],
+  "           \ 'mark': 'tex',
+  "           \ 'word_pattern': '\w+',
+  "           \ 'complete_pattern': g:vimtex#re#ncm2,
+  "           \ 'on_complete': ['ncm2#on_complete#omni', 'vimtex#complete#omnifunc'],
+  "           \ })
+  " augroup END
+
+"================================================================================================== 
+" Filename: foamFT.vim
+
+" No debug stuff
+" Should check if the file type is already set
+" But it's OK; just set it again
+
+function! SetFoamType()
+    " loop through the first 10 lines
+    " FoamFile is at line 8 usually
+    for nL in range(1,10)
+    " match 'FoamFile'
+        if (getline(nL) =~ 'FoamFile')
+            setfiletype foam
+            " if file type is set, leave the loop
+            break
+        endif
+    endfor
+endfunction
+
+" That's it!
+" Now, when to call it?
+
+augroup FOAMFTautocmds
+autocmd!
+autocmd BufRead * call SetFoamType()
+augroup End
+" Filename: customFoam.vim
+
+function! FOAMSetPathToCaseDir()
+    " IF you care only for files in
+    " system, 0, and constant, use
+    " let caseDir = expand('%:p:h:h')
+    " But, I'm a regexp lover, so,
+    " Make Vim remembers everything in the path until case name.
+    " delete everything else!
+    let caseDir = expand('%:p:s?\(\/.*run\/[a-zA-Z1-9\. ]*\)\/.*?\1?')
+    " set path to include all subdirs of caseDir.
+    " you can also use '=+' instead of '=' to add the caseDir to
+    " the default path; but I like it this way.
+    exe 'set path='.caseDir.'/**'
+    " I want to run blockMesh, solvers and other tools
+    " Directly in VIM, so change dir to casedir
+    exe 'cd '.caseDir
+endfunction
+
+" This is just incredible
+
+augroup FOAMautocmds
+autocmd!
+autocmd FileType foam* call FOAMSetPathToCaseDir()
+augroup End
 "
 "
 set backspace=eol,start,indent
@@ -389,43 +465,191 @@ let g:neosnippet#snippets_directory='~/.nvim/snippets'
 "==================================================================================================
 " Denite
 "-------------------------------------------------------------------------------------------------- 
-nnoremap <silent> <leader>8 :<C-u>DeniteCursorWord line -mode=normal -no-split -buffer-name=line<cr>
-nnoremap <silent><leader>* :<C-u>DeniteCursorWord grep:. -mode=normal<CR>
+"" Define mappings
+autocmd FileType denite call s:denite_my_settings()
+function! s:denite_my_settings() abort
+  nnoremap <silent><buffer><expr> <CR>
+  \ denite#do_map('do_action')
+  nnoremap <silent><buffer><expr> d
+  \ denite#do_map('do_action', 'delete')
+  nnoremap <silent><buffer><expr> p
+  \ denite#do_map('do_action', 'preview')
+  nnoremap <silent><buffer><expr> q
+  \ denite#do_map('quit')
+  nnoremap <silent><buffer><expr> i
+  \ denite#do_map('open_filter_buffer')
+  nnoremap <silent><buffer><expr> <Space>
+  \ denite#do_map('toggle_select').'j'
+endfunction
+
+
+	" Change file/rec command.
+	call denite#custom#var('file/rec', 'command',
+	\ ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
+	" For ripgrep
+	" Note: It is slower than ag
+	call denite#custom#var('file/rec', 'command',
+	\ ['rg', '--files', '--glob', '!.git'])
+	" For Pt(the platinum searcher)
+	" NOTE: It also supports windows.
+	call denite#custom#var('file/rec', 'command',
+	\ ['pt', '--follow', '--nocolor', '--nogroup',
+	\  (has('win32') ? '-g:' : '-g='), ''])
+	" For python script scantree.py
+	" Read bellow on this file to learn more about scantree.py
+	call denite#custom#var('file/rec', 'command', ['scantree.py'])
+
+	" Change matchers.
+	call denite#custom#source(
+	\ 'file_mru', 'matchers', ['matcher/fuzzy', 'matcher/project_files'])
+	call denite#custom#source(
+	\ 'file/rec', 'matchers', ['matcher/cpsm'])
+
+	" Change sorters.
+	call denite#custom#source(
+	\ 'file/rec', 'sorters', ['sorter/sublime'])
+
+	" Add custom menus
+	" let s:menus = {}
+        "
+	" let s:menus.zsh = {
+	"         \ 'description': 'Edit your import zsh configuration'
+	"         \ }
+	" let s:menus.zsh.file_candidates = [
+	"         \ ['zshrc', '~/.config/zsh/.zshrc'],
+	"         \ ['zshenv', '~/.zshenv'],
+	"         \ ]
+        "
+	" let s:menus.my_commands = {
+	"         \ 'description': 'Example commands'
+	"         \ }
+	" let s:menus.my_commands.command_candidates = [
+	"         \ ['Split the window', 'vnew'],
+	"         \ ['Open zsh menu', 'Denite menu:zsh'],
+	"         \ ['Format code', 'FormatCode', 'go,python'],
+	"         \ ]
+
+	" call denite#custom#var('menu', 'menus', s:menus)
+
+	" Ag command on grep source
+	call denite#custom#var('grep', 'command', ['ag'])
+	call denite#custom#var('grep', 'default_opts',
+			\ ['-i', '--vimgrep'])
+	call denite#custom#var('grep', 'recursive_opts', [])
+	call denite#custom#var('grep', 'pattern_opt', [])
+	call denite#custom#var('grep', 'separator', ['--'])
+	call denite#custom#var('grep', 'final_opts', [])
+
+	" Ack command on grep source
+	" call denite#custom#var('grep', 'command', ['ack'])
+	" call denite#custom#var('grep', 'default_opts',
+	"                 \ ['--ackrc', $HOME.'/.ackrc', '-H', '-i',
+	"                 \  '--nopager', '--nocolor', '--nogroup', '--column'])
+	" call denite#custom#var('grep', 'recursive_opts', [])
+	" call denite#custom#var('grep', 'pattern_opt', ['--match'])
+	" call denite#custom#var('grep', 'separator', ['--'])
+	" call denite#custom#var('grep', 'final_opts', [])
+        "
+	" " Ripgrep command on grep source
+	" call denite#custom#var('grep', 'command', ['rg'])
+	" call denite#custom#var('grep', 'default_opts',
+	"                 \ ['-i', '--vimgrep', '--no-heading'])
+	" call denite#custom#var('grep', 'recursive_opts', [])
+	" call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
+	" call denite#custom#var('grep', 'separator', ['--'])
+	" call denite#custom#var('grep', 'final_opts', [])
+        "
+	" " Pt command on grep source
+	" call denite#custom#var('grep', 'command', ['pt'])
+	" call denite#custom#var('grep', 'default_opts',
+	"                 \ ['-i', '--nogroup', '--nocolor', '--smart-case'])
+	" call denite#custom#var('grep', 'recursive_opts', [])
+	" call denite#custom#var('grep', 'pattern_opt', [])
+	" call denite#custom#var('grep', 'separator', ['--'])
+	" call denite#custom#var('grep', 'final_opts', [])
+        "
+	" " jvgrep command on grep source
+	" call denite#custom#var('grep', 'command', ['jvgrep'])
+	" call denite#custom#var('grep', 'default_opts', ['-i'])
+	" call denite#custom#var('grep', 'recursive_opts', ['-R'])
+	" call denite#custom#var('grep', 'pattern_opt', [])
+	" call denite#custom#var('grep', 'separator', [])
+	" call denite#custom#var('grep', 'final_opts', [])
+
+	" Specify multiple paths in grep source
+	"call denite#start([{'name': 'grep',
+	"      \ 'args': [['a.vim', 'b.vim'], '', 'pattern']}])
+
+	" Define alias
+	call denite#custom#alias('source', 'file/rec/git', 'file/rec')
+	call denite#custom#var('file/rec/git', 'command',
+	      \ ['git', 'ls-files', '-co', '--exclude-standard'])
+
+	call denite#custom#alias('source', 'file/rec/py', 'file/rec')
+	call denite#custom#var('file/rec/py', 'command',['scantree.py'])
+
+	" Change ignore_globs
+	call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
+	      \ [ '.git/', '.ropeproject/', '__pycache__/',
+	      \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/'])
+
+	" Custom action
+	" Note: lambda function is not supported in Vim8.
+	call denite#custom#action('file', 'test',
+	      \ {context -> execute('let g:foo = 1')})
+	call denite#custom#action('file', 'test2',
+	      \ {context -> denite#do_action(
+	      \  context, 'open', context['targets'])})
+
 
 "-------------------------------------------------------------------------------------------------- 
-nnoremap <silent> <leader>ff :<C-u>DeniteBufferDir -mode=insert -no-split -buffer-name=files   file/rec<cr>
+"nnoremap <silent><leader>ff :<C-u>DeniteBufferDir -start-filter -statusline -no-split -buffer-name=files   file/rec<cr>
+nnoremap <silent><leader>ff :<C-u>DeniteBufferDir -statusline -no-split -buffer-name=files   file/rec<cr>
 " nnoremap <silent> <leader>/ :<C-u>DeniteBufferDir -mode=insert -no-split -buffer-name=files   file/rec<cr>
-nnoremap <silent> <leader>fd :<C-u>DeniteBufferDir -mode=insert -no-split -buffer-name=dir directory_rec<cr>
+"nnoremap <silent><leader>fd :<C-u>DeniteBufferDir -start-filter -statusline -no-split -buffer-name=dir directory_rec<cr>
+nnoremap <silent><leader>fd :<C-u>DeniteBufferDir -statusline -no-split -buffer-name=dir directory_rec<cr>
 " nnoremap <silent> <leader>\ :<C-u>DeniteBufferDir -mode=insert -no-split -buffer-name=dir directory_rec<cr>
 " nnoremap <silent> <leader>\ :<C-u>Denite grep:. -mode=normal<CR>
 " nnoremap <silent> <leader>fg :<C-u>Denite grep:. -mode=normal<CR>
-nnoremap <silent> <leader>fg :<C-u>Denite grep:. -mode=normal<CR>
+nnoremap <silent><leader>* :<C-u>DeniteCursorWord grep:. <CR>
+nnoremap <silent><leader>fj :<C-u>DeniteCursorWord grep:. <CR>
+"nnoremap <silent><leader>8 :<C-u>DeniteCursorWord line -start-filter -statusline -no-split -buffer-name=line<cr>
+nnoremap <silent><leader>8 :<C-u>DeniteCursorWord line -statusline -no-split -buffer-name=line<cr>
+"nnoremap <silent><leader>fg :<C-u>Denite grep:. -start-filter -statusline <CR>
+nnoremap <silent><leader>fg :<C-u>Denite grep:. -statusline <CR>
+nnoremap <silent><leader>fh :<C-u>Denite grep:::`expand('<cword>')`<CR>
 " nnoremap <silent> <leader>fG :<C-u>Denite grep:. -mode=normal -G
 " nnoremap <silent> <leader>g :<C-u>Denite grep:. -mode=normal<CR>
 " nnoremap <leader><Space>/ :<C-u>DeniteBufferDir grep:. -mode=normal<CR>
 
 "-------------------------------------------------------------------------------------------------- 
-nnoremap <silent> <leader>b :<C-u>Denite -mode=normal defx/dirmark<cr>
-nnoremap <silent> <leader>B :<C-u>Denite -mode=normal dirmark/add<cr>
+" nnoremap <silent> <leader>b :<C-u>Denite -mode=normal defx/dirmark<cr>
+" nnoremap <silent> <leader>B :<C-u>Denite -mode=normal dirmark/add<cr>
 " nnoremap <silent> <leader>B :<C-u>Denite -mode=normal defx/dirmark<cr>
-" nnoremap <silent> <leader>BB :<C-u>Denite -mode=normal -no-split -buffer-name=buffers buffer<cr>
-nnoremap <silent> <leader>l :<C-u>Denite line -mode=insert -no-split -buffer-name=line<cr>
-nnoremap <silent> <leader>m :<C-u>Denite marks -mode=normal<CR>
-nnoremap <silent> <leader>r :<C-u>Denite -mode=normal -no-split -buffer-name=mru     file_mru<cr>
+"
+"nnoremap <silent> <leader>b :<C-u>Denite -no-split -start-filter -statusline -buffer-name=buffers buffer<cr>
+nnoremap <silent> <leader>b :<C-u>Denite -no-split -statusline -buffer-name=buffers buffer<cr>
+"nnoremap <silent> <leader>l :<C-u>Denite line -start-filter -statusline -no-split -buffer-name=line<cr>
+nnoremap <silent> <leader>l :<C-u>Denite line -statusline -no-split -buffer-name=line<cr>
+" nnoremap <silent> <leader>m :<C-u>Denite marks <CR>
+"nnoremap <silent> <leader>r :<C-u>Denite -no-split -start-filter -statusline -buffer-name=mru     file_mru<cr>
+nnoremap <silent> <leader>r :<C-u>Denite -no-split -statusline -buffer-name=mru     file_mru<cr>
 
 "-------------------------------------------------------------------------------------------------- 
-nnoremap <silent> <leader>a :<C-u>Denite ale -mode=normal<CR>
-nnoremap <silent> <leader>o :<C-u>Denite -mode=normal -winwidth=35 outline<cr>
+nnoremap <silent> <leader>a :<C-u>Denite ale <CR>
+"nnoremap <silent> <leader>o :<C-u>Denite -start-filter -statusline -winwidth=35 outline<cr>
+nnoremap <silent> <leader>o :<C-u>Denite -statusline -winwidth=35 outline<cr>
 " nnoremap <silent> <leader>v :<C-u>Denite location_list -mode=normal -no-empty -auto-preview<CR>
-nnoremap <silent> <leader>M :<C-u>Denite menu -mode=normal<CR>
+nnoremap <silent> <leader>M :<C-u>Denite menu <CR>
 
 "-------------------------------------------------------------------------------------------------- 
-" nnoremap <silent> <leader>Ds :<C-u>Denite -mode=normal -winwidth=35 session<cr>
+nnoremap <silent> <leader>Ds :<C-u>Denite -winwidth=35 session<cr>
 nnoremap <silent> <leader>Dj :call execute('Denite -resume -select=+'.v:count1.' -immediately')<CR>
 nnoremap <silent> <leader>Dk :call execute('Denite -resume -select=-'.v:count1.' -immediately')<CR>
-nnoremap <silent> <leader>Dr :<C-u>Denite -resume -mode=normal<CR>
-nnoremap <silent> <leader>C :<C-u>Denite colorscheme -mode=normal -auto-preview<CR>
+nnoremap <silent> <leader>Dr :<C-u>Denite -resume <CR>
+nnoremap <silent> <leader>C :<C-u>Denite colorscheme -auto-preview<CR>
 
+call denite#custom#var('session', 'path', '~/.vim-sessions')
 
 " nnoremap <silent> <leader>hs :<C-u>Denite history:search -mode=normal<CR>
 " nnoremap <silent> <leader>hc :<C-u>Denite history:cmd -mode=normal<CR>
@@ -480,67 +704,84 @@ call denite#custom#map('insert', '<C-f>',
 "xxx" call denite#custom#source('grep', 'converters', ['converter/abbr_word'])
 
 " call denite#start([{'name': 'grep', 'args': ['.', ['--python'], pattern]}])
-map <F11> :call denite#custom#var('grep', 'default_opts', ['--python'])<CR>
+" map <F11> :call denite#custom#var('grep', 'default_opts', ['--python'])<CR>
 
 " Change ignore_globs
-call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
-            \ [ '.git/', '.ropeproject/', '__pycache__/',
-            \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/'])
+" call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
+"             \ [ '.git/', '.ropeproject/', '__pycache__/',
+"             \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/'])
 "
-call denite#custom#map(
-            \ 'normal',
-            \ 'h',
-            \ '<denite:move_up_path>',
-            \ 'noremap'
-            \)
-
-call denite#custom#map(
-            \ 'normal',
-            \ 'f',
-            \ '<denite:scroll_page_forwards>',
-            \ 'noremap'
-            \)
-
-call denite#custom#map(
-            \ 'normal',
-            \ 'b',
-            \ '<denite:scroll_page_backwards>',
-            \ 'noremap'
-            \)
+	" autocmd FileType denite-filter call s:denite_filter_my_settings()
+	" function! s:denite_filter_my_settings() abort
+	"   imap <silent><buffer> <C-c> <Plug>(denite_filter_quit)
+	" endfunction
+        "
+	" autocmd FileType denite-filter call s:denite_filter_my_settings()
+	" function! s:denite_filter_my_settings() abort
+	"   inoremap <silent><buffer> <C-j>
+	"   \ <Esc><C-w>p:call cursor(line('.')+1,0)<CR><C-w>pA
+	"   inoremap <silent><buffer> <C-k>
+	"   \ <Esc><C-w>p:call cursor(line('.')-1,0)<CR><C-w>pA
+	" endfunction
 " call denite#custom#map(
-"       \ 'normal',
-"       \ 'l',
-"       \ '<denite:enter_mode:normal>',
-"       \ 'noremap'
-"       \)
+"             \ 'normal',
+"             \ 'h',
+"             \ '<denite:move_up_path>',
+"             \ 'noremap'
+"             \)
+"
+" call denite#custom#map(
+"             \ 'normal',
+"             \ 'f',
+"             \ '<denite:scroll_page_forwards>',
+"             \ 'noremap'
+"             \)
+"
+" call denite#custom#map(
+"             \ 'normal',
+"             \ 'b',
+"             \ '<denite:scroll_page_backwards>',
+"             \ 'noremap'
+"             \)
+" " call denite#custom#map(
+" "       \ 'normal',
+" "       \ 'l',
+" "       \ '<denite:enter_mode:normal>',
+" "       \ 'noremap'
+" "       \)
+"
+" call denite#custom#map(
+"             \ 'insert',
+"             \ '<C-j>',
+"             \ '<denite:move_to_next_line>',
+"             \ 'noremap'
+"             \)
+" call denite#custom#map(
+"             \ 'insert',
+"             \ '<C-n>',
+"             \ '<denite:move_to_next_line>',
+"             \ 'noremap'
+"             \)
+"
+" call denite#custom#map(
+"             \ 'insert',
+"             \ '<C-k>',
+"             \ '<denite:move_to_previous_line>',
+"             \ 'noremap'
+"             \)
+" call denite#custom#map(
+"             \ 'insert',
+"             \ '<C-p>',
+"             \ '<denite:move_to_previous_line>',
+"             \ 'noremap'
+"             \)
 
-call denite#custom#map(
-            \ 'insert',
-            \ '<C-j>',
-            \ '<denite:move_to_next_line>',
-            \ 'noremap'
-            \)
-call denite#custom#map(
-            \ 'insert',
-            \ '<C-n>',
-            \ '<denite:move_to_next_line>',
-            \ 'noremap'
-            \)
+autocmd FileType denite-filter call s:denite_filter_my_settings()
+function! s:denite_filter_my_settings() abort
+  call deoplete#custom#buffer_option('auto_complete', v:false)
+endfunction
 
-call denite#custom#map(
-            \ 'insert',
-            \ '<C-k>',
-            \ '<denite:move_to_previous_line>',
-            \ 'noremap'
-            \)
-call denite#custom#map(
-            \ 'insert',
-            \ '<C-p>',
-            \ '<denite:move_to_previous_line>',
-            \ 'noremap'
-            \)
-
-
+call denite#custom#option('_', 'statusline', v:false)
 
 "-------------------------------------------------------------------------------------------------- 
 " Add custom menus
@@ -582,16 +823,6 @@ let s:menus.Sessions = {
             \ 'description': 'Sessions commands'
             \ }
 
-" let s:menus.Unite= {
-"             \ 'description': 'Unite commands'
-"             \ }
-" let s:menus.VimFiler= {
-"             \ 'description': 'VimFiler commands'
-"             \ }
-" let s:menus.VimFiler.command_candidates = [
-"             \ ['Explorer 1', ':<C-u>VimFilerExplorer -sort-type=Time -status -split -simple -parent -winwidth=35 -no-quit -find'],
-"             \ ['Explorer 2', ':VimFilerExplorer -status -find -winwidth=80 -sort-type=Time'],
-"             \ ]
 
 let s:menus.Arduino= {
             \ 'description': 'Arduino commands'
@@ -670,19 +901,19 @@ let g:indentLine_color_term = 239
 
 " map <F12> :Defx `expand('%:p:h')` -search=`expand('%:p')`<CR>
 map <silent><leader>x :Defx -auto-cd<CR>
-" map <silent><leader>X :Defx -auto-cd -split="vertical" -winwidth=50<CR>
-" map <silent><leader>Dc :Defx -sort="Time" -columns=mark:filename:time:size -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
-" map <silent><leader>Dd :Defx -sort="Time" -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
-" map <silent><leader>Dd :Defx -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
-map <silent><leader>Dr :Defx -sort="Time" -resume -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
-" map <silent><leader>x :Defx -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
-map <silent><leader>x :Defx -new -sort="Time" -split="vertical" -winwidth=50 -direction=topleft -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
-" map <silent><leader>X :Defx -new -split="vertical" -winwidth=50 -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
-"map <silent><leader>X :Defx -auto-cd 'expand('%:p:h')' -search=`expand('%:p')` <CR>
+ map <silent><leader>X :Defx -auto-cd -split=vertical -winwidth=50<CR>
+ map <silent><leader>Dc :Defx -sort=Time -columns=mark:filename:time:size -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+ map <silent><leader>Dd :Defx -sort=Time -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+ map <silent><leader>Dd :Defx -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+map <silent><leader>Dr :Defx -sort=Time -resume -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+ map <silent><leader>x :Defx -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+map <silent><leader>x :Defx -new -sort=Time -split=vertical -winwidth=50 -direction=topleft -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+ map <silent><leader>X :Defx -new -split=vertical -winwidth=50 -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+map <silent><leader>X :Defx -auto-cd 'expand('%:p:h')' -search=`expand('%:p')` <CR>
 map <silent><leader>Dv :VimFilerCreate -status -sort-type=Time<CR>
-" map <silent><leader>d :VimFilerCreate -status -sort-type=Time<CR>
-map <silent><leader>Dx :Defx -sort="Time" -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
-map <silent><leader>d :Defx -sort="Time" -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+ map <silent><leader>d :VimFilerCreate -status -sort-type=Time<CR>
+map <silent><leader>Dx :Defx -sort=Time -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
+map <silent><leader>d :Defx -sort=Time -new -auto-cd `expand('%:p:h')` -search=`expand('%:p')` <CR>
 " map <silent><leader>d :VimFilerCreate -status -sort-type=Time<CR>
 
 nnoremap <silent> <Leader>xf :Defx -split=vertical -winwidth=40
@@ -707,7 +938,27 @@ nnoremap <silent> <Leader>xdf :Defx -split=vertical -winwidth=40
 call denite#custom#action('buffer,directory,file,openable', 'defx',
       \ {context -> execute('Defx ' . context['targets'][0]['action__path'])})
 
-call defx#custom#option('_', { 'columns': 'icons:filename:size:git', })
+call defx#custom#column('icon', {
+\ 'directory_icon': '▸',
+\ 'opened_icon': '▾',
+\ 'root_icon': ' ',
+\ })
+
+call defx#custom#column('filename', {
+\ 'min_width': 40,
+\ 'max_width': 40,
+\ })
+
+call defx#custom#column('mark', {
+\ 'readonly_icon': '✗',
+\ 'selected_icon': '✓',
+\ })
+
+" call defx#custom#option('_', { 'columns': 'mark:indent:icons:filename:type:size:git', })
+	call defx#custom#option('_', {
+	      \ 'columns': 'mark:indent:icon:filename:type:size:time:git',
+	      \ })
+
 
 let g:defx_as_default_explorer = 1 "geht nicht"
 "map <silent><leader>d :VimFilerBufferDir -status -sort-type=Time<CR>
@@ -889,9 +1140,17 @@ silent 12Mark /.*\.pyc/
 silent 1Mark /.*\.ipynb/
 " silent 58Mark /.*\.ipynb/
 "
+silent 4Mark /.*\.cmake/
+silent 4Mark /.*akefile/
+silent 5Mark /.*MakeCache.txt/
+silent 5Mark /.*MakeLists.txt/
 silent 2Mark /.*\.igs/
 silent 2Mark /.*\.iges/
+silent 2Mark /.*\.cpp/
+silent 2Mark /.*\.c/
 silent 3Mark /.*\.stp/
+silent 3Mark /.*\.hpp/
+silent 3Mark /.*\.h/
 silent 3Mark /.*\.step/
 silent 4Mark /.*\.stl/
 silent 5Mark /.*\.mo/
@@ -905,6 +1164,8 @@ silent 12Mark /.*\.out/
 silent 13Mark /.*\.in/
 
 silent 7Mark /.*\.fds/
+silent 7Mark /.*\.cc/
+silent 7Mark /.*\.f90/
 silent 13Mark /.*\.smv/
 silent 6Mark /.*\.pdf/
 silent 8Mark /.*\.png/
@@ -1156,55 +1417,6 @@ command! -nargs=+ -complete=command Z
 
 "================================================================================================== 
 "FZF
-"    " This is the default extra key bindings
-"    let g:fzf_action = {
-"      \ 'ctrl-t': 'tab split',
-"      \ 'ctrl-x': 'split',
-"      \ 'ctrl-v': 'vsplit' }
-"
-"    " An action can be a reference to a function that processes selected lines
-"    function! s:build_quickfix_list(lines)
-"      call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
-"      copen
-"      cc
-"    endfunction
-"
-"    let g:fzf_action = {
-"      \ 'ctrl-q': function('s:build_quickfix_list'),
-"      \ 'ctrl-t': 'tab split',
-"      \ 'ctrl-x': 'split',
-"      \ 'ctrl-v': 'vsplit' }
-"
-"    " Default fzf layout
-"    " - down / up / left / right
-"    " let g:fzf_layout = { 'down': '~40%' }
-"
-"    " You can set up fzf window using a Vim command (Neovim or latest Vim 8 required)
-"    " let g:fzf_layout = { 'window': 'enew' }
-"    " let g:fzf_layout = { 'window': '-tabnew' }
-"    " let g:fzf_layout = { 'window': '10split enew' }
-"
-"    " Customize fzf colors to match your color scheme
-"    let g:fzf_colors =
-"    \ { 'fg':      ['fg', 'Normal'],
-"      \ 'bg':      ['bg', 'Normal'],
-"      \ 'hl':      ['fg', 'Comment'],
-"      \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-"      \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-"      \ 'hl+':     ['fg', 'Statement'],
-"      \ 'info':    ['fg', 'PreProc'],
-"      \ 'border':  ['fg', 'Ignore'],
-"      \ 'prompt':  ['fg', 'Conditional'],
-"      \ 'pointer': ['fg', 'Exception'],
-"      \ 'marker':  ['fg', 'Keyword'],
-"      \ 'spinner': ['fg', 'Label'],
-"      \ 'header':  ['fg', 'Comment'] }
-"
-"    " Enable per-command history.
-"    " CTRL-N and CTRL-P will be automatically bound to next-history and
-"    " previous-history instead of down and up. If you don't like the change,
-"    " explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
-"    let g:fzf_history_dir = '~/.local/share/fzf-history'
 
 if has("persistent_undo")
     set undodir=~/.undodir/
@@ -1212,8 +1424,8 @@ if has("persistent_undo")
 endif
 "vim-mundo
 " Enable persistent undo so that undo history persists across vim sessions
-set undofile
-set undodir=~/.vim/undo
+" set undofile
+" set undodir=~/.vim/undo
 
 " hi mygroup
 " call matchadd('mygroup', '.py')
@@ -1223,32 +1435,39 @@ set viminfo='10,\"100,:20,%,n~/.viminfo
 set grepprg=ag\ --vimgrep\ $*
 set grepformat=%f:%l:%c:%m
 
-function! FZFRawAg(the_tail, ...)
-    return call('fzf#vim#grep', extend(['ag ' . a:the_tail, 1], a:000))
-endfunction
-command! -nargs=+ -complete=file RAg call FZFRawAg(<q-args>)
+" function! FZFRawAg(the_tail, ...)
+"     return call('fzf#vim#grep', extend(['ag ' . a:the_tail, 1], a:000))
+" endfunction
+" command! -nargs=+ -complete=file RAg call FZFRawAg(<q-args>)
 
 "================================================================================================== 
 "FZF
 "
 nnoremap <silent> <leader>fz :<C-u>FZF<CR>
-
-"================================================================================================== 
 " This is the default extra key bindings
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'vsplit' }
+" Consider using CTRL-X/V/T key bindings of the default :FZF command instead.
+" Open files in horizontal split
+nnoremap <silent> <Leader>s :call fzf#run({
+\   'down': '40%',
+\   'sink': 'botright split' })<CR>
 
-"================================================================================================== 
+" Open files in vertical horizontal split
+nnoremap <silent> <Leader>v :call fzf#run({
+\   'right': winwidth('.') / 2,
+\   'sink':  'vertical botright split' })<CR>
+
 " Default fzf layout
 " - down / up / left / right
 let g:fzf_layout = { 'down': '~40%' }
 
 " In Neovim, you can set up fzf window using a Vim command
-" let g:fzf_layout = { 'window': 'enew' }
-" let g:fzf_layout = { 'window': '-tabnew' }
-" let g:fzf_layout = { 'window': '10split' }
+let g:fzf_layout = { 'window': 'enew' }
+let g:fzf_layout = { 'window': '-tabnew' }
+let g:fzf_layout = { 'window': '10new' }
 
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
@@ -1265,6 +1484,45 @@ let g:fzf_colors =
   \ 'marker':  ['fg', 'Keyword'],
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
+
+" Enable per-command history.
+" CTRL-N and CTRL-P will be automatically bound to next-history and
+" previous-history instead of down and up. If you don't like the change,
+" explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
+let g:fzf_history_dir = '~/.local/share/fzf-history'
+
+"================================================================================================== 
+" This is the default extra key bindings
+" let g:fzf_action = {
+"   \ 'ctrl-t': 'tab split',
+"   \ 'ctrl-x': 'split',
+"   \ 'ctrl-v': 'vsplit' }
+
+"================================================================================================== 
+" Default fzf layout
+" - down / up / left / right
+" let g:fzf_layout = { 'down': '~40%' }
+"
+" " In Neovim, you can set up fzf window using a Vim command
+" let g:fzf_layout = { 'window': 'enew' }
+" let g:fzf_layout = { 'window': '-tabnew' }
+" let g:fzf_layout = { 'window': '10split' }
+
+" Customize fzf colors to match your color scheme
+" let g:fzf_colors =
+" \ { 'fg':      ['fg', 'Normal'],
+"   \ 'bg':      ['bg', 'Normal'],
+"   \ 'hl':      ['fg', 'Comment'],
+"   \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+"   \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+"   \ 'hl+':     ['fg', 'Statement'],
+"   \ 'info':    ['fg', 'PreProc'],
+"   \ 'border':  ['fg', 'Ignore'],
+"   \ 'prompt':  ['fg', 'Conditional'],
+"   \ 'pointer': ['fg', 'Exception'],
+"   \ 'marker':  ['fg', 'Keyword'],
+"   \ 'spinner': ['fg', 'Label'],
+"   \ 'header':  ['fg', 'Comment'] }
 
 "================================================================================================== 
 " Enable per-command history.
@@ -1286,283 +1544,359 @@ let g:fzf_tags_command = 'ctags -R'
 let g:fzf_commands_expect = 'alt-enter,ctrl-x'
 " Command for git grep
 " - fzf#vim#grep(command, with_column, [options], [fullscreen])
-command! -bang -nargs=* GGrep
-  \ call fzf#vim#grep(
-  \   'git grep --line-number '.shellescape(<q-args>), 0,
-  \   { 'dir': systemlist('git rev-parse --show-toplevel')[0] }, <bang>0)
+"- command! -bang -nargs=* GGrep
+"-   \ call fzf#vim#grep(
+"-   \   'git grep --line-number '.shellescape(<q-args>), 0,
+"-   \   { 'dir': systemlist('git rev-parse --show-toplevel')[0] }, <bang>0)
+"- 
+"- "================================================================================================== 
+"- " Override Colors command. You can safely do this in your .vimrc as fzf.vim
+"- " will not override existing commands.
+"- command! -bang Colors
+"-   \ call fzf#vim#colors({'left': '15%', 'options': '--reverse --margin 30%,0'}, <bang>0)
+"- 
+"- "================================================================================================== 
+"- " Augmenting Ag command using fzf#vim#with_preview function
+"- "   * fzf#vim#with_preview([[options], [preview window], [toggle keys...]])
+"- "     * For syntax-highlighting, Ruby and any of the following tools are required:
+"- "       - Bat: https://github.com/sharkdp/bat
+"- "       - Highlight: http://www.andre-simon.de/doku/highlight/en/highlight.php
+"- "       - CodeRay: http://coderay.rubychan.de/
+"- "       - Rouge: https://github.com/jneen/rouge
+"- "
+"- "   :Ag  - Start fzf with hidden preview window that can be enabled with "?" key
+"- "   :Ag! - Start fzf in fullscreen and display the preview window above
+"- command! -bang -nargs=* Ag
+"-   \ call fzf#vim#ag(<q-args>,
+"-   \                 <bang>0 ? fzf#vim#with_preview('up:60%')
+"-   \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
+"-   \                 <bang>0)
+"- 
+"- " Similarly, we can apply it to fzf#vim#grep. To use ripgrep instead of ag:
+"- command! -bang -nargs=* Rg
+"-   \ call fzf#vim#grep(
+"-   \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+"-   \   <bang>0 ? fzf#vim#with_preview('up:60%')
+"-   \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+"-   \   <bang>0)
+"- 
+"- " Likewise, Files command with preview window
+"- command! -bang -nargs=? -complete=dir Files
+"-   \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+"- "
+"- "================================================================================================== 
+"- " Mapping selecting mappings
+"- nmap <leader><tab> <plug>(fzf-maps-n)
+"- xmap <leader><tab> <plug>(fzf-maps-x)
+"- omap <leader><tab> <plug>(fzf-maps-o)
+"- 
+"- " Insert mode completion
+"- imap <c-x><c-k> <plug>(fzf-complete-word)
+"- imap <c-x><c-f> <plug>(fzf-complete-path)
+"- imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+"- imap <c-x><c-l> <plug>(fzf-complete-line)
+"- 
+"- " Advanced customization using autoload functions
+"- inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '15%'})
+"- 
+"- " Custom Statusline
+"- function! s:fzf_statusline()
+"-   " Override statusline as you like
+"-   highlight fzf1 ctermfg=161 ctermbg=251
+"-   highlight fzf2 ctermfg=23 ctermbg=251
+"-   highlight fzf3 ctermfg=237 ctermbg=251
+"-   setlocal statusline=%#fzf1#\ >\ %#fzf2#fz%#fzf3#f
+"- endfunction
+"- 
+"- autocmd! User FzfStatusLine call <SID>fzf_statusline()
+"- 
+"- "-------------------------------------------------------------------------------------------------- 
+"- command! -nargs=* -complete=dir Cd call fzf#run(fzf#wrap(
+"-   \ {'source': 'find '.(empty(<f-args>) ? '.' : <f-args>).' -type d',
+"-   \  'sink': 'cd'}))
+"- 
+"- ""-------------------------------------------------------------------------------------------------- 
+"- " Open files in horizontal split
+"- "
+"- nnoremap <silent> <Leader>s :call fzf#run({
+"- \   'down': '40%',
+"- \   'sink': 'botright split' })<CR>
+"- 
+"- " Open files in vertical horizontal split
+"- nnoremap <silent> <Leader>v :call fzf#run({
+"- \   'right': winwidth('.') / 2,
+"- \   'sink':  'vertical botright split' })<CR>
+"- "
+"- ""--------------------------------------------------------------------------------------------------
+"- " Select buffers
+"- function! s:buflist()
+"-  redir => ls
+"-  silent ls
+"-  redir END
+"-  return split(ls, '\n')
+"- endfunction
+"- 
+"- function! s:bufopen(e)
+"-  execute 'buffer' matchstr(a:e, '^[ 0-9]*')
+"- endfunction
+"- 
+"- nnoremap <silent> <Leader><Enter> :call fzf#run({
+"- \   'source':  reverse(<sid>buflist()),
+"- \   'sink':    function('<sid>bufopen'),
+"- \   'options': '+m',
+"- \   'down':    len(<sid>buflist()) + 2
+"- \ })<CR>
+"- 
+"- autocmd! VimEnter * command! -nargs=* -complete=file Ag :call fzf#vim#ag_raw(<q-args>, fzf#wrap('ag-raw',
+"- \ {'options': "--preview 'coderay $(cut -d: -f1 <<< {}) 2> /dev/null | sed -n $(cut -d: -f2 <<< {}),\\$p | head -".&lines."'"}))
+"- 
+"- "--------------------------------------------------------------------------------------------------
+"- command! FZFMru call fzf#run({
+"- \  'source':  v:oldfiles,
+"- \  'sink':    'e',
+"- \  'options': '-m -x +s',
+"- \  'down':    '40%'})
+"- 
+"- command! FZFMruBuffers call fzf#run({
+"- \ 'source':  reverse(s:all_files()),
+"- \ 'sink':    'edit',
+"- \ 'options': '-m -x +s',
+"- \ 'down':    '40%' })
+"- 
+"- function! s:all_files()
+"-  return extend(
+"-  \ filter(copy(v:oldfiles),
+"-  \        "v:val !~ 'fugitive:\\|NERD_tree\\|^/tmp/\\|.git/'"),
+"-  \ map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), 'bufname(v:val)'))
+"- endfunction
+"- 
+"- 
+"- "--------------------------------------------------------------------------------------------------
+"- "Jump to tags
+"- 
+"- function! s:tags_sink(line)
+"-  let parts = split(a:line, '\t\zs')
+"-  let excmd = matchstr(parts[2:], '^.*\ze;"\t')
+"-  execute 'silent e' parts[1][:-2]
+"-  let [magic, &magic] = [&magic, 0]
+"-  execute excmd
+"-  let &magic = magic
+"- endfunction
+"- 
+"- function! s:tags()
+"-  if empty(tagfiles())
+"-    echohl WarningMsg
+"-    echom 'Preparing tags'
+"-    echohl None
+"-    call system('ctags -R')
+"-  endif
+"- 
+"-  call fzf#run({
+"-  \ 'source':  'cat '.join(map(tagfiles(), 'fnamemodify(v:val, ":S")')).
+"-  \            '| grep -v -a ^!',
+"-  \ 'options': '+m -d "\t" --with-nth 1,4.. -n 1 --tiebreak=index',
+"-  \ 'down':    '40%',
+"-  \ 'sink':    function('s:tags_sink')})
+"- endfunction
+"- 
+"- command! Tags call s:tags()
+"- 
+"- 
+"- "--------------------------------------------------------------------------------------------------
+"- "Jump to tags in the current buffer
+"- function! s:align_lists(lists)
+"-  let maxes = {}
+"-  for list in a:lists
+"-    let i = 0
+"-    while i < len(list)
+"-      let maxes[i] = max([get(maxes, i, 0), len(list[i])])
+"-      let i += 1
+"-    endwhile
+"-  endfor
+"-  for list in a:lists
+"-    call map(list, "printf('%-'.maxes[v:key].'s', v:val)")
+"-  endfor
+"-  return a:lists
+"- endfunction
+"- 
+"- function! s:btags_source()
+"-  let lines = map(split(system(printf(
+"-    \ 'ctags -f - --sort=no --excmd=number --language-force=%s %s',
+"-    \ &filetype, expand('%:S'))), "\n"), 'split(v:val, "\t")')
+"-  if v:shell_error
+"-    throw 'failed to extract tags'
+"-  endif
+"-  return map(s:align_lists(lines), 'join(v:val, "\t")')
+"- endfunction
+"- 
+"- function! s:btags_sink(line)
+"-  execute split(a:line, "\t")[2]
+"- endfunction
+"- 
+"- function! s:btags()
+"-  try
+"-    call fzf#run({
+"-    \ 'source':  s:btags_source(),
+"-    \ 'options': '+m -d "\t" --with-nth 1,4.. -n 1 --tiebreak=index',
+"-    \ 'down':    '40%',
+"-    \ 'sink':    function('s:btags_sink')})
+"-  catch
+"-    echohl WarningMsg
+"-    echom v:exception
+"-    echohl None
+"-  endtry
+"- endfunction
+"- 
+"- command! BTags call s:btags()
+:set tags=./tags/etags,./../tags,./*/tags
+"- "
+"- "--------------------------------------------------------------------------------------------------
+"- "Search lines in all open vim buffers
+"- function! s:line_handler(l)
+"-  let keys = split(a:l, ':\t')
+"-  exec 'buf' keys[0]
+"-  exec keys[1]
+"-  normal! ^zz
+"- endfunction
+"- 
+"- function! s:buffer_lines()
+"-  let res = []
+"-  for b in filter(range(1, bufnr('$')), 'buflisted(v:val)')
+"-    call extend(res, map(getbufline(b,0,"$"), 'b . ":\t" . (v:key + 1) . ":\t" . v:val '))
+"-  endfor
+"-  return res
+"- endfunction
+"- 
+"- command! FZFLines call fzf#run({
+"- \   'source':  <sid>buffer_lines(),
+"- \   'sink':    function('<sid>line_handler'),
+"- \   'options': '--extended --nth=3..',
+"- \   'down':    '60%'
+"- \})
+"- 
+"- "--------------------------------------------------------------------------------------------------
+"- "Narrow ag results within vim
+"- function! s:ag_to_qf(line)
+"-  let parts = split(a:line, ':')
+"-  return {'filename': parts[0], 'lnum': parts[1], 'col': parts[2],
+"-        \ 'text': join(parts[3:], ':')}
+"- endfunction
+"- 
+"- function! s:ag_handler(lines)
+"-  if len(a:lines) < 2 | return | endif
+"- 
+"-  let cmd = get({'ctrl-x': 'split',
+"-               \ 'ctrl-v': 'vertical split',
+"-               \ 'ctrl-t': 'tabe'}, a:lines[0], 'e')
+"-  let list = map(a:lines[1:], 's:ag_to_qf(v:val)')
+"- 
+"-  let first = list[0]
+"-  execute cmd escape(first.filename, ' %#\')
+"-  execute first.lnum
+"-  execute 'normal!' first.col.'|zz'
+"- 
+"-  if len(list) > 1
+"-    call setqflist(list)
+"-    copen
+"-    wincmd p
+"-  endif
+"- endfunction
+"- 
+"- command! -nargs=* Ag call fzf#run({
+"- \ 'source':  printf('ag --nogroup --column --color "%s"',
+"- \                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
+"- \ 'sink*':    function('<sid>ag_handler'),
+"- \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
+"- \            '--multi --bind=ctrl-a:select-all,ctrl-d:deselect-all '.
+"- \            '--color hl:68,hl+:110',
+"- \ 'down':    '50%'
+"- \ })
+"- 
+"- "--------------------------------------------------------------------------------------------------
+"- "fuzzy search files in parent directory of current file
+"- function! s:fzf_neighbouring_files()
+"-  let current_file =expand("%")
+"-  let cwd = fnamemodify(current_file, ':p:h')
+"-  let command = 'ag -g "" -f ' . cwd . ' --depth 0'
+"- 
+"-  call fzf#run({
+"-        \ 'source': command,
+"-        \ 'sink':   'e',
+"-        \ 'options': '-m -x +s',
+"-        \ 'window':  'enew' })
+"- endfunction
+"- 
+"- command! FZFNeigh call s:fzf_neighbouring_files()
+"- 
+"- "-------------------------------------------------------------------------------------------------- 
+"- set tags=tags 
+"- set path=.
+"
+"
+"augroup defx-extensions
+"         autocmd!
+"         " Close defx if it's the only buffer left in the window
+"         autocmd WinEnter * if &ft == 'defx' && winnr('$') == 1 | q | endif
+"
+"         " Move focus to the next window if current buffer is defx
+"         autocmd TabLeave * if &ft == 'defx' | wincmd w | endif
+"
+"         autocmd FileType defx do WinEnter | call s:defx_my_settings()
+" augroup END
 
 "================================================================================================== 
-" Override Colors command. You can safely do this in your .vimrc as fzf.vim
-" will not override existing commands.
-command! -bang Colors
-  \ call fzf#vim#colors({'left': '15%', 'options': '--reverse --margin 30%,0'}, <bang>0)
+"DEFX / DNEITE"
+" " Define mappings
+" function! s:defx_my_settings() abort
+"         nnoremap <silent><buffer><expr>gl  defx#do_action('call', 'DefxTmuxExplorer')
+"         nnoremap <silent><buffer><expr>gr  defx#do_action('call', 'DefxDeniteGrep')
+"         nnoremap <silent><buffer><expr>gf  defx#do_action('call', 'DefxDeniteFile')
+"         nnoremap <silent><buffer><expr>gw   defx#do_action('call', 'DefxToggleWidth')
+" endfunction
 
-"================================================================================================== 
-" Augmenting Ag command using fzf#vim#with_preview function
-"   * fzf#vim#with_preview([[options], [preview window], [toggle keys...]])
-"     * For syntax-highlighting, Ruby and any of the following tools are required:
-"       - Bat: https://github.com/sharkdp/bat
-"       - Highlight: http://www.andre-simon.de/doku/highlight/en/highlight.php
-"       - CodeRay: http://coderay.rubychan.de/
-"       - Rouge: https://github.com/jneen/rouge
+" Find files in parent directory with Denite
+" function! g:DefxDeniteFile(context) abort
+"         let l:target = a:context['targets'][0]
+"         let l:parent = fnamemodify(l:target, ':h')
+"         silent execute 'wincmd w'
+"         silent execute 'Denite file/rec:'.l:parent
+" endfunction
 "
-"   :Ag  - Start fzf with hidden preview window that can be enabled with "?" key
-"   :Ag! - Start fzf in fullscreen and display the preview window above
-command! -bang -nargs=* Ag
-  \ call fzf#vim#ag(<q-args>,
-  \                 <bang>0 ? fzf#vim#with_preview('up:60%')
-  \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \                 <bang>0)
-
-" Similarly, we can apply it to fzf#vim#grep. To use ripgrep instead of ag:
-command! -bang -nargs=* Rg
-  \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
-  \   <bang>0 ? fzf#vim#with_preview('up:60%')
-  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \   <bang>0)
-
-" Likewise, Files command with preview window
-command! -bang -nargs=? -complete=dir Files
-  \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+" " Grep in parent directory with Denite
+" function! g:DefxDeniteGrep(context) abort
+"         let l:target = a:context['targets'][0]
+"         let l:parent = fnamemodify(l:target, ':h')
+"         silent execute 'wincmd w'
+"         silent execute 'Denite grep:'.l:parent
+" endfunction
 "
-"================================================================================================== 
-" Mapping selecting mappings
-nmap <leader><tab> <plug>(fzf-maps-n)
-xmap <leader><tab> <plug>(fzf-maps-x)
-omap <leader><tab> <plug>(fzf-maps-o)
-
-" Insert mode completion
-imap <c-x><c-k> <plug>(fzf-complete-word)
-imap <c-x><c-f> <plug>(fzf-complete-path)
-imap <c-x><c-j> <plug>(fzf-complete-file-ag)
-imap <c-x><c-l> <plug>(fzf-complete-line)
-
-" Advanced customization using autoload functions
-inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '15%'})
-
-" Custom Statusline
-function! s:fzf_statusline()
-  " Override statusline as you like
-  highlight fzf1 ctermfg=161 ctermbg=251
-  highlight fzf2 ctermfg=23 ctermbg=251
-  highlight fzf3 ctermfg=237 ctermbg=251
-  setlocal statusline=%#fzf1#\ >\ %#fzf2#fz%#fzf3#f
-endfunction
-
-autocmd! User FzfStatusLine call <SID>fzf_statusline()
-
-"-------------------------------------------------------------------------------------------------- 
-command! -nargs=* -complete=dir Cd call fzf#run(fzf#wrap(
-  \ {'source': 'find '.(empty(<f-args>) ? '.' : <f-args>).' -type d',
-  \  'sink': 'cd'}))
-
-""-------------------------------------------------------------------------------------------------- 
-"" Open files in horizontal split
-"nnoremap <silent> <Leader>s :call fzf#run({
-"\   'down': '40%',
-"\   'sink': 'botright split' })<CR>
+" " Toggle between defx window width and longest line
+" function! g:DefxToggleWidth(context) abort
+"         let l:max = 0
+"         let l:original = a:context['winwidth']
+"         for l:line in range(1, line('$'))
+"                 let l:len = len(getline(l:line))
+"                 if l:len > l:max
+"                         let l:max = l:len
+"                 endif
+"         endfor
+"         execute 'vertical resize '.(l:max == winwidth('.') ? l:original : l:max)
+" endfunction
 "
-"" Open files in vertical horizontal split
-"nnoremap <silent> <Leader>v :call fzf#run({
-"\   'right': winwidth('.') / 2,
-"\   'sink':  'vertical botright split' })<CR>
-""
-"""-------------------------------------------------------------------------------------------------- 
-"" Select buffers
-"function! s:buflist()
-"  redir => ls
-"  silent ls
-"  redir END
-"  return split(ls, '\n')
-"endfunction
+" " Detect file-explorer (lf or ranger)
+" let s:explorer = ''
+" if executable('lf')
+"         let s:explorer = 'lf'
+" elseif executable('ranger')
+"         let s:explorer = 'ranger'
+" endif
 "
-"function! s:bufopen(e)
-"  execute 'buffer' matchstr(a:e, '^[ 0-9]*')
-"endfunction
-"
-"nnoremap <silent> <Leader><Enter> :call fzf#run({
-"\   'source':  reverse(<sid>buflist()),
-"\   'sink':    function('<sid>bufopen'),
-"\   'options': '+m',
-"\   'down':    len(<sid>buflist()) + 2
-"\ })<CR>
-"
-"
-"
-""-------------------------------------------------------------------------------------------------- 
-"command! FZFMru call fzf#run({
-"\  'source':  v:oldfiles,
-"\  'sink':    'e',
-"\  'options': '-m -x +s',
-"\  'down':    '40%'})
-"
-"command! FZFMruBuffers call fzf#run({
-"\ 'source':  reverse(s:all_files()),
-"\ 'sink':    'edit',
-"\ 'options': '-m -x +s',
-"\ 'down':    '40%' })
-"
-"function! s:all_files()
-"  return extend(
-"  \ filter(copy(v:oldfiles),
-"  \        "v:val !~ 'fugitive:\\|NERD_tree\\|^/tmp/\\|.git/'"),
-"  \ map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), 'bufname(v:val)'))
-"endfunction
-"
-"
-""-------------------------------------------------------------------------------------------------- 
-""Jump to tags
-"
-"function! s:tags_sink(line)
-"  let parts = split(a:line, '\t\zs')
-"  let excmd = matchstr(parts[2:], '^.*\ze;"\t')
-"  execute 'silent e' parts[1][:-2]
-"  let [magic, &magic] = [&magic, 0]
-"  execute excmd
-"  let &magic = magic
-"endfunction
-"
-"function! s:tags()
-"  if empty(tagfiles())
-"    echohl WarningMsg
-"    echom 'Preparing tags'
-"    echohl None
-"    call system('ctags -R')
-"  endif
-"
-"  call fzf#run({
-"  \ 'source':  'cat '.join(map(tagfiles(), 'fnamemodify(v:val, ":S")')).
-"  \            '| grep -v -a ^!',
-"  \ 'options': '+m -d "\t" --with-nth 1,4.. -n 1 --tiebreak=index',
-"  \ 'down':    '40%',
-"  \ 'sink':    function('s:tags_sink')})
-"endfunction
-"
-"command! Tags call s:tags()
-"
-"
-""-------------------------------------------------------------------------------------------------- 
-""Jump to tags in the current buffer
-"function! s:align_lists(lists)
-"  let maxes = {}
-"  for list in a:lists
-"    let i = 0
-"    while i < len(list)
-"      let maxes[i] = max([get(maxes, i, 0), len(list[i])])
-"      let i += 1
-"    endwhile
-"  endfor
-"  for list in a:lists
-"    call map(list, "printf('%-'.maxes[v:key].'s', v:val)")
-"  endfor
-"  return a:lists
-"endfunction
-"
-"function! s:btags_source()
-"  let lines = map(split(system(printf(
-"    \ 'ctags -f - --sort=no --excmd=number --language-force=%s %s',
-"    \ &filetype, expand('%:S'))), "\n"), 'split(v:val, "\t")')
-"  if v:shell_error
-"    throw 'failed to extract tags'
-"  endif
-"  return map(s:align_lists(lines), 'join(v:val, "\t")')
-"endfunction
-"
-"function! s:btags_sink(line)
-"  execute split(a:line, "\t")[2]
-"endfunction
-"
-"function! s:btags()
-"  try
-"    call fzf#run({
-"    \ 'source':  s:btags_source(),
-"    \ 'options': '+m -d "\t" --with-nth 1,4.. -n 1 --tiebreak=index',
-"    \ 'down':    '40%',
-"    \ 'sink':    function('s:btags_sink')})
-"  catch
-"    echohl WarningMsg
-"    echom v:exception
-"    echohl None
-"  endtry
-"endfunction
-"
-"command! BTags call s:btags()
-""
-""-------------------------------------------------------------------------------------------------- 
-""Search lines in all open vim buffers
-"function! s:line_handler(l)
-"  let keys = split(a:l, ':\t')
-"  exec 'buf' keys[0]
-"  exec keys[1]
-"  normal! ^zz
-"endfunction
-"
-"function! s:buffer_lines()
-"  let res = []
-"  for b in filter(range(1, bufnr('$')), 'buflisted(v:val)')
-"    call extend(res, map(getbufline(b,0,"$"), 'b . ":\t" . (v:key + 1) . ":\t" . v:val '))
-"  endfor
-"  return res
-"endfunction
-"
-"command! FZFLines call fzf#run({
-"\   'source':  <sid>buffer_lines(),
-"\   'sink':    function('<sid>line_handler'),
-"\   'options': '--extended --nth=3..',
-"\   'down':    '60%'
-"\})
-"
-""-------------------------------------------------------------------------------------------------- 
-""Narrow ag results within vim
-"function! s:ag_to_qf(line)
-"  let parts = split(a:line, ':')
-"  return {'filename': parts[0], 'lnum': parts[1], 'col': parts[2],
-"        \ 'text': join(parts[3:], ':')}
-"endfunction
-"
-"function! s:ag_handler(lines)
-"  if len(a:lines) < 2 | return | endif
-"
-"  let cmd = get({'ctrl-x': 'split',
-"               \ 'ctrl-v': 'vertical split',
-"               \ 'ctrl-t': 'tabe'}, a:lines[0], 'e')
-"  let list = map(a:lines[1:], 's:ag_to_qf(v:val)')
-"
-"  let first = list[0]
-"  execute cmd escape(first.filename, ' %#\')
-"  execute first.lnum
-"  execute 'normal!' first.col.'|zz'
-"
-"  if len(list) > 1
-"    call setqflist(list)
-"    copen
-"    wincmd p
-"  endif
-"endfunction
-"
-"command! -nargs=* Ag call fzf#run({
-"\ 'source':  printf('ag --nogroup --column --color "%s"',
-"\                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
-"\ 'sink*':    function('<sid>ag_handler'),
-"\ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
-"\            '--multi --bind=ctrl-a:select-all,ctrl-d:deselect-all '.
-"\            '--color hl:68,hl+:110',
-"\ 'down':    '50%'
-"\ })
-"
-""-------------------------------------------------------------------------------------------------- 
-""fuzzy search files in parent directory of current file
-"function! s:fzf_neighbouring_files()
-"  let current_file =expand("%")
-"  let cwd = fnamemodify(current_file, ':p:h')
-"  let command = 'ag -g "" -f ' . cwd . ' --depth 0'
-"
-"  call fzf#run({
-"        \ 'source': command,
-"        \ 'sink':   'e',
-"        \ 'options': '-m -x +s',
-"        \ 'window':  'enew' })
-"endfunction
-"
-"command! FZFNeigh call s:fzf_neighbouring_files()
+" " Open file-explorer split with tmux
+" function! g:DefxTmuxExplorer(context) abort
+"         if empty('$TMUX') || empty(s:explorer)
+"                 return
+"         endif
+"         let l:target = a:context['targets'][0]
+"         let l:parent = fnamemodify(l:target, ':h')
+"         silent execute '!tmux split-window -p 30 -c '.l:parent.' '.s:explorer
+" endfunction
