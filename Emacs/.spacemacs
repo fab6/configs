@@ -1,4 +1,11 @@
 ;; -*- mode: emacs-lisp -*-
+;; GMAIL: after:2001/12/31 before:2016/1/3 
+
+;; TODO:
+; - German postfix fuer Email / Markdown per Knopfdruck und Latex
+; - flyspell bei Markdown und completion ausschalten
+; - ggf. direkt Email in Emacs!? --> wahrscheinlich nicht gut
+
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 (defun dotspacemacs/layers ()
@@ -15,6 +22,7 @@
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load. If it is the symbol `all' instead
    ;; of a list then all discovered layers will be installed.
+;= LAYER
    dotspacemacs-configuration-layers
    '(
      ;; ----------------------------------------------------------------
@@ -22,9 +30,10 @@
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      shell
+     chrome
      helm
      csv
-     Julia
+     julia
      ipython-notebook
      windows-scripts
      octave
@@ -38,10 +47,12 @@
      evil-commentary
      c-c++
      git
-     FDS
-     DAKOTA
      vimscript
      latex
+     pdf-tools
+                                        ;FDS
+                                        ;DAKOTA
+     ; gibt es nicht mehr: imagepaste
      )
                                         ;yaml javascript ranger company org tabbar MODELICA ivy
 
@@ -49,16 +60,22 @@
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(gited autothemer emacs-async dired-ranger dired-filter dired-open dired-collapse dired dired-narrow helm-dired-history dired-rainbow dired-sort-map)
+   ;;dotspacemacs-additional-packages '(gited autothemer emacs-async dired-async dired-ranger dired-filter dired-open dired-collapse dired dired-narrow helm-dired-history dired-rainbow dired-sort-map cdlatex)
+   dotspacemacs-additional-packages '(dired-ranger dired-filter dired-open dired-collapse dired dired-narrow helm-dired-history dired-rainbow company-backends company-math-symbols-unicode edit-server-htmlize); gruvbox-theme outshine)
+                                                  ; cdlatex
+                                      ;; emacs-async
+                                      ;; dired-sort-map
                                         ;dired+ realgud modelica ein ein-loaddefs ein-notebook ein-subpackages)
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '(orgit org-plus-contrib)
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
-   ;; are declared in a layer which is not a member of
+   ;; are declared in a layer which is not a member o
+   ;; f
    ;; the list `dotspacemacs-configuration-layers'. (default t)
    dotspacemacs-delete-orphan-packages t)
   )
 
+;= INIT ==============================================================================
 (defun dotspacemacs/init ()
   "Initialization function.
   This function is called at the very startup of Spacemacs initialization
@@ -86,8 +103,7 @@
    ;; unchanged. (default 'vim)
    dotspacemacs-editing-style 'vim
    ;; If non nil output loading progress in `*Messages*' buffer. (default nil)
-   dotspacemacs-verbose-loading nil
-   ;; Specify the startup banner. Default value is `official', it displays
+   ;dotspacemacs-verbose-loading ni Default value is `official', it displays
    ;; the official spacemacs logo. An integer value is the index of text
    ;; banner, `random' chooses a random text banner in `core/banners'
    ;; directory. A string value must be a path to an image format supported
@@ -106,15 +122,11 @@
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-                                        ;monokai
+   ;monokai
    dotspacemacs-themes '(monokai
-                         gruvbox
                          spacemacs-dark
-                         spacemacs-light
-                         solarized-light
-                         solarized-dark
-                         leuven
-                         zenburn)
+                         gruvbox-dark-soft
+                         spacemacs-light)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
@@ -251,6 +263,7 @@
    )
   )
 
+;= User Init ==============================================================================
 (defun dotspacemacs/user-init ()
   "Initialization function for user code.
   It is called immediately after `dotspacemacs/init', before layer configuration
@@ -258,9 +271,9 @@
   This function is mostly useful for variables that need to be set
   before packages are loaded. If you are unsure, you should try in setting them in
   `dotspacemacs/user-config' first."
-  (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+  ;; (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
   )
-
+;== USER Config ==============================================================================
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
   This function is called at the very end of Spacemacs initialization after
@@ -268,8 +281,76 @@
   This is the place where most of your configurations should be done. Unless it is
   explicitly specified that a variable should be set before a package is loaded,
   you should place your code here."
+  ;; package-check-signature 
+  ;(global-unset-key (kbd "C-;"))
+  ;; Latex -----------------------------------------------------------------------------
+  ;; global activation of the unicode symbol completion 
+  ;; (add-to-list 'company-backends 'company-math-symbols-unicode)
+  ;; or locally per emacs mode:
 
-  ;; Completion -----------------------------------------------------------------------------
+  ;; local configuration for TeX modes
+  (defun my-latex-mode-setup ()
+    (setq-local company-backends
+                (append '((company-math-symbols-latex company-latex-commands))
+                        company-backends)))
+
+  ;; (add-hook 'tex-mode-hook 'my-latex-mode-setup)
+  
+  ;; If you are using AUCTeX you might need to use TeX-mode-hook instead:
+
+  (add-hook 'TeX-mode-hook 'my-latex-mode-setup)
+
+
+  ;; Use pdf-tools to open PDF files
+  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+        TeX-source-correlate-start-server t)
+
+  ;; Update PDF buffers after successful LaTeX runs
+  (add-hook 'TeX-after-compilation-finished-functions
+            'TeX-revert-document-buffer)
+  ;; (setq preview-gs-command "/usr/local/bin/gs")
+  ;(setq preview-pdf-color-adjust-method 'compatible)
+  ;(setq preview-pdf-color-adjust-method nil)
+  ;;(setq preview-pdf-color-adjust-method t)
+  ;(setq preview-pdf-color-adjust-method 'new)
+  ;(setq preview-pdf-color-adjust-method nil)
+  ;; ;; Turn on RefTeX in AUCTeX
+  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+  ;; (add-hook 'LaTeX-mode-hook 'turn-on-cdlatex)   ; with AUCTeX LaTeX mode
+  ;; ;; Activate nice interface between RefTeX and AUCTeX
+  ;; (setq reftex-plug-into-AUCTeX t)
+  ;; https://people.umass.edu/weikaichen/post/emacs-academic-tools/
+  ;; (require 'cdlatex)
+  ;; ;; (add-hook 'doc-view-mode-hook 'auto-revert-mode)
+
+  ;; (setq-default dotspacemacs-configuration-layers '(pdf-tools))
+  ;; (setq-default dotspacemacs-configuration-layers '((latex :variables latex-build-command "LaTeX")))
+  ;; (setq-default dotspacemacs-configuration-layers '((latex :variables latex-enable-magic t)))
+  ;; https://github.com/tmalsburg/helm-bibtex
+  ;; (autoload 'helm-bibtex "helm-bibtex" "" t)
+  ;; (setq bibtex-completion-bibliography
+  ;;       '("/path/to/bibtex-file-1.bib"
+  ;;         "/path/to/bibtex-file-2.bib"))
+
+;=- EDIT Server -----------------------------------------------------------------------------
+  (setq edit-server-url-major-mode-alist '(("github\\.com" . org-mode)))
+;; To change frame defaults (width, height, etc. use edit-server-new-frame-alist)
+(add-to-list 'edit-server-new-frame-alist '(width  . 140))
+(add-to-list 'edit-server-new-frame-alist '(height . 60))
+;; If you want Emacs to switch focus to Chrome after done editing, you can utilize edit-server-done-hook.
+
+;; Emacs cannot control focus of windows for external apps, so you need to use some sort of command line window manager like wmctrl.
+;; (add-hook 'edit-server-done-hook (lambda () (shell-command "open -a \"Google Chrome\"")))
+
+  (autoload 'edit-server-maybe-dehtmlize-buffer "edit-server-htmlize" "edit-server-htmlize" t)
+  (autoload 'edit-server-maybe-htmlize-buffer   "edit-server-htmlize" "edit-server-htmlize" t)
+  (add-hook 'edit-server-start-hook 'edit-server-maybe-dehtmlize-buffer)
+  (add-hook 'edit-server-done-hook  'edit-server-maybe-htmlize-buffer)
+
+;=- Julia -----------------------------------------------------------------------------
+  ;(julia :variables julia-executable "/home/fbraenns/00_ALLG/Software/Julia/julia-1.2.0/bin/julia")
+
+;=-  Completion -----------------------------------------------------------------------------
   (global-company-mode t)
 
                                         ;
@@ -309,8 +390,9 @@
                 '(:with company-yasnippet))))
                                         ;
   (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
+  (setq yas-snippet-dirs (append yas-snippet-dirs '("/home/fbraenns/.emacs.d/private/snippets")))
 
-  ;; HELM -----------------------------------------------------------------------------
+;=- HELM -----------------------------------------------------------------------------
   (defun helm-buffers-sort-transformer@donot-sort (_ candidates _)
     candidates)
 
@@ -328,10 +410,10 @@
         helm-recentf-fuzzy-match              t
         helm-semantic-fuzzy-match             t)
 
-  ;; Git -----------------------------------------------------------------------------
+;=- Git -----------------------------------------------------------------------------
   (global-git-commit-mode t)
 
-  ;; Python -----------------------------------------------------------------------------
+;=- Python -----------------------------------------------------------------------------
   ;(add-hook 'python-mode-hook 'spacemacs/toggle-highlight-indentation-on)
   (add-hook 'python-mode-hook 'highlight-indentation-mode)
   (setq python-shell-completion-native-enable nil)
@@ -345,17 +427,17 @@
   (setq python-shell-interpreter-args "-m IPython --simple-prompt -i")
 
   ;; ein python jupyter -----------------------------------------------------------------------------
-                                        ;(require 'ein)
-                                        ;(require 'ein-loaddefs)
-                                        ;(require 'ein-notebook)
-                                        ;(require 'ein-subpackages)
+;(require 'ein)
+;(require 'ein-loaddefs)
+;(require 'ein-notebook)
+;(require 'ein-subpackages)
   ;; ;; FDS -----------------------------------------------------------------------------
   ;; (require 'fds-mode)
 
   ;; ;; Dakota -----------------------------------------------------------------------------
   ;; (require 'dakota-mode)
 
-  ;; Commands -----------------------------------------------------------------------------
+;=- Commands -----------------------------------------------------------------------------
   (defun runPythonInTerminal() ;; Fenster geht immer zu
     "RunPythonInTerminal"
     (interactive)
@@ -455,8 +537,51 @@
 
   (define-key dired-mode-map "Y" 'huge_ora-dired-rsync)
 
+;=- OULINE -----------------------------------------------------------------------------
+;; ;; Require packages for following code
+;; (require 'dash)
+;; (require 'outshine)
 
-  ;; DIRED-----------------------------------------------------------------------------
+;; ;; Required for outshine
+;; ;(add-hook 'outline-minor-mode-hook 'outshine-hook-function)
+;; (add-hook 'outline-minor-mode-hook 'outshine-mode)
+
+;; ;; Enables outline-minor-mode for *ALL* programming buffers
+;; (add-hook 'prog-mode-hook 'outline-minor-mode)
+;; ;; Keybindings
+;; ;; I remap outline-minor-mode-map to mirror org-mode. Provided are evil and leader-key based bindings. Reference org-mode for developing your own emacs-style bindings.
+
+;; ;; Narrowing now works within the headline rather than requiring to be on it
+;; (advice-add 'outshine-narrow-to-subtree :before
+;;             (lambda (&rest args) (unless (outline-on-heading-p t)
+;;                                    (outline-previous-visible-heading 1))))
+
+;; (spacemacs/set-leader-keys
+;;   ;; Narrowing
+;;   "nn" 'outshine-narrow-to-subtree
+;;   "nw" 'widen
+
+;;   ;; Structural edits
+;;   "nj" 'outline-move-subtree-down
+;;   "nk" 'outline-move-subtree-up
+;;   "nh" 'outline-promote
+;;   "nl" 'outline-demote)
+
+
+;; (let ((kmap outline-minor-mode-map))
+;;   (define-key kmap (kbd "M-RET") 'outshine-insert-heading)
+;;   (define-key kmap (kbd "<backtab>") 'outshine-cycle-buffer)
+
+;;   ;; Evil outline navigation keybindings
+;;   (evil-define-key '(normal visual motion) kmap
+;;     "gh" 'outline-up-heading
+;;     "gj" 'outline-forward-same-level
+;;     "gk" 'outline-backward-same-level
+;;     "gl" 'outline-next-visible-heading
+;;     "gu" 'outline-previous-visible-heading))
+
+
+;=- DIRED -----------------------------------------------------------------------------
 
   ;; dired Ranger -----------------------------------------------------------------------------
   (require 'dired-ranger)  
@@ -504,7 +629,8 @@
     '(evil-define-key 'normal dired-mode-map
        (kbd "b") 'scroll-down
        (kbd "c") 'dired-async-do-copy
-       (kbd "d") 'dired-async-do-delete
+       ;(kbd "d") 'dired-async-do-delete
+       (kbd "d") 'dired-do-delete
        (kbd "f") 'scroll-up
        (kbd "h") 'dired-up-directory
        (kbd "l") 'dired-find-file
@@ -585,7 +711,7 @@
   ;;                       (define-key dired-mode-map "," 'dired))
 
 
-  ;; dired RAINBOW -----------------------------------------------------------------------------
+;=. dired RAINBOW -----------------------------------------------------------------------------
   (require 'dired-rainbow)
   (setq dired-listing-switches "-lXGh --group-directories-first")
   (setq dired-dwim-target t)
@@ -628,13 +754,13 @@
   (dired-rainbow-define Dakota1 "SpringGreen3" ("in"))
   (dired-rainbow-define Dakota2 "cyan2" ("rst" ))
 
-  ;; RANGER -----------------------------------------------------------------------------
+;=-  RANGER -----------------------------------------------------------------------------
   ;; (setq ranger-cleanup-on-disable t)
   ;; (setq ranger-show-dotfiles t)
   ;; (setq ranger-ignored-extensions '("mkv" "iso" "mp4"))
   ;; (setq ranger-max-preview-size 10)
 
-  ;; KEYS-----------------------------------------------------------------------------
+;=-  KEYS-----------------------------------------------------------------------------
   (spacemacs/set-leader-keys "d" 'dired-jump)
   ;; (spacemacs/set-leader-keys "Cc" 'helm-calcul-expression)
 
@@ -646,6 +772,7 @@
                                         ;(define-key evil-normal-state-map (kbd "<SPC>fg") 'helm-ag)
                                         ;(define-key evil-normal-state-map (kbd ",a") 'counsel-ag)
   (define-key evil-normal-state-map (kbd ",g") 'helm-do-ag)
+  (define-key evil-normal-state-map (kbd ",i") 'helm-imenu)
                                         ;(define-key evil-normal-state-map (kbd "<SPC>fG") 'helm-ag)
   ;; spc f o;; (define-key evil-normal-state-map (kbd ",E") 'spacemacs/open-file-or-directory-in-external-app)
                                         ;(define-key evil-normal-state-map (kbd "K") 'makedir)
@@ -673,10 +800,10 @@
   (define-key evil-normal-state-map (kbd ",k") 'kill-buffer)
   (define-key evil-normal-state-map (kbd ",x") 'xterm)
   (define-key evil-normal-state-map (kbd ",w") 'save-buffer)
-  (define-key evil-normal-state-map (kbd ",v") 'split-window-horizontally)
-  (define-key evil-normal-state-map (kbd "gx") 'split-window-horizontally)
-  (define-key evil-normal-state-map (kbd ",h") 'split-window-vertically)
-  (define-key evil-normal-state-map (kbd "gX") 'split-window-vertically)
+  ;; (define-key evil-normal-state-map (kbd ",v") 'split-window-horizontally)
+  ;; (define-key evil-normal-state-map (kbd "gx") 'split-window-horizontally)
+  ;; (define-key evil-normal-state-map (kbd ",h") 'split-window-vertically)
+  ;; (define-key evil-normal-state-map (kbd "gX") 'split-window-vertically)
 
   (define-key evil-normal-state-map (kbd  ",`" ) '(lambda () (interactive) (bookmark-jump "`")))
                                         ;(define-key evil-normal-state-map (kbd  "0" ) '(lambda () (interactive) (bookmark-jump "0")))
@@ -696,7 +823,7 @@
   (define-key evil-visual-state-map (kbd "M-l") 'evil-window-right)
 
   ;; (define-key evil-insert-state-map (kbd "M-Shift-Tab") 'spacemacs/helm-yas)
-  (define-key evil-insert-state-map (kbd "Tab") 'yas-expand)
+  ;; (define-key evil-insert-state-map (kbd "Tab") 'yas-expand)
   (define-key evil-insert-state-map (kbd "C-/") 'yas-expand)
 
   (define-key evil-insert-state-map (kbd "M-h") 'evil-window-left)
@@ -711,7 +838,7 @@
   (define-key evil-normal-state-map (kbd "M-l") 'evil-window-right)
 
 
-  ;; MISC -----------------------------------------------------------------------------
+;=- MISC -----------------------------------------------------------------------------
   (add-to-list 'auto-mode-alist '("\\Dict$" . c++-mode)) ; cfast
   (add-to-list 'auto-mode-alist '("\\Properties$" . c++-mode)) ; cfast
   (add-to-list 'auto-mode-alist '("\\Zones$" . c++-mode)) ; cfast
@@ -847,13 +974,20 @@
   ;;                  load-path))
   ;; (load "br-start")
   ;; (global-set-key "\C-c\C-o" 'oo-browser)
+
+
+  ;; (global-unset-key (kbd "T"))
+  ;; (with-eval-after-load 'evil-maps
+  ;;   (define-key evil-insert-state-map (kbd "T") nil))
+     ;; (define-key evil-insert-state-map (kbd "T") "T"))
+    ;; (define-key evil-normal-state-map (kbd "C-p") nil))
   )
 
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
-;; CUSTOM-----------------------------------------------------------------------------
+;= CUSTOM-----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -861,18 +995,45 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(delete-selection-mode nil)
+ '(evil-want-Y-yank-to-eol t)
  '(helm-external-programs-associations (quote (("csv" . "libreoffice") ("pdf" . "okular"))))
  '(package-selected-packages
    (quote
-    (dired-open dired-filter dired-collapse dired-ranger xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help org-plus-contrib yapfify yaml-mode ws-butler winum which-key web-mode volatile-highlights vimrc-mode vi-tilde-fringe uuidgen use-package toc-org tagedit spaceline smeargle slim-mode scss-mode sass-mode restart-emacs realgud rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode powershell popwin pip-requirements persp-mode pcre2el paradox org-bullets open-junk-file neotree move-text monokai-theme mmm-mode markdown-toc magit-gitflow lua-mode lorem-ipsum live-py-mode linum-relative link-hint indent-guide hy-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-dired-history helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-commentary evil-args evil-anzu eval-sexp-fu emmet-mode ein dumb-jump disaster dired-rainbow dired-narrow diminish define-word dactyl-mode cython-mode csv-mode company-web company-statistics company-emacs-eclim company-c-headers company-auctex company-anaconda column-enforce-mode cmake-mode clean-aindent-mode clang-format autothemer auto-yasnippet auto-highlight-symbol auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
+    (edit-server-htmlize gmail-message-mode ham-mode html-to-markdown flymd edit-server outshine outorg pdf-tools tablist julia-repl julia-mode flycheck-julia flycheck cdlatex powerline magit-popup hydra lv dash-functional parent-mode projectile pkg-info epl gitignore-mode flx highlight magit transient git-commit with-editor smartparens iedit anzu evil goto-chg skewer-mode markdown-mode polymode deferred request websocket js2-mode simple-httpd eclim bind-map bind-key yasnippet anaconda-mode pythonic avy auto-complete company dired-hacks-utils f helm helm-core popup async dash s haml-mode gited web-completion-data auctex dired-open dired-filter dired-collapse dired-ranger xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help org-plus-contrib yapfify yaml-mode ws-butler winum which-key web-mode volatile-highlights vimrc-mode vi-tilde-fringe uuidgen use-package toc-org tagedit spaceline smeargle slim-mode scss-mode sass-mode restart-emacs realgud rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode powershell popwin pip-requirements persp-mode pcre2el paradox org-bullets open-junk-file neotree move-text monokai-theme mmm-mode markdown-toc magit-gitflow lua-mode lorem-ipsum live-py-mode linum-relative link-hint indent-guide hy-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-dired-history helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-commentary evil-args evil-anzu eval-sexp-fu emmet-mode ein dumb-jump disaster dired-rainbow dired-narrow diminish define-word dactyl-mode cython-mode csv-mode company-web company-statistics company-emacs-eclim company-c-headers company-auctex company-anaconda column-enforce-mode cmake-mode clean-aindent-mode clang-format autothemer auto-yasnippet auto-highlight-symbol auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
  '(paradox-github-token t)
- '(safe-local-variable-values (quote ((eval progn (pp-buffer) (indent-buffer))))))
+ '(preview-auto-cache-preamble t)
+ '(preview-default-document-pt 16.0)
+ '(preview-default-option-list
+   (quote
+    ("displaymath" "floats" "graphics" "textmath" "sections" "footnotes")))
+ '(preview-fast-conversion nil)
+ '(preview-inner-environments
+   (quote
+    ("Bmatrix" "Vmatrix" "aligned" "array" "bmatrix" "cases" "gathered" "matrix" "pmatrix" "smallmatrix" "split" "subarray" "vmatrix" "lst" "lstinputlisting")))
+ '(preview-preserve-counters t)
+ '(preview-scale-function 1.4)
+ '(preview-transparent-border 1.5)
+ '(preview-transparent-color t)
+ '(safe-local-variable-values
+   (quote
+    ((eval ispell-change-dictionary "en_US")
+     (eval progn
+           (pp-buffer)
+           (indent-buffer))))))
+                                        ; '(default ((((class color) (min-colors 257)) (:foreground "#F8F8F2" :background "#272822")) (((class color) (min-colors 89)) (:foreground "#F5F5F5" :background "#1B1E1C"))))
+ ;'(font-lock-comment-face ((t (:foreground "gray42" :height 1.0))))
+ ;'(font-lock-builtin-face ((t (:foreground "magenta"))))
+ ;'(font-lock-comment-face ((t (:foreground "lime green" :height 1.0))))
+ ;'(font-lock-function-name-face ((t (:foreground "grey70"))))
+ ;'(font-lock-preprocessor-face ((t (:foreground "lightblue"))))
+ ;'(font-lock-warning-face ((t (:inherit variable-pitch :background "red" :foreground "blue" :weight bold))))
+;; '(font-latex-comment-face ((t (:foreground "green" :height 0.9))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((((class color) (min-colors 257)) (:foreground "#F8F8F2" :background "#272822")) (((class color) (min-colors 89)) (:foreground "#F5F5F5" :background "#1B1E1C"))))
+ '(default ((t (:family "Source Code Pro" :foundry "ADBE" :slant normal :weight normal :height 113 :width normal))))
  '(dired-directory ((t (:background "gray30" :foreground "white smoke"))))
  '(dired-filetype-execute ((t (:foreground "olive drab"))))
  '(dired-filetype-image ((t (:foreground "dark violet"))))
@@ -882,7 +1043,12 @@
  '(diredp-flag-mark ((t (:background "gray20" :foreground "Yellow"))))
  '(diredp-flag-mark-line ((t (:foreground "azure" :background "dim gray"))))
  '(evil-search-highlight-persist-highlight-face ((t (:background "yellow1" :foreground "black"))))
- '(font-lock-comment-face ((t (:foreground "gray42" :height 1.0))))
+ '(font-latex-math-face ((t (:foreground "cyan" :height 1.0))))
+ '(font-latex-sectioning-2-face ((t (:inherit variable-pitch :background "forest green" :foreground "gray90" :weight bold :height 1.5))))
+ '(font-latex-sectioning-3-face ((t (:inherit variable-pitch :background "gray25" :foreground "lightsalmon" :height 1.4))))
+ '(font-latex-sectioning-4-face ((t (:inherit variable-pitch :background "gray20" :foreground "cornsilk" :height 1.3))))
+ '(font-latex-sectioning-5-face ((((class color) (background dark)) (:inherit variable-pitch :background "gray30" :foreground "white" :weight medium :height 1.2))))
+ '(font-latex-warning-face ((t (:foreground "Magenta" :weight bold))))
  '(helm-ff-directory ((t (:background "gray30" :foreground "white smoke"))))
  '(helm-selection ((t (:inherit bold :background "LightBlue4" :underline nil))))
  '(helm-selection-line ((t (:background "goldenrod" :foreground "#F8F8F0" :underline nil))))
@@ -901,3 +1067,8 @@
                                         ;| ue  -> ü (not after a/e/q)
                                         ;| uee -> ue
                                         ;| sz  -> ß
+
+
+
+
+;(global-unset-key (kbd "T"))
