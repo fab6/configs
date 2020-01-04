@@ -17,18 +17,25 @@ alias checkL='ssh  mesh01 "python /share/Tools/Python/check_ganglia_v1.py"'
 alias mSyno='sudo mount -t nfs 192.168.178.25:/volume1/share /home/fbraenns/99_SHARE'
 alias umSyno='sudo umount /share'
 alias m4SH='sudo mount -t davfs https://webdav.4shared.com/ /home/fbraenns/99_4shared'
-alias sshPifb='ssh fbraenns@192.168.178.46' #LAN RAS
-alias sshPiPi='ssh pi@192.168.178.46' #LAN RAS
-alias sshPiHass='ssh homeassistant@192.168.178.46' #LAN RAS
-alias sshOH='ssh openhabian@192.168.178.46' #LAN RAS
+alias mSTRAT='sudo mount -t davfs -o uid=fbraenns https://webdav.hidrive.strato.com/ /home/fbraenns/99_HiDrStrato/'
+alias mDROP='dbxfs'
+
+
+alias sshSyno='ssh 192.168.178.25'
+alias opf7='source /home/fbraenns/02_CFD/OPF/OCFD/OPF7/OpenFOAM-7/etc/bashrc'
+#alias sshPifb='ssh fbraenns@192.168.178.46' #LAN RAS
+#alias sshPiPi='ssh pi@192.168.178.46' #LAN RAS
+#alias sshPiHass='ssh homeassistant@192.168.178.46' #LAN RAS
+#alias sshOH='ssh openhabian@192.168.178.46' #LAN RAS
 
 #alias mPi_etc='sudo sshfs -o allow_other,defer_permissions openhabian@192.168.178.46:/etc/ /home/fbraenns/03_GA/TOOLs/OpenHAB/PI_etc'
-alias mPi_etc='sudo sshfs -o allow_other openhabian@192.168.178.46:/etc/openhab2/ /home/fbraenns/03_GA/TOOLs/OpenHAB/PI_etc'
-alias umPi_etc='sudo umount /home/fbraenns/03_GA/TOOLs/OpenHAB/PI_etc/'
+#alias mPi_etc='sudo sshfs -o allow_other openhabian@192.168.178.46:/etc/openhab2/ /home/fbraenns/03_GA/TOOLs/OpenHAB/PI_etc'
+#alias umPi_etc='sudo umount /home/fbraenns/03_GA/TOOLs/OpenHAB/PI_etc/'
 #/etc/fstab sshfs#root@xxx.xxx.xxx.xxx:/ /mnt/droplet
 
-alias nv='nvim'
-alias vi='nvim'
+# alias nv='nvim'
+# alias vi='nvim'
+alias vi='/home/fbraenns/00_ALLG/Software/Editing/nvim.appimage'
 
 set -o vi
 export OMP_NUM_THREADS=1
@@ -103,20 +110,26 @@ alias apuu="sudo apt-get upgrade"
 alias apr="sudo apt-get remove"
 alias apt="sudo aptitude"
 
+alias condaEnvs="conda info --env"
+alias condaActivate="conda activate"
+alias jn="jupyter notebook"
+
 alias e="emacsclient -t"
 alias ec="emacsclient -c"
 alias ecg="emacsclient "
 
 alias anaSearch="anaconda search -t conda"
 
-export PATH="/home/fbraenns/00_ALLG/Software/Anac3/bin:$PATH"
+# export PATH="/home/fbraenns/00_ALLG/Software/Anac3/bin:$PATH"  # commented out by conda initialize
 export PATH="/home/fbraenns/00_ALLG/Software/SQL/SQLiteStudio/:$PATH"
 export PATH="/home/fbraenns/00_ALLG/Programming/Vim-toCterm/:$PATH"
+export PATH="/home/fbraenns/00_ALLG/Software/Julia/julia-1.2.0/bin:$PATH"
 
 #=================================================================================================
 export LD_LIBRARY_PATH="/home/fbraenns/02_CFD/Software/OPTIMIZATION/Dakota/Dakota/lib":$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH="/home/fbraenns/02_CFD/Software/OPTIMIZATION/Dakota/Dakota/bin":$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH="/home/fbraenns/02_CFD/Software/PRE/admesh/src":$LD_LIBRARY_PATH
+export CPLUS_INCLUDE_PATH="/home/fbraenns/02_CFD/Eigen/eigen-eigen-323c052e1731/"
 
 #=================================================================================================
 # added by Anaconda2 4.1.1 installer
@@ -161,3 +174,26 @@ alias vimfiler="TERM=screen-256color nvim -c \"VimFilerDouble\""
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/fbraenns/00_ALLG/Software/Anac3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/fbraenns/00_ALLG/Software/Anac3/etc/profile.d/conda.sh" ]; then
+        . "/home/fbraenns/00_ALLG/Software/Anac3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/fbraenns/00_ALLG/Software/Anac3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+
+# export GPYRO_FCOMPL_SERIAL_INTEL=ifort
+# export GPYRO_FCOMPL_MPI_INTEL=/usr/local/openmpi-1.10.3_intel/bin/mpifort
+export GPYRO_FCOMPL_SERIAL_GNU=gfortran
+# export GPYRO_FCOMPL_MPI_GNU=/usr/local/openmpi-1.10.3_gnu/bin/mpifort
+export GPYRO_BINARY_DIRECTORY=/home/fbraenns/02_CFD/FIRE/gpyro/BIN
+alias gpyro="/home/fbraenns/02_CFD/FIRE/gpyro/gpyro/build/linux/gpyro/gpyro"

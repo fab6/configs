@@ -1,0 +1,3756 @@
+(defun insert-counter-column (max,start)
+"Insert a sequence of integers vertically.
+Example:
+do this 1 times
+do this 2 times
+do this 3 times
+...
+
+If there are not enough existing lines after the cursor
+when this function is called, it aborts at the last line.
+
+See also: `kill-rectangle' and `string-rectangle'."
+(interactive "nEnter the max integer: ")
+(let ((i start) colpos)
+(setq colpos (- (point) (point-at-bol)))
+(while (<= i max)
+(insert (number-to-string i))
+(next-line) (beginning-of-line) (forward-char colpos)
+(setq i (1+ i))
+)))
+
+;;; Original author: ttn at netcom dot com, 28-Jan-1996
+;;; Modified for multiple lines: Eric
+(defun another-line (num-lines)
+“Copies line, preserving cursor column, and increments any numbers found.
+This should probably be generalized in the future.
+Argument NUM-LINES is the number of lines to modify.”
+(interactive “p”)
+(if (not num-lines) (setq num-lines 0) (setq num-lines (1- num-lines)))
+(let* ((col (current-column))
+(bol (save-excursion (forward-line (- num-lines)) (beginning-of-line) (point)))
+(eol (progn (end-of-line) (point)))
+(line (buffer-substring bol eol)))
+(goto-char bol)
+(while (re-search-forward “[0-9]+” eol 1)
+(let ((num (string-to-int (buffer-substring
+(match-beginning 0) (match-end 0)))))
+(replace-match (int-to-string (1+ num))))
+(setq eol (save-excursion (goto-char eol) (end-of-line) (point))))
+(goto-char bol)
+(insert line “\n”)
+(move-to-column col)))
+
+
+(defun insert-column-counter (n)
+  "Insert a sequence of integers vertically.
+For example, if your text is:
+
+a b
+c d
+e f
+
+and your cursor is after “a”, then calling this function with argument
+3 will change it to become:
+
+a1 b
+c2 d
+e3 f
+
+If there are not enough existing lines after the cursor
+when this function is called, it aborts at the last line.
+
+This command is conveniently used together with `kill-rectangle' and `string-rectangle'."
+  (interactive "nEnter the max integer: ")
+
+  (let ((i 1) colpos line-move-visual-original)
+    (setq line-move-visual-original line-move-visual)
+    (setq line-move-visual nil)
+    (setq colpos (- (point) (point-at-bol)))
+    (while (<= i n)
+      (insert (number-to-string i))
+      (next-line) (beginning-of-line) (forward-char colpos)
+      (setq i (1+ i))
+      )
+    (setq line-move-visual line-move-visual-original)
+))
+ ;(load (getenv "LOAD_PATH_SETTER")) 
+(require 'multi-term)
+(setq multi-term-program "/bin/tcsh")
+
+
+;(load "eshell-auto")
+(autoload 'textmenu "textmenu" "Text mode substitute for menubar" t)
+;(autoload 'widget-demo "widget-demo" "Show demo of widget" t)
+       
+(require 'iswitch-menu)
+(require 'tpum)
+(require 'multi-eshell)
+(tpum-global-mode 1)
+(define-tpum-key global-map (kbd "C-s-3") (kbd "C-<button3>"))
+(define-tpum-key global-map (kbd "C-s-1") (kbd "C-<button1>"))
+(define-tpum-key global-map (kbd "s-!") (kbd "Sh-<button1>"))
+(define-tpum-key global-map (kbd "s-#") (kbd "Sh-<button3>"))
+;;(load-file "cedet.el")
+;;(global-ede-mode t)
+;;    (semantic-load-enable-excessive-code-helpers)
+;;                (require 'semantic-ia)
+;;                (require 'semantic-gcc)
+;;;               (semantic-add-system-include "~/exp/include/boost_1_37"
+;;;                'c++-mode)
+;;;               /home/gcae504/HOME/Dissertation/simulation_calc/OpenFOAM/OpenFOAM-1.6.x/lib/linux64GccDPOpt
+;;;; if you want to enable support for gnu global
+;;(require 'semanticdb-global)
+;;(semanticdb-enable-gnu-global-databases 'c-mode)
+;;(semanticdb-enable-gnu-global-databases 'c++-mode)
+;;
+;;;; enable ctags for some languages:
+;;;;  Unix Shell, Perl, Pascal, Tcl, Fortran, Asm
+;;(semantic-load-enable-primary-exuberent-ctags-support)
+;;    (ede-cpp-root-project "OPF16x"
+;;                :name "OpenFOAM 1.6.x"
+;;                :file "~/OpenFOAM/OpenFOAM-1.6.x/ "
+;;                :include-path '("/"
+;;                                "/Common"
+;;                                "/Interfaces"
+;;                                "/Libs"
+;;                               )
+;;                :system-include-path '("~/exp/include")
+;;                :spp-table '(("isUnix" . "")
+;;                             ("BOOST_TEST_DYN_LINK" . "")))
+;;
+;;(defun my-cedet-hook ()
+;;  (local-set-key [(control return)] 'semantic-ia-complete-symbol)
+;;  (local-set-key "\C-c?" 'semantic-ia-complete-symbol-menu)
+;;  (local-set-key "\C-c>" 'semantic-complete-analyze-inline)
+;;  (local-set-key "\C-cp" 'semantic-analyze-proto-impl-toggle))
+;;(add-hook 'c-mode-common-hook 'my-cedet-hook)
+;;
+;;(defun my-c-mode-cedet-hook ()
+;; (local-set-key "." 'semantic-complete-self-insert)
+;; (local-set-key ">" 'semantic-complete-self-insert))
+;;(add-hook 'c-mode-common-hook 'my-c-mode-cedet-hook)
+;;
+
+
+;;                                        (require 'pymacs)
+;;                                        (autoload 'pymacs-apply "pymacs")
+;;                                        (autoload 'pymacs-call "pymacs")
+;;                                        (autoload 'pymacs-eval "pymacs" nil t)
+;;                                        (autoload 'pymacs-exec "pymacs" nil t)
+;;                                        (autoload 'pymacs-load "pymacs" nil t)
+;;                                        (pymacs-load "manglers")
+;;                                        (global-set-key [f7] 'manglers-break-on-whitespace)
+;;
+
+(add-hook 'text-mode-hook 'turn-on-cdwiki) ; with AUCTeX LaTeX mode
+(global-set-key [S-f12] '(lambda () (interactive) (set-input-method
+                                                   'german-postfix)))
+(global-set-key [f9] '(lambda () (interactive) (set-input-method 'german-postfix)))
+(add-hook 'LaTeX-mode-hook
+          (lambda () (set-input-method "german-prefix")))
+(add-hook 'text-mode-hook
+          (lambda () (set-input-method "german-prefix")))
+
+(defun iwb ()
+  "indent whole buffer"
+  (interactive)
+  (delete-trailing-whitespace)
+  (indent-region (point-min) (point-max) nil)
+  (untabify (point-min) (point-max)))
+                                        ;    (expand-file-name "~/emacs/lisp")
+
+;;  Put this file on your Emacs-Lisp load path, add following into your
+;;  ~/.emacs startup file.
+;;
+
+                                        ;(require 'tinylibm)
+;;      ;;  Make sure the keys will be defined.
+                                        ;(setq tinydired-:force-add-keys-flag 'override)
+;;
+                                        ;(autoload 'tinydired-hook-control                   "tinydired" "" t)
+                                        ;(autoload 'tinydired-switch-to-some-ange-ftp-buffer "tinydired" "" t)
+                                        ;(add-hook 'tinydired-:load-hook                 'tinydired-hook-control)
+                                        ;(add-hook 'dired-mode-hook '(lambda () (require 'tinydired) nil))
+;;
+;;  For more personal setup, you have to look at the calls in function
+;;  `tinydired-hook-control' and put your own initializations into
+;;  `dired-mode-hook' and `dired-after-readin-hook'.
+;;
+;;  To select/kill ange buffers, use these bindings
+;;
+                                        ;(global-set-key "\C-cab" 'tinydired-switch-to-some-ange-ftp-buffer)
+                                        ;(global-set-key "\C-cak" 'tinydired-kill-all-ange-buffers)
+                                        ;(global-set-key "\C-caK" 'tinydired-kill-all-ange-and-dired-buffers)
+
+
+;;
+;; (require 'mailcap)
+;; (defun dired-insert-file-icons ()
+;;   "Insert icons before file names in the dired buffer."
+;;   (interactive)
+;;   (dired-map-dired-file-lines
+;;    (lambda (file)
+;;      (let* ((image-pos (dired-move-to-filename))
+;;             (mime-type (mailcap-extension-to-mime (file-name-extension file t)))
+;;             (icon-file
+;;           ; Alternative: PNG Icons in org/divs/icons mit mime-type Bezeichnung und Verzeichnis
+;;              ;(if mime-type (concat "/usr/share/icons/kdeclassic/16x16/mimetypes/"
+;;              (if mime-type (concat "/home/gcae504/org/divs/icons/"
+;;                                    mime-type)))
+;;             overlay)
+;;        (unless (and icon-file (file-exists-p icon-file)) ; Falls die Datei existiert; ansonsten empty
+;;       ;; default icon
+;;       (setq icon-file "/usr/share/icons/kdeclassic/16x16/mimetypes/empty.png"))
+
+;;        (unless (delq nil (mapcar (lambda (o) (overlay-get o 'put-image))
+;;                                  (overlays-in (point) (1+ (point)))))
+;;          (put-image (create-image icon-file) image-pos)
+;;          (setq overlay
+;;                (car (delq nil (mapcar (lambda (o) (and (overlay-get o 'put-image) o))
+;;                                       (overlays-in (point) (1+ (point)))))))
+;;          (overlay-put overlay 'file file)
+;;          (overlay-put overlay 'icon-file icon-file))
+
+;;        )
+
+;;      (message (mailcap-extension-to-mime (file-name-extension file t)))
+;;      ))
+
+;;   )
+
+;; (add-hook 'dired-after-readin-hook 'dired-insert-file-icons)
+
+                                        ;j(setq-default abbrev-mode t)
+                                        ;j;; ;; ensure abbrev mode is always on
+                                        ;j
+                                        ;j;; ;; do not bug me about saving my abbreviations
+                                        ;j;; (setq save-abbrevs nil)
+                                        ;j
+                                        ;j;; load up abbrevs for these modes
+                                        ;j;; (require 'msf-abbrev)
+                                        ;j;; (setq msf-abbrev-verbose t) ;; optional
+                                        ;j;; (global-set-key (kbd "C-c l") 'msf-abbrev-goto-root)
+                                        ;j;; (global-set-key (kbd "C-c a") 'msf-abbrev-define-new-abbrev-this-mode)
+                                        ;j
+                                        ;j
+                                        ;j;; Put this file in your load-path and in your .emacs
+                                        ;j(require 'msf-abbrev)
+                                        ;j;(setq msf-abbrev-root "/opt/emacs22.1/share/emacs/site-lisp/mode-abbrevs")
+                                        ;j;;
+                                        ;j(global-msf-abbrev-mode t) ;; for all modes with abbrevs or
+                                        ;j;; M-x msf-abbrev-mode RET ;; for only one buffer
+                                        ;j;;
+                                        ;j;;   ;; You may also want to make some bindings:
+                                        ;j(global-set-key (kbd "C-c l") 'msf-cmd-goto-root)
+                                        ;j(global-set-key (kbd "C-c a") 'msf-cmd-define)
+                                        ;j;;
+                                        ;j
+
+(add-to-list 'auto-mode-alist '("\\.[Cc][Ss][Vv]\\'" . csv-mode))
+(autoload 'csv-mode "csv-mode"
+  "Major mode for editing comma-separated value files." t)
+
+(provide 'cvs-commit-patch-buffer)
+
+(autoload 'whizzytex-mode "whizzytex"
+  "WhizzyTeX, a minor-mode WYSIWYG environment for LaTeX" t)
+
+(load "gspell")
+(load "replace-umlauts")
+(require 'speedbar)
+(defconst my-speedbar-buffer-name "SPEEDBAR")
+                                        ; (defconst my-speedbar-buffer-name " SPEEDBAR") ; try this if you get "Wrong type argument: stringp, nil"
+(defun my-speedbar-no-separate-frame ()
+  (interactive)
+  (when (not (buffer-live-p speedbar-buffer))
+    (setq speedbar-buffer (get-buffer-create my-speedbar-buffer-name)
+          speedbar-frame (selected-frame)
+          dframe-attached-frame (selected-frame)
+          speedbar-select-frame-method 'attached
+          speedbar-verbosity-level 0
+          speedbar-last-selected-file nil)
+    (set-buffer speedbar-buffer)
+    (speedbar-mode)
+    (speedbar-reconfigure-keymaps)
+    (speedbar-update-contents)
+    (speedbar-set-timer 1)
+    (make-local-hook 'kill-buffer-hook)
+    (add-hook 'kill-buffer-hook
+              (lambda () (when (eq (current-buffer) speedbar-buffer)
+                           (setq speedbar-frame nil
+                                 dframe-attached-frame nil
+                                 speedbar-buffer nil)
+                           (speedbar-set-timer nil)))))
+  (set-window-buffer (selected-window)
+                     (get-buffer my-speedbar-buffer-name)))
+
+;;;_*  Org-Mode
+                                        ;**************************************************************************************************************
+(require 'remember)
+                                        ;(load "org")
+                                        ;(require 'org-registry)
+                                        ;(org-registry-initialize)
+
+
+;; ;; If you want to update the registry with newly inserted links in the
+;; ;; current buffer: M-x org-registry-update
+;; ;; If you want this job to be done each time you save an Org buffer,
+;; ;; hook 'org-registry-update to the local 'after-save-hook in org-mode:
+                                        ;(org-registry-insinuate)
+
+(setq org-directory "~/org/")
+(setq org-default-notes-file "~/.notes")
+(setq remember-annotation-functions '(org-remember-annotation))
+(setq remember-handler-functions '(org-remember-handler))
+(add-hook 'remember-mode-hook 'org-remember-apply-template)
+(define-key global-map [(F9)] 'remember)
+(define-key global-map [(f9)] 'remember)
+(define-key global-map [(f8)] 'iwb)
+                                        ;(define-key global-map [tab] 'mc-change-window)
+(define-key global-map [(F12)] 'viper-mode)
+(define-key global-map [(f12)] 'viper-mode)
+;; (define-key global-map [(F11)] 'linum-mode)
+;; (define-key global-map [(f11)] 'linum-mode)
+;; (define-key global-map [(f11)] 'linum-mode)
+(define-key global-map [(f11)] 'toggle-ispell-language)
+(define-key global-map [(f2)] 'calc-embedded)
+(define-key global-map [(f10)] 'ispell-word)
+(define-key global-map [(f10)] 'ispell-word)
+(define-key global-map [(f7)] 'replace-umlauts)
+(define-key global-map [(f6)] 'ispell-change-dictionary)
+
+(setq org-export-with-LaTeX-fragments t)
+                                        ; Template fuer:
+                                        ; Gespraeche
+                                        ; EKI-Berechnungen: Defrost(d), Fussaustroemer(f), Innenraum(i), Innenraum/Energie (I)
+                                        ; Benutzung: Gespraeche, nachtraegliche Bearbeitung vonVerzeichnissen, neue Projekte!?
+                                        ; Anpassung der Tagliste zu den Gespraechsthemen
+                                        ; Falls nachtraeglich in Berechnungsverzeichnis Link erstellt wird -> README.org mit Link auf org-Datei, z.B. Defrost
+                                        ; Properties
+
+(setq org-remember-templates
+      '(("TODO" ?t "* TODO %T %^{Aufgabe} %^G\n %a\n  %i\n %?" "~/org/TODO.org")
+        ("Gespraech" ?g "* GESPRAECH %T %^{Thema} :%^{Gespraechspartner-Tag}%^G \n %a\n %?\n " "~/org/Gespraeche.org")
+        ("Info " ?i "* INFO %U %^{Information} %^G \n %a\n %?\n " "~/org/Gespraeche.org")
+
+                                        ;(?9 "* %U %a %^{Gespraechsthema} %^g %?\n :PROPERTIES:\n :Baureihe:%^{Baureihe}\n :Bauteil:%^{Bauteil}\n :Solver:%^{Solver}\n  :Berechnungstyp:%^{Berechnungstyp}\n :Variante:%^{Kennzeichnung/Modell}\n :Cluster:%^{Cluster}\n :END: %i\n  %a" "~/org/Berechnungen/991.org")
+        ;; (?9 "* %U %a %^{Thema} %^g %?\n :PROPERTIES:\n :Baureihe: 991\n :Bauteil:%^{Bauteil}\n :Solver:%^{Solver}\n  :Berechnungstyp:%^{Berechnungstyp}\n :Variante:%^{Kennzeichnung/Modell}\n :Cluster:%^{Cluster}\n :END: %i\n  %a" "~/org/Berechnungen/991.org")
+        ;; (?8 "* %U %a %^{Thema} %^g %?\n :PROPERTIES:\n :Baureihe: 981\n :Bauteil:%^{Bauteil}\n :Solver:%^{Solver}\n  :Berechnungstyp:%^{Berechnungstyp}\n :Variante:%^{Kennzeichnung/Modell}\n :Cluster:%^{Cluster}\n :END: %i\n  %a" "~/org/Berechnungen/981.org")
+        ;; (?E "* %U %a %^{Thema} %^g %?\n :PROPERTIES:\n :Baureihe: E2\n :Bauteil:%^{Bauteil}\n :Solver:%^{Solver}\n  :Berechnungstyp:%^{Berechnungstyp}\n :Variante:%^{Kennzeichnung/Modell}\n :Cluster:%^{Cluster}\n :END: %i\n  %a" "~/org/Berechnungen/E2.org")
+        ;; (?G "* %U %a %^{Thema} %^g %?\n :PROPERTIES:\n :Baureihe: G1\n :Bauteil:%^{Bauteil}\n :Solver:%^{Solver}\n  :Berechnungstyp:%^{Berechnungstyp}\n :Variante:%^{Kennzeichnung/Modell}\n :Cluster:%^{Cluster}\n :END: %i\n  %a" "~/org/Berechnungen/G1.org")
+        ;; (?K "* %U %a %^{Thema} %^g %?\n :PROPERTIES:\n :Baureihe: Klimakruemmer\n :Bauteil:%^{Bauteil}\n :Solver:%^{Solver}\n  :Berechnungstyp:%^{Berechnungstyp}\n :Variante:%^{Kennzeichnung/Modell}\n :Cluster:%^{Cluster}\n :END: %i\n  %a" "~/org/Berechnungen/Klimakruemmer.org")
+        ;; (?L "* %U %a %^{Thema} %^g %?\n :PROPERTIES:\n :Baureihe: Luftansaugung\n :Bauteil:%^{Bauteil}\n :Solver:%^{Solver}\n  :Berechnungstyp:%^{Berechnungstyp}\n :Variante:%^{Kennzeichnung/Modell}\n :Cluster:%^{Cluster}\n :END: %i\n  %a" "~/org/Berechnungen/Luftansaugung.org")
+
+                                        ; Verschiedene Varianten fuer!?
+                                        ; Temp.
+                                        ; Inst.
+                                        ; LES/SAS
+                                        ; Optimierung
+        ("Berechnung INST/ISO" ?I "* RECHNET %T %^{Berechnung (FLUENT,OPF,CCM+,STAR)} %^g %?\n :PROPERTIES:\n :Datum:%^{Monat}\n :Baureihe:%^{Baureihe (991,981,E2,G1,C7,Diss)}\n :Bauteil:%^{Bauteil (Defrost,FussA,E1,Jouvray,Klimakruemmer,Nottage,DLR)}\n :Solver:%^{Solver (FLUENT,CCM+,OPF,STAR)}\n :Mesh:%^{Vernetzer (Tgrid,ICEM,CCM+)}\n :Gitter:%^{Gittertyp (T_nP,T_P,HC_nP,HC_P,H,P_nP,P_P,HY_nP,HY_P)}\n :Zellen:%^{Zellen (SG,G,M,MF,F,SF,XF)}\n :Berechnungstyp:%^{Berechnungstyp (stationaer, instationaer)}\n :Zeitdiskretisierung:%^{Zeitdiskretisierung (E,I,CN)}\n :VarianteGeo:%^{Geometr. Variante Nr.:}\n :VarianteBer:%^{Berechnungs-Variante Nr.:}\n :Cluster:%^{Cluster (lokal, HWW, Dreses,Bauhofer,Krems,Bernhard}\n :CPU:%^{CPU Anzahl}\n :Inlet:%^{Inlet (Geschwindigk.)}\n :Turbulenzmodell:%^{Turbulenzmodell (keps,RNG,Realizable,SST,RSM,SA,SAS,VLES)}\n :Energie:%^{Energiegleichung (1,0)}\n :Strahlung:%^{Strahlung (S2S,Solar)}\n :Equations:%^{Equations (nicht verwendete Glg.[Energie,Turbulenz,Impuls])}\n :Methode:%^{Methode (RANS,URANS,RSM,HYBRID,LES)}\n :Zeitschritt:%^{Zeitschritt}\n :Schema:%^{Schema (1stUDS,2ndUDS,QUICK,MUSCL,LL,BCDS,CDS)}\n :Wandfunktion:%^{Wandfunktione (standard,enhanced,other)}\n :Modifikation:%^{Modifikation (Properties)}\n :END: %i\n BERECHNUNGSVERZEICHNIS: %a \n
+
+**** Kommentar  \n
+| Rechenzeit:             |                                         |
+| Beginn:                 |                                         |
+| Ende:                   |                                         |
+| Solver CPU Time:        |                                         |
+| SolverElapsed CPU Time: |                                         | \n
+| Empfehlung:             |                                         |\n
+
+**** Ergebnisse \n
+***** Druckverlust \n
+***** Geschwindigkeitsverteilung \n
+\n
+" "~/org/Berechnungen/991.org")
+
+        ("Berechnung STAT/ISO" ?B "* RECHNET %T %^{Berechnung|FLUENT|OPF|CCM+|STAR} %^g %?\n :PROPERTIES:\n :Baureihe:%^{Baureihe|991|981|E2|G1|C7|Diss}\n :Bauteil:%^{Bauteil|Defrost|FussA|E1|Jouvray|Klimakruemmer|Nottage|DLR}\n :Solver:%^{Solver|FLUENT|CCM+|OPF|STAR}\n :Mesh:%^{Vernetzer|Tgrid|ICEM|CCM+}\n :Gitter:%^{Gittertyp|T_nP|T_P|HC_nP|HC_P|H|P_nP|P_P|HY_nP|HY_P}\n :Zellen:%^{Zellen|SG|G|M|MF|F|SF|XF}\n :Berechnungstyp:%^{Berechnungstyp|stationaer|instationaer}\n :Zeitdiskretisierung:%^{Zeitdiskretisierung|E,I|CN|BACK}\n :VarianteGeo:%^{Geometr. Variante Nr.:}\n :VarianteBer:%^{Berechnungs-Variante Nr.:}\n :Cluster:%^{Cluster|lokal|HWW|Dreses|Bauhofer|Krems|Bernhard}\n :CPU:%^{CPU Anzahl}\n :Inlet:%^{Inlet (Geschwindigk.)}\n :Turbulenzmodell:%^{Turbulenzmodell|keps|RNG|Realizable|SST|RSM|SA|SAS|VLES}\n :Energie:%^{Energiegleichung|1|0}\n :Strahlung:%^{Strahlung|none|S2S|Solar}\n :Equations:%^{Equations (nicht verwendete Glg.)|Energie|Turbulenz|Impuls}\n :Methode:%^{Methode|RANS|URANS|RSM|HYBRID|LES}\n :Zeitschritt:%^{Zeitschritt}\n :Schema:%^{Schema|1stUDS|2ndUDS|QUICK|MUSCL|LL|BCDS|CDS}\n :Wandfunktion:%^{Wandfunktione|SWF|EWF|other}\n :Modifikation:%^{Modifikation (Properties)}\n :END: %i\n BERECHNUNGSVERZEICHNIS: %a \n
+
+**** Kommentar  \n
+| Rechenzeit:             |                                         |
+| Beginn:                 |                                         |
+| Ende:                   |                                         |
+| Solver CPU Time:        |                                         |
+| SolverElapsed CPU Time: |                                         | \n
+| Empfehlung:             |                                         |\n
+
+**** Ergebnisse \n
+***** Druckverlust \n
+***** Geschwindigkeitsverteilung \n
+\n
+" "~/org/Berechnungen/991.org")
+
+        ("Berechnung STAT/ANISO" ?A "* RECHNET %T %^{Berechnung (FLUENT,OPF,CCM+,STAR)} %^g %?\n :PROPERTIES:\n :Datum:%^{Monat}\n :Baureihe:%^{Baureihe (991,981,E2,G1,C7,Diss)}\n :Bauteil:%^{Bauteil (Defrost,FussA,E1,Jouvray,Klimakruemmer,Nottage,DLR)}\n :Solver:%^{Solver (FLUENT,CCM+,OPF,STAR)}\n :Mesh:%^{Vernetzer (Tgrid,ICEM,CCM+)}\n :Gitter:%^{Gittertyp (T_nP,T_P,HC_nP,HC_P,H,P_nP,P_P,HY_nP,HY_P)}\n :Zellen:%^{Zellen (SG,G,M,MF,F,SF,XF)}\n :Berechnungstyp:%^{Berechnungstyp (stationaer, instationaer)}\n :Zeitdiskretisierung:%^{Zeitdiskretisierung (E,I,CN)}\n :VarianteGeo:%^{Geometr. Variante Nr.:}\n :VarianteBer:%^{Berechnungs-Variante Nr.:}\n :Cluster:%^{Cluster (lokal, HWW, Dreses,Bauhofer,Krems,Bernhard}\n :CPU:%^{CPU Anzahl}\n :Inlet:%^{Inlet (Geschwindigk.)}\n :Turbulenzmodell:%^{Turbulenzmodell (keps,RNG,Realizable,SST,RSM,SA,SAS,VLES)}\n :Energie:%^{Energiegleichung (1,0)}\n :Strahlung:%^{Strahlung (S2S,Solar)}\n :Equations:%^{Equations (nicht verwendete Glg.[Energie,Turbulenz,Impuls])}\n :Methode:%^{Methode (RANS,URANS,RSM,HYBRID,LES)}\n :Zeitschritt:%^{Zeitschritt}\n :Schema:%^{Schema (1stUDS,2ndUDS,QUICK,MUSCL,LL,BCDS,CDS)}\n :Wandfunktion:%^{Wandfunktione (standard,enhanced,other)}\n :Modifikation:%^{Modifikation (Properties)}\n :END: %i\n BERECHNUNGSVERZEICHNIS: %a \n
+
+**** Kommentar  \n
+| Rechenzeit:             |                                         |
+| Beginn:                 |                                         |
+| Ende:                   |                                         |
+| Solver CPU Time:        |                                         |
+| SolverElapsed CPU Time: |                                         | \n
+| Empfehlung:             |                                         |\n
+
+**** Ergebnisse \n
+***** Druckverlust \n
+***** Geschwindigkeitsverteilung \n
+\n
+" "~/org/Berechnungen/991.org")))
+;; (?B "* RECHNET %U %^{Berechnung (FLUENT,OPF,CCM+,STAR)} %^g %?\n :PROPERTIES:\n :Datum:%^{Monat}\n :Baureihe:%^{Baureihe (991,981,E2,G1,C7,Diss)}\n :Bauteil:%^{Bauteil (Defrost,FussA,E1,Jouvray,Klimakruemmer,Nottage,DLR)}\n :Solver:%^{Solver (FLUENT,CCM+,OPF,STAR)}\n :Mesh:%^{Vernetzer (Tgrid,ICEM,CCM+)}\n :Gitter:%^{Gittertyp (T_nP,T_P,HC_nP,HC_P,H,P_nP,P_P,HY_nP,HY_P)}\n :Zellen:%^{Zellen (SG,G,M,MF,F,SF,XF)}\n :Berechnungstyp:%^{Berechnungstyp (stationaer, instationaer)}\n :VarianteGeo:%^{Geometr. Variante Nr.:}\n :VarianteBer:%^{Berechnungs-Variante Nr.:}\n :Cluster:%^{Cluster (lokal, HWW, Dreses,Bauhofer,Krems,Bernhard}\n :CPU:%^{CPU Anzahl}\n :Inlet:%^{Inlet (Geschwindigk.)}\n :Turbulenzmodell:%^{Turbulenzmodell (keps,RNG,Realizable,SST,RSM,SA,SAS,VLES)}\n :Methode:%^{Methode (RANS,URANS,RSM,HYBRID,LES)}\n :Zeitschritt:%^{Zeitschritt}\n :Schema:%^{Schema (1stUDS,2ndUDS,QUICK,MUSCL,LL,BCDS,CDS)}\n :Wandfunktion:%^{Wandfunktione (standard,enhanced,other)}\n :Modifikation:%^{Modifikation (Properties)}\n :END: %i\n BERECHNUNGSVERZEICHNIS: %a \n
+;; | Kommentar:              |                                         | \n
+;; | Rechenzeit:             |                                         |
+;; | Beginn:                 |                                         |
+;; | Ende:                   |                                         |
+;; | Solver CPU Time:        |                                         |
+;; | SolverElapsed CPU Time: |                                         | \n
+;; | Empfehlung:             |                                         |\n
+;; \n
+;; " "~/org/Berechnungen/991.org")
+
+                                        ; Dissertation  T  werden vielleicht gar nicht benoetigt
+                                        ;(?M "* %U %a %^{Thema} %^g %?\n :PROPERTIES:\n :Berechnung: Messaufbau\n :Bauteil:%^{Bauteil}\n :Solver:%^{Solver}\n  :Berechnungstyp:%^{Berechnungstyp}\n :Variante:%^{Kennzeichnung/Modell}\n :Cluster:%^{Cluster}\n :END: %i\n  %a" "~/org/Berechnungen/Messaufbau.org")
+                                        ;(?J "* %U %a %^{Thema} %^g %?\n :PROPERTIES:\n :Berechnung: Jouvray\n :Bauteil:%^{Bauteil}\n :Solver:%^{Solver}\n  :Berechnungstyp:%^{Berechnungstyp}\n :Variante:%^{Kennzeichnung/Modell}\n :Cluster:%^{Cluster}\n :END: %i\n  %a" "~/org/Berechnungen/Jouvray.org")
+                                        ;(?D "* %U %a %^{Thema} %^g %?\n :PROPERTIES:\n :Berechnung: DLR\n :Bauteil:%^{Bauteil}\n :Solver:%^{Solver}\n  :Berechnungstyp:%^{Berechnungstyp}\n :Variante:%^{Kennzeichnung/Modell}\n :Cluster:%^{Cluster}\n :END: %i\n  %a" "~/org/Berechnungen/Dlr.org")
+                                        ;(?N "* %U %a %^{Thema} %^g %?\n :PROPERTIES:\n :Berechnung: Nottage\n :Bauteil:%^{Bauteil}\n :Solver:%^{Solver}\n  :Berechnungstyp:%^{Berechnungstyp}\n :Variante:%^{Kennzeichnung/Modell}\n :Cluster:%^{Cluster}\n :END: %i\n  %a" "~/org/Berechnungen/Nottage.org")
+                                        ;(?U "* %U %a %^{Thema} %^g %?\n :PROPERTIES:\n :Berechnung: Gebaeudeumstroemung\n :Bauteil:%^{Bauteil}\n :Solver:%^{Solver}\n  :Berechnungstyp:%^{Berechnungstyp}\n :Variante:%^{Kennzeichnung/Modell}\n :Cluster:%^{Cluster}\n :END: %i\n  %a" "~/org/Berechnungen/Gebaeudeumstroemung.org") ))
+
+                                        ;        (?d "* %U %^{Baureihe} %^{Beschreibung} %?\n** Berechnungsverzeichnis %i\n**Randbedingungen\n**Bemerkungen  %a" "~/org/Defrost.org")
+                                        ;       (?i "* %^{Title}\n  %i\n  %a" "~/org/JOURNAL.org" "New Ideas")))
+
+(setq org-todo-keywords
+      '((sequence "INFO" "TODO" "FEEDBACK" "VERIFY" "GESPRAECH" "MEETING" "RECHNET" "|" "ABGEBROCHEN" "BEENDET" "UNTERBROCHEN" "KONVERGIERT" "DIVERGIERT" "CANCELED" "DONE")))
+
+(setq org-todo-keyword-faces
+      '(("TODO"      . org-warning)
+        ("DEFERRED"  . shadow)
+        ("GESPRAECH"  . (:foreground "cyan" :height 0.7))
+        ("INFO"  . (:foreground "steelblue" :height 0.7))
+        ("FEEDBACK"  . (:foreground "yellow" :height 0.9))
+        ("VERIFY"  . (:foreground "salmon" :height 0.7))
+        ("DONE"  . (:foreground "darkgreen" :height 0.7))
+        ("KONVERGIERT"  . (:foreground "yellow" :height 0.7))
+        ("RECHNET"  . (:foreground "green" :bold t :height 1.7))
+        ("UNTERBROCHEN"  . (:foreground "green" :height 1.7))
+        ("DIVERGIERT"  . (:foreground "dark violet" :height 0.7))
+        ("ABGEBROCHEN"  . (:foreground "maroon" :height 0.7))
+        ("BEENDET"  . (:foreground "dark orange" :height 0.7))
+        ("CANCELED"  . (:foreground "blue" :weight bold
+                                    :underline t))))
+
+                                        ; Setzen der Tags:
+                                        ; - beteiligte Person
+                                        ; - Bauteil/Projekt: E1, Defrost
+                                        ; - Baureihe:991
+                                        ; Methode: Morphing, Topo, Aeroakustik,Adjungiert
+
+(setq org-tag-alist '( ("WEEK" . ?w) ("TODAY" . ?t)("Software" . ?s)  ("Defrost" . ?d) ("Fussaustroemer" . ?f)("@HOME" . ?h)("@Office" . ?o) ("konvergiert" . ?k)("divergiert" . ?d)("abgebrochen" . ?a)("Silke" . ?S)("Mueller" . ?M)("Deyhle" . ?D) ("Guembel" . ?G) ("Kraiss" . ?K) ("Tscheppe" . ?T) ("Wierse" . ?W) ("Schmidt" . ?S) ("ETMM7" . ?e) ("Rita" . ?R) ("CabinModeler" . ?c)))
+
+                                        ;#+TAGS: DISSERTATION(d) DIGITALER_PROTOTYP(p) EID(e) EKI2(k) HOME(h) ARCHIVE(a)
+                                        ;#+TAGS: Guembel(G), Deyhle(D), Monika(M), Peter(P), Kraiss(K), Tscheppe(T), Strubel(S), Kuerschner(k), Gayer(g)
+
+(defun my-skip-unless-org/geek-category ()
+  "Skip trees if they don't belong to org/geek categories"
+  (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+    (if (member (org-entry-get (point) "CATEGORY" t)
+                '("org-mode" "geek"))
+        nil subtree-end)))
+
+                                        ;(org-add-agenda-custom-command
+                                        ;)
+
+(setq org-agenda-custom-commands
+      '(("h" "Agenda and Home-related tasks"
+         ((agenda)
+          (tags-todo "HOME")
+          (tags "GARDEN")))
+        ("X" agenda ""
+         ((ps-number-of-columns 2)
+          (ps-landscape-mode t)
+          (org-agenda-prefix-format " [ ] ")
+          (org-agenda-with-colors nil)
+          (org-agenda-remove-tags t))
+         ("theagenda.ps"))
+        ("b" todo "TODO"
+         ((org-agenda-skip-function 'my-skip-unless-org/geek-category)
+          (org-agenda-overriding-header "org/geek: ")))
+
+        ("c" "Agenda and converged calculations"
+         ((agenda)
+          (tags-todo "KONVERGIERT")
+          (tags "konvergiert")))
+        ("r" "Agenda and running calculations"
+         ((agenda)
+          (tags-todo "RECHNET")
+          (tags "rechnet")))
+        ("T" "Agenda and TODO for Today!"
+         ((agenda)
+          (tags-todo "TODO")
+          (tags "Today")))
+        ("W" "Agenda and TODO this Week!"
+         ((agenda)
+          (tags-todo "TODO")
+          (tags "Week")))
+        ("o" "Agenda and Office-related tasks"
+         ((agenda)
+          (tags-todo "WORK")
+          (tags "OFFICE")))))
+
+(setq org-CUA-compatible t)
+(require 'org-install)
+                                        ; (setq org-agenda-include-diary t)
+(setq org-log-done t)
+(setq org-log-done '(state))
+
+(setq org-blank-before-new-entry
+      '((heading . t) (plain-list-item . nil)))
+(setq org-agenda-sorting-strategy
+      '((agenda time-up category-keep priority-down)
+        (todo priority-down)
+        (tags category-keep priority-down)))
+
+(setq org-lowest-priority ?F)
+                                        ; A: Tommorow, B:Week, C:Important, D:needed, E:nice-to-have, F:not-needed
+                                        ;
+(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+(define-key global-map "\C-cl" 'org-store-link)
+(define-key global-map "\C-ca" 'org-agenda)
+
+(setq org-disputed-keys t)
+(setq org-log-done t)
+
+                                        ; Mittlererweile ueber custom...
+;;  (setq org-agenda-files (list "~/org/Aktuell.org"
+;;                               "~/org/Ansprechpartner.org"
+;;                               "~/org/Allgemeines.org"
+;;                               "~/org/Berichte.org"
+;;                               "~/org/DigitalerPrototyp.org"
+;;                               "~/org/Dissertation.org"
+;;                               "~/org/Simulationen.org"
+;;                               "~/org/Defrost.org"
+;;                               "~/org/EID.org"
+;;                               "~/org/EKI2.org"
+;;                               "~/org/Home.org"
+;;                               "~/org/Software.org" ))
+
+(autoload 'cdlatex-mode "cdlatex" "CDLaTeX Mode" t)
+(add-hook 'org-mode-hook 'turn-on-org-cdlatex)
+(autoload 'turn-on-cdlatex "cdlatex" "CDLaTeX Mode" nil)
+(setq org-export-with-LaTeX-fragments t)
+(setq org-confirm-shell-link-function 'y-or-n-p
+      org-confirm-elisp-link-function 'y-or-n-p)
+;;
+(setq org-return-follows-link t)
+(setq org-tab-follows-link t)
+
+
+(require 'org-toc)
+
+
+                                        ;
+                                        ;(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+                                        ;
+                                        ;(define-key mode-specific-map [?a] 'org-agenda)
+                                        ;
+                                        ;(eval-after-load "org"
+                                        ;  '(progn
+                                        ;     (define-prefix-command 'org-todo-state-map)
+                                        ;
+                                        ;     (define-key org-mode-map "\C-cx" 'org-todo-state-map)
+                                        ;
+                                        ;     (define-key org-todo-state-map "x"
+                                        ;       #'(lambda nil (interactive) (org-todo "CANCELLED")))
+                                        ;     (define-key org-todo-state-map "d"
+                                        ;       #'(lambda nil (interactive) (org-todo "DONE")))
+                                        ;     (define-key org-todo-state-map "f"
+                                        ;       #'(lambda nil (interactive) (org-todo "DEFERRED")))
+                                        ;     (define-key org-todo-state-map "l"
+                                        ;       #'(lambda nil (interactive) (org-todo "DELEGATED")))
+                                        ;     (define-key org-todo-state-map "s"
+                                        ;       #'(lambda nil (interactive) (org-todo "STARTED")))
+                                        ;     (define-key org-todo-state-map "w"
+                                        ;       #'(lambda nil (interactive) (org-todo "WAITING")))
+                                        ;
+                                        ;     (define-key org-agenda-mode-map "\C-n" 'next-line)
+                                        ;     (define-key org-agenda-keymap "\C-n" 'next-line)
+                                        ;     (define-key org-agenda-mode-map "\C-p" 'previous-line)
+                                        ;     (define-key org-agenda-keymap "\C-p" 'previous-line)))
+
+                                        ;(define-key global-map [(control meta ?r)] 'remember)
+                                        ;(autoload 'remember "remember" nil t)
+                                        ;(autoload 'remember-region "remember" nil t)
+
+(define-key global-map [f9] 'remember)
+                                        ;(define-key global-map [f9] 'remember-region)
+
+                                        ; (setq org-agenda-files (quote ("~/todo.org")))
+(setq org-default-notes-file "~/notes.org")
+                                        ; (setq org-agenda-ndays 7)
+                                        ; (setq org-deadline-warning-days 14)
+                                        ; (setq org-agenda-show-all-dates t)
+                                        ; (setq org-agenda-skip-deadline-if-done t)
+                                        ; (setq org-agenda-skip-scheduled-if-done t)
+                                        ; (setq org-agenda-start-on-weekday nil)
+                                        ; (setq org-reverse-note-order t)
+                                        ; (setq org-fast-tag-selection-single-key (quote expert))
+;; (setq org-agenda-custom-commands
+;;   (quote (("d" todo "DELEGATED" nil)
+                                        ;                   ("c" todo "DONE|DEFERRED|CANCELLED" nil)
+                                        ;                   ("w" todo "WAITING" nil)
+                                        ;                   ("W" agenda "" ((org-agenda-ndays 21)))
+                                        ;                   ("A" agenda ""
+                                        ;                    ((org-agenda-skip-function
+                                        ;                      (lambda nil
+                                        ;                                (org-agenda-skip-entry-if (quote notregexp) "\\=.*\\[#A\\]")))
+                                        ;                     (org-agenda-ndays 1)
+                                        ;                     (org-agenda-overriding-header "Today's Priority #A tasks: ")))
+                                        ;                   ("u" alltodo ""
+                                        ;                    ((org-agenda-skip-function
+                                        ;                      (lambda nil
+                                        ;                                (org-agenda-skip-entry-if (quote scheduled) (quote deadline)
+                                        ;                                                                                  (quote regexp) "<[^>\n]+>")))
+                                        ;                     (org-agenda-overriding-header "Unscheduled TODO entries: "))))))
+
+                                        ; (setq org-remember-store-without-prompt t)
+                                        ; (setq org-remember-templates
+                                        ;   (quote ((116 "* TODO %?\n  %u" "~/todo.org" "Tasks")
+                                        ;                   (110 "* %u %?" "~/notes.org" "Notes"))))
+                                        ; (setq remember-annotation-functions (quote (org-remember-annotation)))
+                                        ; (setq remember-handler-functions (quote (org-remember-handler)))
+
+
+
+
+;;;_* Divs
+                                        ;**************************************************************************************************************
+(eval-after-load "isearch" '(require 'isearch+))
+
+;; make searches case-INsensitive
+(set-default 'case-fold-search t)
+                                        ; dired only one buffer ;;;;;;;;;;;;;;;;;;;;;; For dired to use only one buffer ;;;;;;;;;;;;;;;;;;;;;;;
+                                        ; dired only one buffer (defadvice dired-advertised-find-file (around
+                                        ; dired only one buffer dired-subst-directory activate)
+                                        ; dired only one buffer   "Replace current buffer if file is a directory."
+                                        ; dired only one buffer   (interactive)
+                                        ; dired only one buffer   (let ((orig (current-buffer))
+                                        ; dired only one buffer         (filename (dired-get-filename)))
+                                        ; dired only one buffer     ad-do-it
+                                        ; dired only one buffer     (when (and (file-directory-p filename)
+                                        ; dired only one buffer                (not (eq (current-buffer) orig)))
+                                        ; dired only one buffer       (kill-buffer orig))))
+
+
+(require 'linum)
+
+(defun my-toggle-window-state ()
+  (interactive)
+  (if my-saved-configuration
+      ;; We're in the one-window mode and want to switch back.
+      (progn
+        (set-window-configuration my-saved-configuration)
+        (setq my-saved-configuration nil))
+    ;; We're in the multi-window mode, and want to save it and
+    ;; move to the single window mode.
+    (setq my-saved-configuration (current-window-configuration))
+    (delete-other-windows)))
+
+;;;_* Latex
+                                        ;**************************************************************************************************************
+(load "tex-site.el")
+(load "preview/preview-latex.el" nil t t)
+(setq TeX-source-specials-mode 0)
+(setq TeX-source-correlate-mode 1)
+                                        ;(setq-default TeX-master "master") ; Query for master file.
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+(setq TeX-parse-self t)                 ; Enable parse on load.
+(setq TeX-auto-save t)                  ; Enable parse on save.
+(setq TeX-clean-confirm nil)            ; Enable parse on save.
+(setq TeX-global-PDF-mode t)            ; &optional arg)
+                                        ;(add-hook 'tex-mode-hook 'turn-on-font-lock)
+(setq reftex-save-parse-info t)
+(setq reftex-plug-into-AUCTeX t)
+(setq reftex-enable-partial-scans t)
+(setq reftex-use-multiple-selection-buffers t)
+(setq bib-cite-use-reftex-view-crossref t)
+                                        ;(setq LaTeX-math-mode 1)
+
+(add-to-list 'auto-mode-alist '("\\.bib$" . bibtex-mode))
+(require 'latex-units)
+                                        ;(require 'pstricks)
+                                        ;          (setq reftex-texpath-environment-variables
+                                        ;                '("./inp:/home/cd/tex//:/usr/local/tex//"))
+
+;;           (setq reftex-bibpath-environment-variables
+;;                 '("~/HOME/Dissertation/TeX/Bibliography/"))
+(setq reftex-default-bibliography
+                                        ;'("~/HOME/Dissertation/TeX/Bibliography/biballsed.bib"))
+      '("~/org/Thesis/bib_Thesis.bib"))
+;;           (setq reftex-default-bibliography
+;;                 '("/scr1/gcae504/Literatur/Literaturverzeichnis/literaturverzeichnis_porsche_wanted.bib"))
+
+                                        ;          (setq reftex-default-bibliography
+                                        ;                '("~/org/Paper/biballsed.bib"))
+
+(setq header-line-format mode-line-format mode-line-format   nil)
+
+(require 'cdlatex)
+(add-hook 'LaTeX-mode-hook 'turn-on-cdlatex)    ; with AUCTeX LaTeX mode
+(add-hook 'TeX-mode-hook 'turn-on-cdlatex)      ; with AUCTeX LaTeX mode
+(add-hook 'LaTeX-mode-hook 'outline-minor-mode) ; with AUCTeX LaTeX mode
+
+;
+;(add-hook 'outline-minor-mode-hook
+;  (lambda ()
+;    (define-key outline-minor-mode-map [(control tab)] 'org-cycle)
+;
+;(define-key outline-minor-mode-map [(shift tab)] 'org-global- cycle)))
+;
+;(add-hook 'outline-mode-hook
+;  (lambda ()
+;    (define-key outline-mode-map [(tab)] 'org-cycle)
+;    (define-key outline-mode-map [(shift tab)] 'org-global-cycle)))
+
+
+(defadvice TeX-command-master (around rs-TeX-command-master-save activate)
+  "Save buffer before `TeX-command-master'"
+  (message "Saving buffer")
+  (save-buffer)
+  ad-do-it)
+
+(defface font-lock-fatal-face
+  '((((type tty) (class color)) (:foreground "red" ))
+    (t ))
+  "Font Lock mode face used to highlight fatal errors."
+  :group 'font-lock-highlighting-faces)
+                                        ;
+
+
+                                        ;(load "sje-tex-extras")
+(add-hook 'LaTeX-mode-hook
+          (lambda ()
+            (add-to-list
+             'TeX-command-list
+             '("GV" "gv %s.dvi" TeX-run-background t nil))
+            (add-to-list
+             'TeX-command-list
+             '("Ghostview" "ghostview %s.ps" TeX-run-background t nil))
+
+            (define-key LaTeX-mode-map [(alt ?l)] 'my-tex-run-latex)
+            (define-key LaTeX-mode-map [(alt return)] 'my-tex-run-latex-and-file)
+            (define-key LaTeX-mode-map [(alt ?t)] 'my-tex-run-tex)
+            (define-key LaTeX-mode-map [(alt ?v)] 'my-tex-run-view)
+            (define-key LaTeX-mode-map [(alt ?b)] 'my-tex-run-bibtex)
+            (define-key LaTeX-mode-map [(alt ?i)] 'my-tex-run-makindex)
+            (define-key LaTeX-mode-map [(alt ?p)] 'my-tex-run-print)
+            (define-key LaTeX-mode-map [(alt ?f)] 'my-tex-run-file)
+            (define-key LaTeX-mode-map [(alt ?g)] 'my-tex-run-gv)))
+
+                                        ; (defun my-tex-run-command (cmd &optional recenter)
+                                        ;   (let ((buf (current-buffer)))
+                                        ;     (save-buffer)
+                                        ;     (TeX-command-menu cmd)
+                                        ;     (if recenter
+                                        ;         (condition-case nil
+                                        ;             (save-excursion
+                                        ;               (set-buffer buf)
+                                        ;               (TeX-recenter-output-buffer nil))
+                                        ;           (error nil)))))
+                                        ;
+                                        ; (defun my-tex-run-tex ()
+                                        ;   "Run TeX on current document."
+                                        ;   (interactive)
+                                        ;   (my-tex-run-command "TeX" 'recenter))
+                                        ;
+                                        ; (defun my-tex-run-latex ()
+                                        ;   "Run LaTeX on current document."
+                                        ;   (interactive)
+                                        ;   (my-tex-run-command "LaTeX" 'recenter))
+                                        ;
+                                        ; (defun my-tex-run-bibtex ()
+                                        ;   "Run BibTeX on current document."
+                                        ;   (interactive)
+                                        ;   (my-tex-run-command "BibTeX" 'recenter))
+                                        ;
+                                        ; (defun my-tex-run-makindex ()
+                                        ;   "Run BibTeX on current document."
+                                        ;   (interactive)
+                                        ;   (my-tex-run-command "Index" 'recenter))
+                                        ;
+                                        ; (defun my-tex-run-view ()
+                                        ;   "Run View on current document."
+                                        ;   (interactive)
+                                        ;   (let* ((entry (copy-sequence (assoc "View" TeX-command-list)))
+                                        ;          TeX-command-list)
+                                        ;     (rplaca (nthcdr 3 entry) nil)
+                                        ;     (setq TeX-command-list (list entry))
+                                        ;     (my-tex-run-command "View")))
+                                        ;
+                                        ; (defun my-tex-run-print ()
+                                        ;   "Run View on current document."
+                                        ;   (interactive)
+                                        ;   (let* ((entry (copy-sequence (assoc "Print" TeX-command-list)))
+                                        ;          TeX-command-list)
+                                        ;     (rplaca (nthcdr 3 entry) nil)
+                                        ;     (setq TeX-command-list (list entry))
+                                        ;     (TeX-command-menu-print TeX-printer-default "dvips -f %s|lpc" "Print")))
+                                        ;
+                                        ; (defun my-tex-run-file ()
+                                        ;   "Run File on current document."
+                                        ;   (interactive)
+                                        ;   (let* ((entry (copy-sequence (assoc "File" TeX-command-list)))
+                                        ;          TeX-command-list)
+                                        ;     (rplaca (nthcdr 3 entry) nil)
+                                        ;     (setq TeX-command-list (list entry))
+                                        ;     (my-tex-run-command "File" 'recenter)))
+                                        ;
+                                        ; (defun my-tex-run-latex-and-file (&optional arg)
+                                        ;   "Run LaTeX and dvips."
+                                        ;   (interactive "P")
+                                        ;   (let ((buf (current-buffer)) ret)
+                                        ;     (my-tex-run-latex)
+                                        ;     (set-buffer buf)
+                                        ;     (while (and (setq ret (sit-for 1))
+                                        ;                 (TeX-process (TeX-master-file))))
+                                        ;     (and ret (my-tex-run-file))))
+                                        ;
+                                        ; (defun my-tex-run-xpdf ()
+                                        ;   "Run View on current document."
+                                        ;   (interactive)
+                                        ;   (my-tex-run-command "xpdf"))
+                                        ;
+                                        ; (defun my-latex-run (&optional arg)
+                                        ;   "Run LaTeX and pdflatex."
+                                        ;   (interactive "P")
+                                        ;   (let ((buf (current-buffer)) ret)
+                                        ;     (my-tex-run-latex)
+                                        ;     (my-tex-run-bibtex)
+                                        ; ;    (my-tex-run-makindex)
+                                        ;     (my-tex-run-latex)
+                                        ;     (set-buffer buf)
+                                        ; (my-tex-run-xpdf)
+                                        ;     (while (and (setq ret (sit-for 1))
+                                        ;                 (TeX-process (TeX-master-file))))
+                                        ;     (and ret (my-tex-run-file))))
+                                        ;
+                                        ;
+                                        ; (defun my-tex-run-gv ()
+                                        ;   "Run View on current document."
+                                        ;   (interactive)
+                                        ;   (my-tex-run-command "gv"))
+                                        ;
+(add-hook 'LaTeX-mode-hook
+          (lambda ()
+            (add-to-list
+             'TeX-command-list
+             '("GV" "gv %s.dvi" TeX-run-background t nil))
+            (add-to-list
+             'TeX-command-list
+             '("Ghostview" "ghostview %s.ps" TeX-run-background t nil))
+
+            (define-key LaTeX-mode-map [(alt ?l)] 'my-tex-run-latex)
+            (define-key LaTeX-mode-map [(alt return)] 'my-tex-run-latex-and-file)
+            (define-key LaTeX-mode-map [(alt ?t)] 'my-tex-run-tex)
+            (define-key LaTeX-mode-map [(alt ?v)] 'my-tex-run-view)
+            (define-key LaTeX-mode-map [(alt ?b)] 'my-tex-run-bibtex)
+            (define-key LaTeX-mode-map [(alt ?i)] 'my-tex-run-makindex)
+            (define-key LaTeX-mode-map [(alt ?p)] 'my-tex-run-print)
+            (define-key LaTeX-mode-map [(alt ?f)] 'my-tex-run-file)
+            (define-key LaTeX-mode-map [(alt ?g)] 'my-tex-run-gv)))
+(add-hook 'LaTeX-mode-hook (lambda () (TeX-fold-mode 1)))
+(add-hook 'TeX-mode-hook (lambda () (TeX-fold-mode 1)))
+                                        ; (add-hook 'LaTeX-mode-hood 'TeX-fold-buffer 1)
+                                        ; (add-hook 'LaTeX-mode-hood (lambda () (TeX-fold-buffer 1)))
+                                        ; (add-hook 'TeX-mode-hood (lambda () (TeX-fold-buffer 1)))
+(setq TeX-fold-buffer 0)
+(setq TeX-save-query nil)
+                                        ;(global-set-key [f7] 'tex-source-specials-mode)
+;; Provide imenu support in RefTeX
+
+(add-hook 'reftex-load-hook 'imenu-add-menubar-index)
+(add-hook 'reftex-mode-hook 'imenu-add-menubar-index)
+
+(global-set-key [down-mouse-3] 'imenu)
+
+;; AucTeX with rubber
+;;http://www.nabble.com/sweave-and-auctex-td23492805.html
+(eval-after-load "tex"
+'(add-to-list 'TeX-command-list
+;;'("Rubber" "rubber -d %t && xpdf '%s.pdf'" TeX-run-command nil t) t)) ;; change by vinh
+'("Rubber" "rubber -d %t && open '%s.pdf'" TeX-run-command nil t) t))
+
+;; Installation:
+                                        ;(load "texletter")
+(require 'texletter)
+(autoload 'texletter-create-letter
+  "texletter"
+  "Create LaTeX letters from templates."
+  t)
+
+;; And if you want to:
+                                        ;(autoload 'texletter-install-templates-as-menu
+                                        ;          "texletter"
+                                        ;          "Adding menu items for all templates."
+                                        ;          t)
+                                        ;(texletter-install-templates-as-menu)
+
+
+                                        ; X-Symbol
+                                        ;**************************************************************************************************************
+                                        ;(defvar x-symbol-root-directory (expand-file-name "/opt/emacs22.1/share/emacs/site-lisp"))
+                                        ;(defvar x-symbol-root-directory (expand-file-name "/home/gcae504/SCR1/Software/Emacs/Emacs-22.1/share/emacs/site-lisp/x-symbol/"))
+                                        ;(defvar x-symbol-lisp-directory
+                                        ;(expand-file-name "lisp/" x-symbol-root-directory))
+                                        ;(setq load-path (cons x-symbol-lisp-directory load-path))
+                                        ;(setq x-symbol-data-directory (expand-file-name "etc/" x-symbol-root-directory))
+                                        ;(load (expand-file-name "auto-autoloads" x-symbol-lisp-directory))
+                                        ;(or (fboundp 'custom-add-loads)
+                                        ;(defun custom-add-loads (symbol list)
+                                        ;(dolist (load list) (custom-add-load symbol load))))
+                                        ;(load (expand-file-name "custom-load" x-symbol-lisp-directory))
+                                        ;(x-symbol-initialize)
+                                        ;(x-symbol-initialize)
+                                        ;(require 'x-font-lock)
+
+
+                                        ; Major Mode
+                                        ;**************************************************************************************************************
+(setq default-major-mode 'sh-mode)
+(setq org-CUA-compatible t)
+
+
+(defun my-shell-command (command &optional output-buffer)
+  "same as shell-command but rename uniquely the buffers for asynch commands"
+  (interactive
+   (list (read-from-minibuffer "Shell command: "
+                               nil nil nil 'shell-command-history)
+         current-prefix-arg)
+                                        ;use this list if your using shell-command.el
+                                        ;(list
+                                        ;(shell-command-read-minibuffer shell-command-prompt
+                                        ;                                                                     default-directory
+                                        ;                                     nil nil nil 'shell-command-history)
+                                        ;                     current-prefix-arg)
+   )
+
+  (if current-prefix-arg
+      (shell-command command current-prefix-arg)
+    (if (string-match "[ \t]*&[ \t]*\\'" command)
+        (let* ((command-buffer-name (format "*Async Shell Command: %s*" (substring command 0 (match-beginning 0))))
+               (command-buffer (get-buffer command-buffer-name)))
+          (when command-buffer
+            (set-buffer command-buffer)
+            (rename-uniquely))
+          (setq output-buffer command-buffer-name)))
+    (shell-command command output-buffer)))
+
+(require 'shell-command)
+(shell-command-completion-mode)
+
+
+
+
+
+                                        ; Grep / Igrep
+                                        ;**************************************************************************************************************
+(autoload 'igrep "igrep"
+  "*Run `grep` PROGRAM to match REGEX in FILES..." t)
+(autoload 'igrep-find "igrep"
+  "*Run `grep` via `find`..." t)
+(autoload 'igrep-visited-files "igrep"
+  "*Run `grep` ... on all visited files." t)
+(autoload 'dired-do-igrep "igrep"
+  "*Run `grep` on the marked (or next prefix ARG) files." t)
+(autoload 'dired-do-igrep-find "igrep"
+  "*Run `grep` via `find` on the marked (or next prefix ARG) directories." t)
+(autoload 'Buffer-menu-igrep "igrep"
+  "*Run `grep` on the files visited in buffers marked with '>'." t)
+(autoload 'igrep-insinuate "igrep"
+  "Define `grep' aliases for the corresponding `igrep' commands." t)
+                                        ; 2. a. For completeness, you can add these forms as well:
+(autoload 'grep "igrep"
+  "*Run `grep` PROGRAM to match REGEX in FILES..." t)
+(autoload 'egrep "igrep"
+  "*Run `egrep`..." t)
+(autoload 'fgrep "igrep"
+  "*Run `fgrep`..." t)
+(autoload 'agrep "igrep"
+  "*Run `agrep`..." t)
+(autoload 'grep-find "igrep"
+  "*Run `grep` via `find`..." t)
+(autoload 'egrep-find "igrep"
+  "*Run `egrep` via `find`..." t)
+(autoload 'fgrep-find "igrep"
+  "*Run `fgrep` via `find`..." t)
+(autoload 'agrep-find "igrep"
+  "*Run `agrep` via `find`..." t)
+
+(load "igrep-next-error")
+
+(substitute-key-definition 'next-error 'igrep-next-error
+                           (current-global-map))
+(substitute-key-definition 'previous-error 'igrep-previous-error
+                           (current-global-map))
+(substitute-key-definition 'first-error 'igrep-first-error
+                           (current-global-map))
+
+                                        ; DirColors
+                                        ;**************************************************************************************************************
+                                        ;(require 'dircolors)
+(load "dircolors")
+                                        ;(setq dircolors-face-color
+                                        ;  '((dircolors-face-dir            "SkyBlue"        )
+                                        ;    (dircolors-face-doc            "MediumTurquoise")
+                                        ;    (dircolors-face-html           "Plum"           )
+                                        ;    (dircolors-face-package        "IndianRed"      )
+                                        ;    (dircolors-face-tar            "OrangeRed"      )
+                                        ;    (dircolors-face-dos            "LimeGreen"      )
+                                        ;    (dircolors-face-sound          "LightBlue"      )
+                                        ;    (dircolors-face-img            "Salmon"         )
+                                        ;    (dircolors-face-ps             "BlueViolet"     )
+                                        ;    (dircolors-face-backup         "Magenta"        )
+                                        ;    (dircolors-face-make           "Khaki"          )
+                                        ;    (dircolors-face-paddb          "Orange"         )
+                                        ;    (dircolors-face-lang           "Yellow"         )
+                                        ;    (dircolors-face-emacs          "GreenYellow"    )
+                                        ;    (dircolors-face-lang-interface "Goldenrod"      )
+                                        ;    (dircolors-face-yacc           "Coral"          )
+                                        ;    (dircolors-face-objet          "DimGray"        )
+                                        ;    (dircolors-face-asm            "Tan"            )
+                                        ;    (dircolors-face-compress       "Sienna"         )))
+
+                                        ; dircolors (setq xwl-dircolors-string
+                                        ; dircolors       (replace-regexp-in-string
+                                        ; dircolors        ":$" "" (cadr
+                                        ; dircolors                 (split-string
+                                        ; dircolors                  (shell-command-to-string "dircolors")
+                                        ; dircolors                  "'"))))
+                                        ; dircolors
+                                        ; dircolors ;; colored by file extensions
+                                        ; dircolors (setq xwl-dircolors-extensions
+                                        ; dircolors       (split-string
+                                        ; dircolors        (replace-regexp-in-string
+                                        ; dircolors         "=[0-9;]+\\|\\*\\." ""
+                                        ; dircolors         (replace-regexp-in-string "^[^*]*" "" xwl-dircolors-string))
+                                        ; dircolors        ":"))
+                                        ; dircolors
+                                        ; dircolors (defun xwl-dircolors-get-escape-seq (regexp)
+                                        ; dircolors   "Get escape-seq by matching REGEXP against `xwl-dircolors-string'.
+                                        ; dircolors e.g., (xwl-dircolors-get-escape-seq \"*.gz\") => \"01;31\""
+                                        ; dircolors   (string-match (concat regexp "=\\([^:]+\\):") xwl-dircolors-string)
+                                        ; dircolors   (match-string 1 xwl-dircolors-string))
+                                        ; dircolors
+                                        ; dircolors (setq dired-font-lock-keywords
+                                        ; dircolors   `(
+                                        ; dircolors    ;;
+                                        ; dircolors    ;; Directory headers.
+                                        ; dircolors    ,(list dired-subdir-regexp '(1 dired-header-face))
+                                        ; dircolors    ;;
+                                        ; dircolors    ;; Dir|ed marks.
+                                        ; dircolors    ,(list dired-re-mark '(0 dired-mark-face))
+                                        ; dircolors    ;;
+                                        ; dircolors    ;; We make heavy use of MATCH-ANCHORED, since the regexps don't identify the
+                                        ; dircolors    ;; file name itself.  We search for Dired defined regexps, and then use the
+                                        ; dircolors    ;; Dired defined function `dired-move-to-filename' before searching for the
+                                        ; dircolors    ;; simple regexp ".+".  It is that regexp which matches the file name.
+                                        ; dircolors    ;;
+                                        ; dircolors    ;; Marked files.
+                                        ; dircolors    ,(list (concat "^[" (char-to-string dired-marker-char) "]")
+                                        ; dircolors          '(".+" (dired-move-to-filename) nil (0 dired-marked-face)))
+                                        ; dircolors    ;;
+                                        ; dircolors    ;; Flagged files.
+                                        ; dircolors    ,(list (concat "^[" (char-to-string dired-del-marker) "]")
+                                        ; dircolors          '(".+" (dired-move-to-filename) nil (0 dired-flagged-face)))
+                                        ; dircolors    ;; People who are paranoid about security would consider this more
+                                        ; dircolors    ;; important than other things such as whether it is a directory.
+                                        ; dircolors    ;; But we don't want to encourage paranoia, so our default
+                                        ; dircolors    ;; should be what's most useful for non-paranoids. -- rms.
+                                        ; dircolors ;;;   ;;
+                                        ; dircolors ;;;   ;; Files that are group or world writable.
+                                        ; dircolors ;;;   (list (concat dired-re-maybe-mark dired-re-inode-size
+                                        ; dircolors ;;;              "\\([-d]\\(....w....\\|.......w.\\)\\)")
+                                        ; dircolors ;;;      '(1 dired-warning-face)
+                                        ; dircolors ;;;      '(".+" (dired-move-to-filename) nil (0 dired-warning-face)))
+                                        ; dircolors    ;; However, we don't need to highlight the file name, only the
+                                        ; dircolors    ;; permissions, to win generally.  -- fx.
+                                        ; dircolors    ;; Fixme: we could also put text properties on the permission
+                                        ; dircolors    ;; fields with keymaps to frob the permissions, somewhat a la XEmacs.
+                                        ; dircolors    ,(list (concat dired-re-maybe-mark dired-re-inode-size
+                                        ; dircolors                  "[-d]....\\(w\\)....")       ; group writable
+                                        ; dircolors          '(1 dired-warning-face))
+                                        ; dircolors    ,(list (concat dired-re-maybe-mark dired-re-inode-size
+                                        ; dircolors                  "[-d].......\\(w\\).")       ; world writable
+                                        ; dircolors          '(1 dired-warning-face))
+                                        ; dircolors    ;;
+                                        ; dircolors    ;; Subdirectories.
+                                        ; dircolors    ,(list dired-re-dir
+                                        ; dircolors          '(".+" (dired-move-to-filename) nil (0 dired-directory-face)))
+                                        ; dircolors    ;;
+                                        ; dircolors    ;; Symbolic links.
+                                        ; dircolors    ,(list dired-re-sym
+                                        ; dircolors          '(".+" (dired-move-to-filename) nil (0 dired-symlink-face)))
+                                        ; dircolors
+                                        ; dircolors    ;; executables
+                                        ; dircolors    ,(list dired-re-exe
+                                        ; dircolors           `(".+"
+                                        ; dircolors             (dired-move-to-filename)
+                                        ; dircolors             nil
+                                        ; dircolors             (0 (ansi-color-get-face ,(xwl-dircolors-get-escape-seq "ex")))))
+                                        ; dircolors
+                                        ; dircolors    ;; colorful by extensions
+                                        ; dircolors    ,@(mapcar (lambda (ext)
+                                        ; dircolors                `(,(format ".*\\.%s$" ext)
+                                        ; dircolors                  (".+"
+                                        ; dircolors                   (dired-move-to-filename)
+                                        ; dircolors                   nil
+                                        ; dircolors                   (0 (ansi-color-get-face ,(xwl-dircolors-get-escape-seq ext))))))
+                                        ; dircolors              xwl-dircolors-extensions)
+                                        ; dircolors
+                                        ; dircolors    ;;
+                                        ; dircolors    ;; Files suffixed with `completion-ignored-extensions'.
+                                        ; dircolors    (eval .
+                                        ; dircolors      ;; It is quicker to first find just an extension, then go back to the
+                                        ; dircolors      ;; start of that file name.  So we do this complex MATCH-ANCHORED form.
+                                        ; dircolors      (list (concat "\\(" (regexp-opt completion-ignored-extensions) "\\|#\\)$")
+                                        ; dircolors            '(".+" (dired-move-to-filename) nil (0 dired-ignored-face))))
+                                        ; dircolors    ;;
+                                        ; dircolors    ;; Files suffixed with `completion-ignored-extensions'
+                                        ; dircolors    ;; plus a character put in by -F.
+                                        ; dircolors    (eval .
+                                        ; dircolors      (list (concat "\\(" (regexp-opt completion-ignored-extensions)
+                                        ; dircolors                    "\\|#\\)[*=|]$")
+                                        ; dircolors            '(".+" (progn
+                                        ; dircolors                     (end-of-line)
+                                        ; dircolors                     ;; If the last character is not part of the filename,
+                                        ; dircolors                     ;; move back to the start of the filename
+                                        ; dircolors                     ;; so it can be fontified.
+                                        ; dircolors                     ;; Otherwise, leave point at the end of the line;
+                                        ; dircolors                     ;; that way, nothing is fontified.
+                                        ; dircolors                     (unless (get-text-property (1- (point)) 'mouse-face)
+                                        ; dircolors                       (dired-move-to-filename)))
+                                        ; dircolors              nil (0 dired-ignored-face))))))
+
+;;;_* Wrapping
+                                        ;**************************************************************************************************************
+(autoload 'wrap-mode "~/wrap-mode.el" "Toggle wrapping." t)
+
+(require 'filladapt)
+(autoload 'super-auto-fill-mode "~/my-auto-fill.el" "Super filling." )
+
+
+
+
+
+                                        ; Abbrev
+                                        ;**************************************************************************************************************
+                                        ;
+(setq-default abbrev-mode t)
+                                        ;(read-abbrev-file"~/.abbrevs")
+(setq save-abbrevs t)
+
+;;; ISPELL
+                                        ;**************************************************************************************************************
+                                        ;(setq-default ispell-program-name "aspell")
+                                        ;
+                                        ;(setq ispell-program-name "ispell")
+                                        ;(setq ispell-program-name "aspell")
+                                        ;(setq ispell-dictionary "german8")
+                                        ;(setq ispell-dictionary "american")
+                                        ; does not work!? Dictionary fehlt
+
+;;;  (setq ispell-local-dictionary "deutsch8")
+                                        ;(setq flyspell-default-dictionary "deutsch8")
+                                        ;(setq fly-default-dictionary "american")
+                                        ;(setq flyspell-default-dictionary "deutsch8")
+                                        ;(add-hook 'text-mode-hook 'flyspell-mode)
+                                        ;(add-hook 'PDFLaTeX-mode-hook 'flyspell-mode)
+
+(add-hook 'TeX-language-de-hook
+          (lambda () (ispell-change-dictionary "deutsch8")))
+
+(setq ispell-local-dictionary-alist nil)
+(add-to-list 'ispell-local-dictionary-alist
+             '("deutsch8"
+               "[[:alpha:]]" "[^[:alpha:]]"
+               "[']" t
+               ("-C" "-d" "german")
+               "~latin1" iso-8859-1)
+             )
+
+(setq ispell-dictionary "deutsch8")
+(setq ispell-local-dictionary "deutsch8")
+(setq ispell-default-dictionary "deutsch8")
+(setq flyspell-default-dictionary "deutsch8")
+
+(setq ispell-silently-savep t)
+(add-hook 'tex-mode-hook (function (lambda ()
+                                     (setq ispell-parser 'tex))))
+
+;; Flyspell
+(autoload 'flyspell-mode "flyspell" "On-the-fly spelling checker." t)
+                                        ;(defun turn-on-flyspell-mode ()
+                                        ;   (flyspell-mode 1)
+                                        ;)
+
+
+(autoload 'flyspell-mode "flyspell" "On-the-fly ispell." t)
+(setq flyspell-issue-welcome-flag nil)
+
+(add-hook 'LaTeX-mode-hook
+          (lambda () (flyspell-mode t) ))
+                                        ;(lambda () (flyspell-mode t) (refill-mode 1)))
+
+(add-hook 'LaTeX-mode-hook 'flyspell-mode)
+                                        ;(add-hook 'PDFLaTeX/F-mode-hook 'flyspell-mode)
+(add-hook 'TeX-mode-hook 'flyspell-mode)
+
+
+(defun ispell-set-german ()
+  "switch ispell language to german"
+  (interactive)
+  (ispell-change-dictionary "deutsch8"))
+
+(defun ispell-set-english ()
+  "switch ispell language to english"
+  (interactive)
+  (ispell-change-dictionary "american"))
+
+(defvar toggle-ispell-english-german nil
+  "state of english/deutsch8 toggle. t means english, nil means deutsch8")
+(make-variable-buffer-local 'toggle-ispell-english-german)
+
+(defun toggle-ispell-language ()
+  "Toggle ispell-language between english and deutsch8"
+  (interactive)
+  (cond (toggle-ispell-english-german
+         (setq toggle-ispell-english-german nil)
+         (ispell-set-german))
+        (t
+         (setq toggle-ispell-english-german t)
+         (ispell-set-english))))
+
+(add-to-list 'auto-mode-alist '("/home/fab/HOME/Dissertation/CFD/Projects/Building_airflow/Paper/Vergleich_RANS-LES/building_airflow_article.tex" . (setq ispell-set-dictionary "american")))
+(add-to-list 'auto-mode-alist '("~/org/Thesis/*.tex" . (setq ispell-local-dictionary "deutsch8")))
+(add-to-list 'auto-mode-alist '("~/org/Thesis/*.tex" . (setq ispell-set-dictionary "deutsch8")))
+
+(add-to-list 'auto-mode-alist '("~/org/Thesis/\\.tex$" . (setq ispell-set-dictionary "deutsch8")))
+(add-to-list 'auto-mode-alist '("~/org/Thesis/4-Motivation.tex" . (setq ispell-set-dictionary "deutsch8")))
+(add-to-list 'auto-mode-alist '("~/org/Thesis/4-Motivation.tex" . (setq ispell-local-dictionary "deutsch8")))
+(add-to-list 'auto-mode-alist '("~/org/Thesis/4-Motivation.tex" . (setq ispell-change-dictionary "deutsch8")))
+
+(add-to-list 'auto-mode-alist '("\\*.org$" . (setq ispell-local-dictionary "deutsch8")))
+(add-to-list 'auto-mode-alist '("\\*.tex$" . (setq ispell-local-dictionary "deutsch8")))
+(add-to-list 'auto-mode-alist '("etmm7_abstract.tex" .  (setq ispell-local-dictionary "american")))
+(add-to-list 'auto-mode-alist '("etmm7_abstract.tex" .  (setq ispell-set-dictionary "american")))
+(add-to-list 'auto-mode-alist '("\\*.tex$" . (setq ispell-local-dictionary "deutsch8")))
+(add-to-list 'auto-mode-alist '("\\*.tex$" . (setq ispell-set-dictionary "deutsch8")))
+(add-to-list 'auto-mode-alist '("\\*.tex$" . (setq ispell-change-dictionary "deutsch8")))
+
+                                        ;(add-hook 'text-mode-hook (lambda () (setq ispell-local-dictionary "german8")))
+
+                                        ;
+                                        ;(autoload 'flyspell-babel-setup "flyspell-babel")
+                                        ;(add-hook 'LaTeX-mode-hook 'flyspell-babel-setup)
+                                        ;
+;;   (add-hook 'vc-find-file-hook
+;;    (lambda ()
+;;     (cond
+;;      ((string-match "test.tex" )
+;;   (setq ispell-local-dictionary "deutsch8")))))
+;;;       (ispell-change-dictionary "deutsch8"))
+                                        ;
+                                        ;(add-hook 'find-file-hooks
+                                        ;           (lambda ()
+                                        ;             (when (equal (file-name-nondirectory buffer-file-name)
+                                        ;"building_airflow_article.tex")
+                                        ;               (setq ispell-local-dictionary "german-new8"))))
+                                        ;
+                                        ;(add-hook 'find-file-hooks
+                                        ;           (lambda ()
+                                        ;             (when (equal (file-name-nondirectory buffer-file-name)
+                                        ;"beamer.tex")
+                                        ;               (setq ispell-local-dictionary "german-new8"))))
+                                        ;
+                                        ;
+                                        ; (add-to-list 'ispell-dictionary-alist
+                                        ;              '("ndeutsch8-15"
+                                        ;                "[a-zA-Z\304\326\334\344\366\337\374]"
+                                        ;                "[^a-zA-Z\304\326\334\344\366\337\374]"
+                                        ;                "[']" t
+                                        ;                ("-C" "-d" "ndeutsch")
+                                        ;                "~latin1" iso-8859-15))
+                                        ;
+                                        ;
+
+;;;_* BACKUP
+;;**************************************************************************************************************
+;;;--- move all backups in one directory
+(setq make-backup-files t)
+(setq backup-directory-alist '(("." . "~/.vim.backupdir/emacs/")))
+(setq version-control "never")
+(setq-default delete-old-versions t)
+(defun make-backup-file-name (file) (concat "~/.vim.backupdir/emacs/" (file-name-nondirectory file)))
+
+;;;_* LOOK
+;;**************************************************************************************************************
+                                        ;(set-default-font "-adobe-courier-medium-r-normal--18-180-75-75-m-110-iso8859-1")
+;(set-default-font "-adobe-courier-medium-r-normal--18-180-75-75-m-110-iso8859-1")
+;(set-default-font "-dejavu-dejavu sans mono-bold-r-normal-*-*-*-75-75-c-*-iso8859-*")
+                                        ;(set-default-font "-b&h-lucidabright-medium-i-normal--25-180-100-100-p-142-iso8859-9")
+                                        ;(set-default-font "-b&h-lucida-medium-r-normal-sans-18-180-75-75-p-106-iso8859-15")
+                                        ;(set-default-font "-alias-fixed-medium-r-normal--14-140-75-75-c-70-iso8859-1")
+                                        ;(set-default-font "-biznet-fixed-medium-r-normal--16-160-75-75-c-80-iso8859-2")
+                                        ; kursiv (set-default-font "-misc-fixed-bold-i-normal-old style-16-150-75-75-c-160-jisx0208.1997-0")
+
+
+(load "color-theme")
+(color-theme-initialize)
+;;(color-theme-vim-colors)
+(color-theme-billw)
+;;
+                                        ;(setq visible-bell 1)
+(setq scroll-step 1)
+
+;; Show line-number in the mode line
+(line-number-mode 1)
+
+;; Show column-number in the mode line
+(column-number-mode 1)
+(setq default-fill-column 72)
+(setq auto-fill-mode 1)
+
+
+
+(defface font-lock-fatal-face
+  '((((type tty) (class color)) (:foreground "red" ))
+    (t ))
+  "Font Lock mode face used to highlight fatal errors."
+  :group 'font-lock-highlighting-faces)
+
+
+
+;;_*  Recent
+;;**************************************************************************************************************
+(require 'recentf) ;recent file menu  ;; http://www.djefer.com/info/emacs/recentf.el
+
+(setq recentf-menu-filter 'recentf-show-basenames)
+(global-set-key (kbd "C-c f") 'recentf-open-files)
+
+;; Highline
+;;**************************************************************************************************************
+(require 'highline)
+(add-hook 'dired-after-readin-hook 'highline-on)
+(add-hook 'Vkill-mode-hook 'highline-on)
+(add-hook 'Vkill-hook 'highline-on)
+(add-hook 'bookmark-load-hook 'highline-on)
+(add-hook 'bs-mode-hook 'highline-on)
+(add-hook 'org-agenda-mode-hook 'highline-on)
+(add-hook 'occur-mode-hook 'highline-on)
+(add-hook 'vkill-mode-hook 'highline-on)
+(defadvice ibuffer (after highlight-line activate)
+  (save-excursion
+    (set-buffer "*Ibuffer*")
+    (highline-on)))
+(add-hook 'gnus-summary-mode-hook 'highline-local-mode)
+(add-hook 'gnus-group-mode-hook 'highline-local-mode)
+(setq highline-face 'highlight)
+(setq highline-face 'highlight)
+
+                                        ; Vkill
+;;**************************************************************************************************************
+                                        ; nicht regelmaessig genutzt; zu unuebersichtlich und langsam
+                                        ;(require 'vkill)
+                                        ;(autoload 'vkill "vkill" nil t)
+                                        ;(autoload 'list-unix-processes "vkill" nil t)
+                                        ;(defun my-vkill()
+                                        ;  "Run Vkill with highine."
+                                        ;  (interactive)
+                                        ;  (vkill)
+                                        ;  (highline-on)
+                                        ;)
+;;(define-key global-map [(F9)] 'my-vkill)
+                                        ;(define-key global-map [(f9)] 'my-vkill)
+
+;;;_*  Session
+;;**************************************************************************************************************
+(require 'session)
+(add-hook 'after-init-hook 'session-initialize)
+
+
+
+;;;_* CVS
+;;**************************************************************************************************************
+;;;; automatisch CVS-Checkin beim Speichern
+(defvar vc-mode nil)
+(add-hook 'after-save-hook (lambda () (and vc-mode (vc-toggle-read-only))))
+;;
+;;;; I prefer unified context diffs.
+(setq diff-switches "-u")
+;;
+;;;; Run cvs-update-other-window, but checks the directory the file
+;;;; being currently edited is in first and uses that to set the CVS
+;;;; repository.
+;;(defun rra-cvs-update ()
+;;  "Customized cvs-update-other-window that doesn't prompt for a
+;;  directory."
+;;  (interactive)
+;;  ;      (if (string-match "XEmacs" emacs-version)
+;;  (progn
+;;    (if (one-window-p) (split-window-vertically))
+;;    (other-window 1)
+;;    (cvs-update (file-name-directory (buffer-file-name)) t))
+;;  (cvs-update-other-window (file-name-directory (buffer-file-name))))
+                                        ;
+;; Run cvs-update-other-window, but checks the directory the file
+;; being currently edited is in first and uses that to set the CVS
+;; repository.
+
+(defun rra-cvs-update ()
+  "Customized cvs-update-other-window that doesn't prompt for a
+    directory."
+  (interactive)
+  (if (string-match "XEmacs" emacs-version)
+      (progn
+        (if (one-window-p) (split-window-vertically))
+        (other-window 1)
+        (cvs-update (file-name-directory (buffer-file-name)) t))
+    (cvs-update-other-window (file-name-directory (buffer-file-name)))))
+
+
+
+;;;_* BUFFERS
+                                        ;**************************************************************************************************************
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+                                        ;    (autoload 'ibuffer "ibuffer" "List buffers." t)
+
+                                        ;    (add-to-list 'ibuffer-never-show-regexps "^\\*")
+
+                                        ; (require 'ibuf-ext nil t)
+(when (featurep 'ibuf-ext)
+  (add-hook 'ibuffer-mode-hook (lambda ()
+                                 (setq ibuffer-filter-groups '(
+                                                               ("*buffer*" (name . "\\*.*\\*"))
+                                                               ("dired" (mode . dired-mode))
+                                                               ("python" (mode . python-mode))
+                                                               ("fluent" (mode . lisp-mode))
+                                                               ("latex" (mode . latex-mode))
+                                                               ("latex" (mode . latex-mode))
+                                                               ("openfoam" (mode . c++-mode))
+                                                               ("tags" (name . "^tags\\(<[0-9]+>\\)?$"))
+                                                               )))))
+(setq ibuffer-shrink-to-minimum-size t)
+(setq ibuffer-always-show-last-buffer nil)
+(setq ibuffer-sorting-mode 'recency)
+(setq ibuffer-use-header-line t)
+
+
+(defface ibuffer-lisp-face '((t (:foreground "Red" :weight bold)))
+  "Ibuffer lisp face")
+
+(defface ibuffer-python-face '((t (:foreground "Red" :weight bold)))
+  "Ibuffer python face")
+
+(defface ibuffer-org-face '((t (:foreground "Red" :weight bold)))
+  "Ibuffer compress face")
+
+(defface ibuffer-OpenFOAM-face '((t (:foreground "salmon" :weight bold)))
+  "Ibuffer compress face")
+
+;; (add-to-list
+;;  'ibuffer-fontification-alist
+;;  '(5 (string-match
+;;       (concat "\\.\\("
+;;               (regexp-opt '("tar" "tgz" "arj" "taz" "lzh" "zip" "z"
+;;                             "gz" "bz2" "deb" "rpm" "bun" "bgz"))
+;;               "\\)$")
+;;       (buffer-name))
+;;      ibuffer-OpenFOAM-face))
+
+;; (add-to-list
+;;  'ibuffer-fontification-alist
+;;  '(5 (string-match
+;;       (concat "\\.\\("
+;;               (regexp-opt '("tar" "tgz" "arj" "taz" "lzh" "zip" "z"
+;;                             "gz" "bz2" "deb" "rpm" "bun" "bgz"))
+;;               "\\)$")
+;;       (buffer-name))
+;;      ibuffer-compress-face))
+
+;; (add-hook 'ibuffer-mode-hook
+;;               (lambda ()
+;;                 (ibuffer-switch-to-saved-filter-groups "default")))
+;; ;
+                                        ;)
+
+
+;; (define-ibuffer-sorter filename-or-dired
+;;   "Sort the buffers by their pathname."
+;;   (:description "filenames plus dired")
+;;   (string-lessp
+;;    (with-current-buffer (car a)
+;;      (or buffer-file-name
+;;          (if (eq major-mode 'dired-mode)
+;;              (expand-file-name dired-directory))
+;;          ;; so that all non pathnames are at the end
+;;          "~"))
+;;    (with-current-buffer (car b)
+;;      (or buffer-file-name
+;;          (if (eq major-mode 'dired-mode)
+;;              (expand-file-name dired-directory))
+;;          ;; so that all non pathnames are at the end
+;;          "~"))))
+
+;;     (setq ibuffer-saved-filter-groups
+;;           (quote (("default"
+;;                    ("dired" (mode . dired-mode))
+;;                    ("perl" (mode . cperl-mode))
+;;                    ("erc" (mode . erc-mode))
+;;                    ("planner" (or
+;;                                (name . "^\\*Calendar\\*$")
+;;                                (name . "^diary$")
+;;                                (mode . muse-mode)))
+;;                    ("emacs" (or
+;;                              (name . "^\\*scratch\\*$")
+;;                              (name . "^\\*Messages\\*$")))
+;;                    ("gnus" (or
+;;                             (mode . message-mode)
+;;                             (mode . bbdb-mode)
+;;                             (mode . mail-mode)
+;;                             (mode . gnus-group-mode)
+;;                             (mode . gnus-summary-mode)
+;;                             (mode . gnus-article-mode)
+;;                             (name . "^\\.bbdb$")
+;;                             (name . "^\\.newsrc-dribble")))))))
+
+;;     (add-hook 'ibuffer-mode-hook
+;;               (lambda ()
+;;                 (ibuffer-switch-to-saved-filter-groups "default")))
+
+;; (define-key ibuffer-mode-map (kbd "s p") 'ibuffer-do-sort-by-filename-or-dired)
+
+
+;;      (defun my-ibuffer-hook ()
+
+;;       ;; add another sorting method for ibuffer (allow the grouping of
+;;       ;; filenames and dired buffers
+
+;;       (ibuffer-define-sorter pathname
+;;          (:documentation
+;;           "Sort the buffers by their pathname."
+;;           :description "path")
+;;          (string-lessp (with-current-buffer (car a)
+;;                          (or buffer-file-name
+;;                              (if (eq major-mode 'dired-mode)
+;;                                  (expand-file-name dired-directory))
+;;                              ;; so that all non pathnames are at the end
+;;                              "~"))
+;;                        (with-current-buffer (car b)
+;;                          (or buffer-file-name
+;;                              (if (eq major-mode 'dired-mode)
+;;                                  (expand-file-name dired-directory))
+;;                              ;; so that all non pathnames are at the end
+;;                              "~"))))
+
+;;       ;; add key binding
+
+;;       (define-key ibuffer-mode-map (kbd "s p") 'ibuffer-do-sort-by-pathname))
+
+;;     (add-hook 'ibuffer-mode-hooks 'my-ibuffer-hook)
+
+                                        ;(require 'bs)                                                                                                                                                                                                                            ;Buffer selection
+                                        ; (global-set-key (kbd "C-x C-b") 'bs-show)
+                                        ;(setq bs-configurations
+                                        ;      '(("all" nil nil nil nil nil)
+                                        ;        ("files" nil nil nil bs-visits-non-file bs-sort-buffer-interns-are-last)
+;;;         ("SQL" nil nil nil
+;;          (lambda (buf)
+;;            (with-current-buffer buf
+;;              (not (eq major-mode 'sql-mode)))) nil)
+                                        ;        ("dired" nil nil nil
+                                        ;         (lambda (buf)
+                                        ;           (with-current-buffer buf
+                                        ;             (not (eq major-mode 'dired-mode)))) nil)))
+
+
+;;;_*  Outline
+                                        ;**************************************************************************************************************
+(require 'allout)
+
+(allout-init t)
+(defun dto/allout-highlight-headings ()
+  (interactive)
+  (font-lock-add-keywords nil '(("^\\(\\* \\|\\(\\. *\\*
+\\)\\)\\(.*\\)$" 3 font-lock-keyword-face t))))
+
+(add-hook 'allout-mode-hook 'dto/allout-highlight-headings)
+
+                                        ;(defvar rf-allout-font-lock-keywords
+                                        ;  '(;;
+                                        ;    ;; Highlight headings according to the level.
+                                        ;    (eval . (list (concat "^\\(" outline-regexp "\\).+")
+                                        ;                                0 '(or (cdr (assq (outline-depth)
+                                        ;                                                                  '((1 . font-lock-function-name-face)
+                                        ;                                                                    (2 . font-lock-variable-name-face)
+                                        ;                                                                    (3 . font-lock-keyword-face)
+                                        ;                                                                    (4 . font-lock-builtin-face)
+                                        ;                                                                    (5 . font-lock-comment-face)
+                                        ;                                                                    (6 . font-lock-constant-face)
+                                        ;                                                                    (7 . font-lock-type-face)
+                                        ;                                                                    (8 . font-lock-string-face))))
+                                        ;                                       font-lock-warning-face)
+                                        ;                                nil t)))
+                                        ;  "Additional expressions to highlight in Outline mode.")
+                                        ;
+;;; add font-lock to allout mode
+                                        ;(defun rf-allout-font-lock-hook ()
+                                        ;  (set (make-local-variable 'font-lock-defaults)
+                                        ;       '(rf-allout-font-lock-keywords t nil nil
+                                        ;outline-back-to-current-heading)))
+                                        ;
+                                        ;(add-hook 'outline-mode-hook 'rf-allout-font-lock-hook)
+
+
+
+
+
+;;; Latex
+(setq outline-level (lambda ()
+                      "Adjust outline-level to R-comments."
+                      (interactive)
+                      (cond ((looking-at "#\\{5\\} ") 1)
+                            ((looking-at "#### ") 2)
+                            ((looking-at "### ") 3)
+                            ((looking-at "## ") 4)
+                            (t 1000))))
+
+                                        ; (add-hook 'outline-mode-hook
+                                        ;           (lambda ()
+                                        ;             (require 'outline-cycle)))
+
+                                        ; (add-hook 'outline-minor-mode-hook
+                                        ;           (lambda ()
+                                        ;             (require 'outline-magic)
+                                        ;             (define-key outline-minor-mode-map [backtab] 'outline-cycle)))
+                                        ;
+(defun my-fluent-outline-mode ()
+                                        ;(setq outline-regexp "^[ \t]*//.*")
+                                        ;(setq outline-regexp "^[ \t]*;.Define*")
+                                        ;   (setq outline-regexp "^[ \t]*;.Gitter")
+                                        ;   (setq outline-regexp "^[ \t]*;.Gitter Skalierung")
+                                        ;(setq outline-regexp "^[ \t]*;.Batch Optionen")
+  ;;  (setq outline-regexp "; Auto-Save+")
+  ;; (setq outline-regexp "; Batch Optionen+")
+                                        ;(setq outline-regexp "; Batch Optionen+")
+  ;;    (setq outline-regexp ";\\*+")
+  ;;    (setq outline-regexp ";; \\*+")
+  (setq outline-regexp ";-\ *+")
+  (setq outline-regexp ";-\ ")
+                                        ;   (setq outline-regexp "^[ \t]*;.Auto-Save")
+  (outline-minor-mode t)
+  (hide-sublevels 0)
+  )
+(add-hook 'lisp-mode-hook 'my-fluent-outline-mode)
+
+
+                                        ;  ;; outline
+                                        ;  (add-hook 'outline-mode-hook
+                                        ;          '(lambda ()
+                                        ;             (setq outline-regexp "\\(\\*\\|-\\|  -\\|    -\\)")
+                                        ;             (setq outline-level
+                                        ;                   '(lambda ()
+                                        ;                      (cond ((looking-at "\\*") 1)
+                                        ;                            ((looking-at "-") 2)
+                                        ;                            ((looking-at "  -") 3)
+                                        ;                            ((looking-at "    -") 4)
+                                        ;                            (t 1000))))))
+                                        ;  (setq outline-font-lock-keywords
+                                        ;    '(;;
+                                        ;      ;; Highlight headings according to the level.
+                                        ;      (eval . (list (concat "^" outline-regexp ".+")
+                                        ;                  0 '(or (cdr (assq (outline-font-lock-level)
+                                        ;                                    '((1 . font-lock-function-name-face)
+                                        ;                                      (2 . font-lock-variable-name-face)
+                                        ;                                      (3 . font-lock-doc-face)
+                                        ;                                      (4 . font-lock-comment-face)
+                                        ;                                      (5 . font-lock-comment-face)
+                                        ;                                      (6 . font-lock-type-face)
+                                        ;                                      (7 . font-lock-type-face)
+                                        ;                                      (8 . font-lock-string-face))))
+                                        ;                         font-lock-warning-face)
+                                        ;                  nil t))))
+
+
+
+
+
+
+;;;_*  Dired
+                                        ;**************************************************************************************************************
+                                        ; funktioniert nicht rightig
+(require 'dired-view)
+;;
+;; To enable it by default,
+;;
+                                        ;(add-hook 'dired-mode-hook 'dired-view-minor-mode-on)
+;;
+;; Also, you could define keys to toggle it,
+;;
+                                        ;(define-key dired-mode-map (kbd ";") 'dired-view-minor-mode-toggle)
+                                        ;(define-key dired-mode-map (kbd ":") 'dired-view-minor-mode-dired-toggle)
+;; (add-hook 'dired-load-hook
+;;                (lambda ()
+;;                  ;; Bind dired-x-find-file.
+;;                  (setq dired-x-hands-off-my-keys nil)
+;;                  ))
+(require 'dired-details)
+(require 'dired-single)
+(dired-details-install)
+
+(load "dired-details+")
+(load "de-dired")
+                                        ;(load "gm-dired") funktioniert nicht
+
+(defun dired-do-shell-command-in-background (command)
+  "In dired, do shell command in background on the file or directory
+ named on this line."
+  (interactive
+   (list (dired-read-shell-command (concat "& on " "%s: ") nil (list (dired-get-filename)))))
+  (call-process command nil 0 nil (dired-get-filename)))
+
+(add-hook 'dired-load-hook
+          (function (lambda ()
+                      (load "dired-x")
+                      (define-key dired-mode-map "&" 'dired-do-shell-command-in-background)
+
+                      ;; Bind dired-x-find-file.
+                      (setq dired-x-hands-off-my-keys nil)
+                      ;; Make sure our binding preference is invoked.
+                      (dired-x-bind-find-file))
+                    ))
+
+                                        ; dired stuff
+                                        ;(defun dired-do-shell-command-in-background (command)
+                                        ;  "In dired, do shell command in background on the file or directory named on this line."
+                                        ;  (interactive
+                                        ;   (list (dired-read-shell-command (concat "& on " "%s: ") nil (list (dired-get-filename)))))
+                                        ;  (call-process command nil 0 nil (dired-get-filename)))
+                                        ;
+                                        ;(add-hook 'dired-load-hook
+                                        ;          (function (lambda ()
+                                        ;                      (load "dired-x")
+                                        ;                      (define-key dired-mode-map "&" 'dired-do-shell-command-in-background))))
+                                        ;
+
+(add-hook '
+dired-mode-hook
+(lambda ()
+(setq dired-omit-files "^\.[a-z|A-Z]+\|^\.?#\|^\.$")
+(setq dired-omit-extensions '(".pyc" "~" ".aux"))
+(dired-omit-mode 1))) 
+
+(defun dired-do-shell-command-in-background (command)
+  "In dired, do shell command in background on the file or directory named on this line."
+  (interactive
+   (list (dired-read-shell-command (concat "& on " "%s: ") nil (list (dired-get-filename)))))
+  (call-process command nil 0 nil (dired-get-filename)))
+
+(add-hook 'dired-load-hook
+          (function (lambda ()
+                      (load "dired-x")
+                      (define-key dired-mode-map "&" 'dired-do-shell-command-in-background))))
+
+(load "dired+")
+
+(require 'dired-details)
+(require 'dired-single)
+(dired-details-install)
+
+(load "dired-details+")
+                                        ; Copy files to other opened dired buffer
+(setq dired-dwim-target t)
+                                        ;(setq dired-listing-switches "-lh")
+                                        ;(setq dired-listing-switches "-lhGc -1")
+(setq dired-listing-switches "-lhG")
+(add-hook 'dired-load-hook
+          (lambda () (require 'dired-sort-menu)))
+                                        ;(load "dired-sort-menu")
+                                        ;(load "dired-sort-menu+")
+(require 'dired-sort-menu+)
+(require 'dired-sort-map)
+
+(require 'dired-isearch)
+(define-key dired-mode-map (kbd "C-s") 'dired-isearch-forward)
+(define-key dired-mode-map (kbd "C-r") 'dired-isearch-backward)
+(define-key dired-mode-map (kbd "ESC C-s") 'dired-isearch-forward-regexp)
+(define-key dired-mode-map (kbd "ESC C-r") 'dired-isearch-backward-regexp)
+
+(defun dired-change-window()
+  "Change to the other buffer"
+  (interactive)
+  (if (eq major-mode 'dired-mode)
+      (select-window
+       (get-window-with-predicate
+        (lambda (x)
+          (eq
+           (save-excursion (set-buffer (window-buffer x))
+                           major-mode)
+           'dired-mode))))))
+
+
+(put 'dired-find-alternate-file 'disabled nil)
+
+                                        ; Fuer Megabyte-Beschreibung
+(setq dired-free-space-program "df")
+(setq directory-free-space-args "-m")
+
+
+                                        ; funktioniert irgendwie nicht
+                                        ;(setq 'dired-refresh-automatically t)
+
+                                        ; Only one buffer
+                                        ; x  (defun dired-follow-file ()
+                                        ; x   "In dired, visit the file or directory on this line.
+                                        ; x If a directory is on the current line, replace the current Dired buffer
+                                        ; x with one containing the contents of the directory. Otherwise, invoke
+                                        ; x `dired-find-file' on the file."
+                                        ; x   (interactive)
+                                        ; x   (let ((filename (dired-get-filename)))
+                                        ; x     (if (file-directory-p filename)
+                                        ; x         (find-alternate-file filename)
+                                        ; x       (dired-find-file))))
+                                        ; x
+                                        ; x (defun dired-setup-follow-file ()
+                                        ; x   (substitute-key-definition
+                                        ; x    'dired-find-file 'dired-follow-file dired-mode-map)
+                                        ; x   (substitute-key-definition
+                                        ; x    'dired-advertised-find-file 'dired-follow-file dired-mode-map))
+                                        ; x
+                                        ; x (add-hook 'dired-mode-hook 'dired-setup-follow-file)
+
+
+
+
+                                        ; Anpassung an PFM
+                                        ; Lesen der pfmrc und starten der entsprechenden Programme
+
+                                        ;(setq dired-guess-shell-alist-user
+                                        ;      (list (list "\\.wav$" "snack") (list "\\.au$" "snack")
+                                        ;            (list "\\.doc$" "OOo" ) (list "\\.xls$" "OOo")))
+(setq dired-guess-shell-alist-user
+      (list
+       (list "\\.ansa$" "ansa -i")         ;; fixed rule
+       (list "\\.msh$" "fluent 3d --gui")  ;; fixed rule
+       (list "\\.sxw$" "soffice")          ;; fixed rule
+       ;; possibly more rules...
+       (list "\\.bar$" ;; rule with condition test
+             '(if condition
+                  "bar-command-1"
+                "bar-command-2"))))
+
+
+;; we want dired not not make always a new buffer if visiting a directory
+;; but using only one dired buffer for all directories.
+(defadvice dired-advertised-find-file (around dired-subst-directory activate)
+  "Replace current buffer if file is a directory."
+  (interactive)
+  (let ((orig (current-buffer))
+        (filename (dired-get-filename)))
+    ad-do-it
+    (when (and (file-directory-p filename)
+               (not (eq (current-buffer) orig)))
+      (kill-buffer orig))))
+
+
+                                        ; Macros for jumping
+                                        ; C x (, Macro , C x ), name-last-kdb-macro , insert-kdb-macro
+                                        ;(fset 'BDJ1
+                                        ;   [?| escape ?x ?b ?o ?o ?k tab ?j ?u tab return ?1 return])
+
+
+
+(load "dired-extensions")
+(add-hook 'dired-mode-hook
+          '(lambda ()
+             (local-set-key "j" 'dired-next-line)
+             (local-set-key "E" 'vlf)   ; edit large files
+             (local-set-key "e" 'eshell)
+             (local-set-key "k" 'dired-previous-line)
+             (local-set-key "J" 'dired-next-dirline)
+             (local-set-key "K" 'dired-prev-dirline)
+             (local-set-key [(control n)] 'dired-next-subdir)
+             (local-set-key [(control p)] 'dired-prev-subdir)
+             (local-set-key [(control k)] 'dired-kill-subdir)
+                                        ;(local-set-key "\\x" 'xterm_python)
+             (local-set-key "\\x" 'xterm_tramp)
+             (local-set-key "x" 'xterm)
+             (local-set-key "\\m" 'xterm_mc)
+             (local-set-key "b" 'scroll-down)
+             (local-set-key "f" 'scroll-up)
+             (local-set-key "l" 'dired-find-file)
+                                        ;            (local-set-key [(control ?/)] 'find-dired)
+             (local-set-key [(control ?/)] 'igrep-find) ; find files recursivly
+                                        ;            (local-set-key [(control ?/)] 'find-grep-dired) ; find files recursivly
+             (local-set-key "\?" 'find-grep-dired)
+                                        ;            (local-set-key "\?" 'igrep) ; find files in directory
+                                        ;            (local-set-key "\?" 'find-dired) ; find files in directory
+             (local-set-key "F" 'find-name-dired)
+             (local-set-key "h" 'dired-up-directory)
+             (local-set-key "G" 'end-of-buffer)
+                                        ;(local-set-key "G" '(goto-char (point-max)))
+             (local-set-key "j" 'dired-next-line)
+             (local-set-key "0" 'beginning-of-buffer)
+             ;;             (local-set-key [f1] 'ansa)
+             ;;             (local-set-key [f2] 'tgrid)
+             ;;             (local-set-key [f3] 'icem)
+             ;;             (local-set-key [f4] 'fluent)
+             ;;             (local-set-key [f5] 'starccm)
+             ;;             (local-set-key [f6] 'visit)
+             ;;             (local-set-key [f7] 'paraview)
+             ;;             ;(local-set-key "t" 'tail-file)
+             ;;             (local-set-key "t" 'tail-file)
+             ;;             (local-set-key "\\P" 'csv_matplolib)
+             ;;             (local-set-key "p" 'fluent_res)
+             ;;             (local-set-key "\\p" 'opf_res)
+             ;;             (local-set-key "\\v" 'opf2vtk)
+             ;;             (local-set-key "\\c" 'opf_standard_simpleFoam)
+             ;;             (local-set-key "\\r" 'opf_recon)
+             ;;             (local-set-key "\\e" 'opf2ensight)
+             ;;             (local-set-key "\\o" 'opf_simpleFoam)
+             (local-set-key (kbd "M-h") 'windmove-left)
+             (local-set-key (kbd "C-h") 'tabbar-backward-tab)
+             (local-set-key (kbd "C-l") 'tabbar-forward-tab)
+             (local-set-key (kbd "C-j") 'tabbar-backward-group)
+             (local-set-key (kbd "C-k") 'tabbar-forward-group)
+             (local-set-key (kbd "M-j") 'windmove-down)
+             (local-set-key (kbd "M-k") 'windmove-up)
+             (local-set-key (kbd "M-l") 'windmove-right)
+             (local-set-key (kbd "S-C-h") 'shrink-window-horizontally)
+             (local-set-key (kbd "S-C-l") 'enlarge-window-horizontally)
+             (local-set-key (kbd "S-C-j") 'shrink-window)
+             (local-set-key (kbd "S-C-k") 'enlarge-window)
+             (local-set-key "\\R" 'readme) ; README.org + .sdm_<PID>.org + remember Template (mit PID link)
+                                        ;            (local-set-key "M" 'move-files-to-other-window-directory) ; kann nicht mit Directories umgehen
+             (local-set-key "M" 'dired-do-rename)
+             (local-set-key "H" 'viper-window-middle)
+                                        ;            (local-set-key "d" 'delete-files-from-dired) extensions, aber mit Sprung des Focuses
+             (local-set-key "d" 'dired-do-delete)
+             (local-set-key "c" 'copy-files-to-other-window-directory)
+             (local-set-key "C" 'copy-files-to-any-directory)
+             (local-set-key "W" 'wdired-change-to-wdired-mode)
+             (local-set-key "r" 'wdired-change-to-wdired-mode)
+             (local-set-key "z" 'zip-directory-from-dired)
+             (local-set-key "y" 'my-copy-dired-files-in-kill-ring)
+             (local-set-key "Y" 'hww-my-copy-dired-files-in-kill-ring)
+             (local-set-key "\\d" 'dired)
+             (local-set-key "\\f" 'make-frame)
+             (local-set-key "\\s" 'dired-show-size)
+             (local-set-key "\\b" 'bibtex_pfm)
+             (local-set-key "\\D" 'dired-jump-other-window)
+             (local-set-key "\\1" 'my-toggle-window-state)
+             (local-set-key "\\t" 'my-toggle-window-state)
+             (local-set-key (kbd "M-L") 'dired-change-window) ))
+                                        ;            (local-set-key [(control f2)] 'openfoam_programing)
+                                        ;            (local-set-key [(control f3)] 'fluent_user)
+                                        ;            (local-set-key [(control f4)] 'fluent_tutorial)
+                                        ;(local-set-key "\\1" 'tabbar-forward-tab)
+                                        ;(local-set-key "\\3" 'tabbar-forward-group)
+                                        ;(local-set-key "\\2" 'tabbar-backward-tab)
+
+                                        ; Gzip Recursivly and Tar Directory
+(defun gziptardir()
+  "Gzip Recursivly and Tar"
+  (interactive)
+  (message (dired-current-directory))
+  (shell-command (concat "python ~/org/Skripte/walk_dir.py " (dired-current-directory) " &"))
+  )
+(define-key dired-mode-map "T" 'gziptardir)
+(require 'dired-tar)
+
+(defun copybackground()
+  "Copy"
+  (interactive)
+                                        ; GEHT NUR MIT SCHLEIFE: (shell-command (concat "cp -R "(dired-get-marked-files)" " (dired-dwim-target-directory) " &"))
+  (shell-command (concat "cp -R "(dired-get-filename)" " (dired-dwim-target-directory) " &"))
+
+  )
+(defun xtermcopybackground()
+  "Copy"
+  (interactive)
+  (call-process-shell-command (concat (dired-shell-stuff-it "xterm -e 'cp -R " (dired-get-marked-files) nil) " " (dired-dwim-target-directory) " '&"))
+  )
+(defun aachenputscreen()
+  "Copy"
+  (interactive)
+  (call-process-shell-command "screen" nil 0 nil "-pmS AACHEN sh ~/scpAachen.sh" (dired-get-filename) " "  ))
+
+
+(defun aachenputbackground()
+  "Put"
+  (interactive)
+  (message (dired-dwim-target-directory))
+  (call-process-shell-command "xterm " nil 0 nil "-e 'sh ~/scpAachen.sh" (dired-get-filename) " '"  ))
+
+(defun helicsputbackground()
+  "Put"
+  (interactive)
+  (message (dired-dwim-target-directory))
+  (call-process-shell-command "xterm " nil 0 nil "-e 'sh ~/scpHelics.sh" (dired-get-filename) " '"  ))
+
+(defun hwwputbackground()
+  "Put"
+  (interactive)
+  (message (dired-dwim-target-directory))
+  (message (replace-regexp-in-string "/rsh:ppb367@10.134.130.12:" "" (dired-dwim-target-directory)))
+  (call-process-shell-command (concat (dired-shell-stuff-it (concat "xterm -e 'hwwput -s cacau -R " (replace-regexp-in-string "/rsh:ppb367@10.134.130.12:" "" (dired-dwim-target-directory))) (dired-get-marked-files) nil) " '")) )
+
+(defun hwwgetbackground()
+  "Put"
+  (interactive)
+  (message (dired-dwim-target-directory))
+  (message (replace-regexp-in-string "/rsh:ppb367@10.134.130.12:" "" (dired-dwim-target-directory)))
+  (call-process-shell-command (concat (dired-shell-stuff-it "xterm -e 'hwwget -s cacau -R " (replace-regexp-in-string "/rsh:ppb367@10.134.130.12:" "" (dired-get-marked-files)) nil) " '&"))
+  )
+
+(defun hwwgetbackground()
+  "Get"
+  (interactive)
+  (message (dired-dwim-target-directory))
+  (message (replace-regexp-in-string "/rsh:ppb367@10.134.130.12:" "" (dired-dwim-target-directory)))
+  (call-process-shell-command "xterm " nil 0 nil "-e 'hwwget -s cacau -R "(replace-regexp-in-string "/rsh:ppb367@10.134.130.12:" "" (dired-dwim-target-directory)) "'&")
+
+)
+
+(defun mount_usb()
+  "Mount USB"
+  (interactive)
+  (shell-command (concat "mount /usbstick"))
+  (find-file (concat "/usbstick"))
+  )
+
+
+;;;_*  Bookmark Jump
+;-----------------------------------------------------------------------------------------------
+(define-key dired-mode-map "1"
+  (lambda ()
+    (interactive)
+    (bookmark-jump "1")))
+
+(define-key dired-mode-map "`"
+  (lambda ()
+    (interactive)
+    (bookmark-jump "10")))
+
+(define-key dired-mode-map "1"
+  (lambda ()
+    (interactive)
+    (bookmark-jump "1")))
+
+(define-key dired-mode-map "2"
+  (lambda ()
+    (interactive)
+    (bookmark-jump "2")))
+(define-key dired-mode-map "3"
+  (lambda ()
+    (interactive)
+    (bookmark-jump "3")))
+(define-key dired-mode-map "4"
+  (lambda ()
+    (interactive)
+    (bookmark-jump "4")))
+(define-key dired-mode-map "5"
+  (lambda ()
+    (interactive)
+    (bookmark-jump "5")))
+(define-key dired-mode-map "6"
+  (lambda ()
+    (interactive)
+    (bookmark-jump "6")))
+(define-key dired-mode-map "7"
+  (lambda ()
+    (interactive)
+    (bookmark-jump "7")))
+(define-key dired-mode-map "8"
+  (lambda ()
+    (interactive)
+    (bookmark-jump "8")))
+(define-key dired-mode-map "9"
+  (lambda ()
+    (interactive)
+    (bookmark-jump "9")))
+
+(define-key dired-mode-map [(control ?7)]
+  (lambda ()
+    (interactive)
+    (bookmark-jump "ceplx007_Dreses")))
+(define-key dired-mode-map [(control ?&)]
+  (lambda ()
+    (interactive)
+    (bookmark-jump "ceplx007_rsh")))
+
+(define-key dired-mode-map [(control ?8)]
+  (lambda ()
+    (interactive)
+    (bookmark-jump "ceplx008_Lay")))
+(define-key dired-mode-map [(control ?*)]
+  (lambda ()
+    (interactive)
+    (bookmark-jump "ceplx008_rsh")))
+
+(define-key dired-mode-map [(control ?5)]
+  (lambda ()
+    (interactive)
+    (bookmark-jump "ceplx050_Bernhard")))
+(define-key dired-mode-map [(control ?%)]
+  (lambda ()
+    (interactive)
+    (bookmark-jump "ceplx050_rsh")))
+
+(define-key dired-mode-map [(control ?6)]
+  (lambda ()
+    (interactive)
+    (bookmark-jump "ceplx016_Bauhofer")))
+
+(define-key dired-mode-map [(control ?^)]
+  (lambda ()
+    (interactive)
+    (bookmark-jump "ceplx016_rsh")))
+
+(define-key dired-mode-map [(control ?1)]
+  (lambda ()
+    (interactive)
+    (bookmark-jump "ceplx015_Krems")))
+
+(define-key dired-mode-map [(control ?!)]
+  (lambda ()
+    (interactive)
+    (bookmark-jump "ceplx015_rsh")))
+
+
+(defun dired-show-size ()
+  "Displays the total size of the marked files."
+
+  (interactive)
+  (let* ((cmd (concat "du -sch " (dired-get-filename))) (str (shell-command-to-string cmd)))
+    (setq str (replace-in-string str "\\(.*\n\\)*\\(.*\\)\n" "\\2"))
+    (message "Size of Directory: %s" str)))
+
+; Could be interesting!?
+;(require 'ls-lisp)
+;(setq ls-lisp-use-insert-directory-program nil
+;      ls-lisp-dirs-first t)
+;(add-hook 'dired-load-hook
+;(lambda () (load "ls-lisp")))
+
+;;;;;_*  Gnuplot
+;;**************************************************************************************************************
+;;;
+(load "gnuplot")
+(autoload 'gnuplot-mode "gnuplot" "gnuplot major mode" t)
+(autoload 'gnuplot-make-buffer "gnuplot" "open a buffer in gnuplot mode" t)
+
+(setq auto-mode-alist (append '(("\\.gp$" . gnuplot-mode)) auto-mode-alist))
+(setq auto-mode-alist (append '(("\\.gplt$" . gnuplot-mode)) auto-mode-alist))
+
+; (defun test_start_file ()
+;   "Sends a selected file to the gnuplot program using the \"load\" command.
+; This sets `gnuplot-recently-sent' to 'file."
+;   (interactive)
+;   (let ((string (read-file-name "Name of file to send to gnuplot > " nil nil t)))
+;     (setq string (concat "load '" (expand-file-name string) "'\n"))
+;     (message "%S" string)
+;     (message "%S" string)
+;     ;(gnuplot-make-gnuplot-buffer)             ; make sure a gnuplot buffer exists
+;     ;(gnuplot-send-string-to-gnuplot string 'file)
+;     ))
+
+;;;_*  Start Programs
+;;**************************************************************************************************************
+(defun sdm_find_dired()
+  "Runs FLUENT on Journal File"
+  (interactive)
+  (find-name-dired "/home/fab/HOME" ".sdm*")
+  (my-shell-command (concat "python2.5 ~/org/Skripte/sdm.py " (dired-copy-filename-as-kill)))
+  )
+
+(defun dvips ()
+  "Runs dvips -o buffer-name.ps buffer-name.dvi, where buffer-name is
+a .tex file"
+  (interactive)
+  (let ((bname2 (substring (buffer-name) 0 (string-match "\\.tex" (buffer-name)))))
+    (and
+     (file-exists-p (concat bname2 ".dvi"))
+     (shell-command (concat "dvips -Pcmz -Pamz -j0 -o " bname2 ".ps " bname2 ".dvi &"))
+     )
+    )
+  )
+
+(add-hook 'LaTeX-mode-hook (lambda () (local-set-key [?\C-=] 'dvips)) )
+
+(defun xterm_python()
+  "Runs Xterm"
+  (interactive)
+  (my-shell-command (concat "python2.5 /home/gcae504/xterm.py " (dired-current-directory) " &"))
+  )
+
+(defun xterm ()
+  (interactive)
+  (call-process-shell-command "xterm" nil 0 nil "-fg white -bg black" ))
+
+(defun xterm_mc ()
+  "Enqueue file to alsaplayer playlist."
+  (let (otherdir
+        (call-process-shell-command "xterm" nil 0 nil "-e" "mc . ."  ))))
+
+(defun sdm-export-as-latex()
+  "Enqueue file to alsaplayer playlist."
+  (interactive)
+  (org-export-as-latex)
+  (write-file "~/org/buffer.tex")
+  )
+(defun sdm-export-region-as-latex()
+  "Enqueue file to alsaplayer playlist."
+  (interactive)
+  (org-export-region-as-latex)
+  (write-file "~/org/region.tex")
+  )
+
+(defun sdm-export-as-html()
+  "Enqueue file to alsaplayer playlist."
+  (interactive)
+  (org-export-as-html 2 t nil "~/org/buffer.html")
+  )
+(defun sdm-export-region-as-html()
+  "Enqueue file to alsaplayer playlist."
+  (interactive)
+  (org-export-region-as-html 2 t nil "~/org/region.html")
+  )
+
+(defun xterm_tramp ()
+  "Runs Xterm"
+  (interactive)
+  (my-shell-command (concat "xterm -fg white -bg black&"))
+  )
+
+
+(defun dired-get-size ()
+  (interactive)
+  (let ((files (dired-get-marked-files)))
+    (with-temp-buffer
+      (apply 'call-process "/usr/bin/du" nil t nil "-sch" files)
+      (message "Size of all marked files: %s"
+               (progn
+                 (re-search-backward
+                  "\\(^[0-9.]+[A-Za-z]+\\).*total$")
+                 (match-string 1))))))
+
+; PFM Bibtex
+(defun pfm_bibtex()
+  "Runs PFM_BIBTEX"
+  (interactive)
+  (let ((bname2 (substring (dired-get-filename) 0 (string-match "\\.pdf" (dired-get-filename)))))
+    (and
+     (file-exists-p (concat bname2 ".pdf"))
+     (shell-command (concat "python2.5 ~/pfm_bibtex/pfm_bibtex.py " (dired-get-filename) " &"))
+     )
+    )
+  )
+
+(defun dired_pdf()
+  (interactive)
+  (dired "*.pdf")
+  )
+
+
+;;;_*  Fluent-Manage
+;**************************************************************************************************************
+
+(defun org-agenda-collect-indirect-trees ()
+  (interactive)
+  (delete-file "~/org/agenda-indirect-buffer.org")
+                                        ; LOOP
+  (org-agenda-tree-to-indirect-buffer)
+  (other-window 1)
+  (mark-page)
+
+  (write-region (point-min) (point-max) "~/org/agenda-indirect-buffer.org" t)
+  (write-region "\n\n" 0 "~/org/agenda-indirect-buffer.org" t)
+  (other-window 1)
+  (next-line)
+
+  (org-agenda-tree-to-indirect-buffer)
+  (other-window 1)
+  (mark-page)
+  (write-region (point-min) (point-max) "~/org/agenda-indirect-buffer.org" t)
+  (write-region "\n\n" 0 "~/org/agenda-indirect-buffer.org" t)
+  (other-window 1)
+  (next-line)
+
+  (org-agenda-tree-to-indirect-buffer)
+  (other-window 1)
+  (mark-page)
+  (write-region (point-min) (point-max) "~/org/agenda-indirect-buffer.org" t)
+  (write-region "\n\n" 0 "~/org/agenda-indirect-buffer.org" t)
+  (other-window 1)
+  (next-line)
+
+  (org-agenda-tree-to-indirect-buffer)
+  (other-window 1)
+  (mark-page)
+  (write-region (point-min) (point-max) "~/org/agenda-indirect-buffer.org" t)
+  (write-region "\n\n" 0 "~/org/agenda-indirect-buffer.org" t)
+  (other-window 1)
+  (next-line)
+
+  (org-agenda-tree-to-indirect-buffer)
+  (other-window 1)
+  (mark-page)
+  (write-region (point-min) (point-max) "~/org/agenda-indirect-buffer.org" t)
+  (write-region "\n\n" 0 "~/org/agenda-indirect-buffer.org" t)
+  (other-window 1)
+  (next-line)
+  (org-agenda-tree-to-indirect-buffer)
+  (other-window 1)
+  (mark-page)
+  (write-region (point-min) (point-max) "~/org/agenda-indirect-buffer.org" t)
+  (write-region "\n\n" 0 "~/org/agenda-indirect-buffer.org" t)
+  (other-window 1)
+  (next-line)
+
+  (org-agenda-tree-to-indirect-buffer)
+  (other-window 1)
+  (mark-page)
+  (write-region (point-min) (point-max) "~/org/agenda-indirect-buffer.org" t)
+  (write-region "\n\n" 0 "~/org/agenda-indirect-buffer.org" t)
+  (other-window 1)
+  (next-line)
+
+  (org-agenda-tree-to-indirect-buffer)
+  (other-window 1)
+  (mark-page)
+  (write-region (point-min) (point-max) "~/org/agenda-indirect-buffer.org" t)
+  (write-region "\n\n" 0 "~/org/agenda-indirect-buffer.org" t)
+  (other-window 1)
+  (next-line)
+
+  (org-agenda-tree-to-indirect-buffer)
+  (other-window 1)
+  (mark-page)
+  (write-region (point-min) (point-max) "~/org/agenda-indirect-buffer.org" t)
+  (write-region "\n\n" 0 "~/org/agenda-indirect-buffer.org" t)
+  (other-window 1)
+  (next-line)
+  (org-agenda-tree-to-indirect-buffer)
+  (other-window 1)
+  (mark-page)
+  (write-region (point-min) (point-max) "~/org/agenda-indirect-buffer.org" t)
+  (write-region "\n\n" 0 "~/org/agenda-indirect-buffer.org" t)
+  (other-window 1)
+  (next-line)
+
+  (org-agenda-tree-to-indirect-buffer)
+  (other-window 1)
+  (mark-page)
+  (write-region (point-min) (point-max) "~/org/agenda-indirect-buffer.org" t)
+  (write-region "\n\n" 0 "~/org/agenda-indirect-buffer.org" t)
+  (other-window 1)
+  (next-line)
+
+  (org-agenda-tree-to-indirect-buffer)
+  (other-window 1)
+  (mark-page)
+  (write-region (point-min) (point-max) "~/org/agenda-indirect-buffer.org" t)
+  (write-region "\n\n" 0 "~/org/agenda-indirect-buffer.org" t)
+  (other-window 1)
+  (next-line)
+
+  (org-agenda-tree-to-indirect-buffer)
+  (other-window 1)
+  (mark-page)
+  (write-region (point-min) (point-max) "~/org/agenda-indirect-buffer.org" t)
+  (write-region "\n\n" 0 "~/org/agenda-indirect-buffer.org" t)
+  (other-window 1)
+  (next-line)
+  (org-agenda-tree-to-indirect-buffer)
+  (other-window 1)
+  (mark-page)
+  (write-region (point-min) (point-max) "~/org/agenda-indirect-buffer.org" t)
+  (write-region "\n\n" 0 "~/org/agenda-indirect-buffer.org" t)
+  (other-window 1)
+  (next-line)
+
+  (org-agenda-tree-to-indirect-buffer)
+  (other-window 1)
+  (mark-page)
+  (write-region (point-min) (point-max) "~/org/agenda-indirect-buffer.org" t)
+  (write-region "\n\n" 0 "~/org/agenda-indirect-buffer.org" t)
+  (other-window 1)
+  (next-line)
+
+  (org-agenda-tree-to-indirect-buffer)
+  (other-window 1)
+  (mark-page)
+  (write-region (point-min) (point-max) "~/org/agenda-indirect-buffer.org" t)
+  (write-region "\n\n" 0 "~/org/agenda-indirect-buffer.org" t)
+  (other-window 1)
+  (next-line)
+
+  (org-agenda-tree-to-indirect-buffer)
+  (other-window 1)
+  (mark-page)
+  (write-region (point-min) (point-max) "~/org/agenda-indirect-buffer.org" t)
+  (write-region "\n\n" 0 "~/org/agenda-indirect-buffer.org" t)
+  (other-window 1)
+  (next-line)
+  (org-agenda-tree-to-indirect-buffer)
+  (other-window 1)
+  (mark-page)
+  (write-region (point-min) (point-max) "~/org/agenda-indirect-buffer.org" t)
+  (write-region "\n\n" 0 "~/org/agenda-indirect-buffer.org" t)
+  (other-window 1)
+  (next-line)
+
+  (org-agenda-tree-to-indirect-buffer)
+  (other-window 1)
+  (mark-page)
+  (write-region (point-min) (point-max) "~/org/agenda-indirect-buffer.org" t)
+  (write-region "\n\n" 0 "~/org/agenda-indirect-buffer.org" t)
+  (other-window 1)
+  (next-line)
+
+  (org-agenda-tree-to-indirect-buffer)
+  (other-window 1)
+  (mark-page)
+  (write-region (point-min) (point-max) "~/org/agenda-indirect-buffer.org" t)
+  (write-region "\n\n" 0 "~/org/agenda-indirect-buffer.org" t)
+  (other-window 1)
+  (next-line)
+
+  (org-agenda-tree-to-indirect-buffer)
+  (other-window 1)
+  (mark-page)
+  (write-region (point-min) (point-max) "~/org/agenda-indirect-buffer.org" t)
+  (write-region "\n\n" 0 "~/org/agenda-indirect-buffer.org" t)
+  (other-window 1)
+  (next-line)
+  (org-agenda-tree-to-indirect-buffer)
+  (other-window 1)
+  (mark-page)
+  (write-region (point-min) (point-max) "~/org/agenda-indirect-buffer.org" t)
+  (write-region "\n\n" 0 "~/org/agenda-indirect-buffer.org" t)
+  (other-window 1)
+  (next-line)
+
+  (org-agenda-tree-to-indirect-buffer)
+  (other-window 1)
+  (mark-page)
+  (write-region (point-min) (point-max) "~/org/agenda-indirect-buffer.org" t)
+  (write-region "\n\n" 0 "~/org/agenda-indirect-buffer.org" t)
+  (other-window 1)
+  (next-line)
+
+  (org-agenda-tree-to-indirect-buffer)
+  (other-window 1)
+  (mark-page)
+  (write-region (point-min) (point-max) "~/org/agenda-indirect-buffer.org" t)
+  (write-region "\n\n" 0 "~/org/agenda-indirect-buffer.org" t)
+  (other-window 1)
+  (next-line)
+
+  (org-agenda-tree-to-indirect-buffer)
+  (other-window 1)
+  (mark-page)
+  (write-region (point-min) (point-max) "~/org/agenda-indirect-buffer.org" t)
+  (write-region "\n\n" 0 "~/org/agenda-indirect-buffer.org" t)
+  (other-window 1)
+  (next-line)
+
+  (other-window 1)
+  (find-file "~/org/agenda-indirect-buffer.org")
+  (org-export-as-html 2 t nil "~/org/agenda-indirect-buffer.html")
+  )
+
+
+;**************************************************************************************************************
+(defun bibtex_pfm()
+  "Runs PFM_BIBTEX"
+  (interactive)
+  (setq filename (dired-get-filename))
+  (delete-other-windows)
+  (call-process "xpdf" nil 0 nil (dired-get-filename)  )
+  (doc-view-dired t)                    ; Open PDF
+  (split-window-horizontally)
+  (find-file filename)                  ; Open PDF as ascii
+  (split-window-vertically)
+  (find-file "~/BibTeX/shortcuts.bib")
+  (split-window-vertically)
+  (find-file "~/BibTeX/")
+  )
+
+
+(defun rename-file-and-buffer (new-name)
+  "Renames both current buffer and file it's visiting to NEW-NAME." (interactive "sNew name: ")
+  (let ((name (buffer-name))
+        (filename (buffer-file-name)))
+    (if (not filename)
+        (message "Buffer '%s' is not visiting a file!" name)
+      (if (get-buffer new-name)
+          (message "A buffer named '%s' already exists!" new-name)
+        (progn            (rename-file name new-name 1)                   (rename-buffer new-name)                (set-visited-file-name new-name)                (set-buffer-modified-p nil)))))) ;;
+
+(defun bibtex-my-clean-entry (&optional new-key called-by-reformat)
+  "Finish editing the current BibTeX entry and clean it up.
+Check that no required fields are empty and formats entry dependent
+on the value of `bibtex-entry-format'.
+If the reference key of the entry is empty or a prefix argument is given,
+calculate a new reference key.  (Note: this works only if fields in entry
+begin on separate lines prior to calling `bibtex-clean-entry' or if
+'realign is contained in `bibtex-entry-format'.)
+Don't call `bibtex-clean-entry' on @Preamble entries.
+At end of the cleaning process, the functions in
+`bibtex-clean-entry-hook' are called with region narrowed to entry."
+  ;; Opt. arg called-by-reformat is t if bibtex-clean-entry
+  ;; is called by bibtex-reformat
+  (interactive "P")
+  (let ((case-fold-search t)
+        (start (bibtex-beginning-of-entry))
+        (_ (or (looking-at bibtex-any-entry-maybe-empty-head)
+               (error "Not inside a BibTeX entry")))
+        (entry-type (bibtex-type-in-head))
+        (key (bibtex-key-in-head)))
+    ;; formatting
+    (cond ((bibtex-string= entry-type "preamble")
+           ;; (bibtex-format-preamble)
+           (error "No clean up of @Preamble entries"))
+          ((bibtex-string= entry-type "string")
+           (setq entry-type 'string))
+          ;; (bibtex-format-string)
+          (t (bibtex-format-entry)))
+    ;; set key
+    (when (or new-key (not key))
+      (setq key (bibtex-generate-autokey))
+      ;; Sometimes bibtex-generate-autokey returns an empty string
+      (if (or bibtex-autokey-edit-before-use (string= "" key))
+          (setq key (if (eq entry-type 'string)
+                        (bibtex-read-string-key key)
+                      (bibtex-read-key "New Filename: " key))))
+      (message "New Filename: %s" key))
+
+                                        ; orig. bibtex-clean-entry
+    (bibtex-clean-entry)
+
+    (save-buffer)
+
+    (setq category (file-name-sans-extension (file-name-nondirectory buffer-file-name)))
+    (other-window 1)
+    (other-window 1)
+    (setq new_name (concat "~/BibTeX/" category "/" key ".pdf"))
+    (message "New FILENAME: %s" new_name)
+    (rename-file-and-buffer new_name)
+    (dired-jump)
+    (delete-other-windows)
+    (split-window-horizontally)
+    ))
+
+;;;_*  PDF Viewer
+;**************************************************************************************************************
+(add-to-list 'auto-mode-alist '("\\.pdf\\'" . no-pdf))
+
+(defun no-pdf ()
+  "Run pdftotext on the entire buffer."
+  (interactive)
+  (let ((modified (buffer-modified-p)))
+    (erase-buffer)
+    (shell-command (concat "pdftotext " (buffer-file-name) " -") (current-buffer) t)
+    (set-buffer-modified-p modified)))
+
+
+(defun dired_current ()
+  (interactive)
+  (message (dired-current-directory))
+  (setq files_to (replace-in-string (dired-current-directory "\/$" ""))
+        (message files_to)
+        )
+  )
+
+
+;dired-current-directory
+(defun xtermdire ()
+  "Runs Xterm"
+  (interactive)
+  (shell-command (concat "xterm -e vim " (dired-get-filename) "  &"))
+  )
+
+;(add-hook 'Lisp-mode-hook 'my-fluent-hook)
+(setq auto-fill-mode 1)
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
+(add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)
+
+(setq browse-url-netscape-program "firefox")
+
+;;;_*  Time Stamps
+;;**************************************************************************************************************
+;; set up Time Stamps
+;;
+;; You can arrange to put a time stamp in a file, so that it will be
+;; updated automatically each time you edit and save the file.   The time
+;; stamp has to be in the first eight lines of the file, and you should
+;; insert it like this:
+;;
+;;       Time-stamp: <>
+;;
+;; or like this:
+;;
+;;       Time-stamp: " "
+
+(add-hook 'before-save-hook 'time-stamp)
+
+;;;_*  Auto-Insert Stuff
+;;**************************************************************************************************************
+;; This is just a for instance.  Try it out and add something new for
+;; the type of stuff you write more.
+(auto-insert-mode)
+(setq auto-insert-query nil)         ;So I am not asked before insertion
+
+(define-abbrev-table 'fluent-mode-abbrev-table '(
+                                                 ("sec" ";=====================================================================================" nil 1)
+                                                 ("sub" ";-------------------------------------------------------------------------------------" nil 1)
+                                                 ("cfc" "<code>false</code>" nil 1)
+                                                 ("cnc" "<code>null</code>" nil 1)
+
+                                                 ))
+
+(define-abbrev-table 'LaTeX-mode-abbrev-table '(
+                                                ("Karman" "K\'arm\'an" nil 1)
+                                                ("- ." "% . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  . . . . . . . . . . . . . " nil 1)
+                                                ("-." "%.........................................................................................." nil 1)
+                                                ("--" "%------------------------------------------------------------------------------------------" nil 1)))
+
+
+;;;_*  Convert from UNIX > DOS
+;**************************************************************************************************************
+(defun unix-file ()
+  "Change the current buffer to Latin 1 with Unix line-ends."
+  (interactive)
+  (set-buffer-file-coding-system 'iso-latin-1-unix t))
+(defun dos-file ()
+  "Change the current buffer to Latin 1 with DOS line-ends."
+  (interactive)
+  (set-buffer-file-coding-system 'iso-latin-1-dos t))
+
+
+
+
+;;;_* Layout
+;**************************************************************************************************************
+(require 'layout-restore)
+;; save layout key
+(global-set-key [?\C-c ?m] 'layout-save-current)
+;; load layout key
+(global-set-key [?\C-c ?\C-l ?\C-l] 'layout-restore)
+;; cancel(delete) layout key
+(global-set-key [?\C-c ?\C-l ?\C-c] 'layout-delete-current)
+
+;;;_* BBDB
+;**************************************************************************************************************
+;;
+(require 'bbdb)
+(bbdb-initialize)
+
+;;;_* Insert File Name
+;**************************************************************************************************************
+                                        ; With Dired: w, C u 0 w
+(defun insert-filename (fn)
+  "Use filename completion to insert a filename into current buffer."
+  (interactive "FFilename to insert: ")
+  (insert fn))
+(define-key global-map "\C-x\C-j" 'insert-filename)
+
+;;;_* Expansions
+;**************************************************************************************************************
+(setq hippie-expand-try-functions-list
+      '(try-complete-file-name-partially
+        try-complete-file-name
+        try-expand-all-abbrevs
+        try-expand-list
+        try-expand-line
+        try-expand-dabbrev
+        try-expand-dabbrev-all-buffers
+        try-expand-dabbrev-from-kill
+        try-complete-lisp-symbol-partially
+        try-complete-lisp-symbol))
+(global-set-key (kbd "C-<tab>") 'comint-dynamic-complete-filename)
+                                        ;(global-set-key (kbd "C-<tab>") 'hippie-expand)
+
+(defun indent-or-expand (arg)
+  "Either indent according to mode, or expand the word preceding
+ point."
+  (interactive "*P")
+  (if (and
+       (or (bobp) (= ?w (char-syntax (char-before))))
+       (or (eobp) (not (= ?w (char-syntax (char-after))))))
+      (hippie-expand arg)
+    (indent-according-to-mode)))
+
+(defun indent-or-complete ()
+  "Complete if point is at end of a word, otherwise indent line."
+  (interactive)
+  ;;(if (looking-at "\\>")
+  ;;   (dabbrev-expand nil)
+  (if (looking-at "$")
+      (hippie-expand nil))
+  (indent-for-tab-command))
+
+(defun my-tab-fix ()
+  (local-set-key [C-tab] 'indent-or-expand))
+
+(add-hook 'c-mode-hook          'my-tab-fix)
+(add-hook 'python-mode-hook          'my-tab-fix)
+(add-hook 'lisp-mode-hook          'my-tab-fix)
+(add-hook 'fluent-mode-hook          'my-tab-fix)
+(add-hook 'c++-mode-hook          'my-tab-fix)
+(add-hook 'sh-mode-hook         'my-tab-fix)
+(add-hook 'emacs-lisp-mode-hook 'my-tab-fix)
+
+;;;_* Octave
+;**************************************************************************************************************
+(autoload 'octave-mode "octave-mod" nil t)
+(setq auto-mode-alist
+      (cons '("\\.m$" . octave-mode) auto-mode-alist))
+
+(add-hook 'octave-mode-hook
+          (lambda ()
+            (abbrev-mode 1)
+            (auto-fill-mode 1)
+            (if (eq window-system 'x)
+                (font-lock-mode 1))))
+
+(add-hook 'inferior-octave-mode-hook
+          (lambda ()
+            (turn-on-font-lock)
+            (define-key inferior-octave-mode-map [up]
+              'comint-previous-input)
+            (define-key inferior-octave-mode-map [down]
+              'comint-next-input)))
+
+
+;;;_* TRAMP
+;**************************************************************************************************************
+(require 'tramp)
+
+(setq vc-handled-backends nil)
+
+(defadvice tramp-handle-write-region
+  (after tramp-write-beep-advice activate)
+  " make tramp beep after writing a file."
+  (interactive)
+  (beep))
+
+(defadvice tramp-handle-do-copy-or-rename-file
+  (after tramp-copy-beep-advice activate)
+  " make tramp beep after copying a file."
+  (interactive)
+  (beep))
+
+(defadvice tramp-handle-insert-file-contents
+  (after tramp-copy-beep-advice activate)
+  " make tramp beep after copying a file."
+  (interactive)
+  (beep))
+
+(defconst my-mode-line-buffer-identification
+  (list
+   '(:eval
+     (let ((host-name
+            (if (file-remote-p default-directory)
+                (tramp-file-name-host
+                 (tramp-dissect-file-name default-directory))
+              (system-name))))
+       (if (string-match "^[^0-9][^.]*\\(\\..*\\)" host-name)
+           (substring host-name 0 (match-beginning 1))
+         host-name)))
+   ": %12b"))
+
+(setq-default
+ mode-line-buffer-identification
+ my-mode-line-buffer-identification)
+
+(add-hook
+ 'dired-mode-hook
+ '(lambda ()
+    (setq
+     mode-line-buffer-identification
+     my-mode-line-buffer-identification)))
+
+(setq default-indicate-empty-lines t)
+
+;;;_* Keybindings
+;**************************************************************************************************************
+
+(global-set-key (kbd "M-2") 'split-window-vertically)
+(global-set-key (kbd "M-1") 'delete-other-windows)
+(global-set-key (kbd "M-0") 'delete-window)
+(global-set-key (kbd "M-o") 'other-window)
+(global-set-key (kbd "M-SPC") 'other-window)
+
+;;; type "y"/"n" instead of "yes"/"no"
+(fset 'yes-or-no-p 'y-or-n-p)
+
+(global-set-key [?\C-x ?\C-d ] 'dired-jump-other-window)
+
+(require 'vlf)
+
+;**************************************************************************************************************
+;;; ensure abbrev mode is always on
+(setq-default abbrev-mode t)
+
+;; do not bug me about saving my abbreviations
+(setq save-abbrevs nil)
+
+
+
+;;;_* CUSTOM-FACES
+;**************************************************************************************************************
+(custom-set-faces
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(border ((t (:background "black" :foreground "Blue"))))
+ '(diredp-dir-heading ((t (:background "lightblue" :foreground "black" :height 1.15))))
+ '(diredp-dir-priv ((t (:foreground "lightblue" :background "gray20" :bold t))))
+ '(diredp-file-name ((t (:foreground "white"))))
+ '(diredp-file-suffix ((t (:foreground "gray"))))
+ '(diredp-flag-mark ((t (:background "gray20" :foreground "Yellow"))))
+ '(diredp-flag-mark-line ((t (:background "gray30" :foreground "white"))))
+ '(diredp-ignored-file-name ((t (:foreground "darkgreen"))))
+ '(font-latex-comment-face ((t (:foreground "green" :height 0.9))))
+ '(font-latex-math-face ((t (:foreground "cyan" :height 1.0))))
+ '(font-latex-sectioning-2-face ((t (:inherit variable-pitch :background "forest green" :foreground "gray90" :weight bold :height 1.5))))
+ '(font-latex-sectioning-3-face ((t (:inherit variable-pitch :background "gray25" :foreground "lightsalmon" :height 1.4))))
+ '(font-latex-sectioning-4-face ((t (:inherit variable-pitch :background "gray20" :foreground "cornsilk" :height 1.3))))
+ '(font-latex-sectioning-5-face ((((class color) (background dark)) (:inherit variable-pitch :background "gray30" :foreground "white" :weight medium :height 1.2))))
+ '(font-latex-warning-face ((t (:foreground "Magenta" :weight bold))))
+ '(font-lock-builtin-face ((t (:foreground "magenta"))))
+ '(font-lock-comment-face ((t (:foreground "lime green" :height 1.0))))
+ '(font-lock-function-name-face ((t (:foreground "grey70"))))
+ '(font-lock-preprocessor-face ((t (:foreground "lightblue"))))
+ '(font-lock-warning-face ((t (:inherit variable-pitch :background "red" :foreground "blue" :weight bold))))
+ '(fringe ((((class color) (background dark)) (:foreground "grey20" :weight bold))))
+ '(highlight ((t (:background "red" :foreground "black" :weight bold))))
+ '(menu ((((type x-toolkit)) (:background "grey35" :foreground "grey80"))))
+ '(mode-line ((t (:inherit variable-pitch :background "orange" :foreground "black"))))
+ '(mode-line-buffer-id ((t (:background "wheat" :foreground "red"))))
+ '(mode-line-inactive ((default nil) (((class color) (min-colors 88) (background dark)) (:background "grey30" :foreground "black" :box (:line-width -1 :color "grey40") :weight light))))
+ '(org-code ((((class color grayscale) (min-colors 88) (background dark)) (:foreground "salmon"))))
+ '(org-date ((((class color) (background dark)) (:inherit variable-pitch :background "darkblue" :foreground "yellow" :underline t :height 1.0))))
+ '(org-done ((t (:inherit variable-pitch :foreground "darkgreen" :weight bold :height 0.8))))
+ '(org-level-1 ((t (:inherit variable-pitch :background "forest green" :foreground "gray90" :weight bold :height 1.5))))
+ '(org-level-2 ((t (:inherit variable-pitch :background "gray25" :foreground "lightsalmon" :height 1.4))))
+ '(org-level-3 ((t (:inherit variable-pitch :background "gray20" :foreground "cornsilk" :height 1.3))))
+ '(org-level-4 ((t (:inherit variable-pitch :background "gray20" :foreground "dark khaki" :height 1.25))))
+ '(org-level-5 ((t (:inherit variable-pitch :background "gray8" :foreground "gray90" :height 1.2))))
+ '(org-level-6 ((t (:inherit variable-pitch :foreground "gray90" :height 1.2))))
+ '(org-level-7 ((t (:inherit variable-pitch :foreground "gray90" :height 1.1))))
+ '(org-link ((((class color) (background dark)) (:inherit variable-pitch :foreground "darkcyan" :underline t :height 1.0))))
+ '(org-property-value ((t (:inherit variable-pitch))) t)
+ '(org-special-keyword ((((class color) (min-colors 16) (background dark)) (:inherit variable-pitch :foreground "gray50" :height 0.7))))
+ '(org-tag ((t (:inherit nil :foreground "yellow" :weight bold :height 0.6))))
+ '(org-target ((((class color) (background dark)) (:foreground "blue" :underline t))))
+ '(org-todo ((t (:inherit variable-pitch :foreground "Red" :weight bold :height 0.9))))
+ '(org-warning ((t (:foreground "Red1" :weight bold :height 1.0))))
+ '(preview-face ((t (:background "dark green"))))
+ '(scroll-bar ((t (:background "grey35" :foreground "grey80")))))
+
+
+
+
+
+;;;_* PDF Viewer
+;**************************************************************************************************************
+;(add-to-list 'auto-mode-alist '("\\.pdf\\'" . no-pdf))
+
+(defun no-pdf ()
+  "Run pdftotext on the entire buffer."
+  (interactive)
+  (let ((modified (buffer-modified-p)))
+    (erase-buffer)
+    (shell-command (concat "pdftotext " (buffer-file-name) " -") (current-buffer) t)
+    (set-buffer-modified-p modified)))
+
+
+
+
+
+
+;;;_*; Vim like ...
+;**************************************************************************************************************
+
+(require 'redo)
+(require 'rect-mark)
+(setq viper-mode t)                     ; enable Viper at load time
+(setq viper-ex-style-editing nil) ; can backspace past start of insert / line
+(require 'viper)                  ; load Viper
+;(setq vimpulse-experimental nil)   ; don't load bleeding edge code (see 6. installation instruction)
+(require 'vimpulse)               ; load Vimpulse
+(setq woman-use-own-frame nil)    ; don't create new frame for manpages
+(setq woman-use-topic-at-point t) ; don't prompt upon K key (manpage display)
+
+
+
+    (require 'rect)
+
+    (defun my-sequence-rectangle (first incr format)
+      "Insert increasing numbers at beginning of each line."
+      (interactive
+       (list (if current-prefix-arg
+                 (prefix-numeric-value current-prefix-arg)
+               (string-to-number
+                (read-string "Start value: (0) " nil nil "0")))
+             (string-to-number
+              (read-string "Increment: (1) " nil nil "1"))
+             (read-string "Format: (%d) ")))
+      (when (= (length format) 0)
+        (setq format "%d"))
+      (apply-on-rectangle
+       (lambda (start-col end-col count-var)
+         (move-to-column start-col)
+         (insert (format format (eval count-var)))
+         (set count-var (+ (eval count-var) incr)))
+       (region-beginning) (region-end) 'first)
+      (vimpulse-visual-mode -1))
+
+;(load "vimpulseext")
+
+
+
+;(defmacro vimpulse-region-command (function)
+;  `(lambda ()
+;     (interactive)
+;     (,function (vimpulse-get-vs-start) (vimpulse-get-vs-end))
+;     (vimpulse-visual-mode nil)))
+;(define-key viper-vi-global-user-map "\\\]" (vimpulse-region-command comment-region))
+;//(define-key viper-vi-global-user-map "\\," (vimpulse-region-command uncomment-region))
+
+
+
+(vimpulse-vmap (kbd "M-%") 'query-replace)
+;; (define-key viper-vi-global-user-map (kbd "\\\]") 'comment-region)
+;; (define-key viper-vi-global-user-map (kbd "\\,") 'uncomment-region)
+(vimpulse-vmap (kbd "\\\]") 'comment-region)
+(vimpulse-vmap (kbd "\\,") 'uncomment-region)
+(vimpulse-vmap (kbd "M-n") 'my-sequence-rectangle)
+(vimpulse-vmap (kbd "G") 'end-of-buffer)
+(vimpulse-map (kbd "\\\\") 'viper-escape-to-emacs)
+
+(define-key viper-vi-global-user-map (kbd "\\\\") 'viper-escape-to-emacs)
+(define-key ctl-x-map "r\C-@" 'rm-set-mark)
+(define-key ctl-x-map [?r ?\C-\ ] 'rm-set-mark)
+(define-key ctl-x-map "r\C-x" 'rm-exchange-point-and-mark)
+(define-key ctl-x-map "r\C-w" 'rm-kill-region)
+(define-key ctl-x-map "r\M-w" 'rm-kill-ring-save)
+(define-key global-map [S-down-mouse-1] 'rm-mouse-drag-region)
+
+(define-key viper-vi-global-user-map (kbd "qq") 'fill-paragraph)
+(define-key viper-vi-global-user-map (kbd "qr") 'fill-region)
+
+(define-key viper-vi-global-user-map (kbd "C-h") 'tabbar-backward-tab)
+(define-key viper-vi-global-user-map (kbd "C-l") 'tabbar-forward-tab)
+;(define-key viper-vi-global-user-map (kbd "\C-t\C-t") 'align-dwim)
+(define-key viper-vi-global-user-map (kbd "\\x") 'xterm)
+;(define-key viper-vi-global-user-map (kbd "\\x") 'xterm_python)
+(define-key viper-vi-global-user-map (kbd "\\C") 'log-edit-done)
+(define-key viper-vi-global-user-map (kbd "\\c") 'cvs-update)
+;(global-set-key [f12] '(lambda ()
+(define-key viper-vi-global-user-map (kbd "\\c") '(lambda ()
+                                                    (interactive)
+                                                    (cvs-examine
+                                                     (file-name-directory
+                                                      (buffer-file-name)) '("-d" "-P"))))
+(define-key viper-vi-global-user-map (kbd "\\T") 'align)
+(define-key viper-vi-global-user-map (kbd "\\i") 'ispell-word)
+(define-key viper-vi-global-user-map (kbd "\\I") 'ispell-change-dictionary)
+(define-key viper-vi-global-user-map (kbd "\\e") 'flyspell-mode)
+(define-key viper-vi-global-user-map (kbd "\\l") 'org-export-region-as-latex)
+(define-key viper-vi-global-user-map (kbd "\\L") 'org-export-as-latex)
+(define-key viper-vi-global-user-map (kbd "\\h") 'org-export-region-as-html)
+(define-key viper-vi-global-user-map (kbd "\\H") 'org-export-as-html)
+(define-key viper-vi-global-user-map (kbd "\\f") 'make-frame)
+(define-key viper-vi-global-user-map (kbd "\\F") 'find-file-at-point)
+(define-key viper-vi-global-user-map (kbd "\\t") 'my-toggle-window-state)
+(define-key viper-vi-global-user-map (kbd "\\r") 'org-export-region-as-html)
+(define-key viper-vi-global-user-map (kbd "\\d") 'dired-jump)
+(define-key viper-vi-global-user-map (kbd "\\D") 'dired-jump-other-window)
+(define-key viper-vi-global-user-map (kbd "\\b") 'bibtex_pfm_move)
+(define-key viper-vi-global-user-map (kbd "\\?1") 'my-toggle-window-state)
+(define-key viper-vi-global-user-map (kbd "C-l") 'preview-at-point)
+(global-set-key (kbd "C-c p") 'preview-at-point)
+(define-key viper-vi-global-user-map (kbd "\\S") 'allout-show-all)
+(define-key viper-vi-global-user-map (kbd "\\s") 'allout-show-current-entry)
+
+(define-key viper-vi-global-user-map (kbd "C-p") 'outline-previous-visible-heading)
+(define-key viper-vi-global-user-map (kbd "C-n") 'outline-next-visible-heading)
+(define-key viper-vi-global-user-map (kbd "C-e") 'org-export)
+
+(defvar my-saved-configuration nil)
+
+(global-set-key (kbd "M-h") 'windmove-left)
+(global-set-key (kbd "M-j") 'windmove-down)
+(global-set-key (kbd "M-k") 'windmove-up)
+(global-set-key (kbd "M-l") 'windmove-right)
+
+(global-set-key (kbd "S-C-h") 'shrink-window-horizontally)
+(global-set-key (kbd "S-C-l") 'enlarge-window-horizontally)
+(global-set-key (kbd "S-C-j") 'shrink-window)
+(global-set-key (kbd "S-C-k") 'enlarge-window)
+(winner-mode 1)
+
+(autoload 'auto-revert-mode "autorevert" nil t)
+(autoload 'turn-on-auto-revert-mode "autorevert" nil nil)
+(autoload 'global-auto-revert-mode "autorevert" nil t)
+(global-auto-revert-mode 1)
+(setq auto-revert-interval 2)
+
+
+;;;_* Split Window at start-up
+;**************************************************************************************************************
+(split-window-vertically)
+(split-window-horizontally)
+(other-window 1)
+(other-window 1)
+(split-window-horizontally)
+
+
+
+;;;_* Kills live buffers, leaves some emacs work buffers
+;------------------------------------------------------------------------------------
+(defun nuke-some-buffers (&optional list)
+  "For each buffer in LIST, kill it silently if unmodified. Otherwise ask.
+  LIST defaults to all existing live buffers."
+  (interactive)
+  (if (null list)
+      (setq list (buffer-list)))
+  (while list
+    (let* ((buffer (car list))
+           (name (buffer-name buffer)))
+      (and (not (string-equal name ""))
+           (not (string-equal name "*Messages*"))
+           ;; (not (string-equal name "*Buffer List*"))
+           (not (string-equal name "*buffer-selection*"))
+           (not (string-equal name "*Shell Command Output*"))
+           (not (string-equal name "*scratch*"))
+           (/= (aref name 0) ? )
+           (if (buffer-modified-p buffer)
+               (if (yes-or-no-p
+                    (format "Buffer %s has been edited. Kill? " name))
+                   (kill-buffer buffer))
+             (kill-buffer buffer))))
+    (setq list (cdr list))))
+
+
+
+
+;; Kills all them buffers
+(defun nuke-all-buffers ()
+  "kill all buffers, leaving *scratch* only"
+  (interactive)
+  (mapcar (lambda (x) (kill-buffer x))
+          (buffer-list))
+  (delete-other-windows))
+
+
+;;;_*; flash-training
+;;-------------------------------------------------------------------------------------
+(setq flash-training-sit-for-seconds 0)
+(setq flash-training-sit-for-milliseconds 350)
+
+(defun flash-training (begin end)
+  (interactive (list (read-face-name "Use face")))
+  (put-text-property (point-min) (point-max) 'face face)
+  "Reading exercise."
+  (interactive "r")
+  (get-buffer-create "*flash-training-temp*")
+  (get-buffer-create "*flash-training*")
+  (let ((string (buffer-substring begin end)))
+    (with-current-buffer "*flash-training-temp*"
+      (kill-region (point-min) (point-max))
+      (insert string)
+      (beginning-of-buffer)
+      (set-mark (point))))
+  (with-current-buffer "*flash-training*"
+    (kill-region (point-min) (point-max))
+    (switch-to-buffer "*flash-training*")
+    (while (with-current-buffer "*flash-training-temp*"
+             (forward-word 1))
+      (with-current-buffer "*flash-training-temp*"
+        (kill-region (region-beginning) (region-end)))
+      (yank)
+      (center-line)
+      (sit-for flash-training-sit-for-seconds
+               flash-training-sit-for-milliseconds)
+      (kill-region (point-min) (point-max))
+      ))
+  (kill-buffer "*flash-training-temp*")
+  (message "Type C-x b RET to restore this window."))
+
+
+(defun hanchrow-all-encompassing-occur (regexp &optional hidden-bufs-too)
+  "Show all lines in all visible buffers containing a match for REGEXP.
+With prefix arg HIDDEN-BUFS-TOO, show lines matching in all buffers."
+  (interactive (occur-read-primary-args))
+  (if (interactive-p)
+      (setq hidden-bufs-too current-prefix-arg))
+  (multi-occur (if hidden-bufs-too
+                   (buffer-list)
+                 (delq nil
+                       (mapcar (lambda (buf)
+                                 (unless (string-match "^ " (buffer-name buf))
+                                   buf))
+
+                               (buffer-list))))
+               regexp))
+
+(global-set-key "\C-co" 'occur)
+(global-set-key "\C-cm" 'multi-occur)
+
+
+
+;;; Compare windows
+(global-set-key "\C-cw" 'compare-windows)
+
+(autoload 'vrml-mode "vrml" "VRML mode." t)
+(setq auto-mode-alist (append '(("\\.wrl\\'" . vrml-mode))
+                              auto-mode-alist))
+;;
+
+(require 'color-theme-cl-frame)
+;;;
+;; ;;;_*; Matlab
+;; ;;-------------------------------------------------------------------------------------
+
+;; ;; Add local lisp folder to load-path
+;; (setq load-path (append load-path (list "~/elisp")))
+
+;; ;; Set up matlab-mode to load on .m files
+;; ;(autoload 'matlab-mode "matlab" "Enter MATLAB mode." t)
+;; ;(setq auto-mode-alist (cons '("\\.m\\'" . matlab-mode) auto-mode-alist))
+;; ;(autoload 'matlab-shell "matlab" "Interactive MATLAB mode." t)
+
+;; ;; Customization:
+;; (setq matlab-indent-function t)      ; if you want function bodies indented
+;; (setq matlab-verify-on-save-flag nil) ; turn off auto-verify on save
+;; (defun my-matlab-mode-hook ()
+;;   (setq fill-column 76))             ; where auto-fill should wrap
+;; (add-hook 'matlab-mode-hook 'my-matlab-mode-hook)
+;; (defun my-matlab-shell-mode-hook ()
+;;   '())
+;; (add-hook 'matlab-shell-mode-hook 'my-matlab-shell-mode-hook)
+
+;; ;; Turn off Matlab desktop
+;; (setq matlab-shell-command-switches '("-nojvm"))
+
+;;;_*; Functions
+;;-------------------------------------------------------------------------------------
+(defun myFunction1 () "testing" (message "Yay!") )
+
+(defun yay! () "insert \"Yay!\" at point." (interactive) (insert "Yay!"))
+
+(defun myFunction (var1 var2)
+  "prints the argument"
+  (interactive "FSTSDFF: ")
+                                        ;  (interactive "P"
+  (message "your argument is: %s" var1)
+  (interactive "FSTSDFF: ")
+                                        ;  (interactive "P"
+  (message "your argument is: %s" var2)
+  )
+
+(defun myFunction3 (myStart myEnd)
+  "prints region start and end positions"
+  (interactive "r")
+  (message "start region marker is at: %d, region end marker is at: %d" myStart myEnd)
+  )
+(autoload 'iimage-mode "iimage" "Support Inline image minor mode." t)
+(autoload 'turn-on-iimage-mode "iimage" "Turn on Inline image minor mode." t)
+
+
+
+(defun my-copy-dired-files-in-kill-ring_long ()
+  "Copy files names in the kill ring."
+  (interactive)
+  (let ((files (dired-map-over-marks (dired-get-filename) nil)))
+    (kill-new
+     (mapconcat
+      (lambda (f)
+        (concat "[[file:" f "]["
+                (file-name-nondirectory f) "]]"))
+      files "\n"))
+    (message "%d Org links copied to the kill-ring" (length files))))
+
+
+
+
+(defun my-copy-dired-files-in-kill-ring ()
+  "Copy files names in the kill ring."
+  (interactive)
+  (let ((files (dired-map-over-marks (dired-get-filename) nil)))
+    (kill-new
+     (mapconcat
+      (lambda (f)
+        (concat "file:" f ""))
+      files "\n"))
+    (message "%d Org links copied to the kill-ring" (length files))))
+                                        ;    (message "%d Org links copied to the kill-ring" (files))))
+
+(defun hww-my-copy-dired-files-in-kill-ring ()
+  "Copy files names in the kill ring."
+  (interactive)
+  (let ((files (dired-map-over-marks (dired-get-filename) nil)))
+    (kill-new
+     (mapconcat
+      (lambda (f)
+                                        ;(replace-regexp-in-string "/rsh:ppb367@10.134.130.4:" "" (dired-dwim-target-directory)))
+        (concat "hwwget -s cacau -R " (replace-regexp-in-string "/rsh:ppb367@10.134.130.12:" "" f) ""))
+      files "\n"))
+    (message "%d Org links copied to the kill-ring" (length files))))
+
+;;; Fix junk characters in shell mode
+(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+
+(require 'shell-command) (shell-command-completion-mode)
+(defun start-another-shell ()
+"start a new instance of shell;
+if buffer \"*shell*\" already exists, rename it and start a new instance.
+The older shell will be marked \"\", counter-intuitively...."
+(interactive)
+(setq shell-name "*shell*")
+(if (get-buffer shell-name)
+(progn
+(switch-to-buffer shell-name)
+(rename-buffer (generate-new-buffer-name shell-name))))
+(shell))
+
+(defun create-tags (dir-name)
+  "Create tags file."
+  (interactive "DDirectory: ")
+  (eshell-command
+   (format "find %s -type f -name \"*.[CH]\" | etags -" dir-name)))
+
+;;;;_* Local emacs vars.
+;; The following `allout-layout' local variable setting:
+;;  - closes all topics from the first topic to just before the third-to-last,
+;;  - shows the children of the third to last (config vars)
+;;  - and the second to last (code section),
+;;  - and closes the last topic (this local-variables section).
+;;Local variables:
+
+;; allout -layout: (0 : -1 -1 0)
+                                        ;(require 'auto-dictionary)
+                                        ;(add-hook 'flyspell-mode-hook '(lambda () (auto-dictionary-mode 1)))
+
+  (defun dired-shell-stuff-it (command file-list on-each &optional raw-arg)
+  ;; "Make up a shell command line from COMMAND and FILE-LIST.
+  ;; If ON-EACH is t, COMMAND should be applied to each file, else
+  ;; simply concat all files and apply COMMAND to this.
+  ;; FILE-LIST's elements will be quoted for the shell."
+  ;; Might be redefined for smarter things and could then use RAW-ARG
+  ;; (coming from interactive P and currently ignored) to decide what to do.
+  ;; Smart would be a way to access basename or extension of file names.
+    (let* ((async "")
+  	 (stuff-it
+  	  (progn
+  	    (when (string-match "[ \t]*&[ \t]*\\'" command)
+  	      (setq async " &")
+  	      (setq command (substring command 0 (match-beginning 0))))
+  	    (if (or (string-match dired-star-subst-regexp command)
+  		    (string-match dired-quark-subst-regexp command))
+  		(lambda (x)
+  		  (let ((retval command))
+  		    (while (string-match
+  			    "\\(^\\|[ \t]\\)\\([*?]\\)\\([ \t]\\|$\\)" retval)
+  		      (setq retval (replace-match x t t retval 2)))
+  		    retval))
+  	      (lambda (x) (concat command dired-mark-separator x async))))))
+      (if on-each
+  	(mapconcat stuff-it (mapcar 'shell-quote-argument file-list) ";")
+        (let ((files (mapconcat 'shell-quote-argument
+  			      file-list dired-mark-separator)))
+  	(if (> (length file-list) 1)
+  	    (setq files (concat dired-mark-prefix files dired-mark-postfix)))
+  	(funcall stuff-it files)))))
+
+(put 'upcase-region 'disabled nil)
+                                        ;-----------------------------------------------------------------------------------------------
+
+(add-hook 'LaTeX-mode-hook
+          (lambda () (set-input-method "german-prefix")))
+(add-hook 'PDFLaTeX-mode-hook
+          (lambda () (set-input-method "german-prefix")))
+
+(put 'downcase-region 'disabled nil)
+
+
+(define-derived-mode OpenFoam-mode c++-mode "OpenFoam"
+  "Major mode for editing OpenFoam."
+  ;;register keywords
+  (setq OpenFoam-font-lock-keywords
+        (list '("#.*"
+                . font-lock-comment-face)
+              '("^[\t ]*:.*"
+                . font-lock-type-face)
+              '("[A-Za-z_]+=.*"
+                . font-lock-keyword-face)
+              '("^[\t ]*\\*.*"
+                . font-lock-doc-string-face)
+              '("\$[A-Za-z0-9_]+"
+                . font-lock-function-name-face)))
+
+  (font-lock-mode))
+(add-to-list 'auto-mode-alist '("transportProperties" . OpenFoam-mode))
+(add-to-list 'auto-mode-alist '("turbulenceProperties" . OpenFoam-mode))
+(add-to-list 'auto-mode-alist '("mechanicalProperties" . OpenFoam-mode))
+(add-to-list 'auto-mode-alist '("fvSolution" . OpenFoam-mode))
+(add-to-list 'auto-mode-alist '("mapFields" . OpenFoam-mode))
+(add-to-list 'auto-mode-alist '("DOEProperties" . OpenFoam-mode))
+(add-to-list 'auto-mode-alist '("sampleDict" . OpenFoam-mode))
+(add-to-list 'auto-mode-alist '("mirrorMeshDict" . OpenFoam-mode))
+(add-to-list 'auto-mode-alist '("fvScheme" . OpenFoam-mode))
+(add-to-list 'auto-mode-alist '("controlDict" . OpenFoam-mode))
+(add-to-list 'auto-mode-alist '("caseSetupDict" . OpenFoam-mode))
+(add-to-list 'auto-mode-alist '("caseSetupDict2" . OpenFoam-mode))
+(add-to-list 'auto-mode-alist '("changeDictionaryDict" . OpenFoam-mode))
+(add-to-list 'auto-mode-alist '("owners" . OpenFoam-mode))
+(add-to-list 'auto-mode-alist '("boundary" . OpenFoam-mode))
+(add-to-list 'auto-mode-alist '("faces" . OpenFoam-mode))
+(add-to-list 'auto-mode-alist '("points" . OpenFoam-mode))
+                                        ;(add-to-list 'auto-mode-alist '("epsilon" . OpenFoam-mode))
+                                        ;(add-to-list 'auto-mode-alist '("k" . OpenFoam-mode))
+                                        ;(add-to-list 'auto-mode-alist '("p" . OpenFoam-mode))
+                                        ;(add-to-list 'auto-mode-alist '("omega" . OpenFoam-mode))
+                                        ;(add-to-list 'auto-mode-alist '("R" . OpenFoam-mode))
+                                        ;(add-to-list 'auto-mode-alist '("Ux" . OpenFoam-mode))
+                                        ;(add-to-list 'auto-mode-alist '("Uy" . OpenFoam-mode))
+                                        ;(add-to-list 'auto-mode-alist '("Uz" . OpenFoam-mode))
+                                        ;(add-to-list 'auto-mode-alist '("Rx" . OpenFoam-mode))
+                                        ;(add-to-list 'auto-mode-alist '("Ry" . OpenFoam-mode))
+                                        ;(add-to-list 'auto-mode-alist '("Rz" . OpenFoam-mode))
+                                        ;(add-to-list 'auto-mode-alist '("U" . OpenFoam-mode))
+                                        ;(add-to-list 'auto-mode-alist '("F1" . OpenFoam-mode))
+                                        ;(add-to-list 'auto-mode-alist '("nuTilda" . OpenFoam-mode))
+                                        ;(add-to-list 'auto-mode-alist '("v2" . OpenFoam-mode))
+                                        ;(add-to-list 'auto-mode-alist '("f" . OpenFoam-mode))
+                                        ;(add-to-list 'auto-mode-alist '("yPlus" . OpenFoam-mode))
+
+                                        ;(setq auto-mode-alist
+                                        ;      (append
+                                        ;       '(("\\.html$"          . html-mode)
+                                        ;         ("\\.htm$"           . html-mode)
+                                        ;         ("\\.y$"             . c++-mode)             ;; yacc-Files
+                                        ;         ("make-config.*\\'"  . makefile-mode)        ;; make-config*
+
+                                        ;(setq auto-mode-alist
+                                        ;      (append
+                                        ;       '(("^k\..*\\'"   . OpenFoam-mode)
+                                        ;         ("^f\..*\\'"   . OpenFoam-mode)
+                                        ;         ("epsilon\..*\\'"   . OpenFoam-mode)
+                                        ;         ("omega\..*\\'"   . OpenFoam-mode)
+                                        ;         ("^v2\..*\\'"   . OpenFoam-mode)
+                                        ;         ("^yPlus\..*\\'"   . OpenFoam-mode)
+                                        ;         ("^R\..*\\'"   . OpenFoam-mode)
+                                        ;         ("^T\..*\\'"   . OpenFoam-mode)
+                                        ;         ("^U\..*\\'"   . OpenFoam-mode)
+                                        ;         ("^Ux\..*\\'"   . OpenFoam-mode)
+                                        ;         ("^Uy\..*\\'"   . OpenFoam-mode)
+                                        ;         ("^Uz\..*\\'"   . OpenFoam-mode)
+                                        ;         ("^Rx\..*\\'"   . OpenFoam-mode)
+                                        ;         ("^Ry\..*\\'"   . OpenFoam-mode)
+                                        ;         ("^Rz\..*\\'"   . OpenFoam-mode)
+                                        ;         ("^F1\..*\\'"   . OpenFoam-mode)
+                                        ;         ("^nuTilda\..*\\'"   . OpenFoam-mode)
+                                        ;         ) auto-mode-alist))
+
+(setq auto-mode-alist
+      (append
+       '(
+                                        ;           ("\'k"   . OpenFoam-mode)
+                                        ;         ("^f\..*\\'"   . OpenFoam-mode)
+                                        ;         ("epsilon\..*\\'"   . OpenFoam-mode)
+                                        ;         ("omega\..*\\'"   . OpenFoam-mode)
+                                        ;         ("^v2\..*\\'"   . OpenFoam-mode)
+                                        ;         ("^yPlus\..*\\'"   . OpenFoam-mode)
+                                        ;         ("^R\..*\\'"   . OpenFoam-mode)
+                                        ;         ("^T\..*\\'"   . OpenFoam-mode)
+                                        ;         ("^U\..*\\'"   . OpenFoam-mode)
+                                        ;         ("^Ux\..*\\'"   . OpenFoam-mode)
+                                        ;         ("^Uy\..*\\'"   . OpenFoam-mode)
+                                        ;         ("^Uz\..*\\'"   . OpenFoam-mode)
+                                        ;         ("^Rx\..*\\'"   . OpenFoam-mode)
+                                        ;         ("^Ry\..*\\'"   . OpenFoam-mode)
+                                        ;         ("^Rz\..*\\'"   . OpenFoam-mode)
+                                        ;         ("^F1\..*\\'"   . OpenFoam-mode)
+                                        ;         ("^nuTilda\..*\\'"   . OpenFoam-mode)
+         ("\\(/\\|\\`\\)\\.\\(k\\|epsilon\\|omega\\|f\\)\\'" . sh-mode)
+         ) auto-mode-alist))
+
+
+;;;_* OpenFOAM
+                                        ;**************************************************************************************************************
+(c-add-style "OpenFOAM_HGW"
+             '(
+               (c-basic-offset . 4)
+               (c-tab-always-indent . t)
+               (indent-tabs-mode . nil)
+               (c-comment-only-line-offset . (0 . 0))
+               (c-indent-comments-syntactically-p . t)
+               (c-block-comments-indent-p nil)
+               (c-cleanup-list .
+                               '((defun-close-semi) (list-close-comma) (scope-operator)))
+               (c-backslash-column . 48)
+                                        ;(c-offsets-alist .
+                                        ;(
+                                        ;(c .  )     ;; inside a multi-line C style block comment
+                                        ;(defun-open . 0)    ;; brace that opens a function definition
+                                        ;(defun-close . 0)    ;; brace that closes a function definition
+                                        ;(defun-block-intro .  )   ;; the first line in a top-level defun
+                                        ;(class-open . 0)    ;; brace that opens a class definition
+                                        ;(class-close . 0)    ;; brace that closes a class definition
+                                        ;(inline-open .  )    ;; brace that opens an in-class inline method
+                                        ;(inline-close . 0)   ;; brace that closes an in-class inline method
+                                        ;(topmost-intro . 0)   ;; the first line in a topmost construct
+                                        ;      ;; definition
+                                        ;(topmost-intro-cont . 0)   ;; topmost definition continuation lines
+                                        ;(member-init-intro .  )   ;; first line in a member initialization list
+                                        ;(member-init-cont . 0)   ;; subsequent member initialization list lines
+                                        ;(inher-intro . 0)    ;; first line of a multiple inheritance list
+                                        ;(inher-cont .  )    ;; subsequent multiple inheritance lines
+                                        ;(block-open . 0)    ;; statement block open brace
+                                        ;(block-close . 0)    ;; statement block close brace
+                                        ;(brace-list-open . 0)   ;; open brace of an enum or static array list
+                                        ;(brace-list-close . 0)   ;; open brace of an enum or static array list
+                                        ;(brace-list-intro .  )   ;; first line in an enum or static array list
+                                        ;(brace-list-entry . 0)   ;; subsequent lines in an enum or static array
+                                        ;      ;; list
+                                        ;(statement . 0)    ;; a C/C  /ObjC statement
+                                        ;(statement-cont .  )   ;; a continuation of a C/C  /ObjC statement
+                                        ;(statement-block-intro . ) ;; the first line in a new statement block
+                                        ;(statement-case-intro .  )  ;; the first line in a case `block'
+                                        ;(statement-case-open .  )   ;; the first line in a case `block'
+                                        ;      ;; starting with brace
+                                        ;(substatement .  )   ;; the first line after an if/while/for/do/else
+                                        ;(substatement-open . 0)   ;; the brace that opens a substatement block
+                                        ;(case-label .  )    ;; a case or default label
+                                        ;(access-label . -)   ;; C  private/protected/public access label
+                                        ;(label . -)    ;; any non-special C/C  /ObjC label
+                                        ;(do-while-closure . 0)   ;; the `while' that ends a do/while construct
+                                        ;(else-clause . 0)    ;; the `else' of an if/else construct
+                                        ;(comment-intro . 0)   ;; line containing only a comment introduction
+                                        ;(arglist-intro . )   ;; the first line in an argument list
+                                        ;(arglist-cont . 0)   ;; subsequent argument list lines when no
+                                        ;      ;; subsequent argument list lines
+                                        ;      ;; when no the
+                                        ;      ;; arglist opening paren
+                                        ;(arglist-cont-nonempty . 0) ;; subsequent argument list lines when at
+                                        ;      ;; subsequent argument list lines
+                                        ;      ;; when at line
+                                        ;      ;; as the arglist opening paren
+                                        ;(arglist-close . 0)   ;; line as the arglist opening paren
+                                        ;(stream-op .  )    ;; lines continuing a stream operator construct
+                                        ;(inclass .  )    ;; the construct is nested inside a class
+                                        ;      ;; definition
+                                        ;(cpp-macro .  )    ;; the construct is nested inside a class
+                                        ;      ;; definition
+                                        ;(friend . 0)    ;; a C   friend declaration
+                                        ;)
+                                        ;)
+               )
+             )
+
+(defun openfoam-hgw-c-mode-hook ()
+  (c-set-style "OpenFOAM_HGW")
+  )
+
+;;;_* Modes for files
+                                        ;**************************************************************************************************************
+(add-hook 'c-mode-common-hook 'openfoam-hgw-c-mode-hook)
+(add-to-list 'auto-mode-alist '("/home/gcae504/OpenFOAM/*" . c++-mode))
+(add-to-list 'auto-mode-alist '("/scr1/gcae504/Software/OpenFOAM/*" . c++-mode))
+(add-to-list 'auto-mode-alist '("/scr1/gcae504/OpenFOAM_Berechnung/*" . c++-mode))
+
+(add-to-list 'auto-mode-alist '("/home/fab/OpenFOAM/*" . c++-mode))
+(add-to-list 'auto-mode-alist '("/home/fab/HOME/Dissertation/Porsche/E1_Messaufbau/*" . c++-mode))
+(add-to-list 'auto-mode-alist '("/scr1/gcae504/Software/OpenFOAM/*" . c++-mode))
+(add-to-list 'auto-mode-alist '("/scr1/gcae504/OpenFOAM_Berechnung/*" . c++-mode))
+
+
+;;;_* Modes for files
+;**************************************************************************************************************
+;(add-to-list 'auto-mode-alist '("\\.*$" . sh-mode))
+(add-to-list 'auto-mode-alist '("\\.sh$" . sh-mode))
+(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+(add-to-list 'auto-mode-alist '("\\.geo$" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
+(add-to-list 'auto-mode-alist '("\\.jou$" . lisp-mode))
+(add-to-list 'auto-mode-alist '("\\.py$" . python-mode))
+(add-to-list 'auto-mode-alist '("\\.png$" . image-mode))
+(add-to-list 'auto-mode-alist '("\\.jpeg$" . image-mode))
+(add-to-list 'auto-mode-alist '("\\.jpg$" . image-mode))
+(add-to-list 'auto-mode-alist '("\\.bmp$" . image-mode))
+(setq interpreter-mode-alist (cons '("python" . python-mode) interpreter-mode-alist))
+(add-to-list 'auto-mode-alist '("\^log*" . c++-mode))
+
+(setq default-major-mode 'sh-mode)
+(add-to-list 'auto-mode-alist '("\\.sh$" . sh-mode))
+                                        ;(require 'yasnippet) ;; not yasnippet-bundle
+                                        ;(yas/initialize)
+                                        ;(yas/load-directory "/scr/ceplx049/scr1/gcae504/Software/Emacs/Emacs-22.1/share/emacs/site-lisp/yasnippet-0.5.5/snippets/")
+
+;(require 'cfd-mode)
+
+
+;(require 'icicles) ; Load this library.
+;(icicle-mode 1)    ; Turn on Icicle mode.
+
+(eval-after-load "tex"
+  '(TeX-add-style-hook "beamer" 'my-beamer-mode))
+
+(setq TeX-region "regionsje")
+(defun my-beamer-mode ()
+  "My adds on for when in beamer."
+
+  ;; when in a Beamer file I want to use pdflatex.
+  ;; Thanks to Ralf Angeli for this.
+  (TeX-PDF-mode 1)                      ;turn on PDF mode.
+
+  ;; Tell reftex to treat \lecture and \frametitle as section commands
+  ;; so that C-c = gives you a list of frametitles and you can easily
+  ;; navigate around the list of frames.
+  ;; If you change reftex-section-level, reftex needs to be reset so that
+  ;; reftex-section-regexp is correctly remade.
+  (require 'reftex)
+  (set (make-local-variable 'reftex-section-levels)
+       '(("lecture" . 1) ("frametitle" . 2)))
+  (reftex-reset-mode)
+
+  ;; add some extra functions.
+  (define-key LaTeX-mode-map "\C-cf" 'beamer-template-frame)
+  (define-key LaTeX-mode-map "\C-\M-x" 'tex-frame)
+  )
+
+(defun tex-frame ()
+  "Run pdflatex on current frame.
+Frame must be declared as an environment."
+  (interactive)
+  (let (beg)
+    (save-excursion
+      (search-backward "\\begin{frame}")
+      (setq beg (point))
+      (forward-char 1)
+      (LaTeX-find-matching-end)
+      (TeX-pin-region beg (point))
+      (letf (( (symbol-function 'TeX-command-query) (lambda (x) "LaTeX")))
+        (TeX-command-region))
+      )
+    ))
+
+
+(defun beamer-template-frame ()
+  "Create a simple template and move point to after \\frametitle."
+  (interactive)
+  (LaTeX-environment-menu "frame")
+  (insert "\\frametitle{}")
+  (backward-char 1))
+
+
+                                        ;(require 'cscope)
+(require 'xcscope)
+                                        ;(require 'ascope)
+(require 'cfd-mode)
+(message "After CFD-mode0")
+
+(global-set-key [f3] '(lambda () (interactive) (set-input-method 'german-postfix)))
+
+(define-key global-map [(control f3)]  'cscope-set-initial-directory)
+(define-key global-map [(control f4)]  'cscope-unset-initial-directory)
+(define-key global-map [(control f5)]  'cscope-find-this-symbol)
+(define-key global-map [(control f6)]  'cscope-find-global-definition)
+(define-key global-map [(control f7)] 'cscope-find-global-definition-no-prompting)
+(define-key global-map [(control f8)]  'cscope-pop-mark)
+(define-key global-map [(control f9)]  'cscope-next-symbol)
+(define-key global-map [(control f10)] 'cscope-next-file)
+(define-key global-map [(control f11)] 'cscope-prev-symbol)
+(define-key global-map [(control f12)] 'cscope-prev-file)
+(define-key global-map [(meta f9)]  'cscope-display-buffer)
+(define-key global-map [(meta f10)] 'cscope-display-buffer-toggle)
+
+(setq dired-guess-shell-alist-user
+      (list
+                                        ;(list "\\.pl$" "perl")
+
+       ;;         (list "\\.ansa$" "ansa -i");; fixed rule
+       ;;         (list "\\.sim$" "starccm+ -i");; fixed rule
+       ;;         (list "\\.vtk$" "paraview --data=");; fixed rule
+       ;;         (list "\\.encas$" "paraview --data=");; fixed rule
+       ;;         (list "\\.case$" "paraview --data=");; fixed rule
+       ;;         (list "\\.msh$" "fluent 3d --gui");; fixed rule
+       (list "\\.sxw$" "soffice")  ;; fixed rule
+       (list "\\.doc$" "soffice")  ;; fixed rule
+       (list "\\.xls$" "soffice")  ;; fixed rule
+       (list "\\.sxi$" "soffice")  ;; fixed rule
+       (list "\\.sxc$" "soffice")  ;; fixed rule
+       (list "\\.wav$" "gmplayer")
+       (list "\\.avi$" "gmplayer")
+       (list "\\.mpg$" "gmplayer")
+       (list "\\.mov$" "gmplayer")
+       (list "\\.pdf$" "kpdf")
+       (list "\\.dvi$" "kpdf")
+       (list "\\.ps$" "kpdf")
+       (list "\\.agr$" "xmgrace")
+
+       (list "\\.html$" "firefox-2.0.0.4")
+       (list "\\.htm$" "firefox-2.0.0.4")
+
+       (list "\\.bmp" "display" "xv")
+       (list "\\.py" "xterm -e python")
+       (list "\\.tif" "display" "xv")
+       (list "\\.p[bgpn]m$" "display" "xloadimage" "xview -quiet")
+       (list "\\.xbm$" "display" "bitmap")
+       (list "\\.xwd$" "display" "xview -quiet")
+       (list "\\.png$" "display" "xv" "display")
+       (list "\\.jpe?g$" "display" "xview -quiet")
+       (list "\\.gif$" "display" "xview -quiet")
+
+       (list "\\.e?ps$" "kpdf" "gv -scale 1 -resize -spartan -antialias * &" "xv")
+       ;; gv understands .ps.gz.  Good.
+       (list "\\.e?ps\\.g?z$" "kpdf" "gv -scale 1 -resize -spartan -antialias * &")
+       (list "\\.e?ps\\.Z$" "kpdf" "zcat * | gv -scale 1 -resize -spartan -antialias -&"
+             '(concat "znew"
+                      (if dired-guess-shell-gzip-quiet " -q")
+                      " " dired-guess-shell-znew-switches))))
+
+
+(message "After CFD-mode0")
+
+;; (defun mh-add-vi-keys ()
+;;        "Set up "
+;; (viper-add-local-keys "n" 'widget-demo-next))
+;;      (add-hook 'WDemo-mode-hook 'mh-add-vi-keys)
+;; ;;  (local-set-key "\C-c?" 'semantic-ia-complete-symbol-menu)
+;; ;;  (local-set-key "\C-c>" 'semantic-complete-analyze-inline)
+;; ;;  (local-set-key "\C-cp" 'semantic-analyze-proto-impl-toggle))
+;; ;;(add-hook 'c-mode-common-hook 'my-cedet-hook)
+;; ;(add-to-list 'eshell-visual-commands "screen")
+
+;; (autoload 'pov-mode "pov-mode" "PoVray scene file mode" t)
+;; (add-to-list 'auto-mode-alist '("\\.pov\\'" . pov-mode))
+;; (add-to-list 'auto-mode-alist '("\\.inc\\'" . pov-mode))
+;; (defun set-my-pov-mode-hotkeys  ()
+;;   "Sets some convenient keyboard shortcuts for pov-mode."
+;;   (interactive)
+;;   ;; (define-key pov-mode-map (kbd "<f8>") 'pov-menu-render-test)
+;;   ;; (define-key pov-mode-map (kbd "<f9>") 'pov-menu-render-mid)
+;;   ;; )	  
+	  
+;; (add-hook 'pov-mode-hook 'set-my-pov-mode-hotkeys)
+     
+(message "After CFD-mode0")
+(require 'viper-in-more-modes)
+;(require 'cua)
+;(CUA-mode 'emacs)
+
+
+;(setq dired-omit-files (concat dired-omit-files "\\|~$\\|^INDEX$\\|-t\\.tex$"))
+
+                                        ; Custom Variables
+                                        ;**************************************************************************************************************
+(custom-set-variables
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(LaTeX-verbatim-environments (quote ("verbatim" "verbatim*" "todo")))
+ '(TeX-PDF-mode t)
+ '(TeX-fold-macro-spec-list (quote (("[f]" ("footnote")) ("[c]" ("cite")) ("[l]" ("label")) ("[r]" ("ref" "pageref")) ("[i]" ("index")) ("*" ("item")) ("..." ("dots")) ("%" ("[COMMENT]")) (1 ("part" "chapter" "section" "subsection" "subsubsection" "paragraph" "subparagraph" "part*" "chapter*" "section*" "subsection*" "subsubsection*" "paragraph*" "subparagraph*" "emph" "textit" "textsl" "textmd" "textrm" "textsf" "texttt" "textbf" "textsc" "textup")))))
+ '(TeX-fold-type-list (quote (env macro comment)))
+ '(TeX-output-view-style (quote (("^dvi$" ("^landscape$" "^pstricks$\\|^pst-\\|^psfrag$") "%(o?)dvips -t landscape %d -o && gv %f") ("^dvi$" "^pstricks$\\|^pst-\\|^psfrag$" "%(o?)dvips %d -o && gv %f") ("^dvi$" ("^a4\\(?:dutch\\|paper\\|wide\\)\\|sem-a4$" "^landscape$") "%(o?)xdvi %dS -paper a4r -s 0 %d") ("^dvi$" "^a4\\(?:dutch\\|paper\\|wide\\)\\|sem-a4$" "%(o?)xdvi %dS -paper a4 %d") ("^dvi$" ("^a5\\(?:comb\\|paper\\)$" "^landscape$") "%(o?)xdvi %dS -paper a5r -s 0 %d") ("^dvi$" "^a5\\(?:comb\\|paper\\)$" "%(o?)xdvi %dS -paper a5 %d") ("^dvi$" "^b5paper$" "%(o?)xdvi %dS -paper b5 %d") ("^dvi$" "^letterpaper$" "%(o?)xdvi %dS -paper us %d") ("^dvi$" "^legalpaper$" "%(o?)xdvi %dS -paper legal %d") ("^dvi$" "^executivepaper$" "%(o?)xdvi %dS -paper 7.25x10.5in %d") ("^dvi$" "." "%(o?)xdvi %dS %d") ("^pdf$" "." "kpdf %o %(outpage)") ("^html?$" "." "netscape %o"))))
+ '(TeX-source-specials-mode 0 t)
+ '(auto-compression-mode t nil (jka-compr))
+ '(bibtex-autokey-before-presentation-function nil)
+ '(bibtex-autokey-name-case-convert-function (quote identity))
+ '(bibtex-autokey-name-separator "_")
+ '(bibtex-autokey-name-year-separator "__")
+ '(bibtex-autokey-names 2)
+ '(bibtex-autokey-titleword-case-convert-function (quote identity))
+ '(bibtex-autokey-titleword-length 20)
+ '(bibtex-autokey-titlewords 10)
+ '(bibtex-autokey-year-length 4)
+ '(bibtex-autokey-year-title-separator "__")
+ '(browse-url-browser-function (quote browse-url-firefox))
+ '(browse-url-firefox-program "/usr/segment/bin/firefox-2.0.0.4")
+ '(browse-url-mozilla-program "/usr/segment/bin/firefox-2.0.0.4
+")
+ '(browse-url-netscape-program "/usr/segment/bin/firefox-2.0.0.4" t)
+ '(case-fold-search t)
+ '(column-number-mode t)
+ '(completion-ignored-extensions (quote (".svn/" "CVS/" ".o" "~" ".bin" ".lbin" ".so" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".fmt" ".tfm" ".class" ".fas" ".lib" ".mem" ".x86f" ".sparcf" ".fasl" ".ufsl" ".fsl" ".dxl" ".pfsl" ".dfsl" ".lo" ".la" ".gmo" ".mo" ".toc" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".vr" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".pyc" ".pyo")))
+ '(current-language-environment "UTF-8")
+ '(default-input-method "rfc1345")
+ '(dired-guess-shell-gzip-quiet t)
+ '(dired-recursive-deletes (quote top))
+ '(display-battery-mode t)
+ '(display-time-mode t)
+ '(ediff-split-window-function (quote split-window-horizontally))
+ '(eshell-term-name "xterm")
+ '(eshell-visual-commands (quote ("vi" "screen" "top" "less" "more" "lynx" "ncftp" "pine" "tin" "trn" "elm" "mc" "vim" "lfm")))
+ '(fill-column 70)
+ '(font-latex-match-bold-command-keywords (quote (("\\todo" "font-latex-bold-face"))))
+ '(font-latex-match-warning-keywords (quote ("todo")))
+ '(font-latex-user-keyword-classes (quote (("todo" nil (:width condensed :foreground "blue") command))))
+ '(fringe-mode 0 nil (fringe))
+ '(global-font-lock-mode t nil (font-lock))
+ '(ibuffer-always-show-last-buffer :nomini)
+ '(ibuffer-default-sorting-reversep nil)
+ '(ibuffer-expert nil)
+ '(ibuffer-fontification-alist (quote ((10 buffer-read-only font-lock-constant-face) (15 (string-match "^*" (buffer-name)) font-lock-keyword-face) (20 (and (string-match "^ " (buffer-name)) (null buffer-file-name)) italic) (25 (memq major-mode ibuffer-help-buffer-modes) font-lock-comment-face) (30 (eq major-mode (quote dired-mode)) font-lock-function-name-face) (20 (string-match "^/rsh*" (buffer-name)) font-lock-comment-face))))
+ '(ibuffer-saved-limits (quote (("python" ((mode . python-mode))) ("org" ((mode . org-mode))) ("dired" ((mode . dired-mode))) ("latex" ((mode . latex-mode))) ("gnus" ((or (mode . message-mode) (mode . mail-mode) (mode . gnus-group-mode) (mode . gnus-summary-mode) (mode . gnus-article-mode)))) ("programming" ((or (mode . emacs-lisp-mode) (mode . cperl-mode) (mode . c-mode) (mode . java-mode) (mode . idl-mode) (mode . lisp-mode)))))))
+ '(ibuffer-use-header-line nil)
+ '(indicate-empty-lines t)
+ '(isearch-allow-scroll t)
+ '(lpr-command "a2ps -Ec++")
+ '(msf-abbrev-always-rescan t)
+ '(org-agenda-files (quote ("~/org/Aktuell.org" "~/org/Ansprechpartner.org" "~/org/DigitalerPrototyp.org" "~/org/Dissertation.org" "~/org/Home.org" "~/org/Software.org" "~/org/Berechnungen/Diss_Berechnung.org")))
+ '(org-agenda-tags-column -120)
+ '(org-drawers (quote ("PROPERTIES" "CLOCK" "INFO" "RECHENZEITEN")))
+ '(org-export-html-style "<link rel=\"stylesheet\" type=\"text/css\" href=\"/home/gcae504/org/stylesheet.css\">")
+ '(org-export-html-toplevel-hlevel 1)
+ '(org-export-with-property-drawer t)
+ '(org-file-apps (quote (("txt" . emacs) ("tex" . emacs) ("ltx" . emacs) ("org" . emacs) ("el" . emacs) ("bib" . emacs) ("png" . "display %s") ("PNG" . "display %s") ("jpg" . "display %s") ("JPG" . "display %s"))))
+ '(preview-auto-cache-preamble t)
+ '(preview-default-document-pt 16.0)
+ '(preview-default-option-list (quote ("displaymath" "floats" "graphics" "textmath" "sections" "footnotes")))
+ '(preview-fast-conversion nil)
+ '(preview-inner-environments (quote ("Bmatrix" "Vmatrix" "aligned" "array" "bmatrix" "cases" "gathered" "matrix" "pmatrix" "smallmatrix" "split" "subarray" "vmatrix" "lst" "lstinputlisting")))
+ '(preview-preserve-counters t)
+ '(preview-scale-function 1)
+ '(preview-transparent-border 1.5)
+ '(preview-transparent-color t)
+ '(ps-lpr-command "/usr/bin/lpr -P wdr55966 -o Duplex=DuplexNoTumble")
+ '(safe-local-variable-values (quote ((tags-file-name . "~/unicore/config_server/config_bin/TAGS") (LaTeX-command-style ("." "PDFTex")) (Tex-PDF-mode . t) (pdftex-mode . t) (flyspell-mode . t) (LaTeX-command-style ("." "pdflatex")) (TeX-view-style ("." "acroread %s.pdf")) (pdf-mode . t) (bibtex-autokey-name-year-separator . "_") (bibtex-autokey-year-title-separator . "_") (bibtex-autokey-titleword-length . 20) (bibtex-autokey-titlewords . 3) (set-input-method . german-postfix) (default-input-method . "german-postfix") (latex-mode . t) (reftex-mode . t) (cdlatex-mode . t) (TeX-PDF-mode . t) (Local . american) (Local . german8) (Local . german) (preview-scale-function . 1.3))))
+ '(save-place t nil (saveplace))
+ '(show-paren-mode t)
+ '(size-indication-mode t)
+ '(text-mode-hook (quote (turn-on-auto-fill viper-mode text-mode-hook-identify)))
+ '(tool-bar-mode nil)
+ '(transient-mark-mode t)
+ '(viper-emacs-state-mode-list (quote (dired-mode browse-kill-ring-mode recentf-mode recentf-dialog-mode occur-mode completion-list-mode compilation-mode view-mode vm-mode vm-summary-mode eshell-mode widget-demo-mode widget-mode)))
+ '(viper-insert-state-cursor-color "Red")
+ '(viper-insert-state-mode-list (quote (internal-ange-ftp-mode comint-mode gud-mode inferior-emacs-lisp-mode erc-mode octave-mode))))
+'(?/ my-latex-math-insert-frac)
+'(?\C-s my-latex-math-insert-sum)
+'(global-font-lock-mode t nil (font-lock))
+                                        ;(add-to-list 'auto-mode-alist '("/home/fab/OpenFOAM" . c-mode))
+
+ ;'(viper-emacs-state-mode-list (quote (Custom-mode efs-mode tar-mode browse-kill-ring-mode recentf-mode recentf-dialog-mode occur-mode mh-folder-mode gnus-group-mode gnus-summary-mode completion-list-mode compilation-mode rcirc-mode jde-javadoc-checker-report-mode view-mode vm-mode vm-summary-mode eshell-mode widget-demo-mode widget-mode)))
+  (eval-after-load 'viper
+    '(progn
+       (setq viper-vi-state-id (concat (propertize "<V>" 'face 'hi-blue-b) " "))
+       (setq viper-emacs-state-id (concat (propertize "<E>" 'face 'hi-red-b) " "))
+       (setq viper-insert-state-id (concat (propertize "<I>" 'face 'hi-blue-b) " "))
+       (setq viper-replace-state-id (concat (propertize "<R>" 'face 'hi-blue-b) " "))
+       ;; The property `risky-local-variable' is a security measure
+       ;; for mode line variables that have properties
+       (put 'viper-mode-string 'risky-local-variable t)))
